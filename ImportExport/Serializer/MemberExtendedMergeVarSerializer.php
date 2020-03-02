@@ -168,9 +168,8 @@ class MemberExtendedMergeVarSerializer extends ConfigurableEntityNormalizer
                 $value = $this->dateTimeFormatter->format($value);
                 break;
             case PropertyInterface::TYPE_DECIMAL:
-                $value = $this->numberFormatter->formatDecimal($value);
-                break;
             case PropertyInterface::TYPE_INTEGER:
+            case PropertyInterface::TYPE_TAGS:
                 $value = $this->numberFormatter->formatDecimal($value);
                 break;
             case PropertyInterface::TYPE_BOOLEAN:
