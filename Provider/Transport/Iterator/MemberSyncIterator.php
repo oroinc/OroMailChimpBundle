@@ -16,6 +16,9 @@ use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\QueryDesignerBundle\Model\GroupByHelper;
 use Oro\Component\PhpUtils\ArrayUtil;
 
+/**
+ * Mailchimp members synchronized iterator.
+ */
 class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
 {
     const EMAIL_SEPARATOR = '__E__';

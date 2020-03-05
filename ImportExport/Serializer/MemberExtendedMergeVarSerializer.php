@@ -16,6 +16,9 @@ use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\QueryDesignerBundle\Grid\QueryDesignerQueryConfiguration;
 use Symfony\Component\Translation\TranslatorInterface;
 
+/**
+ * Mailchimp extended variables data serializer.
+ */
 class MemberExtendedMergeVarSerializer extends ConfigurableEntityNormalizer
 {
     const YES_LABEL_KEY = 'oro.filter.form.label_type_yes';
