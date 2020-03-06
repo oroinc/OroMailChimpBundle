@@ -247,7 +247,7 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
                 )
                 ->join('tagging.tag', 'tag')
                 ->setParameter('entity_name', $staticSegment->getMarketingList()->getEntity());
-            $columnInformation['tag_field'] = 'GROUP_CONCAT(tag.name)';
+            $columnInformation['tag_field'] = 'tag.name';
         }
 
         $emailFieldExpr = $this->getEmailFieldExpression($qb, $staticSegment);
@@ -340,7 +340,7 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
     {
         if ($value) {
             // CONCAT returns NULL if one of arguments is NULL - return empty string instead NULL.
-            $value = "COALESCE(CAST(" . $value . " as text), '')";
+            $value = "COALESCE(CAST(GROUP_CONCAT(DISTINCT " . $value . ") as text), '')";
             $mergeVars = str_replace($separator, sprintf("', %s ,'", $value), $mergeVars);
         } else {
             $mergeVars = str_replace(json_encode($separator), 'null', $mergeVars);

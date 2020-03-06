@@ -415,6 +415,7 @@ services:
             - '%oro_mailchimp.entity.member_extended_merge_var.class%'
         calls:
             - [setDispatcher, ["@event_dispatcher"]]
+            - [setScalarFieldDenormalizer, ['@oro_importexport.serializer.scalar_field_denormalizer']]
         tags:
             - { name: oro_importexport.normalizer, priority: -6 }
 
