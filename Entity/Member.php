@@ -82,6 +82,11 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
     const STATUS_EXPORT_FAILED = 'export_failed';
 
     /**
+     * @const Member's export data should be recollected and then status must be set to export
+     */
+    const STATUS_UPDATE = 'update';
+
+    /**
      * @var int
      *
      * @ORM\Column(type="integer")
