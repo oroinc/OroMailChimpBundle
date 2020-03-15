@@ -13,6 +13,8 @@ use Oro\Bundle\LocaleBundle\Model\LastNameInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
+ * Mailchimp member entity class
+ *
  * @link http://apidocs.mailchimp.com/api/2.0/lists/member-info.php
  * @SuppressWarnings(PHPMD.ExcessivePublicCount)
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)

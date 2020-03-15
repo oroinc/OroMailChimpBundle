@@ -3,6 +3,7 @@
 namespace Oro\Bundle\MailChimpBundle\EventListener;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MailChimpBundle\Entity\Member;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
@@ -145,7 +146,7 @@ class MailchimpMembersToUpdateOnEntityChangeListener
     /**
      * @return string[]
      */
-    private function getAllowedEntities(): array
+    private function getAllowedEntities()
     {
         return $this->marketingListAllowedClassesProvider->getList();
     }
@@ -158,6 +159,7 @@ class MailchimpMembersToUpdateOnEntityChangeListener
      */
     private function updateMembersSyncStatus(array $emails)
     {
+        /** @var QueryBuilder $qb */
         $qb = $this->doctrineHelper
             ->getEntityRepository(Member::class)
             ->createQueryBuilder('mc_member');

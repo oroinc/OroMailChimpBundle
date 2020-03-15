@@ -4,6 +4,9 @@ namespace Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator;
 
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * Query builder iterator to support read once and given additional options appending to iteration result.
+ */
 class QueryWithOptionsIterator implements \Iterator
 {
     public const RESULT_ITEMS = '__result_items';

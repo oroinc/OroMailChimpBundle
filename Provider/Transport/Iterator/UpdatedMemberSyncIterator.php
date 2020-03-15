@@ -11,6 +11,9 @@ use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 class UpdatedMemberSyncIterator extends MemberSyncIterator
 {
     /**
+     * Runs subordinate iterator rewind.
+     * It allows to read data after previously iterated results were processed with writer.
+     *
      * {@inheritdoc}
      */
     public function valid()
