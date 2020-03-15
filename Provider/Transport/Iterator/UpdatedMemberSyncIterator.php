@@ -63,6 +63,7 @@ class UpdatedMemberSyncIterator extends MemberSyncIterator
         $qb->addSelect(sprintf('%s.id as mailchimpMemberId', self::MEMBER_ALIAS))
             // Select only members that are to be updated to mailchimp
             ->andWhere($qb->expr()->eq(sprintf('%s.status', self::MEMBER_ALIAS), ':status'))
+            ->addGroupBy(sprintf('%s.id', self::MEMBER_ALIAS))
             ->setParameter('status', Member::STATUS_UPDATE);
 
         return $qb;
