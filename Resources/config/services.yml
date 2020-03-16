@@ -1119,3 +1119,11 @@ services:
             - '@oro_marketing_list.provider.contact_information_fields'
         tags:
             - { name: doctrine.event_listener, event: onFlush, connection: default }
+
+    oro_mailchimp.event_listener.datagrid.marketing_list_item:
+        class: Oro\Bundle\MailChimpBundle\EventListener\DataGrid\MarketingListItemGridListener
+        arguments:
+            - '@oro_marketing_list.model.helper'
+            - '@oro_mailchimp.placeholder.filter.sync_status'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after, method: onBuildAfter }
