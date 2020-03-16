@@ -1087,3 +1087,11 @@ services:
             - ['addPackage', ['OroCRM', 'oro/mailchimp']]
         tags:
             - { name: oro_translation.extension.packages_provider }
+
+    oro_mailchimp.event_listener.datagrid.marketing_list_item:
+        class: Oro\Bundle\MailChimpBundle\EventListener\DataGrid\MarketingListItemGridListener
+        arguments:
+            - '@oro_marketing_list.model.helper'
+            - '@oro_mailchimp.placeholder.filter.sync_status'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after, method: onBuildAfter }
