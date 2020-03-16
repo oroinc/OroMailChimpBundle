@@ -4,6 +4,7 @@ namespace Oro\Bundle\MailChimpBundle\EventListener;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\QueryBuilder;
+use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MailChimpBundle\Entity\Member;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
@@ -81,7 +82,7 @@ class MailchimpMembersToUpdateOnEntityChangeListener
                 continue;
             }
 
-            if (method_exists($entity, 'getEmail')) {
+            if ($entity instanceof EmailHolderInterface) {
                 $emailsToAdd = array((string)$entity->getEmail());
             } else {
                 $typedFields = $this->getEntityEmailFields($originalClass);
