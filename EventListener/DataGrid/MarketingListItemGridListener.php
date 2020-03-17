@@ -2,7 +2,8 @@
 
 namespace Oro\Bundle\MailChimpBundle\EventListener\DataGrid;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\ParameterBag;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
@@ -13,9 +14,12 @@ use Oro\Bundle\DataGridBundle\EventListener\MixinListener;
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionExtension;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
+use Oro\Bundle\MailChimpBundle\Entity\MarketingListEmail;
+use Oro\Bundle\MailChimpBundle\Model\FieldHelper;
 use Oro\Bundle\MailChimpBundle\Placeholder\MarketingListPlaceholderFilter;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Model\MarketingListHelper;
+use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
 
 /**
  * Hides subscribe action for unsubscribed marketing list items for a list connected to mailchimp.
@@ -28,19 +32,35 @@ class MarketingListItemGridListener
     private $marketingListHelper;
 
     /**
+     * @var ContactInformationFieldsProvider
+     */
+    private $contactInformationFieldsProvider;
+
+    /**
+     * @var FieldHelper
+     */
+    private $fieldHelper;
+
+    /**
      * @var MarketingListPlaceholderFilter
      */
     private $marketingListPlaceholderFilter;
 
     /**
      * @param MarketingListHelper $marketingListHelper
+     * @param ContactInformationFieldsProvider $contactInformationFieldsProvider
+     * @param FieldHelper $fieldHelper
      * @param MarketingListPlaceholderFilter $marketingListPlaceholderFilter
      */
     public function __construct(
         MarketingListHelper $marketingListHelper,
+        ContactInformationFieldsProvider $contactInformationFieldsProvider,
+        FieldHelper $fieldHelper,
         MarketingListPlaceholderFilter $marketingListPlaceholderFilter
     ) {
         $this->marketingListHelper = $marketingListHelper;
+        $this->contactInformationFieldsProvider = $contactInformationFieldsProvider;
+        $this->fieldHelper = $fieldHelper;
         $this->marketingListPlaceholderFilter = $marketingListPlaceholderFilter;
     }
 
@@ -63,6 +83,7 @@ class MarketingListItemGridListener
             $marketingList instanceof MarketingList &&
             $this->isApplicableOnMarketingList($marketingList)
         ) {
+            $this->joinSubscriberState($marketingList, $datasource->getQueryBuilder());
             $this->rewriteActionConfiguration($datagrid);
         }
     }
@@ -110,18 +131,62 @@ class MarketingListItemGridListener
     }
 
     /**
+     * Join real subscriber status
+     *
+     * @param MarketingList $marketingList
+     * @param QueryBuilder  $queryBuilder
+     */
+    private function joinSubscriberState(MarketingList $marketingList, QueryBuilder $queryBuilder)
+    {
+        $contactInformationFields = $this->contactInformationFieldsProvider->getMarketingListTypedFields(
+            $marketingList,
+            ContactInformationFieldsProvider::CONTACT_INFORMATION_SCOPE_EMAIL
+        );
+
+        if (!$contactInformationField = reset($contactInformationFields)) {
+            throw new \RuntimeException('Contact information is not provided');
+        }
+
+        $expr = $queryBuilder->expr();
+
+        $contactInformationFieldExpr = $this->fieldHelper
+            ->getFieldExpr($marketingList->getEntity(), $queryBuilder, $contactInformationField);
+        $queryBuilder->addSelect($expr->lower($contactInformationFieldExpr) . ' AS entityEmail');
+
+        $joinContactsExpr = $expr->andX()
+            ->add(
+                $expr->eq(
+                    $expr->lower($contactInformationFieldExpr),
+                    'mc_mlist_email.email'
+                )
+            );
+        $joinContactsExpr->add('mc_mlist_email.marketingList =:marketingList');
+
+        $queryBuilder->leftJoin(
+            MarketingListEmail::class,
+            'mc_mlist_email',
+            Join::WITH,
+            $joinContactsExpr
+        )
+            ->setParameter('marketingList', $marketingList)
+            ->addSelect('mc_mlist_email.state as mcEmailState');
+    }
+
+    /**
      * @param DatagridInterface $datagrid
      */
     private function rewriteActionConfiguration(DatagridInterface $datagrid)
     {
         $config = $datagrid->getConfig();
+        // original closure results for permissions are used
         $actionConfiguration = $config->offsetGetOr(ActionExtension::ACTION_CONFIGURATION_KEY);
         $callable = function (ResultRecordInterface $record) use ($config, $actionConfiguration) {
             $permissions = $actionConfiguration && is_callable($actionConfiguration) ?
                 $actionConfiguration($record, $config->offsetGetOr(ActionExtension::ACTION_KEY, [])) : null;
 
             $permissions = is_array($permissions) ? $permissions : [];
-            $permissions['subscribe'] = false;
+            $permissions['subscribe'] = (isset($permissions['subscribe']) ? $permissions['subscribe'] : false) &&
+                $record->getValue('mcEmailState') !== 'unsubscribe';
 
             return $permissions;
         };
