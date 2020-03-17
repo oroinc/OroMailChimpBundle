@@ -13,6 +13,7 @@ use Oro\Bundle\MailChimpBundle\Entity\Member;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Model\MergeVar\MergeVarProviderInterface;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\QueryDesignerBundle\Model\GroupByHelper;
 use Oro\Component\PhpUtils\ArrayUtil;
 
 /**
@@ -65,6 +66,11 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
     protected $extendMergeVarsClass;
 
     /**
+     * @var GroupByHelper
+     */
+    protected $groupByHelper;
+
+    /**
      * @param MergeVarProviderInterface $mergeVarsProvider
      * @return MemberSyncIterator
      */
@@ -93,6 +99,18 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
     public function setExtendMergeVarsClass($extendMergeVarsClass)
     {
         $this->extendMergeVarsClass = $extendMergeVarsClass;
+
+        return $this;
+    }
+
+    /**
+     * @param GroupByHelper $groupByHelper
+     *
+     * @return MemberSyncIterator
+     */
+    public function setGroupByHelper($groupByHelper)
+    {
+        $this->groupByHelper = $groupByHelper;
 
         return $this;
     }
@@ -229,7 +247,7 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
                 )
                 ->join('tagging.tag', 'tag')
                 ->setParameter('entity_name', $staticSegment->getMarketingList()->getEntity());
-            $columnInformation['tag_field'] = 'GROUP_CONCAT(tag.name)';
+            $columnInformation['tag_field'] = 'tag.name';
         }
 
         $emailFieldExpr = $this->getEmailFieldExpression($qb, $staticSegment);
@@ -262,6 +280,14 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
 
         if ($mergeVarsExpr) {
             $qb->addSelect($mergeVarsExpr . ' as merge_vars');
+        }
+
+        $groupBy = $this->groupByHelper->getGroupByFields(
+            $qb->getDQLPart('groupBy'),
+            array_merge($qb->getDQLPart('select'), $qb->getDQLPart('orderBy'))
+        );
+        if ($groupBy) {
+            $qb->addGroupBy(implode(',', $groupBy));
         }
     }
 
@@ -314,7 +340,7 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
     {
         if ($value) {
             // CONCAT returns NULL if one of arguments is NULL - return empty string instead NULL.
-            $value = "COALESCE(CAST(" . $value . " as text), '')";
+            $value = "COALESCE(CAST(GROUP_CONCAT(DISTINCT " . $value . ") as text), '')";
             $mergeVars = str_replace($separator, sprintf("', %s ,'", $value), $mergeVars);
         } else {
             $mergeVars = str_replace(json_encode($separator), 'null', $mergeVars);
