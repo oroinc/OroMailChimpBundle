@@ -4,6 +4,9 @@ namespace Oro\Bundle\MailChimpBundle\Acl\Voter;
 
 use Oro\Bundle\SecurityBundle\Acl\Voter\AbstractEntityVoter;
 
+/**
+ * Email campaign ACL voter class.
+ */
 class EmailCampaignVoter extends AbstractEntityVoter
 {
     /**

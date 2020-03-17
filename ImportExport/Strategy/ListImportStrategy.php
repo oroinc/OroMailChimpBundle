@@ -4,6 +4,9 @@ namespace Oro\Bundle\MailChimpBundle\ImportExport\Strategy;
 
 use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
 
+/**
+ * Mailchimp subscribers list import strategy.
+ */
 class ListImportStrategy extends AbstractImportStrategy
 {
     /**

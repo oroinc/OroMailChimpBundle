@@ -6,6 +6,9 @@ use Oro\Bundle\CronBundle\Entity\Schedule;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Symfony\Component\Translation\TranslatorInterface;
 
+/**
+ * Static segment synchronization mode choices provider.
+ */
 class StaticSegmentSyncModeChoicesProvider
 {
     /**

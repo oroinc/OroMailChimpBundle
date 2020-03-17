@@ -9,6 +9,9 @@ use Oro\Bundle\MessageQueueBundle\DependencyInjection\Compiler\AddTopicMetaPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * The OroMailChimpBundle class.
+ */
 class OroMailChimpBundle extends Bundle
 {
     /**

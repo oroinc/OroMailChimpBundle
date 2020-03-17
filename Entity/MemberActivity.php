@@ -8,6 +8,8 @@ use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
+ * Mailchimp member's activity entity class.
+ *
  * @link http://apidocs.mailchimp.com/api/2.0/lists/member-activity.php
  *
  * @ORM\Entity(repositoryClass="Oro\Bundle\MailChimpBundle\Entity\Repository\MemberActivityRepository")

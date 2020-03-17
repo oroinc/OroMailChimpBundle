@@ -4,6 +4,9 @@ namespace Oro\Bundle\MailChimpBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
+/**
+ * Email column(field) entity wide constraint.
+ */
 class EmailColumnConstraint extends Constraint
 {
     /**

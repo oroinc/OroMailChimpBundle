@@ -150,6 +150,9 @@ services:
     oro_mailchimp.client.factory:
         class: '%oro_mailchimp.client.factory.class%'
 
+    Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClientFactory:
+        alias: 'oro_mailchimp.client.factory'
+
     oro_mailchimp.transport.mailchimp:
         class: '%oro_mailchimp.transport.mailchimp.class%'
         tags:
@@ -177,12 +180,14 @@ services:
 
     oro_mailchimp.placeholder.filter.buttons_filter:
         class: '%oro_mailchimp.placeholder.filter.buttons_filter.class%'
+        public: true
         arguments:
             - "@oro_marketing_list.provider.contact_information_fields"
             - "@doctrine"
 
     oro_mailchimp.static_segment.manager.api:
         parent: oro_soap.manager.entity_manager.abstract
+        public: true
         class: '%oro_mailchimp.static_segment.manager.api.class%'
         arguments:
             - '%oro_mailchimp.entity.static_segment.class%'
@@ -198,7 +203,7 @@ services:
         class: '%oro_mailchimp.importexport.reader.static_segment.class%'
         parent: oro_mailchimp.importexport.reader.abstract_iterator_based
         calls:
-            - [setMarketingListClassName, ['%oro_marketing_list.entity.class%']]
+            - [setMarketingListClassName, ['Oro\Bundle\MarketingListBundle\Entity\MarketingList']]
             - [setStaticSegmentClassName, ['%oro_mailchimp.entity.static_segment.class%']]
 
     oro_mailchimp.importexport.reader.marketing_list_email:
@@ -242,7 +247,7 @@ services:
         arguments:
             - "@oro_importexport.context_registry"
             - "@oro_entity.doctrine_helper"
-            - '%oro_integration.entity.class%'
+            - 'Oro\Bundle\IntegrationBundle\Entity\Channel'
 
     oro_mailchimp.importexport.reader.member_export:
         class: '%oro_mailchimp.importexport.reader.member_export.class%'
@@ -388,7 +393,7 @@ services:
     oro_mailchimp.importexport.serializer.member_import:
         class: '%oro_mailchimp.importexport.serializer.member_import.class%'
         calls:
-            - [setChannelEntity, ['%oro_integration.entity.class%']]
+            - [setChannelEntity, ['Oro\Bundle\IntegrationBundle\Entity\Channel']]
             - [setDoctrineHelper, ["@oro_entity.doctrine_helper"]]
             - [setDateTimeSerializer, ["@oro_mailchimp.importexport.serializer.datetime"]]
         tags:
@@ -397,7 +402,7 @@ services:
     oro_mailchimp.importexport.serializer.member_activity:
         class: '%oro_mailchimp.importexport.serializer.member_activity.class%'
         calls:
-            - [setChannelEntity, ['%oro_integration.entity.class%']]
+            - [setChannelEntity, ['Oro\Bundle\IntegrationBundle\Entity\Channel']]
             - [setDoctrineHelper, ["@oro_entity.doctrine_helper"]]
             - [setDateTimeSerializer, ["@oro_mailchimp.importexport.serializer.datetime"]]
         tags:
@@ -415,7 +420,6 @@ services:
             - '%oro_mailchimp.entity.member_extended_merge_var.class%'
         calls:
             - [setDispatcher, ["@event_dispatcher"]]
-            - [setScalarFieldDenormalizer, ['@oro_importexport.serializer.scalar_field_denormalizer']]
         tags:
             - { name: oro_importexport.normalizer, priority: -6 }
 
@@ -879,7 +883,7 @@ services:
         class: '%oro_mailchimp.workflow.action.create_marketing_list_state_item.class%'
         parent: oro_mailchimp.workflow.action.create_marketing_list_state_item
         calls:
-            - [setMarketingListStateItemClassName, ['%oro_marketing_list.unsubscribed_item.class%']]
+            - [setMarketingListStateItemClassName, ['Oro\Bundle\MarketingListBundle\Entity\MarketingListUnsubscribedItem']]
         tags:
             - { name: oro_action.action, alias: create_marketing_list_unsubscribed_item }
 
@@ -888,7 +892,7 @@ services:
         arguments:
             - "@oro_entity.doctrine_helper"
         calls:
-            - [setClassName, ['%oro_campaign.email_campaign.entity.class%']]
+            - [setClassName, ['Oro\Bundle\CampaignBundle\Entity\EmailCampaign']]
         tags:
             - { name: security.voter, priority: 500 }
 
@@ -900,9 +904,9 @@ services:
             - "@oro_mailchimp.model.field_helper"
             - '%oro_mailchimp.entity.member.class%'
             - '%oro_mailchimp.entity.subscribers_list.class%'
-            - '%oro_marketing_list.entity.class%'
+            - 'Oro\Bundle\MarketingListBundle\Entity\MarketingList'
         calls:
-            - [setClassName, ['%oro_marketing_list.unsubscribed_item.class%']]
+            - [setClassName, ['Oro\Bundle\MarketingListBundle\Entity\MarketingListUnsubscribedItem']]
         tags:
             - { name: security.voter, priority: 500 }
 
@@ -921,8 +925,8 @@ services:
         arguments:
             - "@oro_marketing_list.provider.marketing_list"
             - "@oro_security.owner.ownership_metadata_provider"
-            - '%oro_marketing_list.removed_item.class%'
-            - '%oro_marketing_list.unsubscribed_item.class%'
+            - 'Oro\Bundle\MarketingListBundle\Entity\MarketingListRemovedItem'
+            - 'Oro\Bundle\MarketingListBundle\Entity\MarketingListUnsubscribedItem'
         calls:
             - [setSegmentMemberClassName, ['%oro_mailchimp.entity.static_segment_member.class%']]
 
@@ -949,7 +953,6 @@ services:
             - [setFormatter, ["@oro_locale.dql.formatter.name"]]
             - [setMergeVarsProvider, ["@oro_mailchimp.merge_var.provider"]]
             - [setExtendMergeVarsClass, ['%oro_mailchimp.entity.extended_merge_var.class%']]
-            - [setGroupByHelper, ['@oro_query_designer.group_by_helper']]
 
     oro_mailchimp.iterator.static_segment_member_add_state:
         class: '%oro_mailchimp.iterator.static_segment_member_add_state.class%'
@@ -1016,11 +1019,13 @@ services:
     # Placeholder
     oro_mailchimp.placeholder.filter.sync_status:
         class: '%oro_mailchimp.placeholder.filter.marketing_list.class%'
+        public: true
         arguments:
             - "@doctrine"
 
     oro_mailchimp.placeholder.filter.email_campaign:
         class: '%oro_mailchimp.placeholder.filter.email_campaign.class%'
+        public: true
         arguments:
             - "@doctrine"
 
@@ -1073,7 +1078,7 @@ services:
         arguments:
             - "@doctrine"
         tags:
-            - { name: doctrine.orm.entity_listener, entity: '%oro_integration.entity.class%', event: preRemove }
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\IntegrationBundle\Entity\Channel', event: preRemove }
 
     oro_mailchimp.provider.static_segment_sync_mode_choices:
         class: 'Oro\Bundle\MailChimpBundle\Provider\StaticSegmentSyncModeChoicesProvider'

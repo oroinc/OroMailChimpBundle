@@ -11,6 +11,9 @@ use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
 use Oro\Component\DoctrineUtils\ORM\QueryBuilderUtil;
 
+/**
+ * Abstract mailchimp static segment members iterator.
+ */
 abstract class AbstractStaticSegmentMembersIterator extends AbstractStaticSegmentIterator
 {
     /**

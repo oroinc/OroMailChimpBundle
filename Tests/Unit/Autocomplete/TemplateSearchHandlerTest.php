@@ -10,7 +10,6 @@ use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\MailChimpBundle\Autocomplete\TemplateSearchHandler;
 use Oro\Bundle\MailChimpBundle\Entity\Template;
-use Oro\Bundle\SearchBundle\Query\Result;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class TemplateSearchHandlerTest extends \PHPUnit\Framework\TestCase

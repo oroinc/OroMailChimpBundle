@@ -10,6 +10,9 @@ use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\ImportExportBundle\Processor\ExportProcessor as BaseExportProcessor;
 use Oro\Bundle\ImportExportBundle\Strategy\StrategyInterface;
 
+/**
+ * Batch job processor to handle export with given(injected) export strategy.
+ */
 class ExportProcessor extends BaseExportProcessor implements StepExecutionAwareInterface
 {
     /**

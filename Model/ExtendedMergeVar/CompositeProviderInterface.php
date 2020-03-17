@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\MailChimpBundle\Model\ExtendedMergeVar;
 
+/**
+ * Extended merge variables composite provider interface.
+ */
 interface CompositeProviderInterface extends ProviderInterface
 {
     /**

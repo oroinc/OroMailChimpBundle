@@ -8,6 +8,9 @@ use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\ImportExportBundle\Reader\IteratorBasedReader;
 use Oro\Bundle\IntegrationBundle\Exception\InvalidConfigurationException;
 
+/**
+ * Batch job's abstract iterator based reader.
+ */
 abstract class AbstractIteratorBasedReader extends IteratorBasedReader
 {
     /**

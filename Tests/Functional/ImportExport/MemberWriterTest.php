@@ -39,7 +39,7 @@ class MemberWriterTest extends WebTestCase
             ->method('getJobExecution')
             ->willReturn($this->createMock(JobExecution::class));
 
-        $this->getContainer()->set('oro_mailchimp.transport.integration_transport', $this->transport);
+        $this->getContainer()->set('oro_mailchimp.transport.integration_transport.test', $this->transport);
     }
 
     public function testWrite()

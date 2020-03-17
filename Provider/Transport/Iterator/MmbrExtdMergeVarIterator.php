@@ -12,6 +12,9 @@ use Oro\Bundle\MailChimpBundle\Model\ExtendedMergeVar\ProviderInterface;
 use Oro\Bundle\MailChimpBundle\Util\CallbackFilterIteratorCompatible;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListProvider;
 
+/**
+ * Mailchimp member extended merge variables iterator.
+ */
 class MmbrExtdMergeVarIterator extends AbstractStaticSegmentMembersIterator
 {
     const STATIC_SEGMENT_MEMBER_ALIAS = 'ssm';

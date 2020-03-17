@@ -6,6 +6,9 @@ use Oro\Bundle\EntityBundle\ORM\NativeQueryExecutorHelper;
 use Oro\Bundle\ImportExportBundle\Writer\AbstractNativeQueryWriter;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\StaticSegmentMemberToRemoveIterator;
 
+/**
+ * Batch job's mailchimp static segment's member state writer.
+ */
 class StaticSegmentMemberStateWriter extends AbstractNativeQueryWriter
 {
     /**

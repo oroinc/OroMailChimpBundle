@@ -13,6 +13,8 @@ use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
+ * Mailchimp static segment entity class.
+ *
  * @ORM\Entity(repositoryClass="Oro\Bundle\MailChimpBundle\Entity\Repository\StaticSegmentRepository")
  * @ORM\Table(name="orocrm_mc_static_segment")
  * @ORM\HasLifecycleCallbacks()

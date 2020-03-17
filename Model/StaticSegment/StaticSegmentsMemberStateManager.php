@@ -7,6 +7,9 @@ use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegmentMember;
 use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
 
+/**
+ * Mailchimp static segment members state manager.
+ */
 class StaticSegmentsMemberStateManager
 {
     /**

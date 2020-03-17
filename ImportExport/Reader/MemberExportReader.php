@@ -8,6 +8,9 @@ use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Entity\Repository\SubscribersListRepository;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\MemberExportListIterator;
 
+/**
+ * Export batch job's reader for mailchimp members.
+ */
 class MemberExportReader extends AbstractIteratorBasedReader
 {
     /**

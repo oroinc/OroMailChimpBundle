@@ -4,6 +4,10 @@ namespace Oro\Bundle\MailChimpBundle\Autocomplete;
 
 use Oro\Bundle\FormBundle\Autocomplete\SearchHandler;
 
+/**
+ * Abstract search handler to search mailchimp related(imported once) items
+ * by given string with search criteria and integration channel ID.
+ */
 abstract class IntegrationAwareSearchHandler extends SearchHandler
 {
     /**

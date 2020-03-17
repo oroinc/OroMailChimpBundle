@@ -9,6 +9,8 @@ use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
+ * Mailchimp template entity class.
+ *
  * @ORM\Entity
  * @ORM\Table(
  *      name="orocrm_mailchimp_template",

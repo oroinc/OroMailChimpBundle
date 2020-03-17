@@ -4,9 +4,13 @@ namespace Oro\Bundle\MailChimpBundle\ImportExport\Writer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\ImportExportBundle\Writer\CleanUpInterface;
 use Oro\Bundle\ImportExportBundle\Writer\InsertFromSelectWriter;
 
+/**
+ * Batch job's marketing list email writer.
+ */
 class MarketingListEmailWriter extends InsertFromSelectWriter implements CleanUpInterface
 {
     /**
@@ -38,6 +42,7 @@ class MarketingListEmailWriter extends InsertFromSelectWriter implements CleanUp
      */
     public function cleanUp(array $item)
     {
+        /** @var QueryBuilder $qb */
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->delete($this->entityName, 'e')
             ->where($qb->expr()->eq('IDENTITY(e.marketingList)', ':marketingList'))

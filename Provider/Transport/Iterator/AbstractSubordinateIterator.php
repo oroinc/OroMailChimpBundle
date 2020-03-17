@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator;
 
+/**
+ * Abstract subordinate iterator.
+ */
 abstract class AbstractSubordinateIterator implements \Iterator
 {
     /**

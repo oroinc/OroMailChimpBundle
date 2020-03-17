@@ -7,6 +7,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
+ * Mailchimp member's additional info(merge vars) entity class.
+ *
  * @ORM\Entity
  * @ORM\Table(
  *      name="orocrm_mc_mmbr_extd_merge_var",

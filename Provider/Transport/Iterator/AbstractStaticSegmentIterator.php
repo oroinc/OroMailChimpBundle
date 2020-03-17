@@ -8,6 +8,9 @@ use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListProvider;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProviderInterface;
 
+/**
+ * Abstract mailchimp static segment iterator.
+ */
 abstract class AbstractStaticSegmentIterator extends AbstractSubordinateIterator
 {
     const MEMBER_ALIAS = 'mmb';

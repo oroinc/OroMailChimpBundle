@@ -6,6 +6,9 @@ use Oro\Bundle\LocaleBundle\DQL\DQLNameFormatter;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
 
+/**
+ * Filtered merge variables provider.
+ */
 class FilteredMergeVarsProvider implements ProviderInterface
 {
     /**

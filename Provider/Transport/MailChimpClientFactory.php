@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\MailChimpBundle\Provider\Transport;
 
+/**
+ * Mailchimp API client factory.
+ */
 class MailChimpClientFactory
 {
     /**

@@ -4,6 +4,9 @@ namespace Oro\Bundle\MailChimpBundle\ImportExport\Strategy;
 
 use Oro\Bundle\MailChimpBundle\Entity\Template;
 
+/**
+ * Mailchimp template import strategy.
+ */
 class TemplateImportStrategy extends AbstractImportStrategy
 {
     /**

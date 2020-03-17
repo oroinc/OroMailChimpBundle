@@ -14,7 +14,6 @@ trusted_data:
         Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\MemberSyncIterator:
             addMergeVars:
                 mergeVarsExpr: true
-                groupBy: true
     properties:
         Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\MemberSyncIterator:
             addNameFields:
@@ -76,6 +75,18 @@ trusted_data:
                 memberClassName: true
             deleteListMembers:
                 memberClassName: true
+        Oro\Bundle\MailChimpBundle\ImportExport\Writer\MarketingListEmailWriter:
+            cleanUp:
+                entityName: true
+        Oro\Bundle\MailChimpBundle\ImportExport\Writer\MemberSyncWriter:
+            cleanUp:
+                entityName: true
+        Oro\Bundle\MailChimpBundle\ImportExport\Writer\StaticSegmentMemberAddStateWriter:
+            cleanUp:
+                entityName: true
+        Oro\Bundle\MailChimpBundle\ImportExport\Writer\StaticSegmentMemberToRemoveWriter:
+            cleanUp:
+                entityName: true
     safe_methods:
         Oro\Bundle\MailChimpBundle\Model\FieldHelper:
             getFieldExpr: true

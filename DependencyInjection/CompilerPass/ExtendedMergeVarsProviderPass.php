@@ -6,6 +6,9 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
+/**
+ * Extended merge vars provider compiler pass class.
+ */
 class ExtendedMergeVarsProviderPass implements CompilerPassInterface
 {
     const COMPOSITE_PROVIDER_ID = 'oro_mailchimp.extended_merge_var.composite_provider';

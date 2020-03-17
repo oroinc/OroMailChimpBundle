@@ -4,6 +4,9 @@ namespace Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator;
 
 use Oro\Bundle\MailChimpBundle\Entity\Campaign;
 
+/**
+ * Mailchimp members unsubscribe reports iterator.
+ */
 class MemberUnsubscribesIterator extends AbstractMemberActivityIterator
 {
     /**

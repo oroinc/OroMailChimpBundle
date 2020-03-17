@@ -6,6 +6,9 @@ use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\MailChimpBundle\Entity\MarketingListEmail;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 
+/**
+ * Mailchimp marketing list email entity repository class.
+ */
 class MarketingListEmailRepository extends EntityRepository
 {
     /**

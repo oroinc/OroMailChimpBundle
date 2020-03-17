@@ -1,13 +1,13 @@
 define(function(require) {
     'use strict';
 
-    var $ = require('jquery');
-    var mediator = require('oroui/js/mediator');
+    const $ = require('jquery');
+    const mediator = require('oroui/js/mediator');
 
     return function(options) {
-        var $btn = options._sourceElement;
-        var message = $btn.data('message');
-        var url = $btn.data('url');
+        const $btn = options._sourceElement;
+        const message = $btn.data('message');
+        const url = $btn.data('url');
 
         $btn.on('click', function() {
             $.post(url, {status: options.status}).done(function() {

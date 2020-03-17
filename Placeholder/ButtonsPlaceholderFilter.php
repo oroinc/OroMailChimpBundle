@@ -7,6 +7,9 @@ use Oro\Bundle\MailChimpBundle\Provider\ChannelType;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
 
+/**
+ * Availability resolver for connect marketing list to mailchimp action button on marketing list view page.
+ */
 class ButtonsPlaceholderFilter
 {
     /**

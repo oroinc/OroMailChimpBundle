@@ -9,6 +9,9 @@ use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\ImportExport\Reader\SubordinateReaderInterface;
 use Oro\Component\Exception\UnexpectedTypeException;
 
+/**
+ * Export iterator for mailchimp member extended merge variables.
+ */
 class MmbrExtdMergeVarExportIterator extends AbstractSubordinateIterator implements SubordinateReaderInterface
 {
     /**

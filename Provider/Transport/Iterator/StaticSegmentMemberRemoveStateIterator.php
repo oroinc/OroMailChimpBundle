@@ -10,6 +10,9 @@ use Oro\Bundle\MailChimpBundle\Entity\MarketingListEmail;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegmentMember;
 
+/**
+ * Mailchimp static segment's member remove state iterator.
+ */
 class StaticSegmentMemberRemoveStateIterator extends AbstractSubordinateIterator
 {
     /**

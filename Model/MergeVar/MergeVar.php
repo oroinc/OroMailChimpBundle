@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\MailChimpBundle\Model\MergeVar;
 
+/**
+ * Merge variable(single one) data holder class.
+ */
 class MergeVar implements MergeVarInterface
 {
     /**

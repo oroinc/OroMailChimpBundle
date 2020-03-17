@@ -4,6 +4,9 @@ namespace Oro\Bundle\MailChimpBundle\Provider\Connector;
 
 use Oro\Bundle\IntegrationBundle\Provider\ConnectorInterface;
 
+/**
+ * Integration connector for mailchimp subscribers list.
+ */
 class ListConnector extends AbstractMailChimpConnector implements ConnectorInterface
 {
     const TYPE = 'list';

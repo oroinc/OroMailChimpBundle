@@ -4,6 +4,9 @@ namespace Oro\Bundle\MailChimpBundle\Exception;
 
 use Exception;
 
+/**
+ * Mailchimp client related dedicated exception class with preset of messages to be thrown.
+ */
 class MailChimpClientException extends Exception implements MailChimpException
 {
     /**

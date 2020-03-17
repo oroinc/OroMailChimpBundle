@@ -4,6 +4,9 @@ namespace Oro\Bundle\MailChimpBundle\ImportExport\DataConverter;
 
 use Oro\Bundle\ImportExportBundle\Converter\AbstractTableDataConverter;
 
+/**
+ * Data converter to export/import format for mailchimp extended merge variables data.
+ */
 class ExtendedMergeVarDataConverter extends AbstractTableDataConverter
 {
     /**

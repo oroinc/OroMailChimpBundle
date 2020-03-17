@@ -23,6 +23,9 @@ use Oro\Component\MessageQueue\Util\JSON;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
+/**
+ * Mailchimp export routines message queue processor class.
+ */
 class ExportMailChimpProcessor implements MessageProcessorInterface, TopicSubscriberInterface
 {
     use IntegrationTokenAwareTrait;

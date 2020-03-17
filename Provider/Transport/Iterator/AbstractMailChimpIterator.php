@@ -4,6 +4,9 @@ namespace Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator;
 
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClient;
 
+/**
+ * Abstract mailchimp member iterator.
+ */
 abstract class AbstractMailChimpIterator implements \Iterator
 {
     const BATCH_SIZE = 100;

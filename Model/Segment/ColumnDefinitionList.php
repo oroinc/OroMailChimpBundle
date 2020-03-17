@@ -4,6 +4,9 @@ namespace Oro\Bundle\MailChimpBundle\Model\Segment;
 
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 
+/**
+ * Segment's column definition list provider.
+ */
 class ColumnDefinitionList implements ColumnDefinitionListInterface
 {
     /**

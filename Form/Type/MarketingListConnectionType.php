@@ -8,6 +8,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Marketing list
+ */
 class MarketingListConnectionType extends AbstractType
 {
     const NAME = 'oro_mailchimp_marketing_list_connection';

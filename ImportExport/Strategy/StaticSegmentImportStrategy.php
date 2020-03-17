@@ -4,6 +4,9 @@ namespace Oro\Bundle\MailChimpBundle\ImportExport\Strategy;
 
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 
+/**
+ * Mailchimp static segment import strategy.
+ */
 class StaticSegmentImportStrategy extends AbstractImportStrategy
 {
     /**

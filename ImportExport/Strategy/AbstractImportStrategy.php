@@ -13,6 +13,9 @@ use Oro\Bundle\MailChimpBundle\Entity\OriginAwareInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Abstract import strategy.
+ */
 abstract class AbstractImportStrategy extends ConfigurableAddOrReplaceStrategy implements
     StepExecutionAwareInterface,
     LoggerAwareInterface

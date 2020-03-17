@@ -5,6 +5,9 @@ namespace Oro\Bundle\MailChimpBundle\ImportExport\Reader;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Oro\Bundle\ImportExportBundle\Reader\AbstractReader;
 
+/**
+ * Batch job's processed entities reader.
+ */
 class ProcessedEntities extends AbstractReader
 {
     /**

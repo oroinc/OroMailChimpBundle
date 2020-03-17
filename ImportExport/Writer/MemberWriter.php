@@ -6,6 +6,9 @@ use Exception;
 use Oro\Bundle\MailChimpBundle\Entity\Member;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Batch job's mailchimp member writer.
+ */
 class MemberWriter extends AbstractExportWriter
 {
     /**

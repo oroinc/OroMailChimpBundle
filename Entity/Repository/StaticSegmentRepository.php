@@ -12,6 +12,9 @@ use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
 
+/**
+ * Mailchimp static segment entity repository class.
+ */
 class StaticSegmentRepository extends EntityRepository
 {
     /**

@@ -6,6 +6,9 @@ use Oro\Bundle\ImportExportBundle\Context\ContextAwareInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Converter\AbstractTableDataConverter;
 
+/**
+ * Abstract data converter to export/import format for mailchimp integration aware data.
+ */
 abstract class IntegrationAwareDataConverter extends AbstractTableDataConverter implements ContextAwareInterface
 {
     /**

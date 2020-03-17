@@ -6,6 +6,9 @@ use Oro\Bundle\MailChimpBundle\Entity\Member;
 use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
 use Oro\Bundle\MailChimpBundle\Model\MergeVar\MergeVarProviderInterface;
 
+/**
+ * Mailchimp member import strategy.
+ */
 class MemberImportStrategy extends AbstractImportStrategy
 {
     /**

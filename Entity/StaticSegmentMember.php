@@ -7,6 +7,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
+ * Mailchimp static segment member entity class.
+ *
  * @ORM\Entity()
  * @ORM\Table(
  *      name="orocrm_mc_static_segment_mmbr",

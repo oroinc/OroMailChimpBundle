@@ -6,6 +6,9 @@ use Exception;
 use Oro\Bundle\MailChimpBundle\Entity\Campaign;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClient;
 
+/**
+ * Mailchimp campaign abuse report iterator.
+ */
 class CampaignAbuseIterator extends AbstractCampaignAwareIterator
 {
     /**

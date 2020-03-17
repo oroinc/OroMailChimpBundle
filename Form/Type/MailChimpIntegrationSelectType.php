@@ -9,6 +9,9 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Mailchimp integration selection form type.
+ */
 class MailChimpIntegrationSelectType extends AbstractType
 {
     const NAME = 'oro_mailchimp_integration_select';

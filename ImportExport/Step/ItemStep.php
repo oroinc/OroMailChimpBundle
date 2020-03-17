@@ -6,6 +6,9 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Step\ItemStep as BaseItemStep;
 use Oro\Bundle\ImportExportBundle\Job\Step\AddToJobSummaryStepTrait;
 
+/**
+ * Batch job's step item entry.
+ */
 class ItemStep extends BaseItemStep
 {
     use AddToJobSummaryStepTrait;

@@ -8,6 +8,9 @@ use Oro\Bundle\MailChimpBundle\Model\ExtendedMergeVar\ProviderInterface;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Component\PhpUtils\ArrayUtil;
 
+/**
+ * Marketing list extended merge variables provider.
+ */
 class MarketingListExtendedMergeVarProvider implements ProviderInterface
 {
     /** @var EntityFieldProvider */

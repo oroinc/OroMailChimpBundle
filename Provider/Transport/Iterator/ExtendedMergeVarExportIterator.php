@@ -7,6 +7,9 @@ use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MailChimpBundle\Entity\ExtendedMergeVar;
 use Oro\Bundle\MailChimpBundle\ImportExport\Reader\SubordinateReaderInterface;
 
+/**
+ * Export extended merge variables iterator.
+ */
 class ExtendedMergeVarExportIterator extends AbstractSubordinateIterator implements SubordinateReaderInterface
 {
     /**

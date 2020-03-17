@@ -1,11 +1,10 @@
 define(function(require) {
     'use strict';
 
-    var ConnectButtonComponent;
-    var WidgetComponent = require('oroui/js/app/components/widget-component');
-    var mediator = require('oroui/js/mediator');
+    const WidgetComponent = require('oroui/js/app/components/widget-component');
+    const mediator = require('oroui/js/mediator');
 
-    ConnectButtonComponent = WidgetComponent.extend({
+    const ConnectButtonComponent = WidgetComponent.extend({
         defaults: {
             type: 'dialog',
             options: {
@@ -24,12 +23,12 @@ define(function(require) {
         /**
          * @inheritDoc
          */
-        constructor: function ConnectButtonComponent() {
-            ConnectButtonComponent.__super__.constructor.apply(this, arguments);
+        constructor: function ConnectButtonComponent(...args) {
+            ConnectButtonComponent.__super__.constructor.apply(this, args);
         },
 
         _bindEnvironmentEvent: function(widget) {
-            var message = this.options.message;
+            const message = this.options.message;
 
             this.listenTo(widget, 'formSave', function() {
                 widget.remove();

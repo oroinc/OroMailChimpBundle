@@ -2,6 +2,10 @@
 
 namespace Oro\Bundle\MailChimpBundle\Autocomplete;
 
+/**
+ * Search handler to search among imported mailchimp's subscribers lists
+ * by given string with search criteria and integration channel ID.
+ */
 class ListSearchHandler extends IntegrationAwareSearchHandler
 {
     /**

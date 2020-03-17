@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\MailChimpBundle\Form\Type;
 
-use Oro\Bundle\MailChimpBundle\Form\Type\ApiKeyType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;

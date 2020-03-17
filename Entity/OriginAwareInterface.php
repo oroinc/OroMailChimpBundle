@@ -4,6 +4,9 @@ namespace Oro\Bundle\MailChimpBundle\Entity;
 
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 
+/**
+ * Origin to integration channel connection interface.
+ */
 interface OriginAwareInterface
 {
     /**

@@ -4,10 +4,14 @@ namespace Oro\Bundle\MailChimpBundle\ImportExport\Writer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\ImportExportBundle\Writer\CleanUpInterface;
 use Oro\Bundle\ImportExportBundle\Writer\InsertFromSelectWriter;
 use Oro\Bundle\MailChimpBundle\Entity\Member;
 
+/**
+ * Batch job's mailchimp member synchronization writer.
+ */
 class MemberSyncWriter extends InsertFromSelectWriter implements CleanUpInterface
 {
     /**
@@ -68,6 +72,7 @@ class MemberSyncWriter extends InsertFromSelectWriter implements CleanUpInterfac
         $this->hasFirstName = !empty($item['has_first_name']);
         $this->hasLastName = !empty($item['has_last_name']);
 
+        /** @var QueryBuilder $qb */
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->delete($this->entityName, 'e')
             ->where($qb->expr()->eq('IDENTITY(e.subscribersList)', ':subscribersList'))

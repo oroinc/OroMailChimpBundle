@@ -4,10 +4,14 @@ namespace Oro\Bundle\MailChimpBundle\ImportExport\Writer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\ImportExportBundle\Writer\CleanUpInterface;
 use Oro\Bundle\ImportExportBundle\Writer\InsertFromSelectWriter;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegmentMember;
 
+/**
+ * Batch job's writer to remove synced mailchimp static segment's member.
+ */
 class StaticSegmentMemberAddStateWriter extends InsertFromSelectWriter implements CleanUpInterface
 {
     /**
@@ -39,6 +43,7 @@ class StaticSegmentMemberAddStateWriter extends InsertFromSelectWriter implement
      */
     public function cleanUp(array $item)
     {
+        /** @var QueryBuilder $qb */
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->delete($this->entityName, 'e')
             ->where($qb->expr()->eq('IDENTITY(e.staticSegment)', ':staticSegment'))

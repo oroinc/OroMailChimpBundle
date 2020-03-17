@@ -6,6 +6,9 @@ use Oro\Bundle\MailChimpBundle\Entity\Campaign;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClient;
 use Oro\Bundle\MailChimpBundle\Util\CallbackFilterIteratorCompatible;
 
+/**
+ * Abstract mailchimp member activity iterator.
+ */
 abstract class AbstractMemberActivityIterator extends AbstractSubordinateIterator
 {
     const CAMPAIGN_KEY = 'campaign';

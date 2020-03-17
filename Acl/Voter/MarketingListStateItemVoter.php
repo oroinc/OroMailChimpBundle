@@ -11,6 +11,9 @@ use Oro\Bundle\MarketingListBundle\Entity\MarketingListStateItemInterface;
 use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
 use Oro\Bundle\SecurityBundle\Acl\Voter\AbstractEntityVoter;
 
+/**
+ * Marketing list state item ACL voter class.
+ */
 class MarketingListStateItemVoter extends AbstractEntityVoter
 {
     /**

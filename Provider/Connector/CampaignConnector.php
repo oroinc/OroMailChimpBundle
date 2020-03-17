@@ -5,6 +5,9 @@ namespace Oro\Bundle\MailChimpBundle\Provider\Connector;
 use Oro\Bundle\IntegrationBundle\Provider\ConnectorInterface;
 use Oro\Bundle\MailChimpBundle\Entity\Campaign;
 
+/**
+ * Integration connector for mailchimp campaign.
+ */
 class CampaignConnector extends AbstractMailChimpConnector implements ConnectorInterface
 {
     const TYPE = 'campaign';

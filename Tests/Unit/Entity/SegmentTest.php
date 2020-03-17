@@ -126,7 +126,7 @@ class SegmentTest extends \PHPUnit\Framework\TestCase
         $extendedMergeVars = $this->entity->getExtendedMergeVars([ExtendedMergeVar::STATE_SYNCED]);
 
         $this->assertCount(1, $extendedMergeVars);
-        $this->assertContainsOnly($var1, $extendedMergeVars);
+        $this->assertContainsOnly(ExtendedMergeVar::class, $extendedMergeVars);
     }
 
     public function testGetSyncedExtendedMergeVars()
@@ -145,6 +145,6 @@ class SegmentTest extends \PHPUnit\Framework\TestCase
         $extendedMergeVars = $this->entity->getSyncedExtendedMergeVars();
 
         $this->assertCount(1, $extendedMergeVars);
-        $this->assertContainsOnly($var1, $extendedMergeVars);
+        $this->assertContainsOnly(ExtendedMergeVar::class, $extendedMergeVars);
     }
 }

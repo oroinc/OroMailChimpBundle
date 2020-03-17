@@ -4,6 +4,9 @@ namespace Oro\Bundle\MailChimpBundle\Provider\Transport\Exception;
 
 use Guzzle\Http\Message\Response;
 
+/**
+ * Mailchimp API client's dedicated bad response exception class.
+ */
 class BadResponseException extends \RuntimeException implements MailChimpTransportException
 {
     /**

@@ -7,6 +7,9 @@ use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Model\ExtendedMergeVar\ProviderInterface;
 use Oro\Bundle\MailChimpBundle\Util\CallbackFilterIteratorCompatible;
 
+/**
+ * Add extended merge variables iterator.
+ */
 class ExtendedMergeVarAddIterator extends AbstractSubordinateIterator
 {
     /**

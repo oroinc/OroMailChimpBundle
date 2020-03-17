@@ -9,6 +9,7 @@ use Oro\Bundle\MailChimpBundle\Entity\MailChimpTransportSettings;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Form\Handler\ConnectionFormHandler;
 use Oro\Bundle\MailChimpBundle\Form\Type\MarketingListConnectionType;
+use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClientFactory;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Annotation\CsrfProtection;
@@ -16,15 +17,18 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * MailChimp Controller
+ *
  * @Route("/mailchimp")
  */
-class MailChimpController extends Controller
+class MailChimpController extends AbstractController
 {
     /**
      * @Route("/ping", name="oro_mailchimp_ping")
@@ -36,7 +40,7 @@ class MailChimpController extends Controller
     {
         try {
             $apiKey = $request->get('api_key');
-            $mailChimpClientFactory = $this->get('oro_mailchimp.client.factory');
+            $mailChimpClientFactory = $this->get(MailChimpClientFactory::class);
             $client = $mailChimpClientFactory->create($apiKey);
             $ping = $client->ping();
         } catch (\Exception $e) {
@@ -191,7 +195,7 @@ class MailChimpController extends Controller
             $message = 'oro.mailchimp.controller.email_campaign.receive_activities.disabled.message';
         }
 
-        return new JsonResponse(['message' => $this->get('translator')->trans($message)]);
+        return new JsonResponse(['message' => $this->get(TranslatorInterface::class)->trans($message)]);
     }
 
     /**
@@ -234,5 +238,17 @@ class MailChimpController extends Controller
             ->findOneBy(['emailCampaign' => $emailCampaign]);
 
         return $campaign;
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            MailChimpClientFactory::class,
+            TranslatorInterface::class,
+        ]);
     }
 }

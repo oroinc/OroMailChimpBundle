@@ -10,6 +10,9 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
+/**
+ * Email column(field) validator.
+ */
 class EmailColumnValidator extends ConstraintValidator
 {
     /**

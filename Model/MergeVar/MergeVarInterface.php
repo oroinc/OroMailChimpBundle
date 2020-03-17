@@ -3,6 +3,8 @@
 namespace Oro\Bundle\MailChimpBundle\Model\MergeVar;
 
 /**
+ * Merge variable data holder interface.
+ *
  * @link http://apidocs.mailchimp.com/api/2.0/lists/merge-vars.php
  */
 interface MergeVarInterface

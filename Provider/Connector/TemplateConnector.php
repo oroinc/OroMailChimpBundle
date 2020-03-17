@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\MailChimpBundle\Provider\Connector;
 
+/**
+ * Integration connector for mailchimp template.
+ */
 class TemplateConnector extends AbstractMailChimpConnector
 {
     const TYPE = 'template';

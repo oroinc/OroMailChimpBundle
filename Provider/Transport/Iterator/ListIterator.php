@@ -5,7 +5,7 @@ namespace Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator;
 use Exception;
 
 /**
- * class ListIterator
+ * List iterator.
  */
 class ListIterator extends AbstractMailChimpIterator
 {

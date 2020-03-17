@@ -11,6 +11,9 @@ use Oro\Bundle\MailChimpBundle\Entity\Member;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegmentMember;
 
+/**
+ * Mailchimp static segment's member add state iterator.
+ */
 class StaticSegmentMemberAddStateIterator extends AbstractSubordinateIterator
 {
     /**

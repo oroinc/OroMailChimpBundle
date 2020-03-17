@@ -7,6 +7,9 @@ use Oro\Bundle\IntegrationBundle\Provider\TransportInterface;
 use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpTransport;
 
+/**
+ * Batch job's abstract writer.
+ */
 abstract class AbstractExportWriter extends PersistentBatchWriter implements ClearableInterface
 {
     /**

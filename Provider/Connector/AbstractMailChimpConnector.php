@@ -10,6 +10,9 @@ use Oro\Bundle\IntegrationBundle\Provider\AbstractConnector;
 use Oro\Bundle\IntegrationBundle\Provider\ConnectorInterface;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpTransport;
 
+/**
+ * Abstract mailchimp integration connector.
+ */
 abstract class AbstractMailChimpConnector extends AbstractConnector
 {
     const LAST_SYNC_DATE_KEY = 'lastSyncDate';

@@ -5,6 +5,9 @@ namespace Oro\Bundle\MailChimpBundle\Model\MergeVar;
 use Oro\Bundle\MailChimpBundle\Entity\Member;
 use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
 
+/**
+ * Megre variables data provider.
+ */
 class MergeVarProvider implements MergeVarProviderInterface
 {
     /**

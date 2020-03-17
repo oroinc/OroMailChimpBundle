@@ -10,6 +10,9 @@ use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Exception\InvalidConfigurationException;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\MemberSyncIterator;
 
+/**
+ * Batch job's reader for mailchimp static segments.
+ */
 class StaticSegmentReader extends AbstractIteratorBasedReader implements ClosableInterface
 {
     /**

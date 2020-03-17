@@ -6,6 +6,9 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\MailChimpBundle\Transport\MailChimpTransport;
 
+/**
+ * Availability resolver for email campaign activity update buttons action button on campaign's page.
+ */
 class EmailCampaignPlaceholderFilter
 {
     /**

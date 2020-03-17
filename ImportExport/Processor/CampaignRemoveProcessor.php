@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\MailChimpBundle\ImportExport\Processor;
 
+/**
+ * Batch job processor to remove mailchimp processed campaign items after import.
+ */
 class CampaignRemoveProcessor extends RemoveProcessor
 {
     /**

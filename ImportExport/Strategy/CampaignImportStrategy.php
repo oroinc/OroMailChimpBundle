@@ -7,6 +7,9 @@ use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
 use Oro\Bundle\MailChimpBundle\Entity\Template;
 
+/**
+ * Mailchimp campaign import strategy.
+ */
 class CampaignImportStrategy extends AbstractImportStrategy
 {
     /**

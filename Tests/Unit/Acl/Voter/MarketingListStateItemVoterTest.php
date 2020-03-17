@@ -6,7 +6,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Query\Expr;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MailChimpBundle\Acl\Voter\MarketingListStateItemVoter;
-use Oro\Bundle\MailChimpBundle\Entity\Member;
 use Oro\Bundle\MailChimpBundle\Model\FieldHelper;
 use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -132,7 +131,9 @@ class MarketingListStateItemVoterTest extends \PHPUnit\Framework\TestCase
             ->method('createQueryBuilder')
             ->will($this->returnValue($this->getQueryBuilderMock($queryResult)));
 
-        $this->voter->setClassName($className);
+        if ($className !== null) {
+            $this->voter->setClassName($className);
+        }
 
         /** @var TokenInterface $token */
         $token = $this->createMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');

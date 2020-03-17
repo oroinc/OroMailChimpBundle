@@ -5,6 +5,9 @@ namespace Oro\Bundle\MailChimpBundle\Placeholder;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 
+/**
+ * Availability resolver for marketing list synchronization status view block on marketing list view page.
+ */
 class MarketingListPlaceholderFilter
 {
     /**

@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\MailChimpBundle\ImportExport\DataConverter;
 
+/**
+ * Data converter to export/import format for mailchimp member data.
+ */
 class MemberDataConverter extends AbstractMemberDataConverter
 {
     const IMPORT_DATA = '_is_import_data_';

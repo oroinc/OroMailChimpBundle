@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\MailChimpBundle\Exception;
 
+/**
+ * Mailchimp Required option exception class.
+ */
 class RequiredOptionException extends \Exception implements MailChimpException
 {
     /**

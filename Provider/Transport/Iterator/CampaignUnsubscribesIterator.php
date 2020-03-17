@@ -4,6 +4,9 @@ namespace Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator;
 
 use Exception;
 
+/**
+ * Mailchimp campaign unsubscribe report iterator.
+ */
 class CampaignUnsubscribesIterator extends AbstractCampaignAwareIterator
 {
     /**

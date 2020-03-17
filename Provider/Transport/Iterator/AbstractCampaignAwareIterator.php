@@ -5,6 +5,9 @@ namespace Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator;
 use Oro\Bundle\MailChimpBundle\Entity\Campaign;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClient;
 
+/**
+ * Abstract campaign aware iterator.
+ */
 abstract class AbstractCampaignAwareIterator extends AbstractMailChimpIterator
 {
     /**

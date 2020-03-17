@@ -9,6 +9,9 @@ use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Marketing list to mailchimp integration connection form handler.
+ */
 class ConnectionFormHandler
 {
     /**

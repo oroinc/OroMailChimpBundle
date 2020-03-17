@@ -6,6 +6,9 @@ use Guzzle\Http\Message\Response;
 use Oro\Bundle\MailChimpBundle\Client\MailChimpClient as BaseClient;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\Exception\BadResponseException;
 
+/**
+ * Mailchimp API client.
+ */
 class MailChimpClient extends BaseClient
 {
     /**#@+

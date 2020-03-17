@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\MailChimpBundle\Model\Segment;
 
+/**
+ * Interface for segment's column definition list provider.
+ */
 interface ColumnDefinitionListInterface
 {
     /**

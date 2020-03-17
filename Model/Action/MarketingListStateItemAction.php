@@ -10,6 +10,9 @@ use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListStateItemInterface;
 
+/**
+ * Action to create marketing list unsubscribed item for mailchimp unsubscribed member.
+ */
 class MarketingListStateItemAction extends AbstractMarketingListEntitiesAction
 {
     /**

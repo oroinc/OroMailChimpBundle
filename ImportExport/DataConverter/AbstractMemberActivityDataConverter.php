@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\MailChimpBundle\ImportExport\DataConverter;
 
+/**
+ * Abstract data converter to export/import format for mailchimp member activity data.
+ */
 abstract class AbstractMemberActivityDataConverter extends IntegrationAwareDataConverter
 {
     /**

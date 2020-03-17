@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * Mailchimp static segment REST API controller.
+ *
  * @Rest\RouteResource("staticsegment")
  * @Rest\NamePrefix("oro_api_")
  */

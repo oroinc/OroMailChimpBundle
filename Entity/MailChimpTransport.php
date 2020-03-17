@@ -7,6 +7,8 @@ use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
+ * Entity class to extend integrations data transport entity with mailchimp related data.
+ *
  * @ORM\Entity()
  */
 class MailChimpTransport extends Transport

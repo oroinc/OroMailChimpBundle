@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 
 /**
+ * Mailchimp marketing list email entity class.
+ *
  * @ORM\Entity(repositoryClass="Oro\Bundle\MailChimpBundle\Entity\Repository\MarketingListEmailRepository")
  * @ORM\Table(
  *      name="orocrm_mailchimp_ml_email",

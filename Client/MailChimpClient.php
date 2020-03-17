@@ -6,6 +6,9 @@ use DrewM\MailChimp\MailChimp;
 use Exception;
 use Oro\Bundle\MailChimpBundle\Exception\MailChimpClientException;
 
+/**
+ * Mailchimp SDK client wrapper class.
+ */
 class MailChimpClient
 {
     /**
@@ -19,6 +22,11 @@ class MailChimpClient
      * @var string
      */
     private $apiKey;
+
+    /**
+     * @var MailChimp
+     */
+    private $client;
 
     /**
      * MailChimpClient constructor.

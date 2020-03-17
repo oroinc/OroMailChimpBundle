@@ -8,6 +8,9 @@ use Oro\Bundle\CampaignBundle\Transport\VisibilityTransportInterface;
 use Oro\Bundle\MailChimpBundle\Entity\MailChimpTransportSettings;
 use Oro\Bundle\MailChimpBundle\Form\Type\MailChimpTransportSettingsType;
 
+/**
+ * Implements the transport to send mailchimp campaigns emails.
+ */
 class MailChimpTransport implements TransportInterface, VisibilityTransportInterface
 {
     const NAME = 'mailchimp';

@@ -7,6 +7,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Validation;
 
+/**
+ * Abstract data converter to export/import format for mailchimp member data.
+ */
 abstract class AbstractMemberDataConverter extends IntegrationAwareDataConverter
 {
     /**

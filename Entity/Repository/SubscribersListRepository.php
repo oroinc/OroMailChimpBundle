@@ -7,6 +7,9 @@ use Doctrine\ORM\Query\Expr\Join;
 use Oro\Bundle\BatchBundle\ORM\Query\BufferedIdentityQueryResultIterator;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 
+/**
+ * Mailchimp subscribers list entity repository class.
+ */
 class SubscribersListRepository extends EntityRepository
 {
     /**

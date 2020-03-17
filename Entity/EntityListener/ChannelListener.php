@@ -8,6 +8,9 @@ use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Entity\MarketingListEmail;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 
+/**
+ * ORM event listener to remove maichimp DB items when related integration is deleted.
+ */
 class ChannelListener
 {
     /**

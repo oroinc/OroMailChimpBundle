@@ -6,6 +6,9 @@ use Oro\Bundle\CampaignBundle\Form\Type\AbstractTransportSettingsType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Mailchimp transport settings form type.
+ */
 class MailChimpTransportSettingsType extends AbstractTransportSettingsType
 {
     const NAME = 'oro_mailchimp_email_transport_settings';

@@ -4,6 +4,9 @@ namespace Oro\Bundle\MailChimpBundle\Model\Segment;
 
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 
+/**
+ * Factory for segment's column definition list provider.
+ */
 class ColumnDefinitionListFactory
 {
     /**

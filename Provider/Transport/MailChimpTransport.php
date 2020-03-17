@@ -9,7 +9,6 @@ use Iterator;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Oro\Bundle\IntegrationBundle\Provider\TransportInterface;
-use Oro\Bundle\MailChimpBundle\Entity\Campaign;
 use Oro\Bundle\MailChimpBundle\Entity\Member;
 use Oro\Bundle\MailChimpBundle\Entity\Repository\CampaignRepository;
 use Oro\Bundle\MailChimpBundle\Entity\Repository\StaticSegmentRepository;
@@ -32,6 +31,8 @@ use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\TemplateIterator;
 use Psr\Log\LoggerInterface;
 
 /**
+ * Mailchimp transport.
+ *
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  *
  * @link http://apidocs.mailchimp.com/api/2.0/

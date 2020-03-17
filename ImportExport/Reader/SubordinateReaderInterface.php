@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\MailChimpBundle\ImportExport\Reader;
 
+/**
+ * Interface to implement determining that subordinate iterator was changed.
+ */
 interface SubordinateReaderInterface
 {
     /**

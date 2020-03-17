@@ -8,6 +8,8 @@ use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
+ * Entity class to extend integration transport settings with mailchimp related data.
+ *
  * @ORM\Entity
  */
 class MailChimpTransportSettings extends TransportSettings

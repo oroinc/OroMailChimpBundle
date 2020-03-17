@@ -10,6 +10,8 @@ use Oro\Bundle\MailChimpBundle\Model\MergeVar\MergeVarFieldsInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
+ * Mailchimp subscribers list entity class.
+ *
  * @SuppressWarnings(PHPMD.ExcessivePublicCount)
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.TooManyFields)

@@ -1,0 +1,6 @@
+dynamic-imports:
+    oromailchimp:
+        - oromailchimp/js/app/components/api-key-component
+        - oromailchimp/js/app/components/connect-btn-component
+        - oromailchimp/js/app/components/synchronize-btn-component
+        - oromailchimp/js/app/components/activities-toggle-btn-component

@@ -5,6 +5,8 @@ namespace Oro\Bundle\MailChimpBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * Mailchimp static segment member to remove entity class.
+ *
  * @ORM\Entity
  * @ORM\Table(
  *      name="orocrm_mc_tmp_mmbr_to_remove",

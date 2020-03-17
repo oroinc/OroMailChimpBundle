@@ -7,6 +7,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
+ * Mailchimp extended merge variable((single cell commulated additional data)) entity class.
+ *
  * @ORM\Entity
  * @ORM\Table(
  *      name="orocrm_mc_extended_merge_var",

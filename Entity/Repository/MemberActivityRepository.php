@@ -5,6 +5,9 @@ namespace Oro\Bundle\MailChimpBundle\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 
+/**
+ * Mailchimp member activity entity repository class.
+ */
 class MemberActivityRepository extends EntityRepository
 {
     /**

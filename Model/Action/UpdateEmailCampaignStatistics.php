@@ -13,6 +13,9 @@ use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListProvider;
 use Oro\Bundle\WorkflowBundle\Model\EntityAwareInterface;
 
+/**
+ * Action to synchronize marketing list item for mailchimp member activity.
+ */
 class UpdateEmailCampaignStatistics extends AbstractMarketingListEntitiesAction
 {
     /**

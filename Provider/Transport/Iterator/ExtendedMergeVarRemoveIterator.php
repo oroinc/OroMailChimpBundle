@@ -9,6 +9,9 @@ use Oro\Bundle\MailChimpBundle\Entity\ExtendedMergeVar;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Model\ExtendedMergeVar\ProviderInterface;
 
+/**
+ * Remove extended merge variables iterator.
+ */
 class ExtendedMergeVarRemoveIterator extends AbstractSubordinateIterator
 {
     /**

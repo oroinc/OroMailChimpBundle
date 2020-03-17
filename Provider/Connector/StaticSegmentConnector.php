@@ -4,6 +4,9 @@ namespace Oro\Bundle\MailChimpBundle\Provider\Connector;
 
 use Oro\Bundle\IntegrationBundle\Provider\TwoWaySyncConnectorInterface;
 
+/**
+ * Integration connector for mailchimp static segment.
+ */
 class StaticSegmentConnector extends AbstractMailChimpConnector implements TwoWaySyncConnectorInterface
 {
     const TYPE = 'static_segment';

@@ -21,6 +21,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
+/**
+ * Mailchimp related CLI commands handler.
+ */
 class MailChimpExportCommand extends Command implements CronCommandInterface, ContainerAwareInterface
 {
     use ContainerAwareTrait;

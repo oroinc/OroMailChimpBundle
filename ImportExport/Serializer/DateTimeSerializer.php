@@ -9,6 +9,9 @@ use Oro\Bundle\MailChimpBundle\Provider\ChannelType;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpTransport;
 use Symfony\Component\Serializer\Exception\RuntimeException;
 
+/**
+ * Date/time serializer.
+ */
 class DateTimeSerializer implements NormalizerInterface, DenormalizerInterface
 {
     const CHANNEL_TYPE_KEY = 'channelType';

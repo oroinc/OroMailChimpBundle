@@ -10,6 +10,9 @@ use Oro\Bundle\ImportExportBundle\Reader\IteratorBasedReader;
 use Oro\Bundle\MailChimpBundle\ImportExport\Reader\SubordinateReaderInterface;
 use Oro\Bundle\MailChimpBundle\ImportExport\Writer\ClearableInterface;
 
+/**
+ * Batch job's step executor.
+ */
 class StepExecutor extends BaseStepExecutor
 {
     /**

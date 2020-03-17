@@ -9,6 +9,9 @@ use Oro\Bundle\MailChimpBundle\Validator\Constraints\UniqueStaticSegmentNameCons
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
+/**
+ * Unique static segment name validator.
+ */
 class UniqueStaticSegmentNameValidator extends ConstraintValidator
 {
     /**

@@ -8,6 +8,9 @@ use Oro\Bundle\MailChimpBundle\Entity\MemberExtendedMergeVar;
 use Psr\Log\LoggerInterface;
 use ZfrMailChimp\Exception\Ls\NotSubscribedException;
 
+/**
+ * Export batch job's writer for mailchimp member's extended merge variables .
+ */
 class MmbrExtdMergeVarExportWriter extends AbstractExportWriter
 {
     /**

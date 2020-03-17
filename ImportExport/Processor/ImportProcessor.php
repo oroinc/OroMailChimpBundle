@@ -9,6 +9,9 @@ use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\ImportExportBundle\Processor\ImportProcessor as BaseImportProcessor;
 
+/**
+ * Batch job processor to handle import with given(injected) import strategy.
+ */
 class ImportProcessor extends BaseImportProcessor implements StepExecutionAwareInterface
 {
     /**

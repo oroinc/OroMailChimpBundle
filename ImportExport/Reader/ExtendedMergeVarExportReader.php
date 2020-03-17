@@ -5,6 +5,9 @@ namespace Oro\Bundle\MailChimpBundle\ImportExport\Reader;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\ExtendedMergeVarExportIterator;
 
+/**
+ * Export batch job's reader for extended merge variables.
+ */
 class ExtendedMergeVarExportReader extends AbstractExtendedMergeVarExportReader
 {
     /**

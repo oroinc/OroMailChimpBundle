@@ -5,6 +5,9 @@ namespace Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClient;
 use Oro\Bundle\MailChimpBundle\Util\CallbackFilterIteratorCompatible;
 
+/**
+ * Maichimp template iterator
+ */
 class TemplateIterator implements \Iterator
 {
     /**

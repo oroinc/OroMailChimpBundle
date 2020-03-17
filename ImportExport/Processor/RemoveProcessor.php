@@ -9,6 +9,9 @@ use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\ImportExportBundle\Processor\EntityNameAwareInterface;
 use Oro\Bundle\ImportExportBundle\Processor\StepExecutionAwareProcessor;
 
+/**
+ * Generic batch job processor to handle entities removal.
+ */
 class RemoveProcessor implements StepExecutionAwareProcessor, EntityNameAwareInterface
 {
     /**

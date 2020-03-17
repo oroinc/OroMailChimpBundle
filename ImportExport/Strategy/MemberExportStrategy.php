@@ -8,6 +8,9 @@ use Oro\Bundle\MailChimpBundle\Entity\Member;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Mailchimp member export strategy.
+ */
 class MemberExportStrategy extends BaseStrategy implements LoggerAwareInterface
 {
     /**

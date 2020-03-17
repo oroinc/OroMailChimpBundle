@@ -12,6 +12,9 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
+/**
+ * Form lisetener to hide connectors for MailChimp channel on integration setup page.
+ */
 class ChannelConnectorsExtension extends AbstractTypeExtension
 {
     const CLASS_PATH = '[attr][class]';

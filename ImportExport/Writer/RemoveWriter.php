@@ -7,6 +7,9 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * Batch job's generic remove writer.
+ */
 class RemoveWriter implements ItemWriterInterface
 {
     /**
@@ -55,6 +58,7 @@ class RemoveWriter implements ItemWriterInterface
     {
         /** @var EntityManager $em */
         $em = $this->registry->getManagerForClass($this->entityName);
+        /** @var QueryBuilder $qb */
         $qb = $em->createQueryBuilder();
         $qb->delete($this->entityName, 'e');
         if (array_key_exists($this->field, $item) && !empty($item[$this->field])) {

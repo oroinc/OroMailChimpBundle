@@ -6,6 +6,9 @@ use Guzzle\Http\EntityBodyInterface;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClient;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Mailchimp API export calls queue iterator.
+ */
 class ExportIterator implements \Iterator
 {
     /**

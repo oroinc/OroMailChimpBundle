@@ -4,6 +4,9 @@ namespace Oro\Bundle\MailChimpBundle\ImportExport\DataConverter;
 
 use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\StaticSegmentIterator;
 
+/**
+ * Data converter to export/import format for mailchimp static segment data.
+ */
 class StaticSegmentDataConverter extends IntegrationAwareDataConverter
 {
     /**

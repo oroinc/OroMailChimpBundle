@@ -8,6 +8,9 @@ use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\EntityBundle\Provider\VirtualFieldProviderInterface;
 use Oro\Component\DoctrineUtils\ORM\QueryBuilderUtil;
 
+/**
+ * Helper for extraction field name with table alias from given query builder.
+ */
 class FieldHelper
 {
     /**

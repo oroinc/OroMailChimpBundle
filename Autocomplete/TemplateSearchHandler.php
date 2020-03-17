@@ -4,6 +4,10 @@ namespace Oro\Bundle\MailChimpBundle\Autocomplete;
 
 use Oro\Bundle\MailChimpBundle\Entity\Template;
 
+/**
+ * Search handler to search among imported mailchimp's templates
+ * by given string with search criteria and integration channel ID.
+ */
 class TemplateSearchHandler extends IntegrationAwareSearchHandler
 {
     /**

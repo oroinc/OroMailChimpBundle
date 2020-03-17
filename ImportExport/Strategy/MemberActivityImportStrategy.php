@@ -14,6 +14,9 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * Mailchimp member activity export strategy.
+ */
 class MemberActivityImportStrategy extends BasicImportStrategy implements LoggerAwareInterface
 {
     /**

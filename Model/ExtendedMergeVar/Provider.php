@@ -4,6 +4,9 @@ namespace Oro\Bundle\MailChimpBundle\Model\ExtendedMergeVar;
 
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 
+/**
+ * Merge variables provider.
+ */
 class Provider implements CompositeProviderInterface
 {
     /**

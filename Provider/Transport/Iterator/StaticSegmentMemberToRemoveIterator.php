@@ -6,6 +6,9 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 
+/**
+ * Mailchimp static segment's member to remove iterator.
+ */
 class StaticSegmentMemberToRemoveIterator extends AbstractSubordinateIterator
 {
     const QUERY_BUILDER = 'query_builder';

@@ -8,6 +8,9 @@ use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClient;
 use Oro\Bundle\MailChimpBundle\Util\CallbackFilterIteratorCompatible;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Mailchimp members iterator.
+ */
 class MemberIterator extends AbstractSubordinateIterator
 {
     /**

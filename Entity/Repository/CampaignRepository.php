@@ -9,6 +9,9 @@ use Oro\Bundle\BatchBundle\ORM\Query\BufferedIdentityQueryResultIterator;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Entity\Campaign;
 
+/**
+ * Mailchimp campaign entity repository class.
+ */
 class CampaignRepository extends EntityRepository
 {
     /**

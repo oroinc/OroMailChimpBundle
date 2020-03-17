@@ -5,6 +5,9 @@ namespace Oro\Bundle\MailChimpBundle\ImportExport\Strategy;
 use Oro\Bundle\ImportExportBundle\Strategy\Import\ConfigurableAddOrReplaceStrategy;
 use Oro\Bundle\MailChimpBundle\Entity\MemberExtendedMergeVar;
 
+/**
+ * Mailchimp member's extended variables processing state strategy.
+ */
 class MemberExtendedMergeVarStrategy extends ConfigurableAddOrReplaceStrategy
 {
     /**

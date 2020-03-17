@@ -6,6 +6,9 @@ use Oro\Bundle\ChannelBundle\Form\Type\CreateOrSelectInlineChannelAwareType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Mailchimp list selection form type.
+ */
 class MailchimpListSelectType extends AbstractType
 {
     const NAME = 'oro_mailchimp_list_select';

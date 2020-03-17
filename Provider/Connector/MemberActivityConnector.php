@@ -6,6 +6,9 @@ use Oro\Bundle\IntegrationBundle\Provider\ConnectorInterface;
 use Oro\Bundle\MailChimpBundle\Entity\MemberActivity;
 use Oro\Bundle\MailChimpBundle\Entity\Repository\MemberActivityRepository;
 
+/**
+ * Integration connector for mailchimp member activity.
+ */
 class MemberActivityConnector extends AbstractMailChimpConnector implements ConnectorInterface
 {
     const TYPE = 'member_activity';

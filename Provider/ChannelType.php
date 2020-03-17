@@ -5,6 +5,9 @@ namespace Oro\Bundle\MailChimpBundle\Provider;
 use Oro\Bundle\IntegrationBundle\Provider\ChannelInterface;
 use Oro\Bundle\IntegrationBundle\Provider\IconAwareIntegrationInterface;
 
+/**
+ * Mailchimp integration channel type provider.
+ */
 class ChannelType implements ChannelInterface, IconAwareIntegrationInterface
 {
     const TYPE = 'mailchimp';

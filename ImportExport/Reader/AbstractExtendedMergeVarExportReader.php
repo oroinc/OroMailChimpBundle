@@ -8,6 +8,9 @@ use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 
+/**
+ * Batch job's abstract export reader for extended merge variables.
+ */
 abstract class AbstractExtendedMergeVarExportReader extends AbstractIteratorBasedReader
 {
     /**

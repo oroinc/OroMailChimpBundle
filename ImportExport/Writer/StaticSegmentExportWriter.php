@@ -3,7 +3,6 @@
 namespace Oro\Bundle\MailChimpBundle\ImportExport\Writer;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -17,6 +16,9 @@ use Oro\Bundle\MailChimpBundle\Entity\StaticSegmentMember;
 use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Export batch job's mailchimp static segment writer.
+ */
 class StaticSegmentExportWriter extends AbstractExportWriter implements ContextAwareInterface
 {
     const DROPPED_EMAILS_ERROR_CODE = 215;
@@ -302,6 +304,7 @@ class StaticSegmentExportWriter extends AbstractExportWriter implements ContextA
     protected function updateStaticSegmentMembersState($emailsToUpdate, $itemState)
     {
         if ($itemState) {
+            /** @var QueryBuilder $qb */
             $qb = $this->getManager()->createQueryBuilder();
             $qb->update($this->staticSegmentMemberClassName, 'staticSegmentMember')
                 ->set('staticSegmentMember.state', ':state')

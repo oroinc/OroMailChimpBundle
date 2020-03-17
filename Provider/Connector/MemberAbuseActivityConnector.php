@@ -4,6 +4,9 @@ namespace Oro\Bundle\MailChimpBundle\Provider\Connector;
 
 use Oro\Bundle\IntegrationBundle\Provider\ConnectorInterface;
 
+/**
+ * Integration connector for mailchimp member abuse activity.
+ */
 class MemberAbuseActivityConnector extends AbstractMailChimpConnector implements ConnectorInterface
 {
     const TYPE = 'member_activity_abuse';

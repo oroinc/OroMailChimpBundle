@@ -4,6 +4,9 @@ namespace Oro\Bundle\MailChimpBundle\ImportExport\Writer;
 
 use Oro\Bundle\IntegrationBundle\ImportExport\Writer\PersistentBatchWriter;
 
+/**
+ * Batch job's processed items logger.
+ */
 class LoggablePersistentBatchWriter extends PersistentBatchWriter
 {
     /**

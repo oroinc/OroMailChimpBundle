@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Acl\Voter;
 
+use Doctrine\Persistence\ObjectRepository;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MailChimpBundle\Acl\Voter\EmailCampaignVoter;
@@ -21,7 +22,7 @@ class EmailCampaignVoterTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
-        $this->doctrineHelper = $this->getMockBuilder('Oro\Bundle\EntityBundle\ORM\DoctrineHelper')
+        $this->doctrineHelper = $this->getMockBuilder(DoctrineHelper::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -42,24 +43,20 @@ class EmailCampaignVoterTest extends \PHPUnit\Framework\TestCase
      */
     public function testVote($attributes, $emailCampaign, $expected)
     {
-        $object = $this->getMockBuilder('Oro\Bundle\CampaignBundle\Entity\EmailCampaign')
+        $object = $this->getMockBuilder(EmailCampaign::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->doctrineHelper->expects($this->once())
-            ->method('getEntityClass')
-            ->with($object)
-            ->will($this->returnValue('stdClass'));
-        $this->doctrineHelper->expects($this->once())
+        $this->doctrineHelper->expects(self::any())
             ->method('getSingleEntityIdentifier')
             ->with($object, false)
             ->will($this->returnValue(1));
 
         $this->assertEmailCampaignLoad($emailCampaign);
-        $this->voter->setClassName('stdClass');
+        $this->voter->setClassName(get_class($object));
 
         /** @var \PHPUnit\Framework\MockObject\MockObject|TokenInterface $token */
-        $token = $this->createMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
+        $token = $this->createMock(TokenInterface::class);
         $this->assertEquals(
             $expected,
             $this->voter->vote($token, $object, $attributes)
@@ -94,7 +91,7 @@ class EmailCampaignVoterTest extends \PHPUnit\Framework\TestCase
      */
     protected function assertEmailCampaignLoad(EmailCampaign $emailCampaign)
     {
-        $repository = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectRepository')
+        $repository = $this->getMockBuilder(ObjectRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
 

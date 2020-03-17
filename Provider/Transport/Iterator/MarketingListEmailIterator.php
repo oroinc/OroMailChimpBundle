@@ -11,6 +11,9 @@ use Oro\Bundle\MailChimpBundle\Entity\StaticSegmentMember;
 use Oro\Bundle\MailChimpBundle\Model\FieldHelper;
 use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
 
+/**
+ * Marketing list emails iterator.
+ */
 class MarketingListEmailIterator extends AbstractStaticSegmentIterator
 {
     /**

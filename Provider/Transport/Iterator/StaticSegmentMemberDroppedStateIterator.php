@@ -10,6 +10,9 @@ use Oro\Bundle\MailChimpBundle\Entity\MemberExtendedMergeVar;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegmentMember;
 
+/**
+ * Mailchimp static segment's member dropped iterator.
+ */
 class StaticSegmentMemberDroppedStateIterator extends AbstractSubordinateIterator
 {
     /**

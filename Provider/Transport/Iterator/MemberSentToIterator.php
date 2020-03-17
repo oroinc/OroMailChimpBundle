@@ -4,6 +4,9 @@ namespace Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator;
 
 use Oro\Bundle\MailChimpBundle\Entity\Campaign;
 
+/**
+ * Mailchimp members sent(subscribed) iterator.
+ */
 class MemberSentToIterator extends AbstractMemberActivityIterator
 {
     /**

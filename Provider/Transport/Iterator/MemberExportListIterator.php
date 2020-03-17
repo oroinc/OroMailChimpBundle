@@ -7,6 +7,9 @@ use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MailChimpBundle\Entity\Member;
 use Oro\Bundle\MailChimpBundle\ImportExport\Reader\SubordinateReaderInterface;
 
+/**
+ * Mailchimp members export iterator.
+ */
 class MemberExportListIterator extends AbstractSubscribersListIterator implements SubordinateReaderInterface
 {
     /**

@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\MailChimpBundle\ImportExport\DataConverter;
 
+/**
+ * Data converter to export/import format for mailchimp campaing data.
+ */
 class CampaignDataConverter extends IntegrationAwareDataConverter
 {
     /**

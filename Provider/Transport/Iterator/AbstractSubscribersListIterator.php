@@ -6,6 +6,9 @@ use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClient;
 
+/**
+ * Abstract mailchimp subscribers list iterator.
+ */
 abstract class AbstractSubscribersListIterator extends AbstractSubordinateIterator
 {
     /**

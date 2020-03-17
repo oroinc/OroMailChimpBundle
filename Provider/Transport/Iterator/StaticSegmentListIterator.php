@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator;
 
+/**
+ * Mailchimp static segment iterator.
+ */
 class StaticSegmentListIterator extends AbstractSubscribersListIterator
 {
     /**

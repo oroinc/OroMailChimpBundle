@@ -4,6 +4,9 @@ namespace Oro\Bundle\MailChimpBundle\ImportExport\DataConverter;
 
 use Oro\Bundle\MailChimpBundle\Entity\MemberActivity;
 
+/**
+ * Data converter to export/import format for mailchimp member send activity data.
+ */
 class MemberSendActivityDataConverter extends AbstractMemberActivityDataConverter
 {
     /**

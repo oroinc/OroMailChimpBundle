@@ -5,9 +5,11 @@ namespace Oro\Bundle\MailChimpBundle\ImportExport\Writer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Exception;
 use Oro\Bundle\MailChimpBundle\Entity\ExtendedMergeVar;
-use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Export batch job's extended merge variables writer.
+ */
 class ExtendedMergeVarExportWriter extends AbstractExportWriter
 {
     /**

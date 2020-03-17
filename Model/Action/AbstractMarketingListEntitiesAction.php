@@ -12,6 +12,9 @@ use Oro\Component\Action\Action\AbstractAction;
 use Oro\Component\ConfigExpression\ContextAccessor;
 use Oro\Component\DoctrineUtils\ORM\QueryBuilderUtil;
 
+/**
+ * Abstract(generic) class for actions related to marketing list entities.
+ */
 abstract class AbstractMarketingListEntitiesAction extends AbstractAction
 {
     /**

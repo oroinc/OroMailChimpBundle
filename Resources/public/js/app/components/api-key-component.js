@@ -1,18 +1,18 @@
 define(function(require) {
     'use strict';
 
-    var _ = require('underscore');
-    var __ = require('orotranslation/js/translator');
-    var $ = require('jquery');
+    const _ = require('underscore');
+    const __ = require('orotranslation/js/translator');
+    const $ = require('jquery');
 
     return function(options) {
-        var $source = options._sourceElement;
-        var $apiKeyEl = $source.find('input');
-        var $btn = $source.find('button');
-        var $status = $source.find('.connection-status');
-        var $pingHolder = $source.find('.ping-holder');
+        const $source = options._sourceElement;
+        const $apiKeyEl = $source.find('input');
+        const $btn = $source.find('button');
+        const $status = $source.find('.connection-status');
+        const $pingHolder = $source.find('.ping-holder');
 
-        var onError = function(message) {
+        const onError = function(message) {
             message = message || __('oro.mailchimp.integration_transport.api_key.check.message');
             $status.removeClass('alert-info')
                 .addClass('alert-error')
@@ -20,7 +20,7 @@ define(function(require) {
                 .show();
         };
 
-        var localCheckApiKey = function() {
+        const localCheckApiKey = function() {
             if ($apiKeyEl.val().length) {
                 $pingHolder.show();
             } else {
