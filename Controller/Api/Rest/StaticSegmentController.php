@@ -4,7 +4,6 @@ namespace Oro\Bundle\MailChimpBundle\Controller\Api\Rest;
 
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Routing\ClassResourceInterface;
-use FOS\RestBundle\Util\Codes;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -69,7 +68,7 @@ class StaticSegmentController extends RestController implements ClassResourceInt
         $em->persist($staticSegment);
         $em->flush();
 
-        return $this->handleView($this->view('', Codes::HTTP_OK));
+        return $this->handleView($this->view('', Response::HTTP_OK));
     }
 
     /**
