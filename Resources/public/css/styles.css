@@ -27,14 +27,6 @@
     margin: 0 5px 0 0;
 }
 
-.connection-form .controls {
-    margin-left: 182px !important;
-}
-
-.connection-form .control-label {
-    width: 170px !important;
-}
-
 .mailchimp-connection-status-container .ping-holder {
     margin-top: 10px;
 }
