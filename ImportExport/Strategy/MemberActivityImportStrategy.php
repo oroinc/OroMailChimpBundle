@@ -3,7 +3,6 @@
 namespace Oro\Bundle\MailChimpBundle\ImportExport\Strategy;
 
 use Doctrine\ORM\AbstractQuery;
-use Oro\Bundle\DotmailerBundle\Entity\ChannelAwareInterface;
 use Oro\Bundle\ImportExportBundle\Strategy\Import\AbstractImportStrategy as BasicImportStrategy;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\ImportExport\Helper\DefaultOwnerHelper;
@@ -282,7 +281,7 @@ class MemberActivityImportStrategy extends BasicImportStrategy implements Logger
      */
     protected function setOwner($entity)
     {
-        if ($entity instanceof ChannelAwareInterface) {
+        if ($entity instanceof MemberActivity) {
             /** @var Channel $channel */
             $channel = $this->databaseHelper->getEntityReference($entity->getChannel());
 

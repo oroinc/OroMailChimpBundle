@@ -3,7 +3,6 @@
 namespace Oro\Bundle\MailChimpBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\DotmailerBundle\Entity\ChannelAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -38,7 +37,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *  }
  * )
  */
-class MemberActivity implements ChannelAwareInterface
+class MemberActivity
 {
     /**#@+
      * @const string Activity of Member Activity
@@ -156,7 +155,7 @@ class MemberActivity implements ChannelAwareInterface
      * @param Channel $channel
      * @return MemberActivity
      */
-    public function setChannel(Channel $channel)
+    public function setChannel($channel)
     {
         $this->channel = $channel;
 
