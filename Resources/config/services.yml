@@ -656,6 +656,7 @@ services:
         parent: oro_importexport.strategy.abstract_import_strategy
         calls:
             - [setLogger, ["@oro_integration.logger.strategy"]]
+            - [setOwnerHelper, ["@oro_integration.helper.default_owner_helper"]]
 
     oro_mailchimp.importexport.strategy.campaign:
         class: '%oro_mailchimp.importexport.strategy.campaign.class%'
