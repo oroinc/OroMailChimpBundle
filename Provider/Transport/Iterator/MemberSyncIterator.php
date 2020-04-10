@@ -137,13 +137,29 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
     }
 
     /**
-     * Add required fields.
-     *
-     * Fields: first_name, last_name, email, owner_id, subscribers_list_id, channel_id, status, merge_var_values
+     * Add required fields and filters members that are not in list yet.
      *
      * {@inheritdoc}
      */
     protected function getIteratorQueryBuilder(StaticSegment $staticSegment)
+    {
+        $qb = $this->getCommonIteratorQueryBuilder($staticSegment);
+        // Select only members that are not in list yet
+        $qb->andWhere($qb->expr()->isNull(sprintf('%s.id', self::MEMBER_ALIAS)));
+
+        return $qb;
+    }
+
+    /**
+     * Add required fields.
+     *
+     * Fields: first_name, last_name, email, owner_id, subscribers_list_id, channel_id, status, merge_var_values.
+     *
+     * @param StaticSegment $staticSegment
+     * @throws \InvalidArgumentException
+     * @return QueryBuilder
+     */
+    protected function getCommonIteratorQueryBuilder(StaticSegment $staticSegment)
     {
         $qb = parent::getIteratorQueryBuilder($staticSegment);
 
@@ -160,9 +176,6 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
         $qb->addSelect('CURRENT_TIMESTAMP() as created_at');
 
         $this->addMergeVars($qb, $staticSegment);
-
-        // Select only members that are not in list yet
-        $qb->andWhere($qb->expr()->isNull(sprintf('%s.id', self::MEMBER_ALIAS)));
 
         return $qb;
     }

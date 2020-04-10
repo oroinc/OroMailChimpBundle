@@ -13,6 +13,8 @@ use Oro\Bundle\LocaleBundle\Model\LastNameInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
+ * Mailchimp member entity class
+ *
  * @link http://apidocs.mailchimp.com/api/2.0/lists/member-info.php
  * @SuppressWarnings(PHPMD.ExcessivePublicCount)
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -80,6 +82,11 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
      * @const Export failed for member. Such member will not be synced anymore.
      */
     const STATUS_EXPORT_FAILED = 'export_failed';
+
+    /**
+     * @const Member's export data should be recollected and then status must be set to export
+     */
+    const STATUS_UPDATE = 'update';
 
     /**
      * @var int
