@@ -89,14 +89,15 @@ class MemberExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider invalidMergeVarNamesAndValues
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Merge name and value should be not empty strings.
      *
      * @param string $name
      * @param string $value
      */
     public function testAddMergeVarValueWhenNameOrValueIsInvalid($name, $value)
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Merge name and value should be not empty strings.');
+
         $this->entity->addMergeVarValue($name, $value);
     }
 

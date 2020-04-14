@@ -90,12 +90,11 @@ class MailChimpTransportTest extends \PHPUnit\Framework\TestCase
         return $client;
     }
 
-    /**
-     * @expectedException \Oro\Bundle\MailChimpBundle\Exception\RequiredOptionException
-     * @expectedExceptionMessage Option "apiKey" is required
-     */
     public function testInitFails()
     {
+        $this->expectException(\Oro\Bundle\MailChimpBundle\Exception\RequiredOptionException::class);
+        $this->expectExceptionMessage('Option "apiKey" is required');
+
         $transportEntity = new MailChimpTransportEntity();
 
         $this->clientFactory->expects($this->never())->method($this->anything());

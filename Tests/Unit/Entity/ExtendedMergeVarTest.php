@@ -78,11 +78,12 @@ class ExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider setNameDataProvider
      * @param mixed $value
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Name must be not empty string.
      */
     public function testSetNameWhenInputIsWrong($value)
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Name must be not empty string.');
+
         $this->entity->setName($value);
     }
 

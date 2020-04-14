@@ -133,12 +133,11 @@ class TemplateSearchHandlerTest extends \PHPUnit\Framework\TestCase
         $this->assertEmpty($result);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Search handler is not fully configured
-     */
     public function testCheckDependenciesInjectedFail()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Search handler is not fully configured');
+
         $this->searchHandler->search("", 1, 1);
     }
 
