@@ -188,6 +188,15 @@ connector:
                         writer:    oro_mailchimp.importexport.writer.members_sync
                     parameters:
                         batch_size: 1
+                process_data_update:
+                    title: export
+                    class: Oro\Bundle\MailChimpBundle\ImportExport\Step\ItemStep
+                    services:
+                        reader: oro_mailchimp.importexport.reader.updated_members_sync
+                        processor: oro_mailchimp.importexport.processor.dummy
+                        writer: oro_mailchimp.importexport.writer.updated_members_sync
+                    parameters:
+                        batch_size: 1
                 export:
                     title: export
                     class: Oro\Bundle\MailChimpBundle\ImportExport\Step\ItemStep

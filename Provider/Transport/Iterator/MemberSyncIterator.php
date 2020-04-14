@@ -13,6 +13,7 @@ use Oro\Bundle\MailChimpBundle\Entity\Member;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Model\MergeVar\MergeVarProviderInterface;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\QueryDesignerBundle\Model\GroupByHelper;
 use Oro\Component\PhpUtils\ArrayUtil;
 
 /**
@@ -65,6 +66,11 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
     protected $extendMergeVarsClass;
 
     /**
+     * @var GroupByHelper
+     */
+    protected $groupByHelper;
+
+    /**
      * @param MergeVarProviderInterface $mergeVarsProvider
      * @return MemberSyncIterator
      */
@@ -98,6 +104,18 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
     }
 
     /**
+     * @param GroupByHelper $groupByHelper
+     *
+     * @return MemberSyncIterator
+     */
+    public function setGroupByHelper($groupByHelper)
+    {
+        $this->groupByHelper = $groupByHelper;
+
+        return $this;
+    }
+
+    /**
      * Return query builder instead of BufferedQueryResultIterator.
      *
      * {@inheritdoc}
@@ -119,13 +137,29 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
     }
 
     /**
-     * Add required fields.
-     *
-     * Fields: first_name, last_name, email, owner_id, subscribers_list_id, channel_id, status, merge_var_values
+     * Add required fields and filters members that are not in list yet.
      *
      * {@inheritdoc}
      */
     protected function getIteratorQueryBuilder(StaticSegment $staticSegment)
+    {
+        $qb = $this->getCommonIteratorQueryBuilder($staticSegment);
+        // Select only members that are not in list yet
+        $qb->andWhere($qb->expr()->isNull(sprintf('%s.id', self::MEMBER_ALIAS)));
+
+        return $qb;
+    }
+
+    /**
+     * Add required fields.
+     *
+     * Fields: first_name, last_name, email, owner_id, subscribers_list_id, channel_id, status, merge_var_values.
+     *
+     * @param StaticSegment $staticSegment
+     * @throws \InvalidArgumentException
+     * @return QueryBuilder
+     */
+    protected function getCommonIteratorQueryBuilder(StaticSegment $staticSegment)
     {
         $qb = parent::getIteratorQueryBuilder($staticSegment);
 
@@ -142,9 +176,6 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
         $qb->addSelect('CURRENT_TIMESTAMP() as created_at');
 
         $this->addMergeVars($qb, $staticSegment);
-
-        // Select only members that are not in list yet
-        $qb->andWhere($qb->expr()->isNull(sprintf('%s.id', self::MEMBER_ALIAS)));
 
         return $qb;
     }
@@ -229,7 +260,7 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
                 )
                 ->join('tagging.tag', 'tag')
                 ->setParameter('entity_name', $staticSegment->getMarketingList()->getEntity());
-            $columnInformation['tag_field'] = 'GROUP_CONCAT(tag.name)';
+            $columnInformation['tag_field'] = 'tag.name';
         }
 
         $emailFieldExpr = $this->getEmailFieldExpression($qb, $staticSegment);
@@ -262,6 +293,14 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
 
         if ($mergeVarsExpr) {
             $qb->addSelect($mergeVarsExpr . ' as merge_vars');
+        }
+
+        $groupBy = $this->groupByHelper->getGroupByFields(
+            $qb->getDQLPart('groupBy'),
+            array_merge($qb->getDQLPart('select'), $qb->getDQLPart('orderBy'))
+        );
+        if ($groupBy) {
+            $qb->addGroupBy(implode(',', $groupBy));
         }
     }
 
@@ -314,7 +353,7 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
     {
         if ($value) {
             // CONCAT returns NULL if one of arguments is NULL - return empty string instead NULL.
-            $value = "COALESCE(CAST(" . $value . " as text), '')";
+            $value = "COALESCE(CAST(GROUP_CONCAT(DISTINCT " . $value . ") as text), '')";
             $mergeVars = str_replace($separator, sprintf("', %s ,'", $value), $mergeVars);
         } else {
             $mergeVars = str_replace(json_encode($separator), 'null', $mergeVars);
