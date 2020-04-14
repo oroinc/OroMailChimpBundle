@@ -28,7 +28,7 @@ class SyncTest extends WebTestCase
         )->getId();
         $result = $this->runCommand('oro:cron:integration:sync', $params);
 
-        $this->assertContains('Schedule sync for "mailchimp1" integration.', $result);
+        static::assertStringContainsString('Schedule sync for "mailchimp1" integration.', $result);
 
         $traces = self::getMessageCollector()->getTopicSentMessages(Topics::SYNC_INTEGRATION);
 

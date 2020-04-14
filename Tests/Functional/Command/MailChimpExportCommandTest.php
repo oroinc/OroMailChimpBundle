@@ -32,8 +32,8 @@ class MailChimpExportCommandTest extends WebTestCase
 
         $result = $this->runCommand('oro:cron:mailchimp:export', ['--segments='.$segment->getId()]);
 
-        $this->assertContains('Send export MailChimp message for integration:', $result);
-        $this->assertContains(
+        static::assertStringContainsString('Send export MailChimp message for integration:', $result);
+        static::assertStringContainsString(
             'Integration "'.$segment->getChannel()->getId().'" and segments "'.$segment->getId().'"',
             $result
         );
