@@ -24,7 +24,7 @@ use Oro\Component\MessageQueue\Job\JobRunner;
 use Oro\Component\MessageQueue\Transport\Message;
 use Oro\Component\MessageQueue\Transport\SessionInterface;
 use Oro\Component\Testing\ClassExtensionTrait;
-use PHPUnit\Framework\MockObject\Matcher\Invocation;
+use PHPUnit\Framework\MockObject\Rule\InvokedCount;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -407,13 +407,12 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @param Integration|null $integration
-     * @param \PHPUnit\Framework\MockObject\Matcher\Invocation $invokeCountMatcher
-     *
+     * @param InvokedCount $invokeCountMatcher
      * @return EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private function getIntegrationEntityManager(
-        Integration $integration = null,
-        Invocation $invokeCountMatcher
+        ?Integration $integration,
+        InvokedCount $invokeCountMatcher
     ) {
         $integrationEntityManager = $this->createEntityManagerStub();
         $integrationEntityManager
@@ -427,13 +426,13 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @param StaticSegment $staticSegment
-     * @param PHPUnit\Framework\MockObject\Matcher\Invocation $invokeCountMatcher
+     * @param \PHPUnit\Framework\MockObject\Rule\InvokedCount $invokeCountMatcher
      *
      * @return EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected function getStaticSegmentEntityManager(
         StaticSegment $staticSegment,
-        Invocation $invokeCountMatcher
+        InvokedCount $invokeCountMatcher
     ) {
         $segmentEntityManager = $this->createMock(EntityManagerInterface::class);
         $segmentEntityManager
