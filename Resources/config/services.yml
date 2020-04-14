@@ -57,6 +57,7 @@ parameters:
     oro_mailchimp.importexport.writer.marketing_list_email.class: Oro\Bundle\MailChimpBundle\ImportExport\Writer\MarketingListEmailWriter
     oro_mailchimp.importexport.writer.prepare_static_segment_member_to_remove.class: Oro\Bundle\MailChimpBundle\ImportExport\Writer\StaticSegmentMemberToRemoveWriter
     oro_mailchimp.importexport.writer.members_sync.class: Oro\Bundle\MailChimpBundle\ImportExport\Writer\MemberSyncWriter
+    oro_mailchimp.importexport.writer.updated_members_sync.class: Oro\Bundle\MailChimpBundle\ImportExport\Writer\UpdatedMemberSyncWriter
     oro_mailchimp.importexport.writer.loggable_persistent_batch_writer.class: Oro\Bundle\MailChimpBundle\ImportExport\Writer\LoggablePersistentBatchWriter
 
     # Serializers
@@ -127,6 +128,7 @@ parameters:
     # Iterators
     oro_mailchimp.iterator.static_segment.class: Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\AbstractStaticSegmentIterator
     oro_mailchimp.iterator.member_sync.class: Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\MemberSyncIterator
+    oro_mailchimp.iterator.updated_member_sync.class: Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\UpdatedMemberSyncIterator
     oro_mailchimp.iterator.static_segment_member_add_state.class: Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\StaticSegmentMemberAddStateIterator
     oro_mailchimp.iterator.static_segment_member_remove_state.class: Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\StaticSegmentMemberRemoveStateIterator
     oro_mailchimp.iterator.static_segment_member_dropped_state.class: Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\StaticSegmentMemberDroppedStateIterator
@@ -215,6 +217,11 @@ services:
         parent: oro_mailchimp.importexport.reader.static_segment
         calls:
             - [setSourceIterator, ["@oro_mailchimp.iterator.member_sync"]]
+
+    oro_mailchimp.importexport.reader.updated_members_sync:
+        parent: oro_mailchimp.importexport.reader.static_segment
+        calls:
+            - [setSourceIterator, ["@oro_mailchimp.iterator.updated_member_sync"]]
 
     oro_mailchimp.importexport.reader.static_segment_member_add_state:
         parent: oro_mailchimp.importexport.reader.static_segment
@@ -380,6 +387,11 @@ services:
             - [setEntityName, ['%oro_mailchimp.entity.member.class%']]
             - [setFields, [['owner', 'subscribersList', 'channel', 'status', 'createdAt', 'mergeVarValues']]]
 
+    oro_mailchimp.importexport.writer.updated_members_sync:
+        class: '%oro_mailchimp.importexport.writer.updated_members_sync.class%'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+
     oro_mailchimp.importexport.writer.loggable_persistent_batch_writer:
         class: '%oro_mailchimp.importexport.writer.loggable_persistent_batch_writer.class%'
         parent: oro_integration.writer.persistent_batch_writer
@@ -420,6 +432,7 @@ services:
             - '%oro_mailchimp.entity.member_extended_merge_var.class%'
         calls:
             - [setDispatcher, ["@event_dispatcher"]]
+            - [setScalarFieldDenormalizer, ['@oro_importexport.serializer.scalar_field_denormalizer']]
         tags:
             - { name: oro_importexport.normalizer, priority: -6 }
 
@@ -953,6 +966,11 @@ services:
             - [setFormatter, ["@oro_locale.dql.formatter.name"]]
             - [setMergeVarsProvider, ["@oro_mailchimp.merge_var.provider"]]
             - [setExtendMergeVarsClass, ['%oro_mailchimp.entity.extended_merge_var.class%']]
+            - [setGroupByHelper, ['@oro_query_designer.group_by_helper']]
+
+    oro_mailchimp.iterator.updated_member_sync:
+        class: '%oro_mailchimp.iterator.updated_member_sync.class%'
+        parent: oro_mailchimp.iterator.member_sync
 
     oro_mailchimp.iterator.static_segment_member_add_state:
         class: '%oro_mailchimp.iterator.static_segment_member_add_state.class%'
@@ -1092,3 +1110,22 @@ services:
             - ['addPackage', ['OroCRM', 'oro/mailchimp']]
         tags:
             - { name: oro_translation.extension.packages_provider }
+
+    oro_mailchimp.event_listener.members_to_update_on_entity_change_listener:
+        class: Oro\Bundle\MailChimpBundle\EventListener\MailchimpMembersToUpdateOnEntityChangeListener
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_marketing_list.provider.marketing_list_allowed_classes'
+            - '@oro_marketing_list.provider.contact_information_fields'
+        tags:
+            - { name: doctrine.event_listener, event: onFlush, connection: default }
+
+    oro_mailchimp.event_listener.datagrid.marketing_list_item:
+        class: Oro\Bundle\MailChimpBundle\EventListener\DataGrid\MarketingListItemGridListener
+        arguments:
+            - '@oro_marketing_list.model.helper'
+            - '@oro_marketing_list.provider.contact_information_fields'
+            - '@oro_mailchimp.model.field_helper'
+            - '@oro_mailchimp.placeholder.filter.sync_status'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after, method: onBuildAfter }

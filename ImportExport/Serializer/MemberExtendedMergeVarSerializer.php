@@ -6,7 +6,6 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 use Oro\Bundle\EntityBundle\Helper\FieldHelper;
 use Oro\Bundle\ImportExportBundle\Field\DatabaseHelper;
 use Oro\Bundle\ImportExportBundle\Serializer\Normalizer\ConfigurableEntityNormalizer;
-use Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatter;
 use Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatterInterface;
 use Oro\Bundle\LocaleBundle\Formatter\NumberFormatter;
 use Oro\Bundle\MailChimpBundle\Entity\ExtendedMergeVar;
@@ -46,7 +45,7 @@ class MemberExtendedMergeVarSerializer extends ConfigurableEntityNormalizer
     protected $numberFormatter;
 
     /**
-     * @var DateTimeFormatter
+     * @var DateTimeFormatterInterface
      */
     protected $dateTimeFormatter;
 
@@ -61,7 +60,7 @@ class MemberExtendedMergeVarSerializer extends ConfigurableEntityNormalizer
      * @param DataGridProviderInterface $dataGridProvider
      * @param TranslatorInterface $translator
      * @param NumberFormatter $numberFormatter
-     * @param DateTimeFormatter $dateTimeFormatter
+     * @param DateTimeFormatterInterface $dateTimeFormatter
      * @param string $memberExtendedMergeVarClassName
      */
     public function __construct(
@@ -172,9 +171,8 @@ class MemberExtendedMergeVarSerializer extends ConfigurableEntityNormalizer
                 $value = $this->dateTimeFormatter->format($value);
                 break;
             case PropertyInterface::TYPE_DECIMAL:
-                $value = $this->numberFormatter->formatDecimal($value);
-                break;
             case PropertyInterface::TYPE_INTEGER:
+            case PropertyInterface::TYPE_TAGS:
                 $value = $this->numberFormatter->formatDecimal($value);
                 break;
             case PropertyInterface::TYPE_BOOLEAN:
