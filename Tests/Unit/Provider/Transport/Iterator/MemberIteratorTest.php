@@ -15,7 +15,7 @@ class MemberIteratorTest extends \PHPUnit\Framework\TestCase
      */
     protected $client;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->client = $this->getMockBuilder(
             'Oro\\Bundle\\MailChimpBundle\\Provider\\Transport\\MailChimpClient'

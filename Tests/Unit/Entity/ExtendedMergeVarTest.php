@@ -12,7 +12,7 @@ class ExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
      */
     protected $entity;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->entity = new ExtendedMergeVar();
     }

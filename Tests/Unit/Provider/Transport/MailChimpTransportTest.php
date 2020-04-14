@@ -28,7 +28,7 @@ class MailChimpTransportTest extends \PHPUnit\Framework\TestCase
      */
     protected $transport;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->clientFactory = $this->getMockBuilder(
             'Oro\\Bundle\\MailChimpBundle\\Provider\\Transport\\MailChimpClientFactory'

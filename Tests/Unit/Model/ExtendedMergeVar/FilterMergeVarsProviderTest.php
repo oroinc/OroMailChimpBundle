@@ -30,7 +30,7 @@ class FilterMergeVarsProviderTest extends \PHPUnit\Framework\TestCase
      */
     protected $filterProvider;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->provider = $this->createMock(ProviderInterface::class);
         $this->nameFormatter = $this->createMock(DQLNameFormatter::class);

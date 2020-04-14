@@ -18,13 +18,13 @@ class ProviderTest extends \PHPUnit\Framework\TestCase
      */
     protected $marketingList;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->marketingList = new MarketingList();
         $this->provider = new Provider();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->provider, $this->marketingList);
     }

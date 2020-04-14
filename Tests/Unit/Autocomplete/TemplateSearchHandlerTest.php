@@ -62,7 +62,7 @@ class TemplateSearchHandlerTest extends \PHPUnit\Framework\TestCase
      */
     protected $expr;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->queryBuilder = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')
             ->disableOriginalConstructor()

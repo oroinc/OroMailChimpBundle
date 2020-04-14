@@ -21,7 +21,7 @@ class DataGridProviderTest extends \PHPUnit\Framework\TestCase
      */
     protected $dataGridProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->dataGridManager = $this
             ->getMockBuilder('Oro\Bundle\DataGridBundle\Datagrid\Manager')
@@ -31,7 +31,7 @@ class DataGridProviderTest extends \PHPUnit\Framework\TestCase
         $this->dataGridProvider = new DataGridProvider($this->dataGridManager);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->dataGridManager);
         unset($this->dataGridProvider);

@@ -24,7 +24,7 @@ class EmailColumnValidatorTest extends \PHPUnit\Framework\TestCase
      */
     protected $validator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fieldInformationValidator = $this->getMockBuilder('Symfony\Component\Validator\ConstraintValidator')
             ->disableOriginalConstructor()

@@ -20,7 +20,7 @@ class EmailCampaignVoterTest extends \PHPUnit\Framework\TestCase
      */
     protected $doctrineHelper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->doctrineHelper = $this->getMockBuilder(DoctrineHelper::class)
             ->disableOriginalConstructor()
@@ -29,7 +29,7 @@ class EmailCampaignVoterTest extends \PHPUnit\Framework\TestCase
         $this->voter = new EmailCampaignVoter($this->doctrineHelper);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->voter);
         unset($this->doctrineHelper);

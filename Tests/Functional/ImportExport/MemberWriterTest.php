@@ -23,7 +23,7 @@ class MemberWriterTest extends WebTestCase
      */
     protected $stepExecution;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

@@ -17,7 +17,7 @@ class StaticSegmentReaderTest extends \PHPUnit\Framework\TestCase
     /** @var StaticSegmentReader */
     protected $reader;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->contaxtRegistry = $this->getMockBuilder(ContextRegistry::class)
             ->disableOriginalConstructor()

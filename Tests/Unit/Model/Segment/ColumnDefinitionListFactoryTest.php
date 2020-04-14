@@ -23,7 +23,7 @@ class ColumnDefinitionListFactoryTest extends \PHPUnit\Framework\TestCase
      */
     protected $segment;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->marketingList = $this
             ->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingList')
@@ -37,7 +37,7 @@ class ColumnDefinitionListFactoryTest extends \PHPUnit\Framework\TestCase
         $this->factory = new ColumnDefinitionListFactory();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->marketingList);
         unset($this->segment);

@@ -9,7 +9,7 @@ class AbstractSubordinateIteratorTest extends \PHPUnit\Framework\TestCase
      */
     protected $iterator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->iterator = $this->getMockBuilder(
             'Oro\\Bundle\\MailChimpBundle\\Provider\\Transport\\MailChimpClient'

@@ -31,7 +31,7 @@ class MarketingListPlaceholderFilterTest extends \PHPUnit\Framework\TestCase
      */
     protected $placeholderFilter;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->entityRepository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
             ->disableOriginalConstructor()

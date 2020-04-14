@@ -36,7 +36,7 @@ class NotifyMailChimpListenerTest extends \PHPUnit\Framework\TestCase
      */
     private $repository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->repository = $this->getMockBuilder(EntityRepository::class)
             ->disableOriginalConstructor()

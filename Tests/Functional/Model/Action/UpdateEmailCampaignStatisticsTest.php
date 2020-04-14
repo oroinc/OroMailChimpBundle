@@ -33,7 +33,7 @@ class UpdateEmailCampaignStatisticsTest extends WebTestCase
      */
     protected $provider;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->initClient();
 

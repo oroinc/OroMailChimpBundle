@@ -11,7 +11,7 @@ class TemplateTest extends \PHPUnit\Framework\TestCase
      */
     protected $target;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->target = new Template();
     }

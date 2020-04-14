@@ -14,7 +14,7 @@ class CampaignIteratorTest extends \PHPUnit\Framework\TestCase
      */
     protected $client;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->client = $this->getMockBuilder(MailChimpClient::class)
             ->setMethods(['getCampaigns', 'getCampaignReport'])
