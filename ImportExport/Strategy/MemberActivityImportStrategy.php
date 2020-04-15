@@ -5,6 +5,7 @@ namespace Oro\Bundle\MailChimpBundle\ImportExport\Strategy;
 use Doctrine\ORM\AbstractQuery;
 use Oro\Bundle\ImportExportBundle\Strategy\Import\AbstractImportStrategy as BasicImportStrategy;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Oro\Bundle\IntegrationBundle\ImportExport\Helper\DefaultOwnerHelper;
 use Oro\Bundle\MailChimpBundle\Entity\Campaign;
 use Oro\Bundle\MailChimpBundle\Entity\Member;
 use Oro\Bundle\MailChimpBundle\Entity\MemberActivity;
@@ -28,6 +29,11 @@ class MemberActivityImportStrategy extends BasicImportStrategy implements Logger
      * @var ValidatorInterface
      */
     protected $validator;
+
+    /**
+     * @var DefaultOwnerHelper
+     */
+    protected $ownerHelper;
 
     /**
      * @var array
@@ -139,6 +145,8 @@ class MemberActivityImportStrategy extends BasicImportStrategy implements Logger
 
             return null;
         }
+
+        $this->setOwner($entity);
 
         return parent::afterProcessEntity($entity);
     }
@@ -266,5 +274,26 @@ class MemberActivityImportStrategy extends BasicImportStrategy implements Logger
             ->setMaxResults(1);
 
         return $queryBuilder->getQuery()->getOneOrNullResult($hydration);
+    }
+
+    /**
+     * @param object $entity
+     */
+    protected function setOwner($entity)
+    {
+        if ($entity instanceof MemberActivity) {
+            /** @var Channel $channel */
+            $channel = $this->databaseHelper->getEntityReference($entity->getChannel());
+
+            $this->ownerHelper->populateChannelOwner($entity, $channel);
+        }
+    }
+
+    /**
+     * @param DefaultOwnerHelper $ownerHelper
+     */
+    public function setOwnerHelper($ownerHelper)
+    {
+        $this->ownerHelper = $ownerHelper;
     }
 }
