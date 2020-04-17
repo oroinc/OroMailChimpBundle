@@ -21,8 +21,8 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
 use Oro\Component\MessageQueue\Job\JobRunner;
-use Oro\Component\MessageQueue\Transport\Null\NullMessage;
-use Oro\Component\MessageQueue\Transport\Null\NullSession;
+use Oro\Component\MessageQueue\Transport\Message;
+use Oro\Component\MessageQueue\Transport\SessionInterface;
 use Oro\Component\Testing\ClassExtensionTrait;
 use PHPUnit\Framework\MockObject\Matcher\Invocation;
 use Psr\Log\LoggerInterface;
@@ -64,7 +64,7 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
 
     public function testShouldLogAndRejectIfMessageBodyMissIntegrationId()
     {
-        $message = new NullMessage();
+        $message = new Message();
         $message->setBody('[]');
 
         $logger = $this->createLoggerMock();
@@ -83,14 +83,14 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
             $logger
         );
 
-        $status = $processor->process($message, new NullSession());
+        $status = $processor->process($message, $this->createSessionMock());
 
         $this->assertEquals(MessageProcessorInterface::REJECT, $status);
     }
 
     public function testShouldLogAndRejectIfMessageBodyMissSegmentsIds()
     {
-        $message = new NullMessage();
+        $message = new Message();
         $message->setBody('{"integrationId":1}');
 
         $logger = $this->createLoggerMock();
@@ -109,7 +109,7 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
             $logger
         );
 
-        $status = $processor->process($message, new NullSession());
+        $status = $processor->process($message, $this->createSessionMock());
 
         $this->assertEquals(MessageProcessorInterface::REJECT, $status);
     }
@@ -129,15 +129,15 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
             $this->createLoggerMock()
         );
 
-        $message = new NullMessage();
+        $message = new Message();
         $message->setBody('[}');
 
-        $processor->process($message, new NullSession());
+        $processor->process($message, $this->createSessionMock());
     }
 
     public function testShouldLogAndRejectIfIntegrationNotFound()
     {
-        $message = new NullMessage();
+        $message = new Message();
         $message->setBody('{"integrationId":"theIntegrationId", "segmentsIds": 1}');
         $message->setMessageId('theMessageId');
 
@@ -157,7 +157,7 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
             $logger
         );
 
-        $status = $processor->process($message, new NullSession());
+        $status = $processor->process($message, $this->createSessionMock());
 
         $this->assertEquals(MessageProcessorInterface::REJECT, $status);
     }
@@ -170,7 +170,7 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
 
         $doctrineHelper = $this->createDoctrineHelperStub($integration);
 
-        $message = new NullMessage();
+        $message = new Message();
         $message->setBody('{"integrationId":"theIntegrationId", "segmentsIds": 1}');
         $message->setMessageId('theMessageId');
 
@@ -190,7 +190,7 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
             $logger
         );
 
-        $status = $processor->process($message, new NullSession());
+        $status = $processor->process($message, $this->createSessionMock());
 
         $this->assertEquals(MessageProcessorInterface::REJECT, $status);
     }
@@ -280,11 +280,11 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
             $this->createLoggerMock()
         );
 
-        $message = new NullMessage();
+        $message = new Message();
         $message->setBody('{"integrationId":"'.$integrationId.'", "segmentsIds": ['.$segmentId.']}');
         $message->setMessageId($messageId);
 
-        $status = $processor->process($message, new NullSession());
+        $status = $processor->process($message, $this->createSessionMock());
 
         $this->assertEquals(MessageProcessorInterface::ACK, $status);
     }
@@ -446,5 +446,13 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
             ->method('flush');
 
         return $segmentEntityManager;
+    }
+
+    /**
+     * @return \PHPUnit\Framework\MockObject\MockObject|SessionInterface
+     */
+    protected function createSessionMock()
+    {
+        return $this->createMock(SessionInterface::class);
     }
 }
