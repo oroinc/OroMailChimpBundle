@@ -126,7 +126,7 @@ oro:
             static_segment.label: Static Segment
 
         subscriberslist:
-            entity_label: MailChimp Subscribers List
+            entity_label: Subscribers List
             entity_plural_label: MailChimp Subscribers Lists
             entity_grid_all_view_label: All %entity_plural_label%
             avg_sub_rate.label: Average Subscribe Rate
@@ -315,7 +315,7 @@ oro:
 
         connection:
             name: MailChimp Connection
-            segment_name: MailChimp Segment Name
+            segment_name: Segment Name
             sync_message: Marketing List scheduled for sync with MailChimp Segment "%segment_name%"
             button:
                 connect: 'Connect to MailChimp'
@@ -345,7 +345,7 @@ oro:
             in_progress: In Progress
             scheduled: Scheduled for Sync
             scheduled_by_change: Scheduled for Sync
-            list_is_connected.lebel: 'This list is linked to "%segment%" segment of "%list%" Mailchimp List. Last synchronization date: %synced%. Synchronization status: %status%.'
+            list_is_connected.label: 'This list is linked to "%segment%" segment of "%list%" Mailchimp List. Last synchronization date: %synced%. Synchronization status: %status%.'
         form:
             api_key:
                 tooltip: 'MailChimp API Key. <br/><a href="http://kb.mailchimp.com/accounts/management/about-api-keys" target="_blank" class="no-hash">About API Keys</a>'
