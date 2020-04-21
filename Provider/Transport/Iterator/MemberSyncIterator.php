@@ -295,9 +295,13 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
             $qb->addSelect($mergeVarsExpr . ' as merge_vars');
         }
 
+        $orderByPartItems = [];
+        foreach ($qb->getDQLPart('orderBy') as $orderByPart) {
+            $orderByPartItems[] = trim(preg_replace('/(ASC|DESC)$/i', '', $orderByPart));
+        }
         $groupBy = $this->groupByHelper->getGroupByFields(
             $qb->getDQLPart('groupBy'),
-            array_merge($qb->getDQLPart('select'), $qb->getDQLPart('orderBy'))
+            array_merge($qb->getDQLPart('select'), $orderByPartItems)
         );
         if ($groupBy) {
             $qb->addGroupBy(implode(',', $groupBy));

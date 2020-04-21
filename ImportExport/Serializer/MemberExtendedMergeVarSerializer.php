@@ -14,6 +14,7 @@ use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Model\MarketingList\DataGridProviderInterface;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\QueryDesignerBundle\Grid\QueryDesignerQueryConfiguration;
+use Oro\Bundle\TagBundle\Formatter\TagsTypeFormatter;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -172,7 +173,7 @@ class MemberExtendedMergeVarSerializer extends ConfigurableEntityNormalizer
                 break;
             case PropertyInterface::TYPE_DECIMAL:
             case PropertyInterface::TYPE_INTEGER:
-            case PropertyInterface::TYPE_TAGS:
+            case TagsTypeFormatter::TYPE_TAGS:
                 $value = $this->numberFormatter->formatDecimal($value);
                 break;
             case PropertyInterface::TYPE_BOOLEAN:

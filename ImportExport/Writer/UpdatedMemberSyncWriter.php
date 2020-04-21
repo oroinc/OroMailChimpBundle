@@ -3,7 +3,6 @@
 namespace Oro\Bundle\MailChimpBundle\ImportExport\Writer;
 
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MailChimpBundle\Entity\Member;

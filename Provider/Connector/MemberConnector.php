@@ -2,13 +2,12 @@
 
 namespace Oro\Bundle\MailChimpBundle\Provider\Connector;
 
-use Oro\Bundle\IntegrationBundle\Provider\ConnectorInterface;
 use Oro\Bundle\IntegrationBundle\Provider\TwoWaySyncConnectorInterface;
 
 /**
  * Integration connector for mailchimp member.
  */
-class MemberConnector extends AbstractMailChimpConnector implements TwoWaySyncConnectorInterface, ConnectorInterface
+class MemberConnector extends AbstractMailChimpConnector implements TwoWaySyncConnectorInterface
 {
     const TYPE = 'member';
     const JOB_IMPORT = 'mailchimp_member_import';
