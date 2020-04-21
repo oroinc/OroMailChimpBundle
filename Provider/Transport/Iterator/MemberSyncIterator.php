@@ -295,14 +295,7 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
             $qb->addSelect($mergeVarsExpr . ' as merge_vars');
         }
 
-        $orderByPartItems = [];
-        foreach ($qb->getDQLPart('orderBy') as $orderByPart) {
-            $orderByPartItems[] = trim(preg_replace('/(ASC|DESC)$/i', '', $orderByPart));
-        }
-        $groupBy = $this->groupByHelper->getGroupByFields(
-            $qb->getDQLPart('groupBy'),
-            array_merge($qb->getDQLPart('select'), $orderByPartItems)
-        );
+        $groupBy = $this->getGroupBy($qb);
         if ($groupBy) {
             $qb->addGroupBy(implode(',', $groupBy));
         }
@@ -374,5 +367,23 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
     {
         return $entityManager->getRepository($this->extendMergeVarsClass)
             ->findAll();
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     * @return array
+     */
+    protected function getGroupBy(QueryBuilder $qb): array
+    {
+        $orderByPartItems = [];
+        foreach ($qb->getDQLPart('orderBy') as $orderByPart) {
+            $orderByPartItems[] = trim(preg_replace('/(ASC|DESC)$/i', '', $orderByPart));
+        }
+        $groupBy = $this->groupByHelper->getGroupByFields(
+            $qb->getDQLPart('groupBy'),
+            array_merge($qb->getDQLPart('select'), $orderByPartItems)
+        );
+
+        return $groupBy;
     }
 }
