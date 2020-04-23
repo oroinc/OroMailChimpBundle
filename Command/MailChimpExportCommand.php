@@ -22,11 +22,14 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
- * Mailchimp related CLI commands handler.
+ * The CLI command to export members and static segments to MailChimp.
  */
 class MailChimpExportCommand extends Command implements CronCommandInterface, ContainerAwareInterface
 {
     use ContainerAwareTrait;
+
+    /** @var string */
+    protected static $defaultName = 'oro:cron:mailchimp:export';
 
     /**
      * {@inheritdoc}
@@ -72,7 +75,6 @@ class MailChimpExportCommand extends Command implements CronCommandInterface, Co
     protected function configure()
     {
         $this
-            ->setName('oro:cron:mailchimp:export')
             ->setDescription('Export members and static segments to MailChimp')
             ->addOption(
                 'segments',
