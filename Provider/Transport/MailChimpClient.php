@@ -72,7 +72,7 @@ class MailChimpClient extends BaseClient
                 $url,
                 (string)$query,
                 $response,
-                'Request to MailChimp Export API wasn\'t successfully completed.'
+                "Request to MailChimp Export API wasn't successfully completed."
             );
         }
         if (0 !== strpos($response->getContentType(), 'text/html')) {

@@ -122,4 +122,19 @@ class MemberIterator extends AbstractSubordinateIterator
 
         return $exportIterator;
     }
+
+    public function getClient(): MailChimpClient
+    {
+        return $this->client;
+    }
+
+    public function getParameters(): array
+    {
+        return $this->parameters;
+    }
+
+    public function getMainIterator(): \Iterator
+    {
+        return $this->mainIterator;
+    }
 }

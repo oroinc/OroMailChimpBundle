@@ -12,7 +12,6 @@ use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Model\StaticSegment\StaticSegmentsMemberStateManager;
 use Oro\Component\MessageQueue\Client\Message;
 use Oro\Component\MessageQueue\Client\MessagePriority;
-use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,9 +30,18 @@ class MailChimpExportCommand extends Command implements CronCommandInterface, Co
     /** @var string */
     protected static $defaultName = 'oro:cron:mailchimp:export';
 
-    /**
-     * {@inheritdoc}
-     */
+    /** @var JobExecutor */
+    protected $jobExecutor;
+
+    /** @var StaticSegmentsMemberStateManager */
+    protected $reverseSyncProcessor;
+
+    /** @var StaticSegmentsMemberStateManager */
+    protected $staticSegmentStateManager;
+
+    /** @var DoctrineHelper */
+    protected $doctrineHelper;
+
     public function getDefaultDefinition()
     {
         return '*/5 * * * *';
@@ -44,34 +52,9 @@ class MailChimpExportCommand extends Command implements CronCommandInterface, Co
      */
     public function isActive()
     {
-        $count = $this->getStaticSegmentRepository()->countStaticSegments();
-
-        return ($count > 0);
+        return ($this->getStaticSegmentRepository()->countStaticSegments() > 0);
     }
 
-    /**
-     * @var JobExecutor
-     */
-    protected $jobExecutor;
-
-    /**
-     * @var StaticSegmentsMemberStateManager
-     */
-    protected $reverseSyncProcessor;
-
-    /**
-     * @var StaticSegmentsMemberStateManager
-     */
-    protected $staticSegmentStateManager;
-
-    /**
-     * @var DoctrineHelper
-     */
-    protected $doctrineHelper;
-
-    /**
-     * {@inheritdoc}
-     */
     protected function configure()
     {
         $this
@@ -89,9 +72,6 @@ class MailChimpExportCommand extends Command implements CronCommandInterface, Co
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $segments = $input->getOption('segments');
@@ -124,7 +104,8 @@ class MailChimpExportCommand extends Command implements CronCommandInterface, Co
                     implode('", "', $message->getBody()['segmentsIds'])
                 ));
 
-                $this->getMessageProducer()->send(Topics::EXPORT_MAILCHIMP_SEGMENTS, $message);
+                $messageProducer = $this->container->get('oro_message_queue.message_producer');
+                $messageProducer->send(Topics::EXPORT_MAILCHIMP_SEGMENTS, $message);
             }
         } else {
             $output->writeln('Active MailChimp Integrations not found.');
@@ -140,13 +121,5 @@ class MailChimpExportCommand extends Command implements CronCommandInterface, Co
         $registry = $this->container->get('doctrine');
 
         return $registry->getRepository(StaticSegment::class);
-    }
-
-    /**
-     * @return MessageProducerInterface
-     */
-    private function getMessageProducer()
-    {
-        return $this->container->get('oro_message_queue.message_producer');
     }
 }

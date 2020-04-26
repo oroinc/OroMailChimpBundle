@@ -62,4 +62,9 @@ class CampaignIterator extends AbstractMailChimpIterator
             'total' => $result['total_items'],
         ];
     }
+
+    public function getFilters(): array
+    {
+        return $this->filters;
+    }
 }

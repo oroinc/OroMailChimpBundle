@@ -1,35 +1,22 @@
 <?php
+
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Command;
 
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
 use Oro\Bundle\MailChimpBundle\Command\MailChimpExportCommand;
-use Oro\Component\Testing\ClassExtensionTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class MailChimpExportCommandTest extends \PHPUnit\Framework\TestCase
 {
-    use ClassExtensionTrait;
-
-    public function testShouldBeSubClassOfCommand()
+    public function testCouldBeConstructedWithoutArgumentsAndImplementsNecessaryInterfaces()
     {
-        $this->assertClassExtends(Command::class, MailChimpExportCommand::class);
-    }
-
-    public function testShouldImplementContainerAwareInterface()
-    {
-        $this->assertClassImplements(ContainerAwareInterface::class, MailChimpExportCommand::class);
-    }
-
-    public function testShouldImplementCronCommandInterface()
-    {
-        $this->assertClassImplements(CronCommandInterface::class, MailChimpExportCommand::class);
-    }
-
-    public function testCouldBeConstructedWithoutAnyArguments()
-    {
-        new MailChimpExportCommand();
+        $command = new MailChimpExportCommand();
+        static::assertInstanceOf(Command::class, $command);
+        static::assertInstanceOf(ContainerAwareInterface::class, $command);
+        static::assertInstanceOf(CronCommandInterface::class, $command);
     }
 
     public function testShouldBeRunEveryFiveMinutes()
@@ -41,12 +28,16 @@ class MailChimpExportCommandTest extends \PHPUnit\Framework\TestCase
 
     public function testShouldAllowSetContainer()
     {
+        $command = new class() extends MailChimpExportCommand {
+            public function xgetContainer(): ContainerInterface
+            {
+                return $this->container;
+            }
+        };
+
         $container = new Container();
-
-        $command = new MailChimpExportCommand();
-
         $command->setContainer($container);
 
-        $this->assertAttributeSame($container, 'container', $command);
+        static::assertSame($container, $command->xgetContainer());
     }
 }
