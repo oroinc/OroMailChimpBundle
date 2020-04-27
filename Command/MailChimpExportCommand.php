@@ -139,9 +139,7 @@ class MailChimpExportCommand extends Command implements CronCommandInterface, Co
         /** @var RegistryInterface $registry */
         $registry = $this->container->get('doctrine');
 
-        return $registry->getRepository(
-            $this->container->getParameter('oro_mailchimp.entity.static_segment.class')
-        );
+        return $registry->getRepository(StaticSegment::class);
     }
 
     /**
