@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\MailChimpBundle\Entity\Repository;
 
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\Expr\Join;
@@ -44,7 +45,7 @@ class CampaignRepository extends EntityRepository
         if ($updateInterval) {
             $qb->andWhere($qb->expr()->gte('DATE_ADD(c.sendTime, :updateInterval, \'day\')', ':now'))
                 ->setParameter('updateInterval', (int)$updateInterval)
-                ->setParameter('now', new \DateTime('now', new \DateTimeZone('UTC')));
+                ->setParameter('now', new \DateTime('now', new \DateTimeZone('UTC')), Type::DATETIME);
         }
 
         return new BufferedIdentityQueryResultIterator($qb);
