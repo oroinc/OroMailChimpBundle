@@ -7,6 +7,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Oro\Bundle\MigrationBundle\Migration\Extension\DatabasePlatformAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\MigrationConstraintTrait;
@@ -51,12 +52,12 @@ class OroMailChimpBundle implements Migration, DatabasePlatformAwareInterface
         $mailChimpMemberTable = $schema->getTable('orocrm_mailchimp_member');
 
         $mailChimpMemberTable
-            ->addColumn('leid', Type::BIGINT)
+            ->addColumn('leid', Types::BIGINT)
             ->setNotnull(false);
 
         $mailChimpMemberTable
             ->getColumn('origin_id')
-            ->setType(Type::getType(Type::STRING))
+            ->setType(Type::getType(Types::STRING))
             ->setNotnull(false)
             ->setLength(32);
     }

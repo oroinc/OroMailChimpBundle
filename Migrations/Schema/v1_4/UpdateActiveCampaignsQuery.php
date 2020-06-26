@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\MailChimpBundle\Migrations\Schema\v1_4;
 
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Oro\Bundle\MigrationBundle\Migration\ArrayLogger;
 use Oro\Bundle\MigrationBundle\Migration\ParametrizedMigrationQuery;
 use Psr\Log\LoggerInterface;
@@ -38,7 +38,7 @@ class UpdateActiveCampaignsQuery extends ParametrizedMigrationQuery
           SET mailchimp_receive_activities = :receiveActivities
           WHERE type = :type';
         $params = ['receiveActivities' => true, 'type' => 'mailchimptransportsettings'];
-        $types = ['receiveActivities' => Type::BOOLEAN, 'type' => Type::STRING];
+        $types = ['receiveActivities' => Types::BOOLEAN, 'type' => Types::STRING];
         $this->logQuery($logger, $update, $params, $types);
 
         if (!$dryRun) {
