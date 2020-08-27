@@ -59,6 +59,7 @@ class FieldHelper
      * @param string $entityClass
      * @param string $fieldName
      * @return string
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function getVirtualFieldExpression(QueryBuilder $qb, $entityClass, $fieldName)
     {

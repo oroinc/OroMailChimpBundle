@@ -57,6 +57,7 @@ class MemberWriter extends AbstractExportWriter
      * @param string $subscribersListOriginId
      * @param Member[] $items
      * @throws Exception
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function batchSubscribe($subscribersListOriginId, array $items)
     {

@@ -22,6 +22,7 @@ class StepExecutor extends BaseStepExecutor
 
     /**
      * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function execute(StepExecutionWarningHandlerInterface $warningHandler = null)
     {

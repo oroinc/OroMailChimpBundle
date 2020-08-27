@@ -8,6 +8,7 @@ use Oro\Bundle\MailChimpBundle\Exception\MailChimpClientException;
 
 /**
  * Mailchimp SDK client wrapper class.
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class MailChimpClient
 {
@@ -59,6 +60,7 @@ class MailChimpClient
      *
      * @param array $result
      * @throws MailChimpClientException
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function guardAgainstStatus($result)
     {

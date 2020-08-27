@@ -5,6 +5,9 @@ namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Entity;
 use Oro\Bundle\MailChimpBundle\Entity\ExtendedMergeVar;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ */
 class ExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
 {
     /**

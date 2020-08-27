@@ -159,6 +159,7 @@ class MemberExtendedMergeVarSerializer extends ConfigurableEntityNormalizer
      * @param string $value
      * @param array $options
      * @return string
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function applyFrontendFormatting($value, array $options)
     {
