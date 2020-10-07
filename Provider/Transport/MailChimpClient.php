@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\MailChimpBundle\Provider\Transport;
 
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\Psr7\Response;
 use Oro\Bundle\MailChimpBundle\Client\MailChimpClient as BaseClient;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\Exception\BadResponseException;
 
@@ -60,22 +60,22 @@ class MailChimpClient extends BaseClient
      *                  is an individual JSON object. Rows are delimited using a newline (\n) marker, so
      *                  implementations can read in a single line at a time, handle it, and move on.
      */
-    public function export($methodName, array $parameters)
+    public function export($methodName, array $parameters): Response
     {
         $url = $this->getExportAPIMethodUrl($methodName);
         $parameters = array_merge(['apikey' => $this->apiKey], $parameters);
         $query = json_encode($parameters);
         $response = $this->callExportApi($url, $query);
 
-        if (!$response->isSuccessful()) {
+        if ($response->getStatusCode() !== 200) {
             throw BadResponseException::factory(
                 $url,
                 (string)$query,
                 $response,
-                "Request to MailChimp Export API wasn't successfully completed."
+                'Request to MailChimp Export API wasn\'t successfully completed.'
             );
         }
-        if (0 !== strpos($response->getContentType(), 'text/html')) {
+        if (0 !== strpos($response->getHeaderLine('Content-Type'), 'text/html')) {
             throw BadResponseException::factory(
                 $url,
                 (string)$query,
@@ -116,7 +116,7 @@ class MailChimpClient extends BaseClient
      * @param string $query
      * @return Response
      */
-    protected function callExportApi($url, $query)
+    protected function callExportApi($url, $query): Response
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
@@ -140,6 +140,6 @@ class MailChimpClient extends BaseClient
             );
         }
 
-        return Response::fromMessage($message);
+        return \GuzzleHttp\Psr7\parse_response($message);
     }
 }

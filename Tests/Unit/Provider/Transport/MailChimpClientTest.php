@@ -2,12 +2,13 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Provider\Transport;
 
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\Psr7\Response;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\Exception\BadResponseException;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClient;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class MailChimpClientTest extends \PHPUnit\Framework\TestCase
+class MailChimpClientTest extends TestCase
 {
     const API_KEY = '3024ddceb22913e9f8ff39fe9be157f6-us9';
     const DC = 'us9';
@@ -26,8 +27,9 @@ class MailChimpClientTest extends \PHPUnit\Framework\TestCase
     public function testConstructorSavesApiKey()
     {
         $response = $this->getMockBuilder(Response::class)->disableOriginalConstructor()->getMock();
-        $response->expects(static::once())->method('getContentType')->willReturn('text/html');
-        $response->expects(static::once())->method('isSuccessful')->willReturn(true);
+        $response->expects(static::any())->method('getStatusCode')->willReturn(200);
+        $response->expects(static::once())->method('getHeaderLine')
+            ->with('Content-Type')->willReturn('text/html');
 
         $this->client->expects(static::once())
             ->method('callExportApi')
@@ -57,18 +59,19 @@ class MailChimpClientTest extends \PHPUnit\Framework\TestCase
             ->with($expectedUrl, $expectedRequestEntity)
             ->willReturn($response);
 
-        $response->expects(static::once())->method('getContentType')->willReturn('text/html');
-        $response->expects(static::once())->method('isSuccessful')->willReturn(true);
+        $response->expects(static::any())->method('getStatusCode')->willReturn(200);
+        $response->expects(static::once())->method('getHeaderLine')
+            ->with('Content-Type')->willReturn('text/html');
 
         static::assertEquals($response, $this->client->export($methodName, $parameters));
     }
 
     /**
      * @dataProvider invalidResponseDataProvider
-     * @param bool $successful
+     * @param int    $statusCode
      * @param string $expectedError
      */
-    public function testExportFailsWithInvalidResponse($successful, $expectedError)
+    public function testExportFailsWithInvalidResponse(int $statusCode, $expectedError)
     {
         $methodName = 'list';
         $parameters = ['id' => 123456];
@@ -87,14 +90,17 @@ class MailChimpClientTest extends \PHPUnit\Framework\TestCase
             ->with($expectedUrl, $expectedRequestEntity)
             ->willReturn($response);
 
-        $response->expects(static::once())->method('isSuccessful')->willReturn($successful);
-        $response->expects(static::once())->method('getStatusCode')->willReturn(500);
+        $response->expects(static::any())->method('getHeaderLine')->willReturnMap(
+            [
+                ['Content-Type', 'application/json'],
+                ['X-MailChimp-API-Error-Code', 104],
+            ]
+        );
+        $response->expects(static::exactly(2))->method('getStatusCode')->willReturn($statusCode);
         $response->expects(static::once())->method('getReasonPhrase')->willReturn('OK');
-        $response->expects(static::atLeastOnce())->method('getContentType')->willReturn('application/json');
 
-        $response->expects(static::once())
+        $response->expects(static::any())
             ->method('getBody')
-            ->with(true)
             ->willReturn('{"error":"API Key can not be blank","code":104}');
 
         $this->expectException(BadResponseException::class);
@@ -103,13 +109,13 @@ class MailChimpClientTest extends \PHPUnit\Framework\TestCase
                 PHP_EOL,
                 [
                     $expectedError,
-                    '[status code] 500',
-                    '[API error code] ',
+                    '[status code] '.$statusCode,
+                    '[API error code] 104',
                     '[reason phrase] OK',
                     '[url] https://us9.api.mailchimp.com/export/1.0/list/',
-                    '[request parameters]' . $expectedRequestEntity,
+                    '[request parameters]'.$expectedRequestEntity,
                     '[content type] application/json',
-                    '[response body] {"error":"API Key can not be blank","code":104}'
+                    '[response body] {"error":"API Key can not be blank","code":104}',
                 ]
             )
         );
@@ -117,11 +123,14 @@ class MailChimpClientTest extends \PHPUnit\Framework\TestCase
         $this->client->export($methodName, $parameters);
     }
 
-    public function invalidResponseDataProvider()
+    /**
+     * @return array[]
+     */
+    public function invalidResponseDataProvider(): array
     {
         return [
-            [true, 'Invalid response, expected content type is text/html'],
-            [false, 'Request to MailChimp Export API wasn\'t successfully completed.']
+            [200, 'Invalid response, expected content type is text/html'],
+            [500, 'Request to MailChimp Export API wasn\'t successfully completed.'],
         ];
     }
 }

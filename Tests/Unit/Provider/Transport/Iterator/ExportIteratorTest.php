@@ -2,25 +2,31 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Provider\Transport\Iterator;
 
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Stream;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\ExportIterator;
+use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClient;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\StreamInterface;
 
-class ExportIteratorTest extends \PHPUnit\Framework\TestCase
+class ExportIteratorTest extends TestCase
 {
+    const STREAM_FILE = __DIR__.'/fixtures/export_list_correct.csv';
+
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
+     * @var MockObject|MailChimpClient
      */
     protected $client;
 
     protected function setUp(): void
     {
-        $this->client = $this->getMockBuilder(
-            'Oro\\Bundle\\MailChimpBundle\\Provider\\Transport\\MailChimpClient'
-        )->disableOriginalConstructor()->getMock();
+        $this->client = $this->createMock(MailChimpClient::class);
     }
 
     /**
      * @param string $methodName
-     * @param array $parameters
+     * @param array  $parameters
      * @return ExportIterator
      */
     protected function createIterator($methodName, array $parameters)
@@ -30,16 +36,16 @@ class ExportIteratorTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider iteratorDataProvider
-     * @param string $methodName
-     * @param array $parameters
-     * @param array $expectedLines
-     * @param array $expected
+     * @param string          $methodName
+     * @param array           $parameters
+     * @param StreamInterface $body
+     * @param array           $expected
      */
-    public function testIteratorWorks($methodName, $parameters, $expectedLines, $expected)
+    public function testIteratorWorks($methodName, $parameters, StreamInterface $body, $expected)
     {
         $iterator = $this->createIterator($methodName, $parameters);
 
-        $response = $this->getMockBuilder('Guzzle\\Http\\Message\\Response')
+        $response = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()->getMock();
 
         $this->client->expects($this->once())
@@ -47,22 +53,12 @@ class ExportIteratorTest extends \PHPUnit\Framework\TestCase
             ->with($methodName, $parameters)
             ->will($this->returnValue($response));
 
-        $body = $this->createMock('Guzzle\\Http\\EntityBodyInterface');
-
         $response->expects($this->any())
             ->method('getBody')
             ->will($this->returnValue($body));
         $response->expects($this->any())
-            ->method('isSuccessful')
-            ->will($this->returnValue(true));
-
-        call_user_func_array(
-            [
-                $body->expects($this->atLeastOnce())->method('readLine'),
-                'willReturnOnConsecutiveCalls'
-            ],
-            $expectedLines
-        );
+            ->method('getStatusCode')
+            ->will($this->returnValue(200));
 
         $actual = [];
         foreach ($iterator as $key => $value) {
@@ -73,16 +69,16 @@ class ExportIteratorTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider iteratorDataProvider
-     * @param string $methodName
-     * @param array $parameters
-     * @param array $expectedLines
-     * @param array $expected
+     * @param string          $methodName
+     * @param array           $parameters
+     * @param StreamInterface $body
+     * @param array           $expected
      */
-    public function testRewindWorks($methodName, $parameters, $expectedLines, $expected)
+    public function testRewindWorks(string $methodName, array $parameters, StreamInterface $body, array $expected)
     {
         $iterator = $this->createIterator($methodName, $parameters);
 
-        $response = $this->getMockBuilder('Guzzle\\Http\\Message\\Response')
+        $response = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()->getMock();
 
         $this->client->expects($this->at(0))
@@ -90,22 +86,12 @@ class ExportIteratorTest extends \PHPUnit\Framework\TestCase
             ->with($methodName, $parameters)
             ->will($this->returnValue($response));
 
-        $body = $this->createMock('Guzzle\\Http\\EntityBodyInterface');
-
         $response->expects($this->any())
             ->method('getBody')
             ->will($this->returnValue($body));
         $response->expects($this->any())
-            ->method('isSuccessful')
-            ->will($this->returnValue(true));
-
-        call_user_func_array(
-            [
-                $body->expects($this->atLeastOnce())->method('readLine'),
-                'willReturnOnConsecutiveCalls'
-            ],
-            $expectedLines
-        );
+            ->method('getStatusCode')
+            ->will($this->returnValue(200));
 
         $actual = [];
         foreach ($iterator as $key => $value) {
@@ -114,7 +100,7 @@ class ExportIteratorTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $actual);
 
         // Iterate once again with rewind
-        $response = $this->getMockBuilder('Guzzle\\Http\\Message\\Response')
+        $response = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()->getMock();
 
         $this->client->expects($this->at(0))
@@ -122,22 +108,12 @@ class ExportIteratorTest extends \PHPUnit\Framework\TestCase
             ->with($methodName, $parameters)
             ->will($this->returnValue($response));
 
-        $body = $this->createMock('Guzzle\\Http\\EntityBodyInterface');
-
         $response->expects($this->any())
             ->method('getBody')
             ->will($this->returnValue($body));
         $response->expects($this->any())
-            ->method('isSuccessful')
-            ->will($this->returnValue(true));
-
-        call_user_func_array(
-            [
-                $body->expects($this->atLeastOnce())->method('readLine'),
-                'willReturnOnConsecutiveCalls'
-            ],
-            $expectedLines
-        );
+            ->method('getStatusCode')
+            ->will($this->returnValue(200));
 
         $actual = [];
         foreach ($iterator as $key => $value) {
@@ -155,7 +131,7 @@ class ExportIteratorTest extends \PHPUnit\Framework\TestCase
             'with content' => [
                 'methodName' => 'list',
                 'parameters' => ['id' => 123456789],
-                'expectedLines' => file(__DIR__ . '/fixtures/export_list_correct.csv'),
+                'stream' => new Stream(fopen(self::STREAM_FILE, 'r')),
                 'expected' => [
                     [
                         'Email Address' => 'john.doe@example.com',
@@ -208,7 +184,7 @@ class ExportIteratorTest extends \PHPUnit\Framework\TestCase
             'empty' => [
                 'methodName' => 'list',
                 'parameters' => ['id' => 123456789],
-                'expectedLines' => [],
+                'stream' => $this->createMock(StreamInterface::class),
                 'expected' => [],
             ]
         ];

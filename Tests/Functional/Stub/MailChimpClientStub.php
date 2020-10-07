@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Functional\Stub;
 
-use Guzzle\Http\Message\Response;
+use GuzzleHttp\Psr7\Response;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClient;
 use Symfony\Component\Yaml\Yaml;
 
@@ -13,7 +13,7 @@ class MailChimpClientStub extends MailChimpClient
      *
      * {@inheritdoc}
      */
-    public function export($methodName, array $parameters)
+    public function export($methodName, array $parameters): Response
     {
         $fileName = $parameters['id'] . '.yml';
         $filePath = __DIR__ . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . $fileName;

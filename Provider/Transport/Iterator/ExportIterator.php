@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator;
 
-use Guzzle\Http\EntityBodyInterface;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClient;
+use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -17,9 +17,9 @@ class ExportIterator implements \Iterator
     protected $client;
 
     /**
-     * @var EntityBodyInterface
+     * @var StreamInterface
      */
-    protected $body;
+    protected $bodyStream;
 
     /**
      * @var string
@@ -116,7 +116,7 @@ class ExportIterator implements \Iterator
     {
         $this->offset = -1;
         $this->current = null;
-        $this->body = null;
+        $this->bodyStream = null;
         $this->header = null;
 
         $this->next();
@@ -138,11 +138,11 @@ class ExportIterator implements \Iterator
      */
     protected function read()
     {
-        if (!$this->body) {
+        if (!$this->bodyStream) {
             $response = $this->client->export($this->methodName, $this->parameters);
-            $this->body = $response->getBody();
+            $this->bodyStream = $response->getBody();
 
-            $this->body->seek(0, \SEEK_SET);
+            $this->bodyStream->seek(0, \SEEK_SET);
 
             if ($this->useFirstLineAsHeader) {
                 $line = $this->getLineData();
@@ -160,7 +160,7 @@ class ExportIterator implements \Iterator
      */
     protected function getLineData()
     {
-        $line = $this->body->readLine();
+        $line = \GuzzleHttp\Psr7\readline($this->bodyStream);
         if (is_string($line)) {
             return json_decode($line, JSON_OBJECT_AS_ARRAY);
         } else {
