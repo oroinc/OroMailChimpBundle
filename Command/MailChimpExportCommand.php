@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Oro\Bundle\MailChimpBundle\Command;
 
@@ -21,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
- * The CLI command to export members and static segments to MailChimp.
+ * Exports members and static segments to MailChimp.
  */
 class MailChimpExportCommand extends Command implements CronCommandInterface, ContainerAwareInterface
 {
@@ -30,48 +31,59 @@ class MailChimpExportCommand extends Command implements CronCommandInterface, Co
     /** @var string */
     protected static $defaultName = 'oro:cron:mailchimp:export';
 
-    /** @var JobExecutor */
-    protected $jobExecutor;
-
-    /** @var StaticSegmentsMemberStateManager */
-    protected $reverseSyncProcessor;
-
-    /** @var StaticSegmentsMemberStateManager */
-    protected $staticSegmentStateManager;
-
-    /** @var DoctrineHelper */
-    protected $doctrineHelper;
+    protected JobExecutor $jobExecutor;
+    protected StaticSegmentsMemberStateManager $reverseSyncProcessor;
+    protected StaticSegmentsMemberStateManager $staticSegmentStateManager;
+    protected DoctrineHelper $doctrineHelper;
 
     public function getDefaultDefinition()
     {
         return '*/5 * * * *';
     }
 
-    /**
-     * @return bool
-     */
     public function isActive()
     {
         return ($this->getStaticSegmentRepository()->countStaticSegments() > 0);
     }
 
+    /** @noinspection PhpMissingParentCallCommonInspection */
     protected function configure()
     {
         $this
-            ->setDescription('Export members and static segments to MailChimp')
             ->addOption(
                 'segments',
                 null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-                'MailChimp static StaticSegments to sync'
+                'MailChimp static segment IDs to sync'
             )->addOption(
                 'force',
                 'f',
                 InputOption::VALUE_NONE,
-                'Run sync in force mode'
-            );
+                'Force synchronization of segments regardless of their sync status'
+            )
+            ->setDescription('Exports members and static segments to MailChimp.')
+            ->setHelp(
+                <<<'HELP'
+The <info>%command.name%</info> command exports members and static segments that require synchronization to MailChimp.
+
+  <info>php %command.full_name%</info>
+
+The <info>--segments</info> option can be used to limit the export only to the specified static segments:
+
+  <info>php %command.full_name% --segments=<ID1> --segments=<ID2> --segments=<IDN></info>
+
+The <info>--force</info> option will force synchronization of segments regardless of their sync status:
+
+  <info>php %command.full_name% --force</info>
+
+HELP
+            )
+            ->addUsage('--segments=<ID1> --segments=<ID2> --segments=<IDN>')
+            ->addUsage('--force')
+        ;
     }
 
+    /** @noinspection PhpMissingParentCallCommonInspection */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $segments = $input->getOption('segments');
@@ -112,10 +124,7 @@ class MailChimpExportCommand extends Command implements CronCommandInterface, Co
         }
     }
 
-    /**
-     * @return StaticSegmentRepository
-     */
-    protected function getStaticSegmentRepository()
+    protected function getStaticSegmentRepository(): StaticSegmentRepository
     {
         /** @var RegistryInterface $registry */
         $registry = $this->container->get('doctrine');
