@@ -38,7 +38,7 @@ class ExportMailChimpTest extends WebTestCase
         $this
             ->getContainer()
             ->set(
-                'oro_mailchimp.transport.integration_transport.test',
+                'oro_mailchimp.tests.transport.integration_transport',
                 $this->createMock(MailChimpTransport::class)
             );
 

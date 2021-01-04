@@ -1,4 +1,4 @@
 services:
-    oro_mailchimp.transport.integration_transport.test:
+    oro_mailchimp.tests.transport.integration_transport:
         alias: oro_mailchimp.transport.integration_transport
         public: true
