@@ -13,7 +13,7 @@ services:
     oro_mailchimp.model.field_helper:
         class: 'Oro\Bundle\MailChimpBundle\Model\FieldHelper'
         arguments:
-            - "@oro_entity.virtual_field_provider"
+            - "@oro_entity.virtual_field_provider.config"
 
     oro_mailchimp.validator.email_column:
         class: 'Oro\Bundle\MailChimpBundle\Validator\EmailColumnValidator'
