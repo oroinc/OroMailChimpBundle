@@ -3,25 +3,27 @@
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Model\Segment;
 
 use Oro\Bundle\MailChimpBundle\Model\Segment\ColumnDefinitionList;
+use Oro\Bundle\QueryDesignerBundle\Exception\InvalidConfigurationException;
+use Oro\Bundle\QueryDesignerBundle\QueryDesigner\QueryDefinitionUtil;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 
 class ColumnDefinitionListTest extends \PHPUnit\Framework\TestCase
 {
-    public function testGetColumnsWhenJsonRepresentationIsIncorrect()
+    public function testConstructWhenJsonRepresentationIsIncorrect()
     {
+        $this->expectException(InvalidConfigurationException::class);
+
         $segment = $this->getSegment();
         $segment->expects($this->once())->method('getDefinition')
             ->will($this->returnValue('incorrect_definition'));
 
-        $list = new ColumnDefinitionList($segment);
-
-        $this->assertEmpty($list->getColumns());
+        new ColumnDefinitionList($segment);
     }
 
     public function testGetColumnsWhenDefinitionHasNoColumns()
     {
         $segment = $this->getSegment();
-        $definition = json_encode(['filters' => []]);
+        $definition = QueryDefinitionUtil::encodeDefinition(['filters' => []]);
         $segment->expects($this->once())->method('getDefinition')->will($this->returnValue($definition));
 
         $list = new ColumnDefinitionList($segment);
@@ -33,7 +35,7 @@ class ColumnDefinitionListTest extends \PHPUnit\Framework\TestCase
     {
         $segment = $this->getSegment();
 
-        $definition = json_encode([
+        $definition = QueryDefinitionUtil::encodeDefinition([
             'columns' => [
                 ['name' => 'email', 'func' => null],
                 ['name' => 'total', 'label' => 'Total', 'func' => null]
@@ -57,7 +59,7 @@ class ColumnDefinitionListTest extends \PHPUnit\Framework\TestCase
         /** @var \PHPUnit\Framework\MockObject\MockObject|Segment $segment */
         $segment = $this->getMockBuilder('Oro\Bundle\SegmentBundle\Entity\Segment')->getMock();
 
-        $definition = json_encode($this->getCorrectSegmentDefinition());
+        $definition = QueryDefinitionUtil::encodeDefinition($this->getCorrectSegmentDefinition());
 
         $segment->expects($this->once())->method('getDefinition')->will($this->returnValue($definition));
 

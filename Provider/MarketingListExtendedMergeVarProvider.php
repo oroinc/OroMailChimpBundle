@@ -6,6 +6,7 @@ use Oro\Bundle\EntityBundle\Provider\EntityFieldProvider;
 use Oro\Bundle\MailChimpBundle\Entity\ExtendedMergeVar;
 use Oro\Bundle\MailChimpBundle\Model\ExtendedMergeVar\ProviderInterface;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\QueryDesignerBundle\QueryDesigner\QueryDefinitionUtil;
 use Oro\Component\PhpUtils\ArrayUtil;
 
 /**
@@ -45,7 +46,7 @@ class MarketingListExtendedMergeVarProvider implements ProviderInterface
      */
     public function provideExtendedMergeVars(MarketingList $marketingList)
     {
-        $definition = json_decode($marketingList->getDefinition(), true);
+        $definition = QueryDefinitionUtil::decodeDefinition($marketingList->getDefinition());
 
         $fields = $this->entityFieldProvider->getFields(
             $marketingList->getEntity(),
