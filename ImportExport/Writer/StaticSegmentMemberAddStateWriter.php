@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\MailChimpBundle\ImportExport\Writer;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\ImportExportBundle\Writer\CleanUpInterface;
 use Oro\Bundle\ImportExportBundle\Writer\InsertFromSelectWriter;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegmentMember;
@@ -31,7 +31,7 @@ class StaticSegmentMemberAddStateWriter extends InsertFromSelectWriter implement
     }
 
     /**
-     * @return \Doctrine\Common\Persistence\ObjectManager|EntityManager
+     * @return \Doctrine\Persistence\ObjectManager|EntityManager
      */
     protected function getEntityManager()
     {

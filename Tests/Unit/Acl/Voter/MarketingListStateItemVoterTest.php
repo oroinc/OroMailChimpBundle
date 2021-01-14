@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Acl\Voter;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MailChimpBundle\Acl\Voter\MarketingListStateItemVoter;
 use Oro\Bundle\MailChimpBundle\Model\FieldHelper;
@@ -88,7 +88,7 @@ class MarketingListStateItemVoterTest extends \PHPUnit\Framework\TestCase
             ->method('getSingleEntityIdentifier')
             ->will($this->returnValue($identifier));
 
-        $repository = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectRepository')
+        $repository = $this->getMockBuilder('\Doctrine\Persistence\ObjectRepository')
             ->disableOriginalConstructor()
             ->getMock();
 

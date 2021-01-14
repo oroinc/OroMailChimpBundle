@@ -3,7 +3,7 @@
 namespace Oro\Bundle\MailChimpBundle\Form\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\MailChimpBundle\Entity\Repository\CampaignRepository;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Symfony\Component\Form\FormInterface;

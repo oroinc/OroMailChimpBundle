@@ -3,7 +3,7 @@
 namespace Oro\Bundle\MailChimpBundle\Provider\Transport;
 
 use DateTime;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use Iterator;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;

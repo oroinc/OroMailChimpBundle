@@ -29,7 +29,7 @@ class EmailColumnValidatorTest extends \PHPUnit\Framework\TestCase
         $this->fieldInformationValidator = $this->getMockBuilder('Symfony\Component\Validator\ConstraintValidator')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->registry = $this->getMockBuilder('Doctrine\Common\Persistence\ManagerRegistry')
+        $this->registry = $this->getMockBuilder('Doctrine\Persistence\ManagerRegistry')
             ->disableOriginalConstructor()
             ->getMock();
         $this->validator = new EmailColumnValidator($this->fieldInformationValidator, $this->registry);
@@ -89,7 +89,7 @@ class EmailColumnValidatorTest extends \PHPUnit\Framework\TestCase
             ->method('isManual')
             ->will($this->returnValue(false));
 
-        $repository = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectRepository')
+        $repository = $this->getMockBuilder('\Doctrine\Persistence\ObjectRepository')
             ->disableOriginalConstructor()
             ->getMock();
         $repository->expects($this->once())
@@ -126,7 +126,7 @@ class EmailColumnValidatorTest extends \PHPUnit\Framework\TestCase
             ->method('getSegment')
             ->will($this->returnValue($segment));
 
-        $repository = $this->getMockBuilder('\Doctrine\Common\Persistence\ObjectRepository')
+        $repository = $this->getMockBuilder('\Doctrine\Persistence\ObjectRepository')
             ->disableOriginalConstructor()
             ->getMock();
         $repository->expects($this->once())

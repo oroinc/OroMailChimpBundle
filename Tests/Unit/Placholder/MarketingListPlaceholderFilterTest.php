@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Placeholder;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Placeholder\MarketingListPlaceholderFilter;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
@@ -41,7 +41,7 @@ class MarketingListPlaceholderFilterTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->setMethods(array('getRepository', 'getMetadataFactory'))
             ->getMock();
-        $this->managerRegistry = $this->createMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $this->managerRegistry = $this->createMock('Doctrine\Persistence\ManagerRegistry');
 
         $this->placeholderFilter = new MarketingListPlaceholderFilter($this->managerRegistry);
     }

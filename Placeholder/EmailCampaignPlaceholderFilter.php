@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\MailChimpBundle\Placeholder;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\MailChimpBundle\Transport\MailChimpTransport;
 

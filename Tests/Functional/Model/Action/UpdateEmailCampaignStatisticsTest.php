@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Functional\Model\Action;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaignStatistics;
 use Oro\Bundle\MailChimpBundle\Entity\MemberActivity;
 use Oro\Bundle\MailChimpBundle\Model\Action\UpdateEmailCampaignStatistics;

@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\MailChimpBundle\ImportExport\Writer;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Batch job's processed campaign data remove writer.

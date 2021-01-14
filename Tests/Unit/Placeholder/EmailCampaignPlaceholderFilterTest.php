@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Placeholder;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\MailChimpBundle\Entity\Campaign;
 use Oro\Bundle\MailChimpBundle\Placeholder\EmailCampaignPlaceholderFilter;
@@ -41,7 +41,7 @@ class EmailCampaignPlaceholderFilterTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->setMethods(array('getRepository'))
             ->getMock();
-        $this->managerRegistry = $this->createMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $this->managerRegistry = $this->createMock('Doctrine\Persistence\ManagerRegistry');
 
         $this->placeholderFilter = new EmailCampaignPlaceholderFilter($this->managerRegistry);
     }
