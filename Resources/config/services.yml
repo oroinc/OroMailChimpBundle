@@ -955,13 +955,6 @@ services:
             - '@oro_entity.doctrine_helper'
             - '@translator'
 
-    oro_mailchimp.extension.transtation_packages_provider:
-        parent: oro_translation.extension.transtation_packages_provider.abstract
-        calls:
-            - ['addPackage', ['OroCRM', 'oro/mailchimp']]
-        tags:
-            - { name: oro_translation.extension.packages_provider }
-
     oro_mailchimp.event_listener.members_to_update_on_entity_change_listener:
         class: Oro\Bundle\MailChimpBundle\EventListener\MailchimpMembersToUpdateOnEntityChangeListener
         arguments:
