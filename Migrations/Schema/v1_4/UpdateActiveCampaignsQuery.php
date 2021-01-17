@@ -42,7 +42,7 @@ class UpdateActiveCampaignsQuery extends ParametrizedMigrationQuery
         $this->logQuery($logger, $update, $params, $types);
 
         if (!$dryRun) {
-            $this->connection->executeUpdate($update, $params, $types);
+            $this->connection->executeStatement($update, $params, $types);
         }
     }
 }

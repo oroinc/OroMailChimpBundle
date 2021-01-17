@@ -51,7 +51,7 @@ class StaticSegmentMemberStateWriter extends AbstractNativeQueryWriter
 
             $this->helper->getManager($this->entityName)
                 ->getConnection()
-                ->executeUpdate($updateQuery, $params, $types);
+                ->executeStatement($updateQuery, $params, $types);
         }
     }
 }
