@@ -155,7 +155,7 @@ class MailchimpMembersToUpdateOnEntityChangeListener
     /**
      * Sets mailchimp members to 'update' status by given emails
      *
-     * @param array $mails
+     * @param array $emails
      * @return mixed
      */
     private function updateMembersSyncStatus(array $emails)

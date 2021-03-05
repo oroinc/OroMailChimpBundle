@@ -284,7 +284,7 @@ class MailChimpClient
 
     /**
      * @link https://developer.mailchimp.com/documentation/mailchimp/reference/campaigns/#%20
-     * @param array $options
+     * @param string $campaignId
      * @return array|false
      * @throws MailChimpClientException
      */
