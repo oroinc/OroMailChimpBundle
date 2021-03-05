@@ -123,7 +123,8 @@ class MarketingListItemGridListener
 
     /**
      * @param MarketingList $marketingList
-     * @return
+     *
+     * @return bool
      */
     private function isApplicableOnMarketingList(MarketingList $marketingList)
     {

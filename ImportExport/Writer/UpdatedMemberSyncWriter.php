@@ -32,7 +32,6 @@ class UpdatedMemberSyncWriter implements ItemWriterInterface
 
     /**
      * @param DoctrineHelper $doctrineHelper
-     * @param MemberSyncWriter $memberSyncWriter
      */
     public function __construct(DoctrineHelper $doctrineHelper)
     {
