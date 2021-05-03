@@ -3,6 +3,7 @@
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Entity;
 
 use Oro\Bundle\MailChimpBundle\Entity\ExtendedMergeVar;
+use Oro\Component\Testing\ReflectionUtil;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
@@ -37,10 +38,8 @@ class ExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($this->entity->getId());
 
         $value = 8;
-        $idReflection = new \ReflectionProperty(get_class($this->entity), 'id');
-        $idReflection->setAccessible(true);
-        $idReflection->setValue($this->entity, $value);
-        $this->assertEquals($value, $this->entity->getId());
+        ReflectionUtil::setId($this->entity, $value);
+        $this->assertSame($value, $this->entity->getId());
     }
 
     /**

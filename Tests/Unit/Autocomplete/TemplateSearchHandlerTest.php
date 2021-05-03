@@ -11,6 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\MailChimpBundle\Autocomplete\TemplateSearchHandler;
 use Oro\Bundle\MailChimpBundle\Entity\Template;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
+use Oro\Component\Testing\ReflectionUtil;
 
 class TemplateSearchHandlerTest extends \PHPUnit\Framework\TestCase
 {
@@ -122,14 +123,14 @@ class TemplateSearchHandlerTest extends \PHPUnit\Framework\TestCase
         $this->setUpExpects();
         $this->setSearchExpects();
 
-        $reflection = new \ReflectionClass(get_class($this->searchHandler));
-        $method = $reflection->getMethod('searchEntities');
-        $method->setAccessible(true);
-
-        $search = "test;1";
+        $search = 'test;1';
         $firstResult = 1;
         $maxResults = 10;
-        $result = $method->invokeArgs($this->searchHandler, [$search, $firstResult, $maxResults]);
+        $result = ReflectionUtil::callMethod(
+            $this->searchHandler,
+            'searchEntities',
+            [$search, $firstResult, $maxResults]
+        );
         $this->assertEmpty($result);
     }
 
@@ -145,10 +146,7 @@ class TemplateSearchHandlerTest extends \PHPUnit\Framework\TestCase
     {
         $this->setUpExpects();
 
-        $reflection = new \ReflectionClass(get_class($this->searchHandler));
-        $method = $reflection->getMethod('findById');
-        $method->setAccessible(true);
-        $result = $method->invokeArgs($this->searchHandler, ['1;1']);
+        $result = ReflectionUtil::callMethod($this->searchHandler, 'findById', ['1;1']);
 
         $this->assertEquals([['id' => 1, 'channel' => 1]], $result);
     }
@@ -162,16 +160,12 @@ class TemplateSearchHandlerTest extends \PHPUnit\Framework\TestCase
     {
         $this->setUpExpects();
 
-        $reflection = new \ReflectionClass(get_class($this->searchHandler));
-        $method = $reflection->getMethod('convertItems');
-        $method->setAccessible(true);
-
         $templateOne = new Template();
         $templateOne->setCategory($expected[0]['name'])->setName($expected[0]['children'][0]['name']);
         $templateTwo = new Template();
         $templateTwo->setCategory($expected[1]['name'])->setName($expected[1]['children'][0]['name']);
         $templates = [$templateOne, $templateTwo];
-        $result = $method->invokeArgs($this->searchHandler, [$templates]);
+        $result = ReflectionUtil::callMethod($this->searchHandler, 'convertItems', [$templates]);
         $this->assertEquals($expected, $result);
     }
 
@@ -184,16 +178,12 @@ class TemplateSearchHandlerTest extends \PHPUnit\Framework\TestCase
     {
         $this->setUpExpects();
 
-        $reflection = new \ReflectionClass(get_class($this->searchHandler));
-        $method = $reflection->getMethod('convertItems');
-        $method->setAccessible(true);
-
         $templateOne = new Template();
         $templateOne->setType($expected[0]['name'])->setName($expected[0]['children'][0]['name']);
         $templateTwo = new Template();
         $templateTwo->setType($expected[1]['name'])->setName($expected[1]['children'][0]['name']);
         $templates = [$templateOne, $templateTwo];
-        $result = $method->invokeArgs($this->searchHandler, [$templates]);
+        $result = ReflectionUtil::callMethod($this->searchHandler, 'convertItems', [$templates]);
         $this->assertEquals($expected, $result);
     }
 

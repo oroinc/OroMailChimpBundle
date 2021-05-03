@@ -5,6 +5,7 @@ namespace Oro\Bundle\MailChimpBundle\Tests\Unit\ImportExport\Reade;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\MailChimpBundle\ImportExport\Reader\StaticSegmentReader;
+use Oro\Component\Testing\ReflectionUtil;
 
 class StaticSegmentReaderTest extends \PHPUnit\Framework\TestCase
 {
@@ -42,10 +43,7 @@ class StaticSegmentReaderTest extends \PHPUnit\Framework\TestCase
 
     public function testCloseOnSelfGeneratedIterator()
     {
-        $reflectionClass = new \ReflectionClass(StaticSegmentReader::class);
-        $property = $reflectionClass->getProperty('isSelfCreatedIterator');
-        $property->setAccessible(true);
-        $property->setValue($this->reader, true);
+        ReflectionUtil::setPropertyValue($this->reader, 'isSelfCreatedIterator', true);
 
         $iterator = $this->createMock('\Iterator');
         $this->reader->setSourceIterator($iterator);
