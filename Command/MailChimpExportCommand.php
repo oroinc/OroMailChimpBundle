@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Oro\Bundle\MailChimpBundle\Command;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\ImportExportBundle\Job\JobExecutor;
@@ -13,7 +14,6 @@ use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Model\StaticSegment\StaticSegmentsMemberStateManager;
 use Oro\Component\MessageQueue\Client\Message;
 use Oro\Component\MessageQueue\Client\MessagePriority;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -126,7 +126,7 @@ HELP
 
     protected function getStaticSegmentRepository(): StaticSegmentRepository
     {
-        /** @var RegistryInterface $registry */
+        /** @var ManagerRegistry $registry */
         $registry = $this->container->get('doctrine');
 
         return $registry->getRepository(StaticSegment::class);
