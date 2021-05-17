@@ -962,7 +962,7 @@ services:
             - '@oro_marketing_list.provider.marketing_list_allowed_classes'
             - '@oro_marketing_list.provider.contact_information_fields'
         tags:
-            - { name: doctrine.event_listener, event: onFlush, connection: default }
+            - { name: doctrine.event_listener, event: onFlush }
 
     oro_mailchimp.event_listener.datagrid.marketing_list_item:
         class: Oro\Bundle\MailChimpBundle\EventListener\DataGrid\MarketingListItemGridListener
