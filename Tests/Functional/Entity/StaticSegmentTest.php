@@ -19,9 +19,8 @@ class StaticSegmentTest extends WebTestCase
 
     public function setUp()
     {
-        parent::setUp();
-
         $this->initClient();
+        $this->getOptionalListenerManager()->enableListener('oro_workflow.listener.event_trigger_collector');
         $this->loadFixtures([LoadMarketingListData::class, LoadSubscribersListData::class]);
     }
 

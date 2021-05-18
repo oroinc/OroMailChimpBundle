@@ -36,6 +36,7 @@ class UpdateEmailCampaignStatisticsTest extends WebTestCase
     public function setUp()
     {
         $this->initClient();
+        $this->getOptionalListenerManager()->enableListener('oro_workflow.listener.event_trigger_collector');
 
         $this->action = $this->getContainer()
             ->get('oro_mailchimp.workflow.action.update_email_campaign_statistics');
