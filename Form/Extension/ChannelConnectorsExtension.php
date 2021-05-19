@@ -90,8 +90,8 @@ class ChannelConnectorsExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function getExtendedType()
+    public static function getExtendedTypes(): iterable
     {
-        return ChannelType::class;
+        return [ChannelType::class];
     }
 }
