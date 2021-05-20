@@ -2,6 +2,11 @@ Please refer first to [UPGRADE.md](UPGRADE.md) for the most important items that
 
 The current file describes significant changes in the code that may affect the upgrade of your customizations.
 
+## 3.1.5
+### Added
+* STATUS_SYNC_FAILED status was added to `Oro\Bundle\MailChimpBundle\Entity\StaticSegment` which indicates that 
+  static segment sync was finished with errors. 
+
 ## 3.1.4
 ### Changed
 * In `Oro\Bundle\MailChimpBundle\Controller\MailChimpController::toggleUpdateStateAction` 
