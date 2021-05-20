@@ -341,6 +341,7 @@ oro:
 
         syncstatus:
             synced: Up to date
+            sync_failed: Sync failed
             not_synced: Not Synced
             in_progress: In Progress
             scheduled: Scheduled for Sync

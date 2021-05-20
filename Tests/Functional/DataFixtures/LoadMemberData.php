@@ -30,6 +30,15 @@ class LoadMemberData extends AbstractMailChimpFixture implements DependentFixtur
             'reference' => 'mailchimp:member_two',
             'mergeVarValues' => ['EMAIL' => 'member2@example.com', 'FIRSTNAME' => 'Michael', 'LASTNAME' => 'Jackson'],
         ],
+        [
+            'originId' => 210000002,
+            'email' => 'member3@example.com',
+            'status' => Member::STATUS_SUBSCRIBED,
+            'subscribersList' => 'mailchimp:subscribers_list_one',
+            'channel' => 'mailchimp:channel_1',
+            'reference' => 'mailchimp:member_three',
+            'mergeVarValues' => ['EMAIL' => 'member3@example.com', 'FIRSTNAME' => null, 'LASTNAME' => null],
+        ],
     ];
 
     /**

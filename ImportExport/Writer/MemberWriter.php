@@ -40,7 +40,7 @@ class MemberWriter extends AbstractExportWriter
 
         array_walk(
             $items,
-            function (Member $member) {
+            static function (Member $member) {
                 if ($member->getStatus() === Member::STATUS_EXPORT) {
                     $member->setStatus(Member::STATUS_EXPORT_FAILED);
                 }
@@ -168,10 +168,10 @@ class MemberWriter extends AbstractExportWriter
     {
         return $member->setMergeVarValues(array_filter(
             $member->getMergeVarValues(),
-            function ($key) use ($remoteMergeVarTags) {
-                return in_array($key, $remoteMergeVarTags, true);
+            static function ($value, $key) use ($remoteMergeVarTags) {
+                return $value !== null && in_array($key, $remoteMergeVarTags, true);
             },
-            ARRAY_FILTER_USE_KEY
+            ARRAY_FILTER_USE_BOTH
         ));
     }
 }

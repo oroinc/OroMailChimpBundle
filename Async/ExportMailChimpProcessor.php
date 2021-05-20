@@ -173,20 +173,23 @@ class ExportMailChimpProcessor implements MessageProcessorInterface, TopicSubscr
             JobExecutor::JOB_CONTEXT_AGGREGATOR_TYPE => SelectiveContextAggregator::TYPE
         ];
 
-        $this->reverseSyncProcessor->process($integration, MemberConnector::TYPE, $parameters);
-        $this->reverseSyncProcessor->process($integration, StaticSegmentConnector::TYPE, $parameters);
+        $isSynced = $this->reverseSyncProcessor->process($integration, MemberConnector::TYPE, $parameters);
+        if ($isSynced) {
+            $isSynced = $this->reverseSyncProcessor->process($integration, StaticSegmentConnector::TYPE, $parameters);
+        }
 
         // reverse sync process does implicit entity manager clear, we have to re-query everything again.
+        $status = $isSynced ? StaticSegment::STATUS_SYNCED : StaticSegment::STATUS_SYNC_FAILED;
         foreach ($segmentsIdsToSync as $segmentId) {
             /** @var StaticSegment $staticSegment */
             $staticSegment = $staticSegmentRepository->find($segmentId);
 
             if ($staticSegment) {
-                $this->setStaticSegmentStatus($staticSegment, StaticSegment::STATUS_SYNCED, true);
+                $this->setStaticSegmentStatus($staticSegment, $status, true);
             }
         }
 
-        return true;
+        return $isSynced;
     }
 
     /**
