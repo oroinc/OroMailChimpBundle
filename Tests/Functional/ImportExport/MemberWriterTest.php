@@ -48,6 +48,8 @@ class MemberWriterTest extends WebTestCase
         $member1 = $this->getReference('mailchimp:member_one');
         /** @var Member $member2 */
         $member2 = $this->getReference('mailchimp:member_two');
+        /** @var Member $member3 */
+        $member3 = $this->getReference('mailchimp:member_three');
         /** @var SubscribersList $subscribersList */
         $subscribersList = $this->getReference('mailchimp:subscribers_list_one');
 
@@ -57,9 +59,9 @@ class MemberWriterTest extends WebTestCase
             ->with($subscribersList->getOriginId())
             ->willReturn([
                 'merge_fields' => [
-                    ['name' => 'email', 'tag' => 'EMAIL', 'id' => 1],
-                    ['name' => 'id', 'tag' => 'E_ID', 'id' => 2],
-                    ['name' => 'firstName', 'tag' => 'FIRSTNAME', 'id' => 3],
+                    ['name' => 'email', 'tag' => 'EMAIL', 'type' => 'email', 'id' => 1],
+                    ['name' => 'id', 'tag' => 'E_ID', 'type' => 'text', 'id' => 2],
+                    ['name' => 'firstName', 'tag' => 'FIRSTNAME', 'type' => 'text', 'id' => 3],
                 ],
             ]);
         $this->transport->expects($this->atLeastOnce())
@@ -78,6 +80,11 @@ class MemberWriterTest extends WebTestCase
                         'status' => 'subscribed',
                         'merge_fields' => ['EMAIL' => 'member2@example.com', 'FIRSTNAME' => 'Michael'],
                     ],
+                    [
+                        'email_address' => 'member3@example.com',
+                        'status' => 'subscribed',
+                        'merge_fields' => ['EMAIL' => 'member3@example.com'],
+                    ],
                 ],
                 'double_optin' => false,
                 'update_existing' => true,
@@ -92,17 +99,12 @@ class MemberWriterTest extends WebTestCase
         $writer = $this->getContainer()->get('oro_mailchimp.importexport.writer.member');
         $writer->setStepExecution($this->stepExecution);
 
-        $this->assertEquals([
-            'EMAIL' => 'member1@example.com',
-            'FIRSTNAME' => 'Antonio',
-            'LASTNAME' => 'Banderas'
-        ], $member1->getMergeVarValues());
-
-        $writer->write([$member1, $member2]);
+        $writer->write([$member1, $member2, $member3]);
 
         $em = $this->getContainer()->get('oro_entity.doctrine_helper')->getEntityManagerForClass(Member::class);
-        $member1 = $em->find(Member::class, $member1->getId());
-        $member2 = $em->find(Member::class, $member2->getId());
+        $em->refresh($member1);
+        $em->refresh($member2);
+        $em->refresh($member3);
 
         $this->assertEquals([
             'EMAIL' => 'member1@example.com',
@@ -113,12 +115,15 @@ class MemberWriterTest extends WebTestCase
             'EMAIL' => 'member2@example.com',
             'FIRSTNAME' => 'Michael'
         ], $member2->getMergeVarValues());
+        $this->assertEquals([
+            'EMAIL' => 'member3@example.com'
+        ], $member3->getMergeVarValues());
 
         $subscribersList = $em->find(SubscribersList::class, $subscribersList->getId());
         $this->assertEquals([
-            ['name' => 'email', 'tag' => 'EMAIL', 'id' => 1],
-            ['name' => 'id', 'tag' => 'E_ID', 'id' => 2],
-            ['name' => 'firstName', 'tag' => 'FIRSTNAME', 'id' => 3],
+            ['name' => 'email', 'tag' => 'EMAIL', 'type' => 'email', 'id' => 1],
+            ['name' => 'id', 'tag' => 'E_ID', 'type' => 'text', 'id' => 2],
+            ['name' => 'firstName', 'tag' => 'FIRSTNAME', 'type' => 'text', 'id' => 3]
         ], $subscribersList->getMergeVarConfig());
     }
 }
