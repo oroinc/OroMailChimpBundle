@@ -13,13 +13,12 @@ use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClientFactory;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Annotation\CsrfProtection;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -168,11 +167,13 @@ class MailChimpController extends AbstractController
     }
 
     /**
-     * @Route("/email-campaign/{id}/activity-updates/toggle",
+     * @Route(
+     *      "/email-campaign/{id}/activity-updates/toggle",
      *      name="oro_mailchimp_email_campaign_activity_update_toggle",
-     *      requirements={"id"="\d+"})
+     *      requirements={"id"="\d+"},
+     *      methods={"POST"}
+     * )
      * @AclAncestor("oro_mailchimp")
-     * @Method("POST")
      * @CsrfProtection()
      *
      * @param EmailCampaign $emailCampaign
