@@ -6,59 +6,46 @@ use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Stream;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\ExportIterator;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClient;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\StreamInterface;
 
 class ExportIteratorTest extends TestCase
 {
-    const STREAM_FILE = __DIR__.'/fixtures/export_list_correct.csv';
+    private const STREAM_FILE = __DIR__ . '/fixtures/export_list_correct.csv';
 
-    /**
-     * @var MockObject|MailChimpClient
-     */
-    protected $client;
+    /** @var MailChimpClient|\PHPUnit\Framework\MockObject\MockObject */
+    private $client;
 
     protected function setUp(): void
     {
         $this->client = $this->createMock(MailChimpClient::class);
     }
 
-    /**
-     * @param string $methodName
-     * @param array  $parameters
-     * @return ExportIterator
-     */
-    protected function createIterator($methodName, array $parameters)
+    private function createIterator(string $methodName, array $parameters): ExportIterator
     {
         return new ExportIterator($this->client, $methodName, $parameters);
     }
 
     /**
      * @dataProvider iteratorDataProvider
-     * @param string          $methodName
-     * @param array           $parameters
-     * @param StreamInterface $body
-     * @param array           $expected
      */
-    public function testIteratorWorks($methodName, $parameters, StreamInterface $body, $expected)
+    public function testIteratorWorks(string $methodName, array $parameters, StreamInterface $body, array $expected)
     {
         $iterator = $this->createIterator($methodName, $parameters);
 
-        $response = $this->getMockBuilder(Response::class)
-            ->disableOriginalConstructor()->getMock();
+        $response = $this->createMock(Response::class);
 
         $this->client->expects($this->once())
             ->method('export')
             ->with($methodName, $parameters)
-            ->will($this->returnValue($response));
+            ->willReturn($response);
 
         $response->expects($this->any())
             ->method('getBody')
-            ->will($this->returnValue($body));
+            ->willReturn($body);
         $response->expects($this->any())
             ->method('getStatusCode')
-            ->will($this->returnValue(200));
+            ->willReturn(200);
 
         $actual = [];
         foreach ($iterator as $key => $value) {
@@ -69,29 +56,24 @@ class ExportIteratorTest extends TestCase
 
     /**
      * @dataProvider iteratorDataProvider
-     * @param string          $methodName
-     * @param array           $parameters
-     * @param StreamInterface $body
-     * @param array           $expected
      */
     public function testRewindWorks(string $methodName, array $parameters, StreamInterface $body, array $expected)
     {
         $iterator = $this->createIterator($methodName, $parameters);
 
-        $response = $this->getMockBuilder(Response::class)
-            ->disableOriginalConstructor()->getMock();
+        $response = $this->createMock(Response::class);
 
-        $this->client->expects($this->at(0))
+        $this->client->expects($this->exactly(2))
             ->method('export')
             ->with($methodName, $parameters)
-            ->will($this->returnValue($response));
+            ->willReturn($response);
 
         $response->expects($this->any())
             ->method('getBody')
-            ->will($this->returnValue($body));
+            ->willReturn($body);
         $response->expects($this->any())
             ->method('getStatusCode')
-            ->will($this->returnValue(200));
+            ->willReturn(200);
 
         $actual = [];
         foreach ($iterator as $key => $value) {
@@ -100,20 +82,19 @@ class ExportIteratorTest extends TestCase
         $this->assertEquals($expected, $actual);
 
         // Iterate once again with rewind
-        $response = $this->getMockBuilder(Response::class)
-            ->disableOriginalConstructor()->getMock();
+        $response = $this->createMock(Response::class);
 
-        $this->client->expects($this->at(0))
+        $this->client->expects($this->once())
             ->method('export')
             ->with($methodName, $parameters)
-            ->will($this->returnValue($response));
+            ->willReturn($response);
 
         $response->expects($this->any())
             ->method('getBody')
-            ->will($this->returnValue($body));
+            ->willReturn($body);
         $response->expects($this->any())
             ->method('getStatusCode')
-            ->will($this->returnValue(200));
+            ->willReturn(200);
 
         $actual = [];
         foreach ($iterator as $key => $value) {
@@ -122,10 +103,7 @@ class ExportIteratorTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @return array
-     */
-    public function iteratorDataProvider()
+    public function iteratorDataProvider(): array
     {
         return [
             'with content' => [
