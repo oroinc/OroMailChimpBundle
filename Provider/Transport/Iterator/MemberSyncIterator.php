@@ -353,7 +353,9 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
     {
         if ($value) {
             // CONCAT returns NULL if one of arguments is NULL - return empty string instead NULL.
-            $value = "COALESCE(CAST(GROUP_CONCAT(DISTINCT " . $value . ") as text), '')";
+            $value = "REPLACE(" .
+                "COALESCE(CAST(GROUP_CONCAT(DISTINCT " . $value . ") as text), ''), " .
+                "'\t', '\\t')";
             $mergeVars = str_replace($separator, sprintf("', %s ,'", $value), $mergeVars);
         } else {
             $mergeVars = str_replace(json_encode($separator), 'null', $mergeVars);

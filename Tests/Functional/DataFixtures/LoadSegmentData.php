@@ -25,6 +25,18 @@ class LoadSegmentData extends AbstractMailChimpFixture
                         'sorting' => '',
                         'func' => null,
                     ],
+                    [
+                        'name' => 'firstName',
+                        'label' => 'First Name',
+                        'sorting' => '',
+                        'func' => null,
+                    ],
+                    [
+                        'name' => 'lastName',
+                        'label' => 'Last Name',
+                        'sorting' => '',
+                        'func' => null,
+                    ],
                 ],
                 'filters' => [
                     [

@@ -49,8 +49,8 @@ class LoadMarketingListData extends AbstractMailChimpFixture implements Dependen
     public function getDependencies()
     {
         return [
-            __NAMESPACE__ . '\LoadSegmentData',
-            __NAMESPACE__ . '\LoadContactData',
+            LoadSegmentData::class,
+            LoadContactData::class,
         ];
     }
 }

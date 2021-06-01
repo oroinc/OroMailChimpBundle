@@ -14,7 +14,7 @@ class LoadContactData extends AbstractFixture
      */
     protected $contactsData = [
         [
-            'firstName' => 'Daniel',
+            'firstName' => "Daniel\tst",
             'lastName'  => 'Case',
             'email'     => 'member1@example.com',
         ],
