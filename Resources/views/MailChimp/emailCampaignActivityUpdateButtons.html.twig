@@ -1,5 +1,5 @@
 {% if campaign.activityUpdateState != 'expired' %}
-    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    {% import '@OroUI/macros.html.twig' as UI %}
     {% if campaign.activityUpdateState == 'enabled' %}
         {{ UI.clientButton({
             'dataUrl': path('oro_mailchimp_email_campaign_activity_update_toggle', { 'id': emailCampaign.id }) ,
