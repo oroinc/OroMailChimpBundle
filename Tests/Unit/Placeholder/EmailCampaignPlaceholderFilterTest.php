@@ -8,68 +8,51 @@ use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\MailChimpBundle\Entity\Campaign;
 use Oro\Bundle\MailChimpBundle\Placeholder\EmailCampaignPlaceholderFilter;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 
 class EmailCampaignPlaceholderFilterTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $managerRegistry;
+    /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
+    private $managerRegistry;
 
-    /**
-     * @var EntityManager|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $entityManager;
+    /** @var EntityManager|\PHPUnit\Framework\MockObject\MockObject */
+    private $entityManager;
 
-    /**
-     * @var EntityRepository|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $entityRepository;
+    /** @var EntityRepository|\PHPUnit\Framework\MockObject\MockObject */
+    private $entityRepository;
 
-    /**
-     * @var EmailCampaignPlaceholderFilter
-     */
-    protected $placeholderFilter;
+    /** @var EmailCampaignPlaceholderFilter */
+    private $placeholderFilter;
 
     protected function setUp(): void
     {
-        $this->entityRepository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
-            ->disableOriginalConstructor()
-            ->setMethods(array('findOneBy'))
-            ->getMock();
-        $this->entityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->setMethods(array('getRepository'))
-            ->getMock();
-        $this->managerRegistry = $this->createMock('Doctrine\Persistence\ManagerRegistry');
+        $this->entityRepository = $this->createMock(EntityRepository::class);
+        $this->entityManager = $this->createMock(EntityManager::class);
+        $this->managerRegistry = $this->createMock(ManagerRegistry::class);
 
         $this->placeholderFilter = new EmailCampaignPlaceholderFilter($this->managerRegistry);
     }
 
     public function testIsNotApplicableEntityOnEmailCampaign()
     {
-        $entity = $this->createMock('Oro\Bundle\MarketingListBundle\Entity\MarketingList');
+        $entity = $this->createMock(MarketingList::class);
         $this->assertFalse($this->placeholderFilter->isApplicableOnEmailCampaign($entity));
     }
 
     /**
-     * @param EmailCampaign $emailCampaign
-     * @param Campaign $campaign
-     * @param bool $expected
      * @dataProvider staticCampaignProvider
      */
-    public function testIsApplicableOnEmailCampaign($emailCampaign, $campaign, $expected)
+    public function testIsApplicableOnEmailCampaign(?EmailCampaign $emailCampaign, ?Campaign $campaign, bool $expected)
     {
-        $this->entityRepository
-            ->expects($this->any())
+        $this->entityRepository->expects($this->any())
             ->method('findOneBy')
-            ->will($this->returnValue($campaign));
+            ->willReturn($campaign);
         $this->managerRegistry->expects($this->any())
             ->method('getManager')
-            ->will($this->returnValue($this->entityManager));
+            ->willReturn($this->entityManager);
         $this->entityManager->expects($this->any())
             ->method('getRepository')
-            ->will($this->returnValue($this->entityRepository));
+            ->willReturn($this->entityRepository);
 
         $this->assertEquals(
             $expected,
@@ -77,10 +60,7 @@ class EmailCampaignPlaceholderFilterTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function staticCampaignProvider()
+    public function staticCampaignProvider(): array
     {
         $emailCampaign = new EmailCampaign();
         $mailchimpEmailCampaign = new EmailCampaign();

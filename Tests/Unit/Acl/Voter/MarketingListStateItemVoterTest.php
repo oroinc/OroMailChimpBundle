@@ -2,73 +2,56 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Acl\Voter;
 
+use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MailChimpBundle\Acl\Voter\MarketingListStateItemVoter;
 use Oro\Bundle\MailChimpBundle\Model\FieldHelper;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingListStateItemInterface;
 use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class MarketingListStateItemVoterTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var MarketingListStateItemVoter
-     */
-    protected $voter;
+    /** @var MarketingListStateItemVoter */
+    private $voter;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|DoctrineHelper
-     */
-    protected $doctrineHelper;
+    /** @var \PHPUnit\Framework\MockObject\MockObject|DoctrineHelper */
+    private $doctrineHelper;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|ContactInformationFieldsProvider
-     */
-    protected $contactInformationFieldsProvider;
+    /** @var \PHPUnit\Framework\MockObject\MockObject|ContactInformationFieldsProvider */
+    private $contactInformationFieldsProvider;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|FieldHelper
-     */
-    protected $fieldHelper;
+    /** @var \PHPUnit\Framework\MockObject\MockObject|FieldHelper */
+    private $fieldHelper;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|ObjectManager
-     */
-    protected $em;
+    /** @var \PHPUnit\Framework\MockObject\MockObject|ObjectManager */
+    private $em;
 
     protected function setUp(): void
     {
-        $this->doctrineHelper = $this->getMockBuilder('Oro\Bundle\EntityBundle\ORM\DoctrineHelper')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->doctrineHelper = $this->createMock(DoctrineHelper::class);
+        $this->em = $this->createMock(EntityManager::class);
 
-        $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->doctrineHelper
-            ->expects($this->any())
+        $this->doctrineHelper->expects($this->any())
             ->method('getEntityManager')
-            ->will($this->returnValue($this->em));
+            ->willReturn($this->em);
 
-        $this->contactInformationFieldsProvider = $this->getMockBuilder(
-            'Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider'
-        )
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->fieldHelper = $this->getMockBuilder('Oro\Bundle\MailChimpBundle\Model\FieldHelper')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->contactInformationFieldsProvider = $this->createMock(ContactInformationFieldsProvider::class);
+        $this->fieldHelper = $this->createMock(FieldHelper::class);
 
         $this->voter = new MarketingListStateItemVoter(
             $this->doctrineHelper,
             $this->contactInformationFieldsProvider,
             $this->fieldHelper,
-            '\stdClass',
-            '\stdClass',
-            '\stdClass'
+            \stdClass::class,
+            \stdClass::class,
+            \stdClass::class
         );
     }
 
@@ -83,70 +66,53 @@ class MarketingListStateItemVoterTest extends \PHPUnit\Framework\TestCase
      */
     public function testVote($identifier, $className, $object, $expected, $attributes, $queryResult = null)
     {
-        $this->doctrineHelper
-            ->expects($this->any())
+        $this->doctrineHelper->expects($this->any())
             ->method('getSingleEntityIdentifier')
-            ->will($this->returnValue($identifier));
+            ->willReturn($identifier);
 
-        $repository = $this->getMockBuilder('\Doctrine\Persistence\ObjectRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createMock(ObjectRepository::class);
 
-        $repository
-            ->expects($this->any())
+        $repository->expects($this->any())
             ->method('find')
-            ->will(
-                $this->returnValueMap(
-                    [
-                        [$identifier, $this->getItem()],
-                        [2, $object]
-                    ]
-                )
-            );
+            ->willReturnMap([
+                [$identifier, $this->getItem()],
+                [2, $object]
+            ]);
 
-        $this->doctrineHelper
-            ->expects($this->any())
+        $this->doctrineHelper->expects($this->any())
             ->method('getEntityRepository')
-            ->will($this->returnValue($repository));
+            ->willReturn($repository);
 
         if (is_object($object)) {
-            $this->doctrineHelper
-                ->expects($this->any())
+            $this->doctrineHelper->expects($this->any())
                 ->method('getEntityClass')
-                ->will($this->returnValue(get_class($object)));
+                ->willReturn(get_class($object));
         }
 
-        $this->contactInformationFieldsProvider
-            ->expects($this->any())
+        $this->contactInformationFieldsProvider->expects($this->any())
             ->method('getEntityTypedFields')
-            ->will($this->returnValue(['email']));
+            ->willReturn(['email']);
 
-        $this->contactInformationFieldsProvider
-            ->expects($this->any())
+        $this->contactInformationFieldsProvider->expects($this->any())
             ->method('getTypedFieldsValues')
-            ->will($this->returnValue(['email']));
+            ->willReturn(['email']);
 
-        $this->em
-            ->expects($this->any())
+        $this->em->expects($this->any())
             ->method('createQueryBuilder')
-            ->will($this->returnValue($this->getQueryBuilderMock($queryResult)));
+            ->willReturn($this->getQueryBuilderMock($queryResult));
 
         if ($className !== null) {
             $this->voter->setClassName($className);
         }
 
-        /** @var TokenInterface $token */
-        $token = $this->createMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
+        $token = $this->createMock(TokenInterface::class);
         $this->assertEquals(
             $expected,
             $this->voter->vote($token, $object, $attributes)
         );
     }
 
-    /**
-     * @return array
-     */
-    public function attributesDataProvider()
+    public function attributesDataProvider(): array
     {
         return [
             [null, null, [], MarketingListStateItemVoter::ACCESS_ABSTAIN, []],
@@ -164,25 +130,21 @@ class MarketingListStateItemVoterTest extends \PHPUnit\Framework\TestCase
     /**
      * @return \PHPUnit\Framework\MockObject\MockObject
      */
-    protected function getItem()
+    private function getItem()
     {
-        $item = $this->createMock('Oro\Bundle\MarketingListBundle\Entity\MarketingListStateItemInterface');
-        $marketingList = $this->createMock('Oro\Bundle\MarketingListBundle\Entity\MarketingList');
+        $item = $this->createMock(MarketingListStateItemInterface::class);
+        $marketingList = $this->createMock(MarketingList::class);
 
-        $item
-            ->expects($this->any())
+        $item->expects($this->any())
             ->method('getMarketingList')
-            ->will($this->returnValue($marketingList));
-
-        $item
-            ->expects($this->any())
+            ->willReturn($marketingList);
+        $item->expects($this->any())
             ->method('getEntityId')
-            ->will($this->returnValue(2));
+            ->willReturn(2);
 
-        $marketingList
-            ->expects($this->any())
+        $marketingList->expects($this->any())
             ->method('getEntity')
-            ->will($this->returnValue('stdClass'));
+            ->willReturn('stdClass');
 
         return $item;
     }
@@ -191,63 +153,41 @@ class MarketingListStateItemVoterTest extends \PHPUnit\Framework\TestCase
      * @param mixed $queryResult
      * @return \PHPUnit\Framework\MockObject\MockObject
      */
-    protected function getQueryBuilderMock($queryResult)
+    private function getQueryBuilderMock($queryResult)
     {
-        $qb = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $qb
-            ->expects($this->any())
+        $qb = $this->createMock(QueryBuilder::class);
+        $qb->expects($this->any())
             ->method('expr')
-            ->will($this->returnValue(new Expr()));
-
-        $qb
-            ->expects($this->any())
+            ->willReturn(new Expr());
+        $qb->expects($this->any())
             ->method('select')
-            ->will($this->returnSelf());
-
-        $qb
-            ->expects($this->any())
+            ->willReturnSelf();
+        $qb->expects($this->any())
             ->method('from')
-            ->will($this->returnSelf());
-
-        $qb
-            ->expects($this->any())
+            ->willReturnSelf();
+        $qb->expects($this->any())
             ->method('join')
-            ->will($this->returnSelf());
-
-        $qb
-            ->expects($this->any())
+            ->willReturnSelf();
+        $qb->expects($this->any())
             ->method('where')
-            ->will($this->returnSelf());
-
-        $qb
-            ->expects($this->any())
+            ->willReturnSelf();
+        $qb->expects($this->any())
             ->method('setMaxResults')
             ->with(1)
-            ->will($this->returnSelf());
-
-        $qb
-            ->expects($this->any())
+            ->willReturnSelf();
+        $qb->expects($this->any())
             ->method('setParameter')
-            ->will($this->returnSelf());
+            ->willReturnSelf();
 
-        $query = $this
-            ->getMockBuilder('Doctrine\ORM\AbstractQuery')
-            ->disableOriginalConstructor()
-            ->setMethods(['getScalarResult'])
-            ->getMockForAbstractClass();
+        $query = $this->createMock(AbstractQuery::class);
 
-        $qb
-            ->expects($this->any())
+        $qb->expects($this->any())
             ->method('getQuery')
-            ->will($this->returnValue($query));
+            ->willReturn($query);
 
-        $query
-            ->expects($this->any())
+        $query->expects($this->any())
             ->method('getScalarResult')
-            ->will($this->returnValue($queryResult));
+            ->willReturn($queryResult);
 
         return $qb;
     }
