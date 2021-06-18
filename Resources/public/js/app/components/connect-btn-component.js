@@ -21,7 +21,7 @@ define(function(require) {
         },
 
         /**
-         * @inheritDoc
+         * @inheritdoc
          */
         constructor: function ConnectButtonComponent(...args) {
             ConnectButtonComponent.__super__.constructor.apply(this, args);
