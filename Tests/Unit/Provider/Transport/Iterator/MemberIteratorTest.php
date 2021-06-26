@@ -3,53 +3,46 @@
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Provider\Transport\Iterator;
 
 use Oro\Bundle\MailChimpBundle\Entity\Member;
+use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
+use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\MemberIterator;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClient;
 
 class MemberIteratorTest extends \PHPUnit\Framework\TestCase
 {
-    const TEST_LIST_ID = 42;
-    const TEST_LIST_ORIGIN_ID = 100;
+    private const TEST_LIST_ID = 42;
+    private const TEST_LIST_ORIGIN_ID = 100;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $client;
+    /** @var \PHPUnit\Framework\MockObject\MockObject */
+    private $client;
 
     protected function setUp(): void
     {
-        $this->client = $this->getMockBuilder(
-            'Oro\\Bundle\\MailChimpBundle\\Provider\\Transport\\MailChimpClient'
-        )->disableOriginalConstructor()->getMock();
+        $this->client = $this->createMock(MailChimpClient::class);
     }
 
     /**
-     * @param \Iterator $subscriberLists
-     * @param array $parameters
-     * @return \PHPUnit\Framework\MockObject\MockObject
+     * @return MemberIterator|\PHPUnit\Framework\MockObject\MockObject
      */
-    protected function createIterator(\Iterator $subscriberLists, array $parameters)
+    private function createIterator(\Iterator $subscriberLists, array $parameters)
     {
-        return $this->getMockBuilder('Oro\\Bundle\\MailChimpBundle\\Provider\\Transport\\Iterator\\MemberIterator')
-            ->setMethods(['createExportIterator'])
+        return $this->getMockBuilder(MemberIterator::class)
+            ->onlyMethods(['createExportIterator'])
             ->setConstructorArgs([$subscriberLists, $this->client, $parameters])
             ->getMock();
     }
 
     /**
      * @dataProvider iteratorDataProvider
-     * @param array $parameters
-     * @param array $expectedValueMap
-     * @param array $expected
      */
     public function testIteratorWorks(array $parameters, array $expectedValueMap, array $expected)
     {
-        $list = $this->createMock('Oro\\Bundle\\MailChimpBundle\\Entity\\SubscribersList');
+        $list = $this->createMock(SubscribersList::class);
         $list->expects($this->atLeastOnce())
             ->method('getOriginId')
-            ->will($this->returnValue(self::TEST_LIST_ORIGIN_ID));
+            ->willReturn(self::TEST_LIST_ORIGIN_ID);
         $list->expects($this->atLeastOnce())
             ->method('getId')
-            ->will($this->returnValue(self::TEST_LIST_ID));
+            ->willReturn(self::TEST_LIST_ID);
 
         $subscriberLists = new \ArrayIterator([$list]);
 
@@ -57,7 +50,7 @@ class MemberIteratorTest extends \PHPUnit\Framework\TestCase
 
         $iterator->expects($this->exactly(count($expectedValueMap)))
             ->method('createExportIterator')
-            ->will($this->returnValueMap($expectedValueMap));
+            ->willReturnMap($expectedValueMap);
 
         $actual = [];
         foreach ($iterator as $key => $value) {
@@ -67,10 +60,7 @@ class MemberIteratorTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @return array
-     */
-    public function iteratorDataProvider()
+    public function iteratorDataProvider(): array
     {
         $memberFoo = ['email' => 'foo@example.com'];
         $memberBar = ['email' => 'bar@example.com'];
@@ -134,16 +124,12 @@ class MemberIteratorTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @param array $member
-     * @param $status
-     * @return array
-     */
-    protected function passMember(array $member, $status)
+    private function passMember(array $member, string $status): array
     {
         $member['list_id'] = self::TEST_LIST_ORIGIN_ID;
         $member['subscribersList_id'] = self::TEST_LIST_ID;
         $member['status'] = $status;
+
         return $member;
     }
 }

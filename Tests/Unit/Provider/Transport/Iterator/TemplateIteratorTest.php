@@ -7,21 +7,17 @@ use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClient;
 
 class TemplateIteratorTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|MailChimpClient
-     */
-    protected $client;
+    /** @var \PHPUnit\Framework\MockObject\MockObject|MailChimpClient */
+    private $client;
 
-    /**
-     * @var \Iterator
-     */
-    protected $iterator;
+    /** @var \Iterator */
+    private $iterator;
 
     protected function setUp(): void
     {
-        $this->client = $this->getMockBuilder('Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClient')
+        $this->client = $this->getMockBuilder(MailChimpClient::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getTemplates'])
+            ->addMethods(['getTemplates'])
             ->getMock();
 
         $this->iterator = new TemplateIterator($this->client);
@@ -47,7 +43,7 @@ class TemplateIteratorTest extends \PHPUnit\Framework\TestCase
         $this->client->expects($this->once())
             ->method('getTemplates')
             ->with($this->isType('array'))
-            ->will($this->returnValue($rawTemplates));
+            ->willReturn($rawTemplates);
 
         $actual = [];
         foreach ($this->iterator as $key => $value) {
