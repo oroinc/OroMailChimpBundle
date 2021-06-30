@@ -14,23 +14,18 @@ class MmbrExtdMergeVarIteratorTest extends \PHPUnit\Framework\TestCase
     use EntityTrait;
 
     /**
-     * @param \Iterator $mainIterator
-     *
-     * @return \PHPUnit\Framework\MockObject\MockObject|MmbrExtdMergeVarIterator
+     * @return MmbrExtdMergeVarIterator|\PHPUnit\Framework\MockObject\MockObject
      */
-    protected function createIterator(\Iterator $mainIterator)
+    private function createIterator(\Iterator $mainIterator)
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|MmbrExtdMergeVarIterator $iterator */
         $iterator = $this->getMockBuilder(MmbrExtdMergeVarIterator::class)
-            ->setMethods(['createBufferedIterator'])
-            ->setConstructorArgs(
-                [
-                    $this->createMock(MarketingListProvider::class),
-                    $this->createMock(OwnershipMetadataProviderInterface::class),
-                    'removedItemClassName',
-                    'unsubscribedItemClassName'
-                ]
-            )
+            ->onlyMethods(['createBufferedIterator'])
+            ->setConstructorArgs([
+                $this->createMock(MarketingListProvider::class),
+                $this->createMock(OwnershipMetadataProviderInterface::class),
+                'removedItemClassName',
+                'unsubscribedItemClassName'
+            ])
             ->allowMockingUnknownTypes()
             ->getMock();
         $iterator->setMainIterator($mainIterator);
@@ -40,18 +35,14 @@ class MmbrExtdMergeVarIteratorTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider optionsDataProvider
-     *
-     * @param \Iterator $mainIterator
-     * @param array $values
-     * @param array $expected
      */
-    public function testIterator(\Iterator $mainIterator, $values, $expected)
+    public function testIterator(\Iterator $mainIterator, array $values, array $expected)
     {
         $iterator = $this->createIterator($mainIterator);
 
-        $iterator
+        $iterator->expects($this->any())
             ->method('createBufferedIterator')
-            ->will($this->returnValue(new \ArrayIterator($values)));
+            ->willReturn(new \ArrayIterator($values));
 
         $actual = [];
         foreach ($iterator as $value) {
@@ -61,13 +52,10 @@ class MmbrExtdMergeVarIteratorTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @return array
-     */
-    public function optionsDataProvider()
+    public function optionsDataProvider(): array
     {
         $subscribersListId = 1;
-        $staticSegmentId   = 1;
+        $staticSegmentId = 1;
 
         $subscribersList = $this->getEntity(SubscribersList::class, ['id' => $subscribersListId]);
         $staticSegment   = $this->getEntity(

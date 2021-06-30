@@ -7,47 +7,32 @@ use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClient;
 
 class CampaignIteratorTest extends \PHPUnit\Framework\TestCase
 {
-    const TEST_BATCH_SIZE = 2;
+    private const TEST_BATCH_SIZE = 2;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $client;
+    /** @var MailChimpClient|\PHPUnit\Framework\MockObject\MockObject */
+    private $client;
 
     protected function setUp(): void
     {
-        $this->client = $this->getMockBuilder(MailChimpClient::class)
-            ->setMethods(['getCampaigns', 'getCampaignReport'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->client = $this->createMock(MailChimpClient::class);
     }
 
-    /**
-     * @param array $filters
-     * @return CampaignIterator
-     */
-    protected function createCampaignIterator(array $filters)
+    private function createCampaignIterator(array $filters): CampaignIterator
     {
         return new CampaignIterator($this->client, $filters, self::TEST_BATCH_SIZE);
     }
 
     /**
      * @dataProvider iteratorDataProvider
-     * @param array $filters
-     * @param array $campaignValueMap
-     * @param array $expected
      */
     public function testIteratorWorks(array $filters, array $campaignValueMap, array $expected)
     {
         $iterator = $this->createCampaignIterator($filters);
 
-        $this->client
-            ->expects($this->exactly(count($campaignValueMap)))
+        $this->client->expects($this->exactly(count($campaignValueMap)))
             ->method('getCampaigns')
-            ->will($this->returnValueMap($campaignValueMap));
-
-        $this->client
-            ->expects($this->any())
+            ->willReturnMap($campaignValueMap);
+        $this->client->expects($this->any())
             ->method('getCampaignReport')
             ->willReturn([]);
 
@@ -59,10 +44,7 @@ class CampaignIteratorTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @return array
-     */
-    public function iteratorDataProvider()
+    public function iteratorDataProvider(): array
     {
         return [
             'two pages without filters' => [

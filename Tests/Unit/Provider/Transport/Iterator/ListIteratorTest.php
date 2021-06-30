@@ -7,45 +7,32 @@ use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClient;
 
 class ListIteratorTest extends \PHPUnit\Framework\TestCase
 {
-    const TEST_BATCH_SIZE = 2;
+    private const TEST_BATCH_SIZE = 2;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $client;
+    /** @var \PHPUnit\Framework\MockObject\MockObject */
+    private $client;
 
-    /**
-     * @var ListIterator
-     */
-    protected $iterator;
+    /** @var ListIterator */
+    private $iterator;
 
     protected function setUp(): void
     {
-        $this->client = $this->getMockBuilder(
-            MailChimpClient::class
-        )->setMethods(['getLists', 'getListMergeVars'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->client = $this->createMock(MailChimpClient::class);
 
         $this->iterator = new ListIterator($this->client, self::TEST_BATCH_SIZE);
     }
 
     /**
      * @dataProvider iteratorDataProvider
-     * @param array $listValueMap
-     * @param array $mergeVarValueMap
-     * @param array $expected
      */
     public function testIteratorWorks(array $listValueMap, array $mergeVarValueMap, array $expected)
     {
         $this->client->expects($this->exactly(count($listValueMap)))
             ->method('getLists')
-            ->will($this->returnValueMap($listValueMap));
-
-
+            ->willReturnMap($listValueMap);
         $this->client->expects($this->exactly(count($mergeVarValueMap)))
             ->method('getListMergeVars')
-            ->will($this->returnValueMap($mergeVarValueMap));
+            ->willReturnMap($mergeVarValueMap);
 
         $actual = [];
         foreach ($this->iterator as $key => $value) {
@@ -57,9 +44,8 @@ class ListIteratorTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-     * @return array
      */
-    public function iteratorDataProvider()
+    public function iteratorDataProvider(): array
     {
         return [
             'two pages' => [
