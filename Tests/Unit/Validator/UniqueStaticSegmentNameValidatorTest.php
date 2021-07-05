@@ -2,89 +2,81 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Validator;
 
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Oro\Bundle\IntegrationBundle\Entity\Transport;
+use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
+use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
+use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpTransport;
 use Oro\Bundle\MailChimpBundle\Validator\Constraints\UniqueStaticSegmentNameConstraint;
 use Oro\Bundle\MailChimpBundle\Validator\UniqueStaticSegmentNameValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
+use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
-class UniqueStaticSegmentNameValidatorTest extends \PHPUnit\Framework\TestCase
+class UniqueStaticSegmentNameValidatorTest extends ConstraintValidatorTestCase
 {
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $transport;
-
-    /**
-     * @var UniqueStaticSegmentNameValidator
-     */
-    protected $validator;
+    /** @var MailChimpTransport|\PHPUnit\Framework\MockObject\MockObject */
+    private $transport;
 
     protected function setUp(): void
     {
-        $this->transport = $this->getMockBuilder('Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpTransport')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->validator = new UniqueStaticSegmentNameValidator($this->transport);
+        $this->transport = $this->createMock(MailChimpTransport::class);
+        parent::setUp();
+    }
+    protected function createValidator()
+    {
+        return new UniqueStaticSegmentNameValidator($this->transport);
     }
 
     public function testValidateIncorrectInstance()
     {
         $value = new \stdClass();
-        $constraint = new UniqueStaticSegmentNameConstraint();
 
         $this->transport->expects($this->never())
             ->method($this->anything());
 
+        $constraint = new UniqueStaticSegmentNameConstraint();
         $this->validator->validate($value, $constraint);
+
+        $this->assertNoViolation();
     }
 
     public function testValidateHasOrigin()
     {
-        $value = $this->getMockBuilder('Oro\Bundle\MailChimpBundle\Entity\StaticSegment')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $value = $this->createMock(StaticSegment::class);
         $value->expects($this->once())
             ->method('getOriginId')
-            ->will($this->returnValue('123'));
-        $constraint = new UniqueStaticSegmentNameConstraint();
+            ->willReturn('123');
 
         $this->transport->expects($this->never())
             ->method($this->anything());
 
+        $constraint = new UniqueStaticSegmentNameConstraint();
         $this->validator->validate($value, $constraint);
+
+        $this->assertNoViolation();
     }
 
     public function testValidateCorrect()
     {
-        $transport = $this->getMockBuilder('Oro\Bundle\IntegrationBundle\Entity\Transport')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $transport = $this->createMock(Transport::class);
 
-        $channel = $this->getMockBuilder('Oro\Bundle\IntegrationBundle\Entity\Channel')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $channel = $this->createMock(Channel::class);
         $channel->expects($this->once())
             ->method('getTransport')
-            ->will($this->returnValue($transport));
+            ->willReturn($transport);
 
-        $list = $this->getMockBuilder('Oro\Bundle\MailChimpBundle\Entity\SubscribersList')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $list = $this->createMock(SubscribersList::class);
 
-        $value = $this->getMockBuilder('Oro\Bundle\MailChimpBundle\Entity\StaticSegment')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $value = $this->createMock(StaticSegment::class);
         $value->expects($this->once())
             ->method('getChannel')
-            ->will($this->returnValue($channel));
+            ->willReturn($channel);
         $value->expects($this->once())
             ->method('getName')
-            ->will($this->returnValue('other'));
+            ->willReturn('other');
         $value->expects($this->once())
             ->method('getSubscribersList')
-            ->will($this->returnValue($list));
-        $constraint = new UniqueStaticSegmentNameConstraint();
+            ->willReturn($list);
 
         $this->transport->expects($this->once())
             ->method('init')
@@ -92,48 +84,41 @@ class UniqueStaticSegmentNameValidatorTest extends \PHPUnit\Framework\TestCase
         $this->transport->expects($this->once())
             ->method('getListStaticSegments')
             ->with($list)
-            ->will($this->returnValue([['name' => 'some']]));
+            ->willReturn([['name' => 'some']]);
 
         $context = $this->createMock(ExecutionContextInterface::class);
         $context->expects($this->never())
             ->method($this->anything());
 
-        $this->validator->initialize($context);
+        $constraint = new UniqueStaticSegmentNameConstraint();
         $this->validator->validate($value, $constraint);
+
+        $this->assertNoViolation();
     }
 
     public function testValidateIncorrect()
     {
         $name = 'other';
 
-        $transport = $this->getMockBuilder('Oro\Bundle\IntegrationBundle\Entity\Transport')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $transport = $this->createMock(Transport::class);
 
-        $channel = $this->getMockBuilder('Oro\Bundle\IntegrationBundle\Entity\Channel')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $channel = $this->createMock(Channel::class);
         $channel->expects($this->once())
             ->method('getTransport')
-            ->will($this->returnValue($transport));
+            ->willReturn($transport);
 
-        $list = $this->getMockBuilder('Oro\Bundle\MailChimpBundle\Entity\SubscribersList')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $list = $this->createMock(SubscribersList::class);
 
-        $value = $this->getMockBuilder('Oro\Bundle\MailChimpBundle\Entity\StaticSegment')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $value = $this->createMock(StaticSegment::class);
         $value->expects($this->once())
             ->method('getChannel')
-            ->will($this->returnValue($channel));
+            ->willReturn($channel);
         $value->expects($this->once())
             ->method('getName')
-            ->will($this->returnValue($name));
+            ->willReturn($name);
         $value->expects($this->once())
             ->method('getSubscribersList')
-            ->will($this->returnValue($list));
-        $constraint = new UniqueStaticSegmentNameConstraint();
+            ->willReturn($list);
 
         $this->transport->expects($this->once())
             ->method('init')
@@ -141,22 +126,13 @@ class UniqueStaticSegmentNameValidatorTest extends \PHPUnit\Framework\TestCase
         $this->transport->expects($this->once())
             ->method('getListStaticSegments')
             ->with($list)
-            ->will($this->returnValue([['name' => $name]]));
+            ->willReturn([['name' => $name]]);
 
-        $context = $this->createMock(ExecutionContextInterface::class);
-        $builder = $this->createMock(ConstraintViolationBuilderInterface::class);
-        $context->expects($this->once())
-            ->method('buildViolation')
-            ->with($constraint->message)
-            ->willReturn($builder);
-        $builder->expects($this->once())
-            ->method('atPath')
-            ->with('name')
-            ->willReturnSelf();
-        $builder->expects($this->once())
-            ->method('addViolation');
-
-        $this->validator->initialize($context);
+        $constraint = new UniqueStaticSegmentNameConstraint();
         $this->validator->validate($value, $constraint);
+
+        $this->buildViolation($constraint->message)
+            ->atPath('property.path.name')
+            ->assertRaised();
     }
 }
