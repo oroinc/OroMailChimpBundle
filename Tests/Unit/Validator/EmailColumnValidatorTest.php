@@ -2,36 +2,33 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Validator;
 
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectRepository;
 use Oro\Bundle\MailChimpBundle\Validator\EmailColumnValidator;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
 use Oro\Bundle\MarketingListBundle\Validator\Constraints\ContactInformationColumnConstraint;
+use Oro\Bundle\SegmentBundle\Entity\Segment;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class EmailColumnValidatorTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $fieldInformationValidator;
+    /** @var ConstraintValidator|\PHPUnit\Framework\MockObject\MockObject */
+    private $fieldInformationValidator;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $registry;
+    /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
+    private $registry;
 
-    /**
-     * @var EmailColumnValidator
-     */
-    protected $validator;
+    /** @var EmailColumnValidator */
+    private $validator;
 
     protected function setUp(): void
     {
-        $this->fieldInformationValidator = $this->getMockBuilder('Symfony\Component\Validator\ConstraintValidator')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->registry = $this->getMockBuilder('Doctrine\Persistence\ManagerRegistry')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->fieldInformationValidator = $this->createMock(ConstraintValidator::class);
+        $this->registry = $this->createMock(ManagerRegistry::class);
+
         $this->validator = new EmailColumnValidator($this->fieldInformationValidator, $this->registry);
     }
 
@@ -46,109 +43,82 @@ class EmailColumnValidatorTest extends \PHPUnit\Framework\TestCase
         $this->validator->initialize($context);
     }
 
-    /**
-     * @dataProvider validDataProvider
-     * @param mixed $value
-     */
-    public function testValidateValid($value)
+    public function testValidateForNotMarketingList()
     {
         $this->fieldInformationValidator->expects($this->never())
             ->method('validate');
 
-        $constraint = $this->getMockBuilder('Symfony\Component\Validator\Constraint')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->validator->validate($value, $constraint);
+        $constraint = $this->createMock(Constraint::class);
+        $this->validator->validate(new \stdClass(), $constraint);
     }
 
-    /**
-     * @return array
-     */
-    public function validDataProvider()
+    public function testValidateValidForConnectedManualMarketingList()
     {
-        $manualMarketingList = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingList')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $manualMarketingList->expects($this->any())
+        $marketingList = $this->createMock(MarketingList::class);
+        $marketingList->expects($this->any())
             ->method('isManual')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
-        return [
-            [new \stdClass()],
-            [$manualMarketingList]
-        ];
+        $this->fieldInformationValidator->expects($this->never())
+            ->method('validate');
+
+        $constraint = $this->createMock(Constraint::class);
+        $this->validator->validate($marketingList, $constraint);
     }
 
     public function testValidateNotConnected()
     {
-        $marketingList = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingList')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $marketingList = $this->createMock(MarketingList::class);
         $marketingList->expects($this->once())
             ->method('isManual')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
-        $repository = $this->getMockBuilder('\Doctrine\Persistence\ObjectRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createMock(ObjectRepository::class);
         $repository->expects($this->once())
             ->method('findOneBy')
             ->with(['marketingList' => $marketingList]);
         $this->registry->expects($this->once())
             ->method('getRepository')
             ->with('OroMailChimpBundle:StaticSegment')
-            ->will($this->returnValue($repository));
-
-        $constraint = $this->getMockBuilder('Symfony\Component\Validator\Constraint')
-            ->disableOriginalConstructor()
-            ->getMock();
+            ->willReturn($repository);
 
         $this->fieldInformationValidator->expects($this->never())
             ->method('validate');
 
+        $constraint = $this->createMock(Constraint::class);
         $this->validator->validate($marketingList, $constraint);
     }
 
     public function testValidate()
     {
-        $segment = $this->getMockBuilder('Oro\Bundle\SegmentBundle\Entity\Segment')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $segment = $this->createMock(Segment::class);
 
-        $marketingList = $this->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingList')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $marketingList = $this->createMock(MarketingList::class);
         $marketingList->expects($this->once())
             ->method('isManual')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
         $marketingList->expects($this->once())
             ->method('getSegment')
-            ->will($this->returnValue($segment));
+            ->willReturn($segment);
 
-        $repository = $this->getMockBuilder('\Doctrine\Persistence\ObjectRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createMock(ObjectRepository::class);
         $repository->expects($this->once())
             ->method('findOneBy')
             ->with(['marketingList' => $marketingList])
-            ->will($this->returnValue(new \stdClass()));
+            ->willReturn(new \stdClass());
         $this->registry->expects($this->once())
             ->method('getRepository')
             ->with('OroMailChimpBundle:StaticSegment')
-            ->will($this->returnValue($repository));
+            ->willReturn($repository);
 
         $fieldValidatorConstraint = new ContactInformationColumnConstraint();
         $fieldValidatorConstraint->type = ContactInformationFieldsProvider::CONTACT_INFORMATION_SCOPE_EMAIL;
-
-        $constraint = $this->getMockBuilder('Symfony\Component\Validator\Constraint')
-            ->disableOriginalConstructor()
-            ->getMock();
 
         $this->fieldInformationValidator->expects($this->once())
             ->method('validate')
             ->with($segment, $fieldValidatorConstraint);
 
+        $constraint = $this->createMock(Constraint::class);
         $this->validator->validate($marketingList, $constraint);
     }
 }
