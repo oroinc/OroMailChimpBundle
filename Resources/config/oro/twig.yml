@@ -1,2 +1,2 @@
 bundles:
-    - OroMailChimpBundle:Form:fields.html.twig
+    - '@OroMailChimp/Form/fields.html.twig'
