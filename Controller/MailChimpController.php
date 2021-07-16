@@ -240,7 +240,6 @@ class MailChimpController extends AbstractController
         return $campaign;
     }
 
-
     /**
      * {@inheritdoc}
      */

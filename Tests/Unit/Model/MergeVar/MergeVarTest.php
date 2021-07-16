@@ -8,7 +8,6 @@ class MergeVarTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider mergeVarDataProvider
-     * @param array $data
      */
     public function testGetName(array $data)
     {
@@ -18,7 +17,6 @@ class MergeVarTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider mergeVarDataProvider
-     * @param array $data
      */
     public function testGetFieldType(array $data)
     {
@@ -28,7 +26,6 @@ class MergeVarTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider mergeVarDataProvider
-     * @param array $data
      */
     public function testGetTag(array $data)
     {
@@ -38,7 +35,6 @@ class MergeVarTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider mergeVarDataProvider
-     * @param array $data
      */
     public function testIsFirstName(array $data)
     {
@@ -48,7 +44,6 @@ class MergeVarTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider mergeVarDataProvider
-     * @param array $data
      */
     public function testIsLastName(array $data)
     {
@@ -58,7 +53,6 @@ class MergeVarTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider mergeVarDataProvider
-     * @param array $data
      */
     public function testIsEmail(array $data)
     {
@@ -68,7 +62,6 @@ class MergeVarTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider mergeVarDataProvider
-     * @param array $data
      */
     public function testIsPhone(array $data)
     {

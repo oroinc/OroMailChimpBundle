@@ -16,9 +16,6 @@ class StaticSegmentMemberStateWriter extends AbstractNativeQueryWriter
      */
     protected $helper;
 
-    /**
-     * @param NativeQueryExecutorHelper $helper
-     */
     public function __construct(NativeQueryExecutorHelper $helper)
     {
         $this->helper = $helper;

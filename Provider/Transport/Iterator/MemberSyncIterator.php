@@ -222,8 +222,6 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
     /**
      * Add merge prepared for insertion merge vars column.
      *
-     * @param QueryBuilder $qb
-     * @param StaticSegment $staticSegment
      * @throws DBALException
      */
     protected function addMergeVars(QueryBuilder $qb, StaticSegment $staticSegment)
@@ -371,10 +369,6 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
             ->findAll();
     }
 
-    /**
-     * @param QueryBuilder $qb
-     * @return array
-     */
     protected function getGroupBy(QueryBuilder $qb): array
     {
         $orderByPartItems = [];

@@ -74,10 +74,6 @@ class MailChimpTransport implements TransportInterface
      */
     protected $logger;
 
-    /**
-     * @param MailChimpClientFactory $mailChimpClientFactory
-     * @param ManagerRegistry $managerRegistry
-     */
     public function __construct(MailChimpClientFactory $mailChimpClientFactory, ManagerRegistry $managerRegistry)
     {
         $this->mailChimpClientFactory = $mailChimpClientFactory;
@@ -272,9 +268,6 @@ class MailChimpTransport implements TransportInterface
         return $this->client->updateListMember($args);
     }
 
-    /**
-     * @param LoggerInterface $logger
-     */
     public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
@@ -375,10 +368,7 @@ class MailChimpTransport implements TransportInterface
         );
     }
 
-
-
     // ** NOT CALLED ** //
-
 
     // CAMPAIGNS
 
@@ -426,7 +416,6 @@ class MailChimpTransport implements TransportInterface
         return new MemberAbuseIterator($this->getSentCampaignsIterator($channel), $since, $this->client);
     }
 
-
     // SEGMENTS
 
     /**
@@ -468,8 +457,6 @@ class MailChimpTransport implements TransportInterface
     {
         return $this->client->deleteStaticSegmentMembers($args);
     }
-
-
 
     // TEMPLATES
 

@@ -144,7 +144,6 @@ class StaticSegmentExportWriter extends AbstractExportWriter implements ContextA
     }
 
     /**
-     * @param StaticSegment $staticSegment
      * @throws \Exception
      */
     protected function addStaticListSegment(StaticSegment $staticSegment)

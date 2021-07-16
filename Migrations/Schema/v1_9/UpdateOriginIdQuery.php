@@ -15,9 +15,6 @@ class UpdateOriginIdQuery extends ParametrizedMigrationQuery
      */
     private $platform;
 
-    /**
-     * @param AbstractPlatform $platform
-     */
     public function __construct(AbstractPlatform $platform)
     {
         $this->platform = $platform;

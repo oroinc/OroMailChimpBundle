@@ -34,9 +34,6 @@ class MmbrExtdMergeVarIterator extends AbstractStaticSegmentMembersIterator
      */
     protected $extendMergeVarsProvider;
 
-    /**
-     * @param DoctrineHelper $doctrineHelper
-     */
     public function setDoctrineHelper(DoctrineHelper $doctrineHelper)
     {
         $this->doctrineHelper = $doctrineHelper;

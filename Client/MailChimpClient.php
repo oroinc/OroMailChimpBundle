@@ -57,7 +57,6 @@ class MailChimpClient
     }
 
     /**
-     *
      * @param array $result
      * @throws MailChimpClientException
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)

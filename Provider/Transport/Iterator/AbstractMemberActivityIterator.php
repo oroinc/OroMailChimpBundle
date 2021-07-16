@@ -18,10 +18,6 @@ abstract class AbstractMemberActivityIterator extends AbstractSubordinateIterato
      */
     protected $client;
 
-    /**
-     * @param \Iterator $campaignsIterator
-     * @param MailChimpClient $client
-     */
     public function __construct(\Iterator $campaignsIterator, MailChimpClient $client)
     {
         parent::__construct($campaignsIterator);

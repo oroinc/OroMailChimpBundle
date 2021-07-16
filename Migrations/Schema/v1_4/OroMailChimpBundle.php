@@ -26,8 +26,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Create orocrm_mc_tmp_mmbr_to_remove table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMcTmpMmbrToRemoveTable(Schema $schema)
     {
@@ -41,8 +39,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Create orocrm_mailchimp_ml_email table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMailchimpMlEmailTable(Schema $schema)
     {
@@ -57,8 +53,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Add orocrm_mc_tmp_mmbr_to_remove foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmMcTmpMmbrToRemoveForeignKeys(Schema $schema)
     {
@@ -79,8 +73,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Add orocrm_mailchimp_ml_email foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmMailchimpMlEmailForeignKeys(Schema $schema)
     {
@@ -93,9 +85,6 @@ class OroMailChimpBundle implements Migration
         );
     }
 
-    /**
-     * @param Schema $schema
-     */
     protected function updateStaticSegmentMemberTable(Schema $schema)
     {
         $table = $schema->getTable('orocrm_mc_static_segment_mmbr');
@@ -110,18 +99,12 @@ class OroMailChimpBundle implements Migration
         );
     }
 
-    /**
-     * @param Schema $schema
-     */
     protected function updateMemberActivityTable(Schema $schema)
     {
         $table = $schema->getTable('orocrm_mc_mmbr_activity');
         $table->addIndex(['action'], 'mc_mmbr_activity_action_idx', []);
     }
 
-    /**
-     * @param Schema $schema
-     */
     protected function updateMemberTable(Schema $schema)
     {
         $table = $schema->getTable('orocrm_mailchimp_member');

@@ -48,9 +48,6 @@ class ExtendedMergeVarRemoveIterator extends AbstractSubordinateIterator
         $this->extendedMergeVarClassName = $extendedMergeVarClassName;
     }
 
-    /**
-     * @param \Iterator $mainIterator
-     */
     public function setMainIterator(\Iterator $mainIterator)
     {
         $this->mainIterator = $mainIterator;
