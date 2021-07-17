@@ -46,8 +46,6 @@ class ChannelConnectorsExtension extends AbstractTypeExtension
 
     /**
      * Hide connectors for MailChimp channel
-     *
-     * @param FormEvent $event
      */
     public function onPostSetData(FormEvent $event)
     {
@@ -73,8 +71,6 @@ class ChannelConnectorsExtension extends AbstractTypeExtension
 
     /**
      * Set all connectors to MailChimp channel
-     *
-     * @param FormEvent $event
      */
     public function onPostSubmit(FormEvent $event)
     {

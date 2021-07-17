@@ -28,11 +28,6 @@ class MemberIterator extends AbstractSubordinateIterator
      */
     protected $logger;
 
-    /**
-     * @param \Iterator $subscribersLists
-     * @param MailChimpClient $client
-     * @param array $parameters
-     */
     public function __construct(\Iterator $subscribersLists, MailChimpClient $client, array $parameters = [])
     {
         parent::__construct($subscribersLists);
@@ -43,9 +38,6 @@ class MemberIterator extends AbstractSubordinateIterator
         }
     }
 
-    /**
-     * @param LoggerInterface $logger
-     */
     public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;

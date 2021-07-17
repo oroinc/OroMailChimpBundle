@@ -17,10 +17,6 @@ class MemberExportListIterator extends AbstractSubscribersListIterator implement
      */
     protected $memberClassName;
 
-    /**
-     * @param \Iterator $mainIterator
-     * @param DoctrineHelper $doctrineHelper
-     */
     public function __construct(
         \Iterator $mainIterator,
         DoctrineHelper $doctrineHelper

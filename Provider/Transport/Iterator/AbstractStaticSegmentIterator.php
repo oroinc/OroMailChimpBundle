@@ -69,9 +69,6 @@ abstract class AbstractStaticSegmentIterator extends AbstractSubordinateIterator
         $this->segmentMemberClassName = $segmentMemberClassName;
     }
 
-    /**
-     * @param \Iterator $mainIterator
-     */
     public function setMainIterator(\Iterator $mainIterator)
     {
         $this->mainIterator = $mainIterator;
@@ -100,8 +97,6 @@ abstract class AbstractStaticSegmentIterator extends AbstractSubordinateIterator
 
     /**
      * Method to change $qb for certain Iterator purposes
-     *
-     * @param QueryBuilder $qb
      */
     protected function prepareIteratorPart(QueryBuilder $qb)
     {
@@ -135,10 +130,6 @@ abstract class AbstractStaticSegmentIterator extends AbstractSubordinateIterator
             ->andWhere($qb->expr()->isNull('mlu.id'));
     }
 
-    /**
-     * @param StaticSegment $staticSegment
-     * @param QueryBuilder $qb
-     */
     protected function applyOrganizationRestrictions(StaticSegment $staticSegment, QueryBuilder $qb)
     {
         $organization = $staticSegment->getChannel()->getOrganization();

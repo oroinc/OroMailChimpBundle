@@ -122,9 +122,6 @@ class ExportIterator implements \Iterator
         $this->next();
     }
 
-    /**
-     * @param LoggerInterface $logger
-     */
     public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;

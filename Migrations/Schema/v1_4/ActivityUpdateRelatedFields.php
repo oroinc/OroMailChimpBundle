@@ -19,18 +19,12 @@ class ActivityUpdateRelatedFields implements Migration
         $queries->addPostQuery(new UpdateActiveCampaignsQuery());
     }
 
-    /**
-     * @param Schema $schema
-     */
     protected function updateOroIntegrationTransportTable(Schema $schema)
     {
         $table = $schema->getTable('oro_integration_transport');
         $table->addColumn('orocrm_mailchimp_act_up_int', 'integer', ['notnull' => false]);
     }
 
-    /**
-     * @param Schema $schema
-     */
     protected function updateOrocrmCmpgnTransportStngsTable(Schema $schema)
     {
         $table = $schema->getTable('orocrm_cmpgn_transport_stngs');

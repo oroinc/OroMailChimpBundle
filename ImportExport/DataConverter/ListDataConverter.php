@@ -74,7 +74,6 @@ class ListDataConverter extends IntegrationAwareDataConverter
         return parent::convertToImportFormat($importedRecord, $skipNullValues);
     }
 
-
     /**
      * {@inheritdoc}
      */

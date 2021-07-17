@@ -32,12 +32,6 @@ abstract class AbstractMarketingListEntitiesAction extends AbstractAction
      */
     protected $fieldHelper;
 
-    /**
-     * @param ContextAccessor $contextAccessor
-     * @param ContactInformationFieldsProvider $contactInformationFieldsProvider
-     * @param MarketingListProvider $marketingListProvider
-     * @param FieldHelper $fieldHelper
-     */
     public function __construct(
         ContextAccessor $contextAccessor,
         ContactInformationFieldsProvider $contactInformationFieldsProvider,

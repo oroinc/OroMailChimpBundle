@@ -129,7 +129,6 @@ class CampaignDataConverter extends IntegrationAwareDataConverter
         return $importedRecord;
     }
 
-
     /**
      * {@inheritdoc}
      */

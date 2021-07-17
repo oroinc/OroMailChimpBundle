@@ -37,8 +37,6 @@ class ProviderTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider extendedMergeVarsDataProvider
-     * @param array $externalProviderMergeVars
-     * @param array $inheritedProviderMergeVars
      */
     public function testProvideExtendedMergeVarsWithExternalProviders(
         array $externalProviderMergeVars,

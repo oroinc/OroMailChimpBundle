@@ -32,12 +32,6 @@ class StaticSegmentsMemberStateManager
      */
     protected $extMergeVarClassName;
 
-    /**
-     * @param DoctrineHelper $doctrineHelper
-     * @param $staticSegmentMember
-     * @param $mailChimpMemberСlassName
-     * @param $extMergeVarClassName
-     */
     public function __construct(
         DoctrineHelper $doctrineHelper,
         $staticSegmentMember,
@@ -50,9 +44,6 @@ class StaticSegmentsMemberStateManager
         $this->extMergeVarClassName = $extMergeVarClassName;
     }
 
-    /**
-     * @param StaticSegment $staticSegment
-     */
     public function handleMembers(StaticSegment $staticSegment)
     {
         $staticSegmentRep = $this->doctrineHelper->getEntityRepository($this->staticSegmentMember);
@@ -80,9 +71,6 @@ class StaticSegmentsMemberStateManager
         }
     }
 
-    /**
-     * @param StaticSegment $staticSegment
-     */
     protected function handleDroppedMembers(StaticSegment $staticSegment)
     {
         $qb = $this->doctrineHelper
@@ -102,10 +90,6 @@ class StaticSegmentsMemberStateManager
             ->execute();
     }
 
-    /**
-     * @param array $deletedMembersIds
-     * @param SubscribersList $subscribersList
-     */
     protected function deleteMailChimpMembers(array $deletedMembersIds, SubscribersList $subscribersList)
     {
         $qb = $this->doctrineHelper

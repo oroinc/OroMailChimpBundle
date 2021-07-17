@@ -511,8 +511,6 @@ class StaticSegment implements OriginAwareInterface
 
     /**
      * Remove segmentMembers
-     *
-     * @param StaticSegmentMember $segmentMembers
      */
     public function removeSegmentMember(StaticSegmentMember $segmentMembers)
     {

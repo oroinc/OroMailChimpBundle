@@ -19,9 +19,6 @@ class UniqueStaticSegmentNameValidator extends ConstraintValidator
      */
     protected $transport;
 
-    /**
-     * @param TransportInterface $transport
-     */
     public function __construct(TransportInterface $transport)
     {
         $this->transport = $transport;

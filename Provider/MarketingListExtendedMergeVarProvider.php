@@ -25,9 +25,6 @@ class MarketingListExtendedMergeVarProvider implements ProviderInterface
         'bigint' => ExtendedMergeVar::TAG_NUMBER_FIELD_TYPE,
     ];
 
-    /**
-     * @param EntityFieldProvider $entityFieldProvider
-     */
     public function __construct(EntityFieldProvider $entityFieldProvider)
     {
         $this->entityFieldProvider = $entityFieldProvider;

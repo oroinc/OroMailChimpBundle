@@ -32,16 +32,12 @@ class ListIteratorTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider iteratorDataProvider
-     * @param array $listValueMap
-     * @param array $mergeVarValueMap
-     * @param array $expected
      */
     public function testIteratorWorks(array $listValueMap, array $mergeVarValueMap, array $expected)
     {
         $this->client->expects($this->exactly(count($listValueMap)))
             ->method('getLists')
             ->will($this->returnValueMap($listValueMap));
-
 
         $this->client->expects($this->exactly(count($mergeVarValueMap)))
             ->method('getListMergeVars')

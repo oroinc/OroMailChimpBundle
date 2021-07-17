@@ -33,9 +33,6 @@ class CampaignIteratorTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider iteratorDataProvider
-     * @param array $filters
-     * @param array $campaignValueMap
-     * @param array $expected
      */
     public function testIteratorWorks(array $filters, array $campaignValueMap, array $expected)
     {

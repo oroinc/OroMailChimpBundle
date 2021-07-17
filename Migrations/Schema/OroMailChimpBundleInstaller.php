@@ -62,7 +62,6 @@ class OroMailChimpBundleInstaller implements Installation
     /**
      * Create oro_integration_transport table
      *
-     * @param Schema $schema
      * @throws SchemaException
      */
     protected function createOroIntegrationTransportTable(Schema $schema)
@@ -75,7 +74,6 @@ class OroMailChimpBundleInstaller implements Installation
     /**
      * Create orocrm_cmpgn_transport_stngs table
      *
-     * @param Schema $schema
      * @throws SchemaException
      */
     protected function createOrocrmCmpgnTransportStngsTable(Schema $schema)
@@ -88,8 +86,6 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Create orocrm_mc_mmbr_activity table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMailchimpMemberActivityTable(Schema $schema)
     {
@@ -110,8 +106,6 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Create orocrm_mailchimp_campaign table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMailchimpCampaignTable(Schema $schema)
     {
@@ -163,8 +157,6 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Create orocrm_mailchimp_template table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMailchimpTemplateTable(Schema $schema)
     {
@@ -189,8 +181,6 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Create orocrm_mailchimp_member table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMailchimpMemberTable(Schema $schema)
     {
@@ -231,8 +221,6 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Create orocrm_mc_static_segment_mmbr table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMailchimpStaticSegmentMemberTable(Schema $schema)
     {
@@ -248,8 +236,6 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Create orocrm_mc_static_segment table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMailchimpStaticSegmentTable(Schema $schema)
     {
@@ -273,8 +259,6 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Create orocrm_mc_subscribers_list table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMailchimpSubscribersListTable(Schema $schema)
     {
@@ -319,8 +303,6 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Create orocrm_mc_extended_merge_var table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMcExtendedMergeVarTable(Schema $schema)
     {
@@ -339,8 +321,6 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Create orocrm_mc_mmbr_extd_merge_var table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMcMmbrExtdMergeVarTable(Schema $schema)
     {
@@ -356,8 +336,6 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Create orocrm_mc_tmp_mmbr_to_remove table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMcTmpMmbrToRemoveTable(Schema $schema)
     {
@@ -371,8 +349,6 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Create orocrm_mailchimp_ml_email table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMailchimpMlEmailTable(Schema $schema)
     {
@@ -388,7 +364,6 @@ class OroMailChimpBundleInstaller implements Installation
     /**
      * Add orocrm_cmpgn_transport_stngs foreign keys.
      *
-     * @param Schema $schema
      * @throws SchemaException
      */
     protected function addOrocrmCmpgnTransportStngsForeignKeys(Schema $schema)
@@ -411,7 +386,6 @@ class OroMailChimpBundleInstaller implements Installation
     /**
      * Add orocrm_mc_mmbr_activity foreign keys.
      *
-     * @param Schema $schema
      * @throws SchemaException
      */
     protected function addOrocrmMailchimpMemberActivityForeignKeys(Schema $schema)
@@ -446,7 +420,6 @@ class OroMailChimpBundleInstaller implements Installation
     /**
      * Add orocrm_mailchimp_campaign foreign keys.
      *
-     * @param Schema $schema
      * @throws SchemaException
      */
     protected function addOrocrmMailchimpCampaignForeignKeys(Schema $schema)
@@ -493,7 +466,6 @@ class OroMailChimpBundleInstaller implements Installation
     /**
      * Add orocrm_mailchimp_template foreign keys.
      *
-     * @param Schema $schema
      * @throws SchemaException
      */
     protected function addOrocrmMailchimpTemplateForeignKeys(Schema $schema)
@@ -516,7 +488,6 @@ class OroMailChimpBundleInstaller implements Installation
     /**
      * Add orocrm_mailchimp_member foreign keys.
      *
-     * @param Schema $schema
      * @throws SchemaException
      */
     protected function addOrocrmMailchimpMemberForeignKeys(Schema $schema)
@@ -545,7 +516,6 @@ class OroMailChimpBundleInstaller implements Installation
     /**
      * Add orocrm_mc_static_segment_mmbr foreign keys.
      *
-     * @param Schema $schema
      * @throws SchemaException
      */
     protected function addOrocrmMailchimpStaticSegmentMemberForeignKeys(Schema $schema)
@@ -568,7 +538,6 @@ class OroMailChimpBundleInstaller implements Installation
     /**
      * Add orocrm_mc_static_segment foreign keys.
      *
-     * @param Schema $schema
      * @throws SchemaException
      */
     protected function addOrocrmMailchimpStaticSegmentForeignKeys(Schema $schema)
@@ -603,7 +572,6 @@ class OroMailChimpBundleInstaller implements Installation
     /**
      * Add orocrm_mc_subscribers_list foreign keys.
      *
-     * @param Schema $schema
      * @throws SchemaException
      */
     protected function addOrocrmMailchimpSubscribersListForeignKeys(Schema $schema)
@@ -626,7 +594,6 @@ class OroMailChimpBundleInstaller implements Installation
     /**
      * Add orocrm_mc_extended_merge_var foreign keys.
      *
-     * @param Schema $schema
      * @throws SchemaException
      */
     protected function addOrocrmMcExtendedMergeVarForeignKeys(Schema $schema)
@@ -643,7 +610,6 @@ class OroMailChimpBundleInstaller implements Installation
     /**
      * Add orocrm_mc_mmbr_extd_merge_var foreign keys.
      *
-     * @param Schema $schema
      * @throws SchemaException
      */
     protected function addOrocrmMcMmbrExtdMergeVarForeignKeys(Schema $schema)
@@ -666,7 +632,6 @@ class OroMailChimpBundleInstaller implements Installation
     /**
      * Add orocrm_mc_tmp_mmbr_to_remove foreign keys.
      *
-     * @param Schema $schema
      * @throws SchemaException
      */
     protected function addOrocrmMcTmpMmbrToRemoveForeignKeys(Schema $schema)
@@ -689,7 +654,6 @@ class OroMailChimpBundleInstaller implements Installation
     /**
      * Add orocrm_mailchimp_ml_email foreign keys.
      *
-     * @param Schema $schema
      * @throws SchemaException
      */
     protected function addOrocrmMailchimpMlEmailForeignKeys(Schema $schema)
