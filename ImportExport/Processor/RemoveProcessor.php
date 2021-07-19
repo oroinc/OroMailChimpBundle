@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\MailChimpBundle\ImportExport\Processor;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Doctrine\ORM\QueryBuilder;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\ImportExportBundle\Processor\EntityNameAwareInterface;

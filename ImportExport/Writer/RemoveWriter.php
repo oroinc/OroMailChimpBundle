@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\MailChimpBundle\ImportExport\Writer;
 
-use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
 
 /**
  * Batch job's generic remove writer.
