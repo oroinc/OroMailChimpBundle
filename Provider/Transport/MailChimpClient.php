@@ -84,7 +84,6 @@ class MailChimpClient extends BaseClient
             );
         }
 
-
         return $response;
     }
     /**

@@ -37,9 +37,6 @@ class MemberIteratorTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider iteratorDataProvider
-     * @param array $parameters
-     * @param array $expectedValueMap
-     * @param array $expected
      */
     public function testIteratorWorks(array $parameters, array $expectedValueMap, array $expected)
     {

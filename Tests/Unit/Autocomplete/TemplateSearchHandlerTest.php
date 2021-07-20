@@ -154,8 +154,6 @@ class TemplateSearchHandlerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param array $expected
-     *
      * @dataProvider templateConvertDataProvider
      */
     public function testConvertItemsWithCategory(array $expected)
@@ -176,8 +174,6 @@ class TemplateSearchHandlerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param array $expected
-     *
      * @dataProvider templateConvertDataProvider
      */
     public function testConvertItemsWithType(array $expected)
@@ -198,8 +194,6 @@ class TemplateSearchHandlerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param array $expected
-     *
      * @dataProvider templateConvertDataProvider
      */
     public function testSearchEntitiesValidResult(array $expected)
@@ -229,8 +223,6 @@ class TemplateSearchHandlerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param array $expected
-     *
      * @dataProvider templateConvertDataProvider
      */
     public function testSearchEntitiesByIdValidResult(array $expected)

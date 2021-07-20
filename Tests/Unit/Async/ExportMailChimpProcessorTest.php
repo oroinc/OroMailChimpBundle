@@ -624,12 +624,6 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
             ->willReturn($segmentEntityManager);
     }
 
-    /**
-     * @param string $integrationId
-     * @param int $segmentId
-     * @param string $messageId
-     * @return Message
-     */
     private function getMessage(string $integrationId, int $segmentId, string $messageId): Message
     {
         $message = new Message();

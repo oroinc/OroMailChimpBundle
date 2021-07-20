@@ -65,8 +65,6 @@ abstract class AbstractStaticSegmentMembersIterator extends AbstractStaticSegmen
     }
 
     /**
-     * @param StaticSegment $staticSegment
-     * @param QueryBuilder $qb
      * @throws InvalidConfigurationException
      */
     protected function matchMembersByEmail(StaticSegment $staticSegment, QueryBuilder $qb)

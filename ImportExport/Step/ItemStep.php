@@ -43,9 +43,6 @@ class ItemStep extends BaseItemStep
         $this->flushStepElements();
     }
 
-    /**
-     * @param StepExecution $stepExecution
-     */
     protected function initializeStepElements(StepExecution $stepExecution)
     {
         parent::initializeStepElements($stepExecution);

@@ -46,12 +46,6 @@ class MarketingListItemGridListener
      */
     private $marketingListPlaceholderFilter;
 
-    /**
-     * @param MarketingListHelper $marketingListHelper
-     * @param ContactInformationFieldsProvider $contactInformationFieldsProvider
-     * @param FieldHelper $fieldHelper
-     * @param MarketingListPlaceholderFilter $marketingListPlaceholderFilter
-     */
     public function __construct(
         MarketingListHelper $marketingListHelper,
         ContactInformationFieldsProvider $contactInformationFieldsProvider,
@@ -64,9 +58,6 @@ class MarketingListItemGridListener
         $this->marketingListPlaceholderFilter = $marketingListPlaceholderFilter;
     }
 
-    /**
-     * @param BuildAfter $event
-     */
     public function onBuildAfter(BuildAfter $event)
     {
         $datagrid = $event->getDatagrid();
@@ -133,9 +124,6 @@ class MarketingListItemGridListener
 
     /**
      * Join real subscriber status
-     *
-     * @param MarketingList $marketingList
-     * @param QueryBuilder  $queryBuilder
      */
     private function joinSubscriberState(MarketingList $marketingList, QueryBuilder $queryBuilder)
     {
@@ -173,9 +161,6 @@ class MarketingListItemGridListener
             ->addSelect('mc_mlist_email.state as mcEmailState');
     }
 
-    /**
-     * @param DatagridInterface $datagrid
-     */
     private function rewriteActionConfiguration(DatagridInterface $datagrid)
     {
         $config = $datagrid->getConfig();

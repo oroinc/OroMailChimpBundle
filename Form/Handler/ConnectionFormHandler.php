@@ -29,11 +29,6 @@ class ConnectionFormHandler
      */
     protected $registry;
 
-    /**
-     * @param Request $request
-     * @param ManagerRegistry $registry
-     * @param FormInterface $form
-     */
     public function __construct(Request $request, ManagerRegistry $registry, FormInterface $form)
     {
         $this->request = $request;

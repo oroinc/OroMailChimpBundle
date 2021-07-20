@@ -44,11 +44,6 @@ class MailchimpMembersToUpdateOnEntityChangeListener
      */
     protected $contactInformationFieldsProvider;
 
-    /**
-     * @param DoctrineHelper $doctrineHelper
-     * @param MarketingListAllowedClassesProvider $marketingListAllowedClassesProvider
-     * @param ContactInformationFieldsProvider $contactInformationFieldsProvider
-     */
     public function __construct(
         DoctrineHelper $doctrineHelper,
         MarketingListAllowedClassesProvider $marketingListAllowedClassesProvider,
@@ -59,9 +54,6 @@ class MailchimpMembersToUpdateOnEntityChangeListener
         $this->contactInformationFieldsProvider = $contactInformationFieldsProvider;
     }
 
-    /**
-     * @param OnFlushEventArgs $args
-     */
     public function onFlush(OnFlushEventArgs $args)
     {
         $em = $args->getEntityManager();
@@ -96,7 +88,6 @@ class MailchimpMembersToUpdateOnEntityChangeListener
             }
 
             $emails = array_merge($emails, $emailsToAdd);
-
 
             $entitiesBatchCounter++;
             if ($entitiesBatchCounter >= self::UPDATE_MEMBERS_STATUSES_BATCH_SIZE) {

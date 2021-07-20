@@ -22,10 +22,6 @@ class ButtonsPlaceholderFilter
      */
     protected $registry;
 
-    /**
-     * @param ContactInformationFieldsProvider $fieldsProvider
-     * @param ManagerRegistry $registry
-     */
     public function __construct(ContactInformationFieldsProvider $fieldsProvider, ManagerRegistry $registry)
     {
         $this->fieldsProvider = $fieldsProvider;

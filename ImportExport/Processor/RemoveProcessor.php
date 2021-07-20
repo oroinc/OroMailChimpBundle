@@ -39,10 +39,6 @@ class RemoveProcessor implements StepExecutionAwareProcessor, EntityNameAwareInt
      */
     protected $field;
 
-    /**
-     * @param ContextRegistry $contextRegistry
-     * @param DoctrineHelper $doctrineHelper
-     */
     public function __construct(
         ContextRegistry $contextRegistry,
         DoctrineHelper $doctrineHelper
@@ -63,9 +59,6 @@ class RemoveProcessor implements StepExecutionAwareProcessor, EntityNameAwareInt
         return $item;
     }
 
-    /**
-     * @param array $item
-     */
     protected function updateContext(array $item)
     {
         $context = $this->contextRegistry->getByStepExecution($this->stepExecution);

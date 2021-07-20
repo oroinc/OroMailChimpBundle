@@ -133,8 +133,6 @@ class MemberImportStrategy extends AbstractImportStrategy
 
     /**
      * Assign MergeVar values to properties of Member
-     *
-     * @param Member $member
      */
     protected function assignMergeVarValues(Member $member)
     {
@@ -149,9 +147,6 @@ class MemberImportStrategy extends AbstractImportStrategy
         );
     }
 
-    /**
-     * @param MergeVarProviderInterface $mergeVarProvider
-     */
     public function setMergeVarProvider(MergeVarProviderInterface $mergeVarProvider)
     {
         $this->mergeVarProvider = $mergeVarProvider;

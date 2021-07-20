@@ -41,8 +41,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Create oro_integration_transport table
-     *
-     * @param Schema $schema
      */
     protected function createOroIntegrationTransportTable(Schema $schema)
     {
@@ -52,8 +50,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Create orocrm_cmpgn_transport_stngs table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmCmpgnTransportStngsTable(Schema $schema)
     {
@@ -65,8 +61,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Create orocrm_mc_mmbr_activity table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMailchimpMemberActivityTable(Schema $schema)
     {
@@ -90,8 +84,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Create orocrm_mailchimp_campaign table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMailchimpCampaignTable(Schema $schema)
     {
@@ -148,8 +140,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Create orocrm_mailchimp_template table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMailchimpTemplateTable(Schema $schema)
     {
@@ -176,8 +166,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Create orocrm_mailchimp_member table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMailchimpMemberTable(Schema $schema)
     {
@@ -217,8 +205,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Create orocrm_mc_static_segment_mmbr table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMailchimpStaticSegmentMemberTable(Schema $schema)
     {
@@ -235,8 +221,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Create orocrm_mc_static_segment table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMailchimpStaticSegmentTable(Schema $schema)
     {
@@ -264,8 +248,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Create orocrm_mc_subscribers_list table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMailchimpSubscribersListTable(Schema $schema)
     {
@@ -312,8 +294,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Add orocrm_cmpgn_transport_stngs foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmCmpgnTransportStngsForeignKeys(Schema $schema)
     {
@@ -334,8 +314,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Add orocrm_mc_mmbr_activity foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmMailchimpMemberActivityForeignKeys(Schema $schema)
     {
@@ -368,8 +346,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Add orocrm_mailchimp_campaign foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmMailchimpCampaignForeignKeys(Schema $schema)
     {
@@ -414,8 +390,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Add orocrm_mailchimp_template foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmMailchimpTemplateForeignKeys(Schema $schema)
     {
@@ -436,8 +410,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Add orocrm_mailchimp_member foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmMailchimpMemberForeignKeys(Schema $schema)
     {
@@ -464,8 +436,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Add orocrm_mc_static_segment_mmbr foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmMailchimpStaticSegmentMemberForeignKeys(Schema $schema)
     {
@@ -486,8 +456,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Add orocrm_mc_static_segment foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmMailchimpStaticSegmentForeignKeys(Schema $schema)
     {
@@ -520,8 +488,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Add orocrm_mc_subscribers_list foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmMailchimpSubscribersListForeignKeys(Schema $schema)
     {

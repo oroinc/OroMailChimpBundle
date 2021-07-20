@@ -25,10 +25,6 @@ class EmailColumnValidator extends ConstraintValidator
      */
     protected $registry;
 
-    /**
-     * @param ConstraintValidator $fieldInformationValidator
-     * @param ManagerRegistry $registry
-     */
     public function __construct(ConstraintValidator $fieldInformationValidator, ManagerRegistry $registry)
     {
         $this->fieldInformationValidator = $fieldInformationValidator;

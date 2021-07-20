@@ -57,8 +57,6 @@ class BadResponseException extends \RuntimeException implements MailChimpTranspo
 
     /**
      * Get the response that caused the exception
-     *
-     * @return ResponseInterface
      */
     public function getResponse(): ResponseInterface
     {

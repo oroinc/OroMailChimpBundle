@@ -17,17 +17,11 @@ class ExtendedMergeVarAddIterator extends AbstractSubordinateIterator
      */
     protected $provider;
 
-    /**
-     * @param ProviderInterface $provider
-     */
     public function __construct(ProviderInterface $provider)
     {
         $this->provider = $provider;
     }
 
-    /**
-     * @param \Iterator $mainIterator
-     */
     public function setMainIterator(\Iterator $mainIterator)
     {
         $this->mainIterator = $mainIterator;

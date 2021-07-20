@@ -69,10 +69,6 @@ class ExportIteratorTest extends TestCase
 
     /**
      * @dataProvider iteratorDataProvider
-     * @param string          $methodName
-     * @param array           $parameters
-     * @param StreamInterface $body
-     * @param array           $expected
      */
     public function testRewindWorks(string $methodName, array $parameters, StreamInterface $body, array $expected)
     {

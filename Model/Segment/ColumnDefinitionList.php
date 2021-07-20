@@ -13,9 +13,6 @@ class ColumnDefinitionList implements ColumnDefinitionListInterface
     /** @var array */
     private $columns;
 
-    /**
-     * @param Segment $segment
-     */
     public function __construct(Segment $segment)
     {
         $this->columns = $this->createColumnDefinitions(
@@ -31,11 +28,6 @@ class ColumnDefinitionList implements ColumnDefinitionListInterface
         return $this->columns;
     }
 
-    /**
-     * @param array|null $definition
-     *
-     * @return array
-     */
     private function createColumnDefinitions(?array $definition): array
     {
         if (null === $definition || empty($definition['columns'])) {
