@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\MailChimpBundle\ImportExport\Step;
 
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
-use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Oro\Bundle\BatchBundle\Exception\InvalidItemException;
+use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Oro\Bundle\BatchBundle\Step\StepExecutionWarningHandlerInterface;
 use Oro\Bundle\BatchBundle\Step\StepExecutor as BaseStepExecutor;
 use Oro\Bundle\ImportExportBundle\Reader\IteratorBasedReader;
@@ -18,13 +18,14 @@ class StepExecutor extends BaseStepExecutor
     /**
      * @var ItemReaderInterface|IteratorBasedReader
      */
-    protected $reader;
+    protected ?ItemReaderInterface $reader;
 
     /**
-     * {@inheritdoc}
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     *
+     * {@inheritdoc}
      */
-    public function execute(StepExecutionWarningHandlerInterface $warningHandler = null)
+    public function execute(StepExecutionWarningHandlerInterface $warningHandler = null): void
     {
         $itemsToWrite = [];
         $writeCount = 0;

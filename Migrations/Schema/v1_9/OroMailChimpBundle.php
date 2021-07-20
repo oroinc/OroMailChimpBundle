@@ -24,14 +24,11 @@ class OroMailChimpBundle implements Migration, DatabasePlatformAwareInterface
 
     /**
      * Sets the database platform
-     *
-     * @param AbstractPlatform $platform
      */
     public function setDatabasePlatform(AbstractPlatform $platform)
     {
         $this->platform = $platform;
     }
-
 
     /**
      * {@inheritdoc}
@@ -43,7 +40,6 @@ class OroMailChimpBundle implements Migration, DatabasePlatformAwareInterface
     }
 
     /**
-     * @param Schema $schema
      * @throws SchemaException
      * @throws DBALException
      */

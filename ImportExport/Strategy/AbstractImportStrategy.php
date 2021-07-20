@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\MailChimpBundle\ImportExport\Strategy;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\ExecutionContext;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Oro\Bundle\BatchBundle\Entity\JobExecution;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Oro\Bundle\BatchBundle\Item\ExecutionContext;
+use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Oro\Bundle\ImportExportBundle\Strategy\Import\ConfigurableAddOrReplaceStrategy;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\ImportExport\Helper\DefaultOwnerHelper;
@@ -51,9 +51,6 @@ abstract class AbstractImportStrategy extends ConfigurableAddOrReplaceStrategy i
         $this->logger = $logger;
     }
 
-    /**
-     * @param DefaultOwnerHelper $ownerHelper
-     */
     public function setOwnerHelper(DefaultOwnerHelper $ownerHelper)
     {
         $this->ownerHelper = $ownerHelper;

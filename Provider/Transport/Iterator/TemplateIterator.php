@@ -25,10 +25,6 @@ class TemplateIterator implements \Iterator
      */
     protected $iterator;
 
-    /**
-     * @param MailChimpClient $client
-     * @param array $parameters
-     */
     public function __construct(MailChimpClient $client, array $parameters = [])
     {
         $this->client = $client;

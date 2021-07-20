@@ -919,8 +919,6 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
 
     /**
      * Remove segmentMembers
-     *
-     * @param StaticSegmentMember $segmentMembers
      */
     public function removeSegmentMember(StaticSegmentMember $segmentMembers)
     {

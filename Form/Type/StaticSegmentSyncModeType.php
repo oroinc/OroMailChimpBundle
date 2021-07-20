@@ -19,9 +19,6 @@ class StaticSegmentSyncModeType extends AbstractType
      */
     private $staticSegmentSyncModesProvider;
 
-    /**
-     * @param StaticSegmentSyncModeChoicesProvider $staticSegmentSyncModesProvider
-     */
     public function __construct(StaticSegmentSyncModeChoicesProvider $staticSegmentSyncModesProvider)
     {
         $this->staticSegmentSyncModesProvider = $staticSegmentSyncModesProvider;

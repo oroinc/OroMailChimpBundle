@@ -22,9 +22,6 @@ class OroMailChimpBundle implements Migration
         $this->clearOrphanedMarketingListEmailEntries($queries);
     }
 
-    /**
-     * @param Schema $schema
-     */
     private function addOnDeleteCascadeForChannelConnections(Schema $schema)
     {
         $mailChimpCampaignTable = $schema->getTable('orocrm_mailchimp_campaign');
@@ -88,9 +85,6 @@ class OroMailChimpBundle implements Migration
         $mailChimpSubscribersListTable->getColumn('channel_id')->setNotnull(true);
     }
 
-    /**
-     * @param QueryBag $queries
-     */
     private function clearEntriesWithNullChannel(QueryBag $queries)
     {
         $queries->addPreQuery(
@@ -114,9 +108,6 @@ class OroMailChimpBundle implements Migration
         );
     }
 
-    /**
-     * @param QueryBag $queries
-     */
     private function clearOrphanedMarketingListEmailEntries(QueryBag $queries)
     {
         $queries->addQuery(

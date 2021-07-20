@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Functional\ImportExport;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Oro\Bundle\BatchBundle\Entity\JobExecution;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\MailChimpBundle\Entity\Member;
 use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
 use Oro\Bundle\MailChimpBundle\ImportExport\Writer\MemberWriter;

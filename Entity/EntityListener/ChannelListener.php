@@ -18,25 +18,16 @@ class ChannelListener
      */
     private $registry;
 
-    /**
-     * @param Registry $registry
-     */
     public function __construct(Registry $registry)
     {
         $this->registry = $registry;
     }
 
-    /**
-     * @param Channel $channel
-     */
     public function preRemove(Channel $channel)
     {
         $this->deleteRelatedMarketingListEmails($channel);
     }
 
-    /**
-     * @param Channel $channel
-     */
     private function deleteRelatedMarketingListEmails(Channel $channel)
     {
         /** @var QueryBuilder $emailQueryBuilder */

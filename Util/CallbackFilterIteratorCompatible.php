@@ -19,9 +19,6 @@ class CallbackFilterIteratorCompatible extends \FilterIterator
 
     /**
      * CallbackFilterIterator constructor.
-     *
-     * @param \Iterator $iterator
-     * @param callable $callback
      */
     public function __construct(\Iterator $iterator, callable $callback)
     {

@@ -26,19 +26,12 @@ class StaticSegmentSyncModeChoicesProvider
      */
     private $translator;
 
-    /**
-     * @param DoctrineHelper $doctrineHelper
-     * @param TranslatorInterface $translator
-     */
     public function __construct(DoctrineHelper $doctrineHelper, TranslatorInterface $translator)
     {
         $this->doctrineHelper = $doctrineHelper;
         $this->translator = $translator;
     }
 
-    /**
-     * @return array
-     */
     public function getTranslatedChoices(): array
     {
         return [
@@ -51,9 +44,6 @@ class StaticSegmentSyncModeChoicesProvider
         ];
     }
 
-    /**
-     * @return string
-     */
     private function getCronScheduleDefinition(): string
     {
         $scheduleRepository = $this->doctrineHelper->getEntityRepository(Schedule::class);

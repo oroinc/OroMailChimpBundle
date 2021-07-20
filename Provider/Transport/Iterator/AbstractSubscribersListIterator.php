@@ -26,10 +26,6 @@ abstract class AbstractSubscribersListIterator extends AbstractSubordinateIterat
      */
     protected $doctrineHelper;
 
-    /**
-     * @param \Iterator $mainIterator
-     * @param MailChimpClient $client
-     */
     public function __construct(
         \Iterator $mainIterator,
         MailChimpClient $client

@@ -42,7 +42,6 @@ class LoadMarketingListData extends AbstractMailChimpFixture implements Dependen
         $manager->flush();
     }
 
-
     /**
      * {@inheritdoc}
      */

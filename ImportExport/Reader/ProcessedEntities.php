@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\MailChimpBundle\ImportExport\Reader;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Oro\Bundle\BatchBundle\Entity\JobExecution;
 use Oro\Bundle\ImportExportBundle\Reader\AbstractReader;
 
 /**

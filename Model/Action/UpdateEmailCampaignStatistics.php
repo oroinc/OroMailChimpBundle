@@ -28,17 +28,11 @@ class UpdateEmailCampaignStatistics extends AbstractMarketingListEntitiesAction
      */
     protected $registry;
 
-    /**
-     * @param EmailCampaignStatisticsConnector $campaignStatisticsConnector
-     */
     public function setCampaignStatisticsConnector(EmailCampaignStatisticsConnector $campaignStatisticsConnector)
     {
         $this->campaignStatisticsConnector = $campaignStatisticsConnector;
     }
 
-    /**
-     * @param ManagerRegistry $registry
-     */
     public function setRegistry(ManagerRegistry $registry)
     {
         $this->registry = $registry;
@@ -72,9 +66,6 @@ class UpdateEmailCampaignStatistics extends AbstractMarketingListEntitiesAction
         $this->updateStatistics($context->getEntity());
     }
 
-    /**
-     * @param MemberActivity $memberActivity
-     */
     protected function updateStatistics(MemberActivity $memberActivity)
     {
         $mailChimpCampaign = $memberActivity->getCampaign();
@@ -92,10 +83,6 @@ class UpdateEmailCampaignStatistics extends AbstractMarketingListEntitiesAction
         }
     }
 
-    /**
-     * @param MemberActivity $memberActivity
-     * @param EmailCampaignStatistics $emailCampaignStatistics
-     */
     protected function incrementStatistics(
         MemberActivity $memberActivity,
         EmailCampaignStatistics $emailCampaignStatistics

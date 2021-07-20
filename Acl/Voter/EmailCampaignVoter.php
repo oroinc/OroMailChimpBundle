@@ -40,7 +40,6 @@ class EmailCampaignVoter extends AbstractEntityVoter
             return $emailCampaign->isSent();
         }
 
-
         return false;
     }
 }

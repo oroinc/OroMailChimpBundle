@@ -17,9 +17,6 @@ abstract class AbstractExportWriter extends PersistentBatchWriter implements Cle
      */
     protected $transport;
 
-    /**
-     * @param TransportInterface $transport
-     */
     public function setTransport(TransportInterface $transport)
     {
         $this->transport = $transport;

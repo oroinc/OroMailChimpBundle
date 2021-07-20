@@ -52,9 +52,6 @@ class MemberActivityImportStrategy extends BasicImportStrategy implements Logger
         $this->logger = $logger;
     }
 
-    /**
-     * @param ValidatorInterface $validator
-     */
     public function setValidator(ValidatorInterface $validator)
     {
         $this->validator = $validator;

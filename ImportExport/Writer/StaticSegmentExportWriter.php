@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\MailChimpBundle\ImportExport\Writer;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\ORM\Query\BufferedIdentityQueryResultIterator;
 use Oro\Bundle\BatchBundle\ORM\Query\BufferedQueryResultIteratorInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextAwareInterface;
@@ -144,7 +144,6 @@ class StaticSegmentExportWriter extends AbstractExportWriter implements ContextA
     }
 
     /**
-     * @param StaticSegment $staticSegment
      * @throws \Exception
      */
     protected function addStaticListSegment(StaticSegment $staticSegment)

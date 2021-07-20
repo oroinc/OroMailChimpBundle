@@ -18,9 +18,6 @@ class FieldHelper
      */
     protected $virtualFieldProvider;
 
-    /**
-     * @param VirtualFieldProviderInterface $virtualFieldProvider
-     */
     public function __construct(VirtualFieldProviderInterface $virtualFieldProvider)
     {
         $this->virtualFieldProvider = $virtualFieldProvider;

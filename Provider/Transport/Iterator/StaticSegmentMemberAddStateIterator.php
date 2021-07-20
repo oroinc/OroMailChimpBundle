@@ -31,9 +31,6 @@ class StaticSegmentMemberAddStateIterator extends AbstractSubordinateIterator
      */
     protected $marketingListEmailEntity;
 
-    /**
-     * @param \Iterator|null $mainIterator
-     */
     public function __construct(\Iterator $mainIterator = null)
     {
         if ($mainIterator) {
@@ -41,9 +38,6 @@ class StaticSegmentMemberAddStateIterator extends AbstractSubordinateIterator
         }
     }
 
-    /**
-     * @param \Iterator $mainIterator
-     */
     public function setMainIterator(\Iterator $mainIterator)
     {
         $this->mainIterator = $mainIterator;

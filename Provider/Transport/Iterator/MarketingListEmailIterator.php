@@ -100,8 +100,6 @@ class MarketingListEmailIterator extends AbstractStaticSegmentIterator
 
     /**
      * Method to change $qb for certain Iterator purposes
-     *
-     * @param QueryBuilder $qb
      */
     protected function prepareIteratorPart(QueryBuilder $qb)
     {

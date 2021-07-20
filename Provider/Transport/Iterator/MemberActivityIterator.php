@@ -17,12 +17,6 @@ class MemberActivityIterator extends AbstractMemberActivityIterator
      */
     protected $parameters;
 
-    /**
-     * @param \Iterator $campaigns
-     * @param MailChimpClient $client
-     * @param array $parameters
-     * @param array $sinceMap
-     */
     public function __construct(
         \Iterator $campaigns,
         MailChimpClient $client,

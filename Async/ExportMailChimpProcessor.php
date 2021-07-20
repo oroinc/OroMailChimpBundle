@@ -55,14 +55,6 @@ class ExportMailChimpProcessor implements MessageProcessorInterface, TopicSubscr
      */
     private $logger;
 
-    /**
-     * @param DoctrineHelper $doctrineHelper
-     * @param ReverseSyncProcessor $reverseSyncProcessor
-     * @param StaticSegmentsMemberStateManager $staticSegmentsMemberStateManager
-     * @param JobRunner $jobRunner
-     * @param TokenStorageInterface $tokenStorage
-     * @param LoggerInterface $logger
-     */
     public function __construct(
         DoctrineHelper $doctrineHelper,
         ReverseSyncProcessor $reverseSyncProcessor,

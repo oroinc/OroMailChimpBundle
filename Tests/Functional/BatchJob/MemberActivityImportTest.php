@@ -59,9 +59,6 @@ class MemberActivityImportTest extends WebTestCase
         $this->assertDatabaseContent($jobResult);
     }
 
-    /**
-     * @param JobResult $jobResult
-     */
     protected function assertDatabaseContent(JobResult $jobResult)
     {
         $fixtures = new \RecursiveDirectoryIterator(

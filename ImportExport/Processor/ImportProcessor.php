@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\MailChimpBundle\ImportExport\Processor;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\ExecutionContext;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Oro\Bundle\BatchBundle\Entity\JobExecution;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Oro\Bundle\BatchBundle\Item\ExecutionContext;
+use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\ImportExportBundle\Processor\ImportProcessor as BaseImportProcessor;
 
@@ -24,17 +24,11 @@ class ImportProcessor extends BaseImportProcessor implements StepExecutionAwareI
      */
     protected $stepExecution;
 
-    /**
-     * @param ContextRegistry $contextRegistry
-     */
     public function setContextRegistry(ContextRegistry $contextRegistry)
     {
         $this->contextRegistry = $contextRegistry;
     }
 
-    /**
-     * @param StepExecution $stepExecution
-     */
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;

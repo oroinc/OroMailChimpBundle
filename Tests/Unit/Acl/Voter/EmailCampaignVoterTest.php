@@ -86,9 +86,6 @@ class EmailCampaignVoterTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @param EmailCampaign $emailCampaign
-     */
     protected function assertEmailCampaignLoad(EmailCampaign $emailCampaign)
     {
         $repository = $this->getMockBuilder(ObjectRepository::class)

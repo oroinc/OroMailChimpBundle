@@ -24,8 +24,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Create orocrm_mc_extended_merge_var table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMcExtendedMergeVarTable(Schema $schema)
     {
@@ -44,8 +42,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Create orocrm_mc_mmbr_extd_merge_var table
-     *
-     * @param Schema $schema
      */
     protected function createOrocrmMcMmbrExtdMergeVarTable(Schema $schema)
     {
@@ -61,8 +57,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Add orocrm_mc_extended_merge_var foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmMcExtendedMergeVarForeignKeys(Schema $schema)
     {
@@ -77,8 +71,6 @@ class OroMailChimpBundle implements Migration
 
     /**
      * Add orocrm_mc_mmbr_extd_merge_var foreign keys.
-     *
-     * @param Schema $schema
      */
     protected function addOrocrmMcMmbrExtdMergeVarForeignKeys(Schema $schema)
     {
