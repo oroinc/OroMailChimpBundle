@@ -61,7 +61,7 @@ abstract class AbstractExportWriter extends PersistentBatchWriter implements Cle
      */
     protected function handleResponse($response, callable $func = null)
     {
-        if (!is_array($response)) {
+        if (!\is_array($response)) {
             return;
         }
         if (!$this->logger) {
@@ -71,18 +71,18 @@ abstract class AbstractExportWriter extends PersistentBatchWriter implements Cle
         if ($func) {
             $func($response, $this->logger);
         }
-        if (!empty($response['errors']) && is_array($response['errors'])) {
+        if (!empty($response['errors']) && \is_array($response['errors'])) {
             foreach ($response['errors'] as $error) {
                 $message = '';
-                if (array_key_exists('error', $error)) {
+                if (\array_key_exists('error', $error)) {
                     $message = $error['error'];
-                } elseif (array_key_exists('message', $error)) {
+                } elseif (\array_key_exists('message', $error)) {
                     $message = $error['message'];
                 }
 
-                if (false !== strpos($message, 'fake') ||
-                    false !== strpos($message, 'valid') ||
-                    false !== strpos($message, 'already exist') ||
+                if (str_contains($message, 'fake') ||
+                    str_contains($message, 'valid') ||
+                    str_contains($message, 'already exist') ||
                     false !== stripos($message, 'none of the emails provided')
                 ) {
                     $this->logger->warning('Mailchimp returns error from the server: message: "{message}"', [

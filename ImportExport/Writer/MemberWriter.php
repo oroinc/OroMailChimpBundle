@@ -106,7 +106,7 @@ class MemberWriter extends AbstractExportWriter
                     );
 
                     if (!empty($response['errors']) && is_array($response['errors'])) {
-                        $notFakeErrormessages = array_filter($response['errors'], function ($err) {
+                        $notFakeErrorMessages = array_filter($response['errors'], function ($err) {
                             if (false === array_key_exists('error', $err)) {
                                 return true;
                             }
@@ -119,7 +119,7 @@ class MemberWriter extends AbstractExportWriter
                             return true;
                         });
 
-                        if (empty($notFakeErrormessages)) {
+                        if (empty($notFakeErrorMessages)) {
                             $logger->warning('Mailchimp warning occurs during execution "batchSubscribe" method');
                         } else {
                             $logger->error('Mailchimp error occurs during execution "batchSubscribe" method');

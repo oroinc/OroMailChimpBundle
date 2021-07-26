@@ -16,6 +16,9 @@ class DateTimeSerializer implements NormalizerInterface, DenormalizerInterface
 {
     const CHANNEL_TYPE_KEY = 'channelType';
 
+    private BaseNormalizer $mailchimpNormalizer;
+    private BaseNormalizer $isoNormalizer;
+
     public function __construct()
     {
         $this->mailchimpNormalizer = new BaseNormalizer(
@@ -54,7 +57,7 @@ class DateTimeSerializer implements NormalizerInterface, DenormalizerInterface
     {
         return $this->mailchimpNormalizer->supportsDenormalization($data, $type, $format, $context)
             && !empty($context[self::CHANNEL_TYPE_KEY])
-            && strpos($context[self::CHANNEL_TYPE_KEY], ChannelType::TYPE) !== false;
+            && str_contains($context[self::CHANNEL_TYPE_KEY], ChannelType::TYPE);
     }
 
     /**
@@ -64,6 +67,6 @@ class DateTimeSerializer implements NormalizerInterface, DenormalizerInterface
     {
         return $this->mailchimpNormalizer->supportsNormalization($data, $format, $context)
             && !empty($context[self::CHANNEL_TYPE_KEY])
-            && strpos($context[self::CHANNEL_TYPE_KEY], ChannelType::TYPE) !== false;
+            && str_contains($context[self::CHANNEL_TYPE_KEY], ChannelType::TYPE);
     }
 }

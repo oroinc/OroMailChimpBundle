@@ -277,8 +277,7 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
         }
 
         // If there is at least one concat argument - CONCAT, if no - return as string
-        $mergeVarsExpr = null;
-        if (strpos($mergeVars, ', ') !== false) {
+        if (str_contains($mergeVars, ', ')) {
             $mergeVarsExpr = sprintf("CONCAT('%s')", $mergeVars);
         } else {
             $mergeVarsExpr = sprintf("'%s'", $mergeVars);
