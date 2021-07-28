@@ -3,59 +3,38 @@
 namespace Oro\Bundle\MailChimpBundle\ImportExport\Serializer;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-use Oro\Bundle\ImportExportBundle\Serializer\Normalizer\DenormalizerInterface;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Entity\Member;
 use Oro\Bundle\MailChimpBundle\Entity\MemberActivity;
+use Symfony\Component\Serializer\Normalizer\ContextAwareDenormalizerInterface;
 
 /**
  * Added during performance improvement. Please, keep it as simple as possible.
  * Used for batch importing of member activities from MailChimp, may process significant amount of records.
  */
-class MemberActivitySerializer implements DenormalizerInterface
+class MemberActivitySerializer implements ContextAwareDenormalizerInterface
 {
-    /**
-     * @var DateTimeSerializer
-     */
-    protected $dateTimeSerializer;
+    protected ?DateTimeSerializer $dateTimeSerializer = null;
 
-    /**
-     * @var DoctrineHelper
-     */
-    protected $doctrineHelper;
+    protected ?DoctrineHelper $doctrineHelper = null;
 
-    /**
-     * @var string
-     */
-    protected $channelEntity;
+    protected ?string $channelEntity = null;
 
-    /**
-     * @param string $channelEntity
-     * @return MemberImportSerializer
-     */
-    public function setChannelEntity($channelEntity)
+    public function setChannelEntity(string $channelEntity): self
     {
         $this->channelEntity = $channelEntity;
 
         return $this;
     }
 
-    /**
-     * @param DoctrineHelper $doctrineHelper
-     * @return MemberImportSerializer
-     */
-    public function setDoctrineHelper(DoctrineHelper $doctrineHelper)
+    public function setDoctrineHelper(DoctrineHelper $doctrineHelper): self
     {
         $this->doctrineHelper = $doctrineHelper;
 
         return $this;
     }
 
-    /**
-     * @param DateTimeSerializer $dateTimeSerializer
-     * @return MemberImportSerializer
-     */
-    public function setDateTimeSerializer(DateTimeSerializer $dateTimeSerializer)
+    public function setDateTimeSerializer(DateTimeSerializer $dateTimeSerializer): self
     {
         $this->dateTimeSerializer = $dateTimeSerializer;
 
@@ -64,10 +43,11 @@ class MemberActivitySerializer implements DenormalizerInterface
 
     /**
      * @SuppressWarnings(PHPMD.NPathComplexity)
-     * {@inheritdoc}
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     *
+     * {@inheritdoc}
      */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, string $type, string $format = null, array $context = [])
     {
         $result = new MemberActivity();
         // Scalar fields
@@ -114,27 +94,17 @@ class MemberActivitySerializer implements DenormalizerInterface
         return $result;
     }
 
-    /**
-     * @param string $dateString
-     * @param array $context
-     * @return \DateTime|null
-     */
-    protected function getDateTime($dateString, array $context = [])
+    protected function getDateTime(string $dateString, array $context = []): ?\DateTime
     {
-        return $this->dateTimeSerializer->denormalize(
-            $dateString,
-            'DateTime',
-            'datetime',
-            $context
-        );
+        return $this->dateTimeSerializer->denormalize($dateString, 'DateTime', 'datetime', $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function supportsDenormalization($data, string $type, string $format = null, array $context = []): bool
     {
-        return is_a($type, 'Oro\Bundle\MailChimpBundle\Entity\MemberActivity', true)
+        return is_a($type, MemberActivity::class, true)
             && is_array($data)
             && !empty($context['channel']);
     }

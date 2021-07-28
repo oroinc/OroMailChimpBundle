@@ -3,60 +3,39 @@
 namespace Oro\Bundle\MailChimpBundle\ImportExport\Serializer;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-use Oro\Bundle\ImportExportBundle\Serializer\Normalizer\DenormalizerInterface;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Entity\Member;
 use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
 use Oro\Bundle\MailChimpBundle\ImportExport\DataConverter\MemberDataConverter;
+use Symfony\Component\Serializer\Normalizer\ContextAwareDenormalizerInterface;
 
 /**
  * Added during performance improvement. Please, keep it as simple as possible.
  * Used for batch importing of members from MailChimp, may process significant amount of records.
  */
-class MemberImportSerializer implements DenormalizerInterface
+class MemberImportSerializer implements ContextAwareDenormalizerInterface
 {
-    /**
-     * @var DateTimeSerializer
-     */
-    protected $dateTimeSerializer;
+    protected ?DateTimeSerializer $dateTimeSerializer = null;
 
-    /**
-     * @var DoctrineHelper
-     */
-    protected $doctrineHelper;
+    protected ?DoctrineHelper $doctrineHelper = null;
 
-    /**
-     * @var string
-     */
-    protected $channelEntity;
+    protected ?string $channelEntity = null;
 
-    /**
-     * @param string $channelEntity
-     * @return MemberImportSerializer
-     */
-    public function setChannelEntity($channelEntity)
+    public function setChannelEntity(string $channelEntity): self
     {
         $this->channelEntity = $channelEntity;
 
         return $this;
     }
 
-    /**
-     * @param DoctrineHelper $doctrineHelper
-     * @return MemberImportSerializer
-     */
-    public function setDoctrineHelper(DoctrineHelper $doctrineHelper)
+    public function setDoctrineHelper(DoctrineHelper $doctrineHelper): self
     {
         $this->doctrineHelper = $doctrineHelper;
 
         return $this;
     }
 
-    /**
-     * @param DateTimeSerializer $dateTimeSerializer
-     * @return MemberImportSerializer
-     */
-    public function setDateTimeSerializer(DateTimeSerializer $dateTimeSerializer)
+    public function setDateTimeSerializer(DateTimeSerializer $dateTimeSerializer): self
     {
         $this->dateTimeSerializer = $dateTimeSerializer;
 
@@ -69,7 +48,7 @@ class MemberImportSerializer implements DenormalizerInterface
      *
      * {@inheritdoc}
      */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, string $type, string $format = null, array $context = [])
     {
         $result = new Member();
         // Scalar fields
@@ -139,7 +118,7 @@ class MemberImportSerializer implements DenormalizerInterface
             $subscribersList->setOriginId($data['subscribersList']['originId']);
         } elseif (!empty($data['subscribersList']['id'])) {
             $subscribersList = $this->doctrineHelper->getEntityReference(
-                'Oro\Bundle\MailChimpBundle\Entity\SubscribersList',
+                SubscribersList::class,
                 $data['subscribersList']['id']
             );
         }
@@ -151,25 +130,15 @@ class MemberImportSerializer implements DenormalizerInterface
         return $result;
     }
 
-    /**
-     * @param string $dateString
-     * @param array $context
-     * @return \DateTime|null
-     */
-    protected function getDateTime($dateString, array $context = [])
+    protected function getDateTime(string $dateString, array $context = []): ?\DateTime
     {
-        return $this->dateTimeSerializer->denormalize(
-            $dateString,
-            'DateTime',
-            'datetime',
-            $context
-        );
+        return $this->dateTimeSerializer->denormalize($dateString, 'DateTime', 'datetime', $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function supportsDenormalization($data, string $type, string $format = null, array $context = []): bool
     {
         return is_array($data)
             && array_key_exists(MemberDataConverter::IMPORT_DATA, $data)

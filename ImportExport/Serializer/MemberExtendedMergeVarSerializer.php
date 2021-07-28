@@ -90,10 +90,10 @@ class MemberExtendedMergeVarSerializer extends ConfigurableEntityNormalizer
     /**
      * {@inheritdoc}
      */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, string $type, string $format = null, array $context = [])
     {
         /** @var MemberExtendedMergeVar $entity */
-        $entity = parent::denormalize($data, $class, $format, $context);
+        $entity = parent::denormalize($data, $type, $format, $context);
 
         /** @var StaticSegment $staticSegment */
         $staticSegment = $this->databaseHelper->getEntityReference($entity->getStaticSegment());
@@ -127,7 +127,7 @@ class MemberExtendedMergeVarSerializer extends ConfigurableEntityNormalizer
     /**
      * {@inheritdoc}
      */
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function supportsDenormalization($data, string $type, string $format = null, array $context = []): bool
     {
         return $type === $this->memberExtendedMergeVarClassName;
     }
@@ -164,7 +164,7 @@ class MemberExtendedMergeVarSerializer extends ConfigurableEntityNormalizer
      */
     protected function applyFrontendFormatting($value, array $options)
     {
-        $frontendType = isset($options['frontend_type']) ? $options['frontend_type'] : null;
+        $frontendType = $options['frontend_type'] ?? null;
         switch ($frontendType) {
             case PropertyInterface::TYPE_DATE:
                 $value = $this->dateTimeFormatter->formatDate($value);
