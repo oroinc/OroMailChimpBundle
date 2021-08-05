@@ -2,8 +2,7 @@
 
 namespace Oro\Bundle\MailChimpBundle\Controller\Api\Rest;
 
-use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Routing\ClassResourceInterface;
+use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -13,12 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Mailchimp static segment REST API controller.
- *
- * @Rest\RouteResource("staticsegment")
- * @Rest\NamePrefix("oro_api_")
+ * REST API controller for mailchimp static segments.
  */
-class StaticSegmentController extends RestController implements ClassResourceInterface
+class StaticSegmentController extends RestController
 {
     /**
      * REST DELETE
@@ -39,12 +35,8 @@ class StaticSegmentController extends RestController implements ClassResourceInt
     }
 
     /**
-     * @Rest\Post(
-     *      "/staticsegment/{id}/status",
-     *      requirements={"id"="\d+"}
-     * )
      * @ParamConverter("staticSegment", options={"id"="id"})
-     * @Rest\QueryParam(
+     * @QueryParam(
      *      name="id",
      *      requirements="\d+",
      *      nullable=false,

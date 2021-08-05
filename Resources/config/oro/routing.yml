@@ -3,11 +3,46 @@ oro_mailchimp_bundle:
     type:         annotation
     prefix:       /
 
-oro_mailchimp_static_segment_api:
-    resource:     "@OroMailChimpBundle/Controller/Api/Rest/StaticSegmentController.php"
-    type:         rest
-    prefix:       api/rest/{version}
-    requirements:
-        version:  latest|v1
+
+#
+# DEPRECATED OLD REST API ROUTES
+#
+
+oro_api_options_staticsegments:
+    path: '/api/rest/{version}/staticsegments.{_format}'
+    methods: [OPTIONS]
     defaults:
-        version:  latest
+        _controller: 'Oro\Bundle\MailChimpBundle\Controller\Api\Rest\StaticSegmentController::optionsAction'
+        _format: json
+        version: latest
+    requirements:
+        _format: json|html
+        version: latest|v1
+
+
+#
+# OLD REST API ROUTES
+#
+
+oro_api_update_staticsegment_status:
+    path: '/api/rest/{version}/staticsegment/{id}/status.{_format}'
+    methods: [POST]
+    defaults:
+        _controller: 'Oro\Bundle\MailChimpBundle\Controller\Api\Rest\StaticSegmentController::updateStatusAction'
+        _format: json
+        version: latest
+    requirements:
+        id: \d+
+        _format: json|html
+        version: latest|v1
+
+oro_api_delete_staticsegment:
+    path: '/api/rest/{version}/staticsegments/{id}.{_format}'
+    methods: [DELETE]
+    defaults:
+        _controller: 'Oro\Bundle\MailChimpBundle\Controller\Api\Rest\StaticSegmentController::deleteAction'
+        _format: json
+        version: latest
+    requirements:
+        _format: json|html
+        version: latest|v1
