@@ -44,5 +44,6 @@ oro_api_delete_staticsegment:
         _format: json
         version: latest
     requirements:
+        id: \d+
         _format: json|html
         version: latest|v1
