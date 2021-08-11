@@ -28,7 +28,7 @@ class MailChimpExportCommandTest extends \PHPUnit\Framework\TestCase
 
     public function testShouldAllowSetContainer()
     {
-        $command = new class() extends MailChimpExportCommand {
+        $command = new class(MailChimpExportCommand::getDefaultName()) extends MailChimpExportCommand {
             public function xgetContainer(): ContainerInterface
             {
                 return $this->container;
