@@ -10,62 +10,55 @@ use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MailChimpBundle\Acl\Voter\MarketingListStateItemVoter;
-use Oro\Bundle\MailChimpBundle\Model\FieldHelper;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListStateItemInterface;
 use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
+use Oro\Component\Testing\Unit\TestContainerBuilder;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class MarketingListStateItemVoterTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var MarketingListStateItemVoter */
-    private $voter;
-
-    /** @var \PHPUnit\Framework\MockObject\MockObject|DoctrineHelper */
+    /** @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject */
     private $doctrineHelper;
 
-    /** @var \PHPUnit\Framework\MockObject\MockObject|ContactInformationFieldsProvider */
+    /** @var ContactInformationFieldsProvider|\PHPUnit\Framework\MockObject\MockObject */
     private $contactInformationFieldsProvider;
 
-    /** @var \PHPUnit\Framework\MockObject\MockObject|FieldHelper */
-    private $fieldHelper;
-
-    /** @var \PHPUnit\Framework\MockObject\MockObject|ObjectManager */
+    /** @var ObjectManager|\PHPUnit\Framework\MockObject\MockObject */
     private $em;
+
+    /** @var MarketingListStateItemVoter */
+    private $voter;
 
     protected function setUp(): void
     {
         $this->doctrineHelper = $this->createMock(DoctrineHelper::class);
+        $this->contactInformationFieldsProvider = $this->createMock(ContactInformationFieldsProvider::class);
         $this->em = $this->createMock(EntityManager::class);
 
         $this->doctrineHelper->expects($this->any())
             ->method('getEntityManager')
             ->willReturn($this->em);
 
-        $this->contactInformationFieldsProvider = $this->createMock(ContactInformationFieldsProvider::class);
-        $this->fieldHelper = $this->createMock(FieldHelper::class);
+        $container = TestContainerBuilder::create()
+            ->add('oro_marketing_list.provider.contact_information_fields', $this->contactInformationFieldsProvider)
+            ->getContainer($this);
 
-        $this->voter = new MarketingListStateItemVoter(
-            $this->doctrineHelper,
-            $this->contactInformationFieldsProvider,
-            $this->fieldHelper,
-            \stdClass::class,
-            \stdClass::class,
-            \stdClass::class
-        );
+        $this->voter = new MarketingListStateItemVoter($this->doctrineHelper, $container);
     }
 
     /**
-     * @param mixed $identifier
-     * @param mixed $className
-     * @param mixed $object
-     * @param bool $expected
-     * @param array $attributes
-     * @param string|null $queryResult
      * @dataProvider attributesDataProvider
      */
-    public function testVote($identifier, $className, $object, $expected, $attributes, $queryResult = null)
-    {
+    public function testVote(
+        ?int $identifier,
+        ?string $className,
+        mixed $object,
+        int $expected,
+        array $attributes,
+        ?string $queryResult = null
+    ) {
         $this->doctrineHelper->expects($this->any())
             ->method('getSingleEntityIdentifier')
             ->willReturn($identifier);
@@ -99,7 +92,7 @@ class MarketingListStateItemVoterTest extends \PHPUnit\Framework\TestCase
 
         $this->em->expects($this->any())
             ->method('createQueryBuilder')
-            ->willReturn($this->getQueryBuilderMock($queryResult));
+            ->willReturn($this->getQueryBuilder($queryResult));
 
         if ($className !== null) {
             $this->voter->setClassName($className);
@@ -115,22 +108,19 @@ class MarketingListStateItemVoterTest extends \PHPUnit\Framework\TestCase
     public function attributesDataProvider(): array
     {
         return [
-            [null, null, [], MarketingListStateItemVoter::ACCESS_ABSTAIN, []],
-            [null, null, new \stdClass(), MarketingListStateItemVoter::ACCESS_ABSTAIN, []],
-            [1, null, new \stdClass(), MarketingListStateItemVoter::ACCESS_ABSTAIN, ['VIEW']],
-            [1, 'NotSupports', new \stdClass(), MarketingListStateItemVoter::ACCESS_ABSTAIN, ['DELETE']],
-            [1, 'stdClass', new \stdClass(), MarketingListStateItemVoter::ACCESS_ABSTAIN, ['DELETE']],
-            [1, 'stdClass', new \stdClass(), MarketingListStateItemVoter::ACCESS_ABSTAIN, ['DELETE'], '0'],
-            [1, 'stdClass', new \stdClass(), MarketingListStateItemVoter::ACCESS_DENIED, ['DELETE'], '1'],
-            [1, 'stdClass', new \stdClass(), MarketingListStateItemVoter::ACCESS_DENIED, ['DELETE'], '2'],
-            [1, 'stdClass', null, MarketingListStateItemVoter::ACCESS_ABSTAIN, ['DELETE'], '2'],
+            [null, null, [], VoterInterface::ACCESS_ABSTAIN, []],
+            [null, null, new \stdClass(), VoterInterface::ACCESS_ABSTAIN, []],
+            [1, null, new \stdClass(), VoterInterface::ACCESS_ABSTAIN, ['VIEW']],
+            [1, 'NotSupports', new \stdClass(), VoterInterface::ACCESS_ABSTAIN, ['DELETE']],
+            [1, 'stdClass', new \stdClass(), VoterInterface::ACCESS_ABSTAIN, ['DELETE']],
+            [1, 'stdClass', new \stdClass(), VoterInterface::ACCESS_ABSTAIN, ['DELETE'], '0'],
+            [1, 'stdClass', new \stdClass(), VoterInterface::ACCESS_DENIED, ['DELETE'], '1'],
+            [1, 'stdClass', new \stdClass(), VoterInterface::ACCESS_DENIED, ['DELETE'], '2'],
+            [1, 'stdClass', null, VoterInterface::ACCESS_ABSTAIN, ['DELETE'], '2'],
         ];
     }
 
-    /**
-     * @return \PHPUnit\Framework\MockObject\MockObject
-     */
-    private function getItem()
+    private function getItem(): MarketingListStateItemInterface
     {
         $item = $this->createMock(MarketingListStateItemInterface::class);
         $marketingList = $this->createMock(MarketingList::class);
@@ -149,11 +139,7 @@ class MarketingListStateItemVoterTest extends \PHPUnit\Framework\TestCase
         return $item;
     }
 
-    /**
-     * @param mixed $queryResult
-     * @return \PHPUnit\Framework\MockObject\MockObject
-     */
-    private function getQueryBuilderMock($queryResult)
+    private function getQueryBuilder(mixed $queryResult): QueryBuilder
     {
         $qb = $this->createMock(QueryBuilder::class);
         $qb->expects($this->any())

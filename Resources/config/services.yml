@@ -754,7 +754,7 @@ services:
     oro_mailchimp.email_campaign.security.acl.voter.entity:
         class: 'Oro\Bundle\MailChimpBundle\Acl\Voter\EmailCampaignVoter'
         arguments:
-            - "@oro_entity.doctrine_helper"
+            - '@oro_entity.doctrine_helper'
         calls:
             - [setClassName, ['Oro\Bundle\CampaignBundle\Entity\EmailCampaign']]
         tags:
@@ -763,16 +763,13 @@ services:
     oro_mailchimp.acl.voter.marketing_list_state_item:
         class: 'Oro\Bundle\MailChimpBundle\Acl\Voter\MarketingListStateItemVoter'
         arguments:
-            - "@oro_entity.doctrine_helper"
-            - "@oro_marketing_list.provider.contact_information_fields"
-            - "@oro_mailchimp.model.field_helper"
-            - 'Oro\Bundle\MailChimpBundle\Entity\Member'
-            - 'Oro\Bundle\MailChimpBundle\Entity\SubscribersList'
-            - 'Oro\Bundle\MarketingListBundle\Entity\MarketingList'
+            - '@oro_entity.doctrine_helper'
+            - '@Psr\Container\ContainerInterface'
         calls:
             - [setClassName, ['Oro\Bundle\MarketingListBundle\Entity\MarketingListUnsubscribedItem']]
         tags:
             - { name: security.voter, priority: 500 }
+            - { name: container.service_subscriber, id: oro_marketing_list.provider.contact_information_fields }
 
     oro_mailchimp.static_segment_manager.state_manager:
         class: 'Oro\Bundle\MailChimpBundle\Model\StaticSegment\StaticSegmentsMemberStateManager'
