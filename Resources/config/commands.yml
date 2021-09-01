@@ -1,6 +1,7 @@
 services:
     Oro\Bundle\MailChimpBundle\Command\MailChimpExportCommand:
-        public: false
-        class: Oro\Bundle\MailChimpBundle\Command\MailChimpExportCommand
+        arguments:
+            - '@doctrine'
+            - '@oro_message_queue.client.message_producer'
         tags:
             - { name: console.command }

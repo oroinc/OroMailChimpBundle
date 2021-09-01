@@ -5,36 +5,37 @@ namespace Oro\Bundle\MailChimpBundle\Command;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-use Oro\Bundle\ImportExportBundle\Job\JobExecutor;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
 use Oro\Bundle\MailChimpBundle\Async\Topics;
 use Oro\Bundle\MailChimpBundle\Entity\Repository\StaticSegmentRepository;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
-use Oro\Bundle\MailChimpBundle\Model\StaticSegment\StaticSegmentsMemberStateManager;
 use Oro\Component\MessageQueue\Client\Message;
 use Oro\Component\MessageQueue\Client\MessagePriority;
+use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * Exports members and static segments to MailChimp.
  */
-class MailChimpExportCommand extends Command implements CronCommandInterface, ContainerAwareInterface
+class MailChimpExportCommand extends Command implements CronCommandInterface
 {
-    use ContainerAwareTrait;
-
-    /** @var string */
     protected static $defaultName = 'oro:cron:mailchimp:export';
 
-    protected JobExecutor $jobExecutor;
-    protected StaticSegmentsMemberStateManager $reverseSyncProcessor;
-    protected StaticSegmentsMemberStateManager $staticSegmentStateManager;
-    protected DoctrineHelper $doctrineHelper;
+    private ManagerRegistry $managerRegistry;
+
+    private MessageProducerInterface $messageProducer;
+
+    public function __construct(ManagerRegistry $managerRegistry, MessageProducerInterface $messageProducer)
+    {
+        parent::__construct();
+
+        $this->managerRegistry = $managerRegistry;
+        $this->messageProducer = $messageProducer;
+    }
+
 
     public function getDefaultDefinition()
     {
@@ -116,19 +117,19 @@ HELP
                     implode('", "', $message->getBody()['segmentsIds'])
                 ));
 
-                $messageProducer = $this->container->get('oro_message_queue.message_producer');
-                $messageProducer->send(Topics::EXPORT_MAILCHIMP_SEGMENTS, $message);
+                $this->messageProducer->send(Topics::EXPORT_MAILCHIMP_SEGMENTS, $message);
             }
         } else {
             $output->writeln('Active MailChimp Integrations not found.');
+
+            return 1;
         }
+
+        return 0;
     }
 
-    protected function getStaticSegmentRepository(): StaticSegmentRepository
+    private function getStaticSegmentRepository(): StaticSegmentRepository
     {
-        /** @var ManagerRegistry $registry */
-        $registry = $this->container->get('doctrine');
-
-        return $registry->getRepository(StaticSegment::class);
+        return $this->managerRegistry->getRepository(StaticSegment::class);
     }
 }
