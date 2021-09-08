@@ -156,8 +156,8 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
      * Fields: first_name, last_name, email, owner_id, subscribers_list_id, channel_id, status, merge_var_values.
      *
      * @param StaticSegment $staticSegment
-     * @throws \InvalidArgumentException
      * @return QueryBuilder
+     * @throws \InvalidArgumentException
      */
     protected function getCommonIteratorQueryBuilder(StaticSegment $staticSegment)
     {
@@ -234,15 +234,10 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
         /** @var ExtendedMergeVar[] $extendMergeVars */
         $extendMergeVars = array_filter(
             $extendMergeVars,
-            function (ExtendedMergeVar $mergeVar) use ($columnInformation) {
+            static function (ExtendedMergeVar $mergeVar) use ($columnInformation) {
                 return array_key_exists($mergeVar->getName(), $columnInformation);
             }
         );
-
-        $mergeVarsTemplate = $this->getMergeVarsTemplate($staticSegment);
-        foreach ($extendMergeVars as $mergeVar) {
-            $mergeVarsTemplate[$mergeVar->getTag()] = '__' . $mergeVar->getTag() . '__';
-        }
 
         $hasTagField = ArrayUtil::some(
             function (ExtendedMergeVar $var) {
@@ -263,48 +258,60 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
             $columnInformation['tag_field'] = 'tag.name';
         }
 
-        $emailFieldExpr = $this->getEmailFieldExpression($qb, $staticSegment);
-        $mergeVars = json_encode($mergeVarsTemplate);
-
-        // Prepare template to be SQL used in SQL CONCAT expression.
-        $mergeVars = $this->replaceSeparator($mergeVars, self::EMAIL_SEPARATOR, $emailFieldExpr);
-        $mergeVars = $this->replaceSeparator($mergeVars, self::FIRST_NAME_SEPARATOR, $this->firstNameField);
-        $mergeVars = $this->replaceSeparator($mergeVars, self::LAST_NAME_SEPARATOR, $this->lastNameField);
+        $mergeVarsData = $this->getMergeVarsData($qb, $staticSegment);
         foreach ($extendMergeVars as $mergeVar) {
-            $mergeVars = $this->replaceSeparator(
-                $mergeVars,
-                '__' . $mergeVar->getTag() . '__',
-                $columnInformation[$mergeVar->getName()]
-            );
+            $mergeVarsData[] = "'" . $mergeVar->getTag() . "'";
+            $mergeVarsData[] = $columnInformation[$mergeVar->getName()];
         }
 
-        // If there is at least one concat argument - CONCAT, if no - return as string
-        $mergeVarsExpr = null;
-        if (strpos($mergeVars, ', ') !== false) {
-            $mergeVarsExpr = sprintf("CONCAT('%s')", $mergeVars);
-        } else {
-            $mergeVarsExpr = sprintf("'%s'", $mergeVars);
+        if ($mergeVarsData) {
+            $mergeVarsExpr = 'json_build_object(' . implode(', ', $mergeVarsData) . ') as merge_vars';
+            $qb->addSelect($mergeVarsExpr);
         }
 
-        // On supported platform cast concat result as json to able to insert into compatible column
-        if ($qb->getEntityManager()->getConnection()->getDatabasePlatform()->hasNativeJsonType()) {
-            $mergeVarsExpr = 'CAST(' . $mergeVarsExpr . ' as json)';
-        }
-
-        if ($mergeVarsExpr) {
-            $qb->addSelect($mergeVarsExpr . ' as merge_vars');
-        }
-
-        $groupBy = $this->groupByHelper->getGroupByFields(
-            $qb->getDQLPart('groupBy'),
-            array_merge($qb->getDQLPart('select'), $qb->getDQLPart('orderBy'))
-        );
+        $groupBy = $this->getGroupBy($qb);
         if ($groupBy) {
             $qb->addGroupBy(implode(',', $groupBy));
         }
     }
 
+    protected function getGroupBy(QueryBuilder $qb): array
+    {
+        $orderByPartItems = [];
+        foreach ($qb->getDQLPart('orderBy') as $orderByPart) {
+            $orderByPartItems[] = trim(preg_replace('/(ASC|DESC)$/i', '', $orderByPart));
+        }
+
+        return $this->groupByHelper->getGroupByFields(
+            $qb->getDQLPart('groupBy'),
+            array_merge($qb->getDQLPart('select'), $orderByPartItems)
+        );
+    }
+
+    protected function getMergeVarsData(QueryBuilder $qb, StaticSegment $staticSegment): array
+    {
+        $mergeVarFields = $this->mergeVarsProvider->getMergeVarFields($staticSegment->getSubscribersList());
+        $data = [];
+
+        // Prepare merge vars data
+        if ($mergeVarFields->getEmail()) {
+            $data[] = "'" . $mergeVarFields->getEmail()->getTag() . "'";
+            $data[] = $this->getEmailFieldExpression($qb, $staticSegment);
+        }
+        if ($mergeVarFields->getFirstName()) {
+            $data[] = "'" . $mergeVarFields->getFirstName()->getTag() . "'";
+            $data[] = $this->firstNameField;
+        }
+        if ($mergeVarFields->getLastName()) {
+            $data[] = "'" . $mergeVarFields->getLastName()->getTag() . "'";
+            $data[] = $this->lastNameField;
+        }
+
+        return $data;
+    }
+
     /**
+     * @deprecated
      * @param StaticSegment $staticSegment
      * @return array
      */
@@ -335,14 +342,14 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
     protected function getEmailFieldExpression(QueryBuilder $qb, StaticSegment $staticSegment)
     {
         $emailField = reset($this->contactInformationFields);
-        $emailFieldExpr = $this->fieldHelper
-            ->getFieldExpr($staticSegment->getMarketingList()->getEntity(), $qb, $emailField);
 
-        return $emailFieldExpr;
+        return $this->fieldHelper
+            ->getFieldExpr($staticSegment->getMarketingList()->getEntity(), $qb, $emailField);
     }
 
     /**
      * Replace separator in template with concat field expression.
+     * @deprecated
      *
      * @param string $mergeVars
      * @param string $separator

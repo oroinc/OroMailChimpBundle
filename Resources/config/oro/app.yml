@@ -2,3 +2,9 @@ oro_message_queue:
     time_before_stale:
         jobs:
             'oro_mailchimp:export_mailchimp': 3600
+
+doctrine:
+    orm:
+        dql:
+            string_functions:
+                json_build_object: Oro\Bundle\MailChimpBundle\ORM\Query\AST\Functions\JsonBuildObject
