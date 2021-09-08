@@ -15,6 +15,9 @@ trusted_data:
             addMergeVars:
                 mergeVarsExpr: true
                 groupBy: true
+        Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\UpdatedMemberSyncIterator:
+            getIteratorQueryBuilder:
+                groupBy: true
         Oro\Bundle\MailChimpBundle\ImportExport\Writer\UpdatedMemberSyncWriter:
             getUpdateMemberQueryBuilder:
                 field: true

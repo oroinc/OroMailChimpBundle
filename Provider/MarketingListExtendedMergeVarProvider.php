@@ -45,14 +45,13 @@ class MarketingListExtendedMergeVarProvider implements ProviderInterface
     {
         $definition = QueryDefinitionUtil::decodeDefinition($marketingList->getDefinition());
 
-        $fields = $this->entityFieldProvider->getFields(
+        $fields = $this->entityFieldProvider->getEntityFields(
             $marketingList->getEntity(),
-            true,
-            true,
-            false,
-            true,
-            true,
-            true
+            EntityFieldProvider::OPTION_WITH_RELATIONS
+            | EntityFieldProvider::OPTION_WITH_VIRTUAL_FIELDS
+            | EntityFieldProvider::OPTION_WITH_UNIDIRECTIONAL
+            | EntityFieldProvider::OPTION_APPLY_EXCLUSIONS
+            | EntityFieldProvider::OPTION_TRANSLATE
         );
 
         return $this->convertColumnsDefinitionToExtendMergeVars($definition['columns'], $fields);
