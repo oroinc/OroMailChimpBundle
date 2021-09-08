@@ -53,12 +53,15 @@ class MemberSyncWriterTest extends WebTestCase
 
         $this->assertEquals('member1@example.com', $members[0]->getEmail());
         $this->assertEquals("Daniel\tst", $members[0]->getFirstName());
-        $this->assertEquals('Case', $members[0]->getLastName());
+        $this->assertEquals(
+            'Case <a href="https://www.goo.com/search?q=json&oq=json&aqs=chrome..69">Дж.[s`ón]</a>',
+            $members[0]->getLastName()
+        );
         $this->assertEquals(
             [
                 'EMAIL' => 'member1@example.com',
                 'FNAME' => "Daniel\tst",
-                'LNAME' => 'Case'
+                'LNAME' => 'Case <a href="https://www.goo.com/search?q=json&oq=json&aqs=chrome..69">Дж.[s`ón]</a>'
             ],
             $members[0]->getMergeVarValues()
         );

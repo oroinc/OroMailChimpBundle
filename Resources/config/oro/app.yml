@@ -8,3 +8,9 @@ oro_translation:
         # The oro/mailchimp package was a part of oro/crm package initially, and the translations
         # have not been separated into a separate translation package after the split:
         - OroCRM
+
+doctrine:
+    orm:
+        dql:
+            string_functions:
+                json_build_object: Oro\Bundle\MailChimpBundle\ORM\Query\AST\Functions\JsonBuildObject

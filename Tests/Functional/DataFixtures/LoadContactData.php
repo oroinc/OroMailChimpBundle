@@ -15,7 +15,7 @@ class LoadContactData extends AbstractFixture
     protected $contactsData = [
         [
             'firstName' => "Daniel\tst",
-            'lastName'  => 'Case',
+            'lastName'  => 'Case <a href="https://www.goo.com/search?q=json&oq=json&aqs=chrome..69">Дж.[s`ón]</a>',
             'email'     => 'member1@example.com',
         ],
         [
