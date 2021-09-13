@@ -2,30 +2,28 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\DependencyInjection;
 
+use Oro\Bundle\MailChimpBundle\Controller\Api\Rest\StaticSegmentController;
 use Oro\Bundle\MailChimpBundle\DependencyInjection\OroMailChimpExtension;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Oro\Bundle\TestFrameworkBundle\Test\DependencyInjection\ExtensionTestCase;
 
-class OroMailChimpExtensionTest extends \PHPUnit\Framework\TestCase
+class OroMailChimpExtensionTest extends ExtensionTestCase
 {
-    public function testLoad()
+    public function testLoad(): void
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|ContainerBuilder $container */
-        $container = $this->getMockBuilder(ContainerBuilder::class)
-                          ->disableOriginalConstructor()
-                          ->getMock();
+        $this->loadExtension(new OroMailChimpExtension());
 
-        $container->expects($this->once())
-                  ->method('prependExtensionConfig')
-                  ->with(OroMailChimpExtension::ALIAS, $this->isType('array'));
+        $expectedDefinitions = [
+            StaticSegmentController::class,
+        ];
+        $this->assertDefinitionsLoaded($expectedDefinitions);
 
-        $extension = new OroMailChimpExtension();
-        $extension->load([], $container);
+        $this->assertExtensionConfigsLoaded(['oro_mailchimp']);
     }
 
-    public function testGetAlias()
+    public function testGetAlias(): void
     {
         $extension = new OroMailChimpExtension();
 
-        $this->assertEquals(OroMailChimpExtension::ALIAS, $extension->getAlias());
+        self::assertEquals(OroMailChimpExtension::ALIAS, $extension->getAlias());
     }
 }
