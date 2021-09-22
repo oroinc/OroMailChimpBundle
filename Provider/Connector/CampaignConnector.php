@@ -17,7 +17,7 @@ class CampaignConnector extends AbstractMailChimpConnector implements ConnectorI
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return 'oro.mailchimp.connector.campaign.label';
     }

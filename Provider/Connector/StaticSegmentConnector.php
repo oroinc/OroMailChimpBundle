@@ -16,7 +16,7 @@ class StaticSegmentConnector extends AbstractMailChimpConnector implements TwoWa
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return 'oro.mailchimp.connector.staticSegment.label';
     }

@@ -21,7 +21,7 @@ class TemplateConnector extends AbstractMailChimpConnector
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return 'oro.mailchimp.connector.template.label';
     }

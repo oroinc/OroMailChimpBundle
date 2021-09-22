@@ -16,7 +16,7 @@ class MemberConnector extends AbstractMailChimpConnector implements TwoWaySyncCo
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return 'oro.mailchimp.connector.member.label';
     }

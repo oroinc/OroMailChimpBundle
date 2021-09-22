@@ -4,7 +4,7 @@ namespace Oro\Bundle\MailChimpBundle\Provider;
 
 use Oro\Bundle\CronBundle\Entity\Schedule;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Static segment synchronization mode choices provider.

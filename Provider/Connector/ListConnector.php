@@ -16,7 +16,7 @@ class ListConnector extends AbstractMailChimpConnector implements ConnectorInter
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return 'oro.mailchimp.connector.list.label';
     }

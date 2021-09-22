@@ -15,7 +15,7 @@ use Oro\Bundle\MailChimpBundle\Model\MarketingList\DataGridProviderInterface;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\QueryDesignerBundle\Grid\QueryDesignerQueryConfiguration;
 use Oro\Bundle\TagBundle\Formatter\TagsTypeFormatter;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Mailchimp extended variables data serializer.
@@ -188,7 +188,7 @@ class MemberExtendedMergeVarSerializer extends ConfigurableEntityNormalizer
                 break;
             case PropertyInterface::TYPE_SELECT:
                 if (isset($options['choices'][$value])) {
-                    $value = $this->translator->trans($options['choices'][$value]);
+                    $value = $this->translator->trans((string) $options['choices'][$value]);
                 }
                 break;
         }

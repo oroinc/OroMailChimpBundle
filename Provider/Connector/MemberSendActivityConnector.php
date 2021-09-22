@@ -15,7 +15,7 @@ class MemberSendActivityConnector extends AbstractMailChimpConnector implements 
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return 'oro.mailchimp.connector.member_activity_send.label';
     }

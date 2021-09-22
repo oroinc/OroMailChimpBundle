@@ -6,7 +6,7 @@ use Oro\Bundle\CronBundle\Entity\Repository\ScheduleRepository;
 use Oro\Bundle\CronBundle\Entity\Schedule;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MailChimpBundle\Provider\StaticSegmentSyncModeChoicesProvider;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class StaticSegmentSyncModeChoicesProviderTest extends \PHPUnit\Framework\TestCase
 {

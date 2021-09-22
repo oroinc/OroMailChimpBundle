@@ -15,7 +15,7 @@ class MemberUnsubscribeActivityConnector extends AbstractMailChimpConnector impl
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return 'oro.mailchimp.connector.member_activity_unsubscribe.label';
     }
