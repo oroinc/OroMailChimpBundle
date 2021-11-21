@@ -7,7 +7,7 @@ use Doctrine\Persistence\ObjectRepository;
 use Oro\Bundle\MailChimpBundle\Validator\EmailColumnValidator;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
-use Oro\Bundle\MarketingListBundle\Validator\Constraints\ContactInformationColumnConstraint;
+use Oro\Bundle\MarketingListBundle\Validator\Constraints\ContactInformationColumn;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -111,7 +111,7 @@ class EmailColumnValidatorTest extends \PHPUnit\Framework\TestCase
             ->with('OroMailChimpBundle:StaticSegment')
             ->willReturn($repository);
 
-        $fieldValidatorConstraint = new ContactInformationColumnConstraint();
+        $fieldValidatorConstraint = new ContactInformationColumn();
         $fieldValidatorConstraint->type = ContactInformationFieldsProvider::CONTACT_INFORMATION_SCOPE_EMAIL;
 
         $this->fieldInformationValidator->expects($this->once())
