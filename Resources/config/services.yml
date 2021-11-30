@@ -344,7 +344,8 @@ services:
             - ["name"]
         calls:
             - [initDoctrinePropertiesByManagerRegistry, ["@doctrine"]]
-            - [setAclHelper,["@oro_security.acl_helper"]]
+            - [setAclHelper, ["@oro_security.acl_helper"]]
+            - [setPropertyAccessor, ['@property_accessor']]
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: "mailchimp_templates", acl_resource: "oro_email_campaign_view" }
 
@@ -355,7 +356,8 @@ services:
             - ["name"]
         calls:
             - [initDoctrinePropertiesByManagerRegistry, ["@doctrine"]]
-            - [setAclHelper,["@oro_security.acl_helper"]]
+            - [setAclHelper, ["@oro_security.acl_helper"]]
+            - [setPropertyAccessor, ['@property_accessor']]
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: "mailchimp_lists", acl_resource: "oro_email_campaign_view" }
 
