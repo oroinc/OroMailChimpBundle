@@ -11,6 +11,7 @@ use Oro\Bundle\ImportExportBundle\Job\JobExecutor;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
 use Oro\Bundle\IntegrationBundle\Logger\LoggerStrategy;
 use Oro\Bundle\IntegrationBundle\Provider\ReverseSyncProcessor;
+use Oro\Bundle\IntegrationBundle\Tests\Unit\Authentication\Token\IntegrationTokenAwareTestTrait;
 use Oro\Bundle\MailChimpBundle\Async\ExportMailChimpProcessor;
 use Oro\Bundle\MailChimpBundle\Async\Topics;
 use Oro\Bundle\MailChimpBundle\Entity\Repository\StaticSegmentRepository;
@@ -35,6 +36,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
 {
     use ClassExtensionTrait;
+    use IntegrationTokenAwareTestTrait;
 
     public function testShouldImplementMessageProcessorInterface()
     {
@@ -238,7 +240,7 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
             $reverseSyncProcessor,
             $this->createStaticSegmentsMemberStateManagerMock(),
             $jobRunner,
-            $this->createTokenStorageMock(),
+            $this->getTokenStorageMock(),
             $this->createLoggerMock()
         );
 
@@ -327,7 +329,7 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
             $reverseSyncProcessor,
             $this->createStaticSegmentsMemberStateManagerMock(),
             $jobRunner,
-            $this->createTokenStorageMock(),
+            $this->getTokenStorageMock(),
             $this->createLoggerMock()
         );
 
@@ -385,7 +387,7 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
             $reverseSyncProcessor,
             $this->createStaticSegmentsMemberStateManagerMock(),
             $jobRunner,
-            $this->createTokenStorageMock(),
+            $this->getTokenStorageMock(),
             $this->createLoggerMock()
         );
 
