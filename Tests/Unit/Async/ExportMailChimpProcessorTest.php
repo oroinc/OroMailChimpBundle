@@ -115,8 +115,7 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
 
     public function testThrowIfMessageBodyInvalidJson()
     {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('The malformed json given.');
+        $this->expectException(\JsonException::class);
 
         $processor = new ExportMailChimpProcessor(
             $this->createMock(DoctrineHelper::class),
