@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator;
 
+use GuzzleHttp\Psr7\Utils;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClient;
 use Psr\Http\Message\StreamInterface;
 use Psr\Log\LoggerInterface;
@@ -157,12 +158,8 @@ class ExportIterator implements \Iterator
      */
     protected function getLineData()
     {
-        $line = \GuzzleHttp\Psr7\readline($this->bodyStream);
-        if (is_string($line)) {
-            return json_decode($line, JSON_OBJECT_AS_ARRAY);
-        } else {
-            return null;
-        }
+        $line = Utils::readLine($this->bodyStream);
+        return json_decode($line, JSON_OBJECT_AS_ARRAY);
     }
 
     /**

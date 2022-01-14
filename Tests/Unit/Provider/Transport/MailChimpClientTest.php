@@ -3,6 +3,7 @@
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Provider\Transport;
 
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Stream;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\Exception\BadResponseException;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClient;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -74,7 +75,7 @@ class MailChimpClientTest extends TestCase
     public function testExportFailsWithInvalidResponse(int $statusCode, $expectedError)
     {
         $methodName = 'list';
-        $parameters = ['id' => 123456];
+        $parameters = ['id' => '123456'];
         $expectedUrl = sprintf(
             'https://%s.api.mailchimp.com/export/%s/%s/',
             self::DC,
@@ -93,15 +94,19 @@ class MailChimpClientTest extends TestCase
         $response->expects(static::any())->method('getHeaderLine')->willReturnMap(
             [
                 ['Content-Type', 'application/json'],
-                ['X-MailChimp-API-Error-Code', 104],
+                ['X-MailChimp-API-Error-Code', '104'],
             ]
         );
         $response->expects(static::exactly(2))->method('getStatusCode')->willReturn($statusCode);
         $response->expects(static::once())->method('getReasonPhrase')->willReturn('OK');
 
-        $response->expects(static::any())
+        $stream = fopen('php://memory', 'rb+');
+        fwrite($stream, '{"error":"API Key can not be blank","code":104}');
+        rewind($stream);
+
+        $response
             ->method('getBody')
-            ->willReturn('{"error":"API Key can not be blank","code":104}');
+            ->willReturn(new Stream($stream));
 
         $this->expectException(BadResponseException::class);
         $this->expectExceptionMessage(
