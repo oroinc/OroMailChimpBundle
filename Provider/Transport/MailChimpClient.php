@@ -2,9 +2,10 @@
 
 namespace Oro\Bundle\MailChimpBundle\Provider\Transport;
 
-use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Message;
 use Oro\Bundle\MailChimpBundle\Client\MailChimpClient as BaseClient;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\Exception\BadResponseException;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Mailchimp API client.
@@ -56,11 +57,12 @@ class MailChimpClient extends BaseClient
      *
      * @param string $methodName Name of the export method - one of (list, ecommOrders, campaignSubscriberActivity)
      * @param array $parameters Parameters of export method
-     * @return Response A plain text dump of JSON objects. The first row is a header row. Each additional row returned
-     *                  is an individual JSON object. Rows are delimited using a newline (\n) marker, so
-     *                  implementations can read in a single line at a time, handle it, and move on.
+     * @return ResponseInterface A plain text dump of JSON objects. The first row is a header row.
+     *                           Each additional row returned is an individual JSON object. Rows are delimited
+     *                           using a newline (\n) marker, so implementations can read in a single line at a time,
+     *                           handle it, and move on.
      */
-    public function export($methodName, array $parameters): Response
+    public function export($methodName, array $parameters): ResponseInterface
     {
         $url = $this->getExportAPIMethodUrl($methodName);
         $parameters = array_merge(['apikey' => $this->apiKey], $parameters);
@@ -75,6 +77,7 @@ class MailChimpClient extends BaseClient
                 'Request to MailChimp Export API wasn\'t successfully completed.'
             );
         }
+
         if (!str_starts_with($response->getHeaderLine('Content-Type'), 'text/html')) {
             throw BadResponseException::factory(
                 $url,
@@ -113,9 +116,9 @@ class MailChimpClient extends BaseClient
     /**
      * @param string $url
      * @param string $query
-     * @return Response
+     * @return ResponseInterface
      */
-    protected function callExportApi($url, $query): Response
+    protected function callExportApi($url, $query): ResponseInterface
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
@@ -139,6 +142,6 @@ class MailChimpClient extends BaseClient
             );
         }
 
-        return \GuzzleHttp\Psr7\parse_response($message);
+        return Message::parseResponse($message);
     }
 }
