@@ -63,7 +63,7 @@ class FlattenIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function current()
+    public function current(): mixed
     {
         $current = $this->subIterate->current();
         if ($this->dataLevel == 1) {
@@ -76,7 +76,7 @@ class FlattenIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         if ($this->subIterate && $this->subIterate->valid()) {
             $this->subIterate->next();
@@ -92,7 +92,7 @@ class FlattenIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function key()
+    public function key(): int
     {
         return $this->position;
     }
@@ -100,7 +100,7 @@ class FlattenIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         return ($this->subIterate && $this->subIterate->valid()) || $this->toIterate->valid();
     }
@@ -108,7 +108,7 @@ class FlattenIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 0;
         $this->toIterateKey = null;

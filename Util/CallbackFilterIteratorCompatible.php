@@ -29,7 +29,7 @@ class CallbackFilterIteratorCompatible extends \FilterIterator
     /**
      * @return bool
      */
-    public function accept()
+    public function accept(): bool
     {
         $iterator = $this->getInnerIterator();
         $this->current = $iterator->current();

@@ -35,7 +35,7 @@ abstract class AbstractSubordinateIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function current()
+    public function current(): mixed
     {
         return $this->current;
     }
@@ -43,7 +43,7 @@ abstract class AbstractSubordinateIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         $this->current = $this->read();
         if ($this->valid()) {
@@ -54,7 +54,7 @@ abstract class AbstractSubordinateIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function key()
+    public function key(): mixed
     {
         return $this->offset;
     }
@@ -62,7 +62,7 @@ abstract class AbstractSubordinateIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         return !is_null($this->current);
     }
@@ -70,7 +70,7 @@ abstract class AbstractSubordinateIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->offset = -1;
         $this->current = null;

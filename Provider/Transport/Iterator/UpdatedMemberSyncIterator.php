@@ -16,7 +16,7 @@ class UpdatedMemberSyncIterator extends MemberSyncIterator
      *
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         if ($this->offset > 0 && !is_null($this->subordinateIterator)) {
             $this->subordinateIterator->rewind();
@@ -29,7 +29,7 @@ class UpdatedMemberSyncIterator extends MemberSyncIterator
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         $this->current = $this->read();
         if (!is_null($this->current)) {

@@ -42,7 +42,7 @@ class MmbrExtdMergeVarIterator extends AbstractStaticSegmentMembersIterator
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         parent::rewind();
         $this->uniqueMembers = [];
