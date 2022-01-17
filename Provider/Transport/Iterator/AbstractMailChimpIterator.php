@@ -54,7 +54,7 @@ abstract class AbstractMailChimpIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function current()
+    public function current(): mixed
     {
         return $this->current;
     }
@@ -62,7 +62,7 @@ abstract class AbstractMailChimpIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->total > 0 && $this->offset < $this->total;
     }
@@ -70,7 +70,7 @@ abstract class AbstractMailChimpIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         $this->offset += 1;
         $key = $this->offset % $this->batchSize;
@@ -88,7 +88,7 @@ abstract class AbstractMailChimpIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function key()
+    public function key(): int
     {
         return $this->offset;
     }
@@ -96,7 +96,7 @@ abstract class AbstractMailChimpIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->current = null;
         $this->offset = -1;

@@ -34,7 +34,7 @@ class TemplateIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function current()
+    public function current(): mixed
     {
         return $this->iterator->current();
     }
@@ -42,7 +42,7 @@ class TemplateIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         $this->iterator->next();
     }
@@ -50,7 +50,7 @@ class TemplateIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function key()
+    public function key(): mixed
     {
         return $this->iterator->key();
     }
@@ -58,7 +58,7 @@ class TemplateIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->iterator->valid();
     }
@@ -66,7 +66,7 @@ class TemplateIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         if (!$this->iterator) {
             $this->initIterator();

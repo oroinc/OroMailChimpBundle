@@ -60,7 +60,7 @@ class QueryWithOptionsIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function current()
+    public function current(): array
     {
         if ($this->currentResult === null) {
             $this->fetchQueryResult();
@@ -72,7 +72,7 @@ class QueryWithOptionsIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         if (!$this->readOnce) {
             $this->position++;
@@ -83,7 +83,7 @@ class QueryWithOptionsIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function key()
+    public function key(): int
     {
         return $this->position;
     }
@@ -91,7 +91,7 @@ class QueryWithOptionsIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         return (bool)count((array)$this->currentResult);
     }
@@ -99,7 +99,7 @@ class QueryWithOptionsIterator implements \Iterator
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 0;
         $this->fetchQueryResult();
