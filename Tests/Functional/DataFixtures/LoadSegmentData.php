@@ -3,7 +3,11 @@
 namespace Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Persistence\ObjectManager;
+use Oro\Bundle\ContactBundle\Entity\Contact;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
+use Oro\Bundle\SegmentBundle\Entity\SegmentType;
+use Oro\Bundle\TestFrameworkCRMBundle\Entity\TestCustomerWithContactInformation;
 use Oro\Bundle\UserBundle\Entity\User;
 
 class LoadSegmentData extends AbstractMailChimpFixture
@@ -16,7 +20,7 @@ class LoadSegmentData extends AbstractMailChimpFixture
             'type' => 'dynamic',
             'name' => 'Test ML Segment',
             'description' => 'description',
-            'entity' => 'Oro\Bundle\ContactBundle\Entity\Contact',
+            'entity' => Contact::class,
             'definition' => [
                 'columns' => [
                     [
@@ -67,6 +71,30 @@ class LoadSegmentData extends AbstractMailChimpFixture
             ],
             'reference' => 'mailchimp:ml_one:segment',
         ],
+        [
+            'type' => 'dynamic',
+            'name' => 'Test ML Customer Segment',
+            'description' => 'description',
+            'entity' => TestCustomerWithContactInformation::class,
+            'definition' => [
+                'columns' => [
+                    [
+                        'name' => 'email',
+                        'label' => 'Email',
+                        'sorting' => '',
+                        'func' => null,
+                    ],
+                    [
+                        'name' => 'name',
+                        'label' => 'Name',
+                        'sorting' => '',
+                        'func' => null,
+                    ]
+                ],
+                'filters' => []
+            ],
+            'reference' => 'mailchimp:ml_two:segment',
+        ],
     ];
 
     /**
@@ -75,13 +103,13 @@ class LoadSegmentData extends AbstractMailChimpFixture
     public function load(ObjectManager $manager)
     {
         /** @var User $user */
-        $user = $manager->getRepository('OroUserBundle:User')->findOneByUsername('admin');
-        $organization = $manager->getRepository('OroOrganizationBundle:Organization')->getFirst();
+        $user = $manager->getRepository(User::class)->findOneByUsername('admin');
+        $organization = $manager->getRepository(Organization::class)->getFirst();
 
         foreach ($this->data as $data) {
             $entity = new Segment();
             $type = $manager
-                ->getRepository('OroSegmentBundle:SegmentType')
+                ->getRepository(SegmentType::class)
                 ->find($data['type']);
             $entity->setType($type);
             $entity->setDefinition(json_encode($data['definition']));

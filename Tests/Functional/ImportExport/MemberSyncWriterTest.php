@@ -11,6 +11,9 @@ use Oro\Bundle\MailChimpBundle\ImportExport\Reader\StaticSegmentReader;
 use Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures\LoadStaticSegmentData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
+/**
+ * @dbIsolationPerTest
+ */
 class MemberSyncWriterTest extends WebTestCase
 {
     protected function setUp(): void
@@ -77,5 +80,40 @@ class MemberSyncWriterTest extends WebTestCase
             ],
             $members[1]->getMergeVarValues()
         );
+    }
+
+    public function testWriteNonFullNameAware()
+    {
+        $channel = $this->getReference('mailchimp:channel_1')->getId();
+        $segment = $this->getReference('mailchimp:segment_two');
+
+        $jobInstance = new JobInstance();
+        $jobInstance->setRawConfiguration([
+            'channel' => $channel,
+            'segments' => [$segment]
+        ]);
+        $jobExecution = new JobExecution();
+        $jobExecution->setJobInstance($jobInstance);
+        $stepExecution = new StepExecution('import', $jobExecution);
+        $context = new StepExecutionProxyContext($stepExecution);
+
+        /** @var StaticSegmentReader $reader */
+        $reader = $this->getContainer()->get('oro_mailchimp.importexport.reader.members_sync');
+        $reader->initializeByContext($context);
+        $reader->setStepExecution($stepExecution);
+        $result = $reader->read();
+
+        $writer = $this->getContainer()->get('oro_mailchimp.importexport.writer.members_sync');
+        $writer->write([$result]);
+
+        $repo = $this->getContainer()->get('doctrine')->getRepository(Member::class);
+        /** @var Member[] $members */
+        $members = $repo->findAll();
+        $this->assertCount(1, $members);
+
+        $this->assertEquals('customer1@example.com', $members[0]->getEmail());
+        $this->assertEmpty($members[0]->getFirstName());
+        $this->assertEmpty($members[0]->getLastName());
+        $this->assertEquals(['EMAIL' => 'customer1@example.com'], $members[0]->getMergeVarValues());
     }
 }
