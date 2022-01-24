@@ -254,8 +254,12 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
 
         $mergeVarsData = $this->getMergeVarsData($qb, $staticSegment);
         foreach ($extendMergeVars as $mergeVar) {
+            $mergeVarValue = $columnInformation[$mergeVar->getName()] ?? null;
+            if (null === $mergeVarValue) {
+                continue;
+            }
             $mergeVarsData[] = "'" . $mergeVar->getTag() . "'";
-            $mergeVarsData[] = $columnInformation[$mergeVar->getName()];
+            $mergeVarsData[] = $mergeVarValue;
         }
 
         if ($mergeVarsData) {
@@ -279,11 +283,11 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
             $data[] = "'" . $mergeVarFields->getEmail()->getTag() . "'";
             $data[] = $this->getEmailFieldExpression($qb, $staticSegment);
         }
-        if ($mergeVarFields->getFirstName()) {
+        if (null !== $this->firstNameField && $mergeVarFields->getFirstName()) {
             $data[] = "'" . $mergeVarFields->getFirstName()->getTag() . "'";
             $data[] = $this->firstNameField;
         }
-        if ($mergeVarFields->getLastName()) {
+        if (null !== $this->lastNameField && $mergeVarFields->getLastName()) {
             $data[] = "'" . $mergeVarFields->getLastName()->getTag() . "'";
             $data[] = $this->lastNameField;
         }
