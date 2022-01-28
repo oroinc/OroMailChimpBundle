@@ -63,6 +63,17 @@ class LoadSubscribersListData extends AbstractMailChimpFixture implements Depend
             'useAwesomebar' => true,
             'reference' => 'mailchimp:subscribers_list_one',
         ],
+        [
+            'channel' => 'mailchimp:channel_1',
+            'originId' => '12345',
+            'webId' => '54321',
+            'name' => 'MC2',
+            'email_type_option' => '0',
+            'merge_var_config' => [],
+            'emailTypeOption' => true,
+            'useAwesomebar' => true,
+            'reference' => 'mailchimp:subscribers_list_two',
+        ],
     ];
 
     /**
