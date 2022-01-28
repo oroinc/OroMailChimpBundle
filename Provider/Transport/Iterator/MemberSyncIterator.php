@@ -264,10 +264,11 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
             $mergeVarsData[] = $columnInformation[$mergeVar->getName()];
         }
 
-        if ($mergeVarsData) {
-            $mergeVarsExpr = 'json_build_object(' . implode(', ', $mergeVarsData) . ') as merge_vars';
-            $qb->addSelect($mergeVarsExpr);
-        }
+        $mergeVarsExpr = $mergeVarsData
+            ? 'json_build_object(' . implode(', ', $mergeVarsData) . ') as merge_vars'
+            : "CAST(NULLIF('{}', '{}') as json) as merge_vars";
+
+        $qb->addSelect($mergeVarsExpr);
 
         $groupBy = $this->getGroupBy($qb);
         if ($groupBy) {

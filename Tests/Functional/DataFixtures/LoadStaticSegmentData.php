@@ -21,6 +21,15 @@ class LoadStaticSegmentData extends AbstractMailChimpFixture implements Dependen
             'remote_remove' => '0',
             'reference' => 'mailchimp:segment_one',
         ],
+        [
+            'subscribersList' => 'mailchimp:subscribers_list_two',
+            'marketingList' => 'mailchimp:ml_one',
+            'channel' => 'mailchimp:channel_1',
+            'name' => 'Test',
+            'sync_status' => '',
+            'remote_remove' => '0',
+            'reference' => 'mailchimp:segment_two',
+        ],
     ];
 
     /**

@@ -11,6 +11,9 @@ use Oro\Bundle\MailChimpBundle\ImportExport\Reader\StaticSegmentReader;
 use Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures\LoadStaticSegmentData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
+/**
+ * @dbIsolationPerTest
+ */
 class MemberSyncWriterTest extends WebTestCase
 {
     protected function setUp(): void
@@ -22,15 +25,69 @@ class MemberSyncWriterTest extends WebTestCase
         $this->loadFixtures([LoadStaticSegmentData::class]);
     }
 
-    public function testWrite()
+    public function testWrite(): void
     {
-        $channel = $this->getReference('mailchimp:channel_1')->getId();
         $segment = $this->getReference('mailchimp:segment_one');
 
+        $this->memberSyncWrite([$segment]);
+
+        $memberRepository = $this->getContainer()->get('doctrine')->getRepository(Member::class);
+        /** @var Member[] $members */
+        $members = $memberRepository->findBy([], ['email' => 'ASC']);
+        self::assertCount(2, $members);
+
+        self::assertEquals('member1@example.com', $members[0]->getEmail());
+        self::assertEquals("Daniel\tst", $members[0]->getFirstName());
+        self::assertEquals(
+            'Case <a href="https://www.goo.com/search?q=json&oq=json&aqs=chrome..69">Дж.[s`ón]</a>',
+            $members[0]->getLastName()
+        );
+        self::assertEquals(
+            [
+                'EMAIL' => 'member1@example.com',
+                'FNAME' => "Daniel\tst",
+                'LNAME' => 'Case <a href="https://www.goo.com/search?q=json&oq=json&aqs=chrome..69">Дж.[s`ón]</a>'
+            ],
+            $members[0]->getMergeVarValues()
+        );
+
+        self::assertEquals('member2@example.com', $members[1]->getEmail());
+        self::assertEquals('John', $members[1]->getFirstName());
+        self::assertEquals('Case', $members[1]->getLastName());
+        self::assertEquals(
+            [
+                'EMAIL' => 'member2@example.com',
+                'FNAME' => 'John',
+                'LNAME' => 'Case'
+            ],
+            $members[1]->getMergeVarValues()
+        );
+    }
+
+    public function testWriteWithEmptyMergeVarsDataField(): void
+    {
+        $segment = $this->getReference('mailchimp:segment_two');
+
+        $this->memberSyncWrite([$segment]);
+
+        $memberRepository = $this->getContainer()->get('doctrine')->getRepository(Member::class);
+        /** @var Member[] $members */
+        $members = $memberRepository->findBy([], ['email' => 'ASC']);
+        self::assertCount(2, $members);
+
+        self::assertEquals('member1@example.com', $members[0]->getEmail());
+        self::assertEmpty($members[0]->getMergeVarValues());
+
+        self::assertEquals('member2@example.com', $members[1]->getEmail());
+        self::assertEmpty($members[1]->getMergeVarValues());
+    }
+
+    private function memberSyncWrite(array $segments): void
+    {
         $jobInstance = new JobInstance();
         $jobInstance->setRawConfiguration([
-            'channel' => $channel,
-            'segments' => [$segment]
+            'channel' => $this->getReference('mailchimp:channel_1')->getId(),
+            'segments' => $segments
         ]);
         $jobExecution = new JobExecution();
         $jobExecution->setJobInstance($jobInstance);
@@ -45,37 +102,5 @@ class MemberSyncWriterTest extends WebTestCase
 
         $writer = $this->getContainer()->get('oro_mailchimp.importexport.writer.members_sync');
         $writer->write([$result]);
-
-        $repo = $this->getContainer()->get('doctrine')->getRepository(Member::class);
-        /** @var Member[] $members */
-        $members = $repo->findBy([], ['email' => 'ASC']);
-        $this->assertCount(2, $members);
-
-        $this->assertEquals('member1@example.com', $members[0]->getEmail());
-        $this->assertEquals("Daniel\tst", $members[0]->getFirstName());
-        $this->assertEquals(
-            'Case <a href="https://www.goo.com/search?q=json&oq=json&aqs=chrome..69">Дж.[s`ón]</a>',
-            $members[0]->getLastName()
-        );
-        $this->assertEquals(
-            [
-                'EMAIL' => 'member1@example.com',
-                'FNAME' => "Daniel\tst",
-                'LNAME' => 'Case <a href="https://www.goo.com/search?q=json&oq=json&aqs=chrome..69">Дж.[s`ón]</a>'
-            ],
-            $members[0]->getMergeVarValues()
-        );
-
-        $this->assertEquals('member2@example.com', $members[1]->getEmail());
-        $this->assertEquals('John', $members[1]->getFirstName());
-        $this->assertEquals('Case', $members[1]->getLastName());
-        $this->assertEquals(
-            [
-                'EMAIL' => 'member2@example.com',
-                'FNAME' => 'John',
-                'LNAME' => 'Case'
-            ],
-            $members[1]->getMergeVarValues()
-        );
     }
 }
