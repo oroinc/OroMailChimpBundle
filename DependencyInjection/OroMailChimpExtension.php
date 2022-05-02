@@ -7,13 +7,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-/**
- * Mailchimp bundle extension class.
- */
 class OroMailChimpExtension extends Extension
 {
-    const ALIAS = 'oro_mailchimp';
-
     /**
      * {@inheritDoc}
      */
@@ -29,16 +24,15 @@ class OroMailChimpExtension extends Extension
             $loader->load('services_test.yml');
         }
 
-        $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
+        $config = $this->processConfiguration(new Configuration(), $configs);
         $container->prependExtensionConfig($this->getAlias(), array_intersect_key($config, array_flip(['settings'])));
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getAlias()
+    public function getAlias(): string
     {
-        return self::ALIAS;
+        return Configuration::ROOT_NODE;
     }
 }

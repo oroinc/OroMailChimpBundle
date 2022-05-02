@@ -22,8 +22,6 @@ class OroMailChimpExtensionTest extends ExtensionTestCase
 
     public function testGetAlias(): void
     {
-        $extension = new OroMailChimpExtension();
-
-        self::assertEquals(OroMailChimpExtension::ALIAS, $extension->getAlias());
+        self::assertEquals('oro_mailchimp', (new OroMailChimpExtension())->getAlias());
     }
 }

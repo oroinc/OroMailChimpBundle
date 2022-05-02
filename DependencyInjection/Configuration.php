@@ -6,20 +6,18 @@ use Oro\Bundle\ConfigBundle\DependencyInjection\SettingsBuilder;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-/**
- * Configuration tree definition for mailchimp related functionality.
- */
 class Configuration implements ConfigurationInterface
 {
-    const STATIC_SEGMENT_SYNC_MODE_ON_UPDATE = 'on_update';
-    const STATIC_SEGMENT_SYNC_MODE_SCHEDULED = 'scheduled';
+    public const ROOT_NODE = 'oro_mailchimp';
+    public const STATIC_SEGMENT_SYNC_MODE_ON_UPDATE = 'on_update';
+    public const STATIC_SEGMENT_SYNC_MODE_SCHEDULED = 'scheduled';
 
     /**
      * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder('oro_mailchimp');
+        $treeBuilder = new TreeBuilder(self::ROOT_NODE);
         $rootNode = $treeBuilder->getRootNode();
 
         SettingsBuilder::append(
