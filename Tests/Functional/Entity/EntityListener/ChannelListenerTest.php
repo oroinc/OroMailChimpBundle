@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Functional\Entity;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Entity\MarketingListEmail;
 use Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures\LoadMarketingListEmailData;
@@ -23,16 +22,13 @@ class ChannelListenerTest extends WebTestCase
 
     public function testShouldRemoveRelatedMarketingListEmailsOnChannelRemoval()
     {
-        /** @var Registry $registry */
-        $registry = self::getContainer()->get('doctrine');
-        $channelManager = $registry->getManagerForClass(Channel::class);
+        $doctrine = self::getContainer()->get('doctrine');
+        $channelManager = $doctrine->getManagerForClass(Channel::class);
 
         $channel = $this->getReference('mailchimp:channel_1');
         $channelManager->remove($channel);
 
-        $emails = $registry
-            ->getManagerForClass(MarketingListEmail::class)
-            ->getRepository(MarketingListEmail::class)->findAll();
+        $emails = $doctrine->getRepository(MarketingListEmail::class)->findAll();
 
         self::assertEmpty($emails);
     }

@@ -2,25 +2,22 @@
 
 namespace Oro\Bundle\MailChimpBundle\Entity\EntityListener;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Entity\MarketingListEmail;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 
 /**
- * ORM event listener to remove maichimp DB items when related integration is deleted.
+ * ORM event listener to remove mailchimp DB items when related integration is deleted.
  */
 class ChannelListener
 {
-    /**
-     * @var Registry
-     */
-    private $registry;
+    private ManagerRegistry $doctrine;
 
-    public function __construct(Registry $registry)
+    public function __construct(ManagerRegistry $doctrine)
     {
-        $this->registry = $registry;
+        $this->doctrine = $doctrine;
     }
 
     public function preRemove(Channel $channel)
@@ -31,9 +28,9 @@ class ChannelListener
     private function deleteRelatedMarketingListEmails(Channel $channel)
     {
         /** @var QueryBuilder $emailQueryBuilder */
-        $emailQueryBuilder = $this->registry->getManagerForClass(MarketingListEmail::class)
-            ->createQueryBuilder('email');
-        $segmentQueryBuilder = $this->registry->getManagerForClass(StaticSegment::class)
+        $emailQueryBuilder = $this->doctrine->getManagerForClass(MarketingListEmail::class)
+            ->createQueryBuilder();
+        $segmentQueryBuilder = $this->doctrine->getManagerForClass(StaticSegment::class)
             ->getRepository(StaticSegment::class)->createQueryBuilder('segment');
 
         $segmentQueryBuilder
