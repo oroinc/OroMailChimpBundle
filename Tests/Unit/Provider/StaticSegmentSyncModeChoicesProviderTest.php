@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Provider;
 
-use Oro\Bundle\CronBundle\Entity\Repository\ScheduleRepository;
+use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\CronBundle\Entity\Schedule;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MailChimpBundle\Provider\StaticSegmentSyncModeChoicesProvider;
@@ -10,24 +10,15 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class StaticSegmentSyncModeChoicesProviderTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var StaticSegmentSyncModeChoicesProvider
-     */
-    private $staticSegmentSyncModeChoicesProvider;
-
-    /**
-     * @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject */
     private $doctrineHelper;
 
-    /**
-     * @var TranslatorInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var TranslatorInterface|\PHPUnit\Framework\MockObject\MockObject */
     private $translator;
 
-    /**
-     * {@inheritDoc}
-     */
+    /** @var StaticSegmentSyncModeChoicesProvider */
+    private $staticSegmentSyncModeChoicesProvider;
+
     protected function setUp(): void
     {
         $this->translator = $this->createMock(TranslatorInterface::class);
@@ -40,12 +31,11 @@ class StaticSegmentSyncModeChoicesProviderTest extends \PHPUnit\Framework\TestCa
     }
 
     /**
-     * @dataProvider  getChoicesDataProvider
+     * @dataProvider getChoicesDataProvider
      */
-    public function testGetChoices(Schedule $schedule = null, string $scheduleDefinition)
+    public function testGetChoices(?Schedule $schedule, string $scheduleDefinition)
     {
-        $this->translator
-            ->expects(self::exactly(2))
+        $this->translator->expects(self::exactly(2))
             ->method('trans')
             ->withConsecutive(
                 ['oro.mailchimp.configuration.fields.static_segment_sync_mode.choices.on_update'],
@@ -56,14 +46,12 @@ class StaticSegmentSyncModeChoicesProviderTest extends \PHPUnit\Framework\TestCa
             )
             ->willReturnArgument(0);
 
-        $scheduleRepository = $this->createMock(ScheduleRepository::class);
-        $this->doctrineHelper
-            ->expects(self::once())
+        $scheduleRepository = $this->createMock(EntityRepository::class);
+        $this->doctrineHelper->expects(self::once())
             ->method('getEntityRepository')
             ->with(Schedule::class)
             ->willReturn($scheduleRepository);
-        $scheduleRepository
-            ->expects(self::once())
+        $scheduleRepository->expects(self::once())
             ->method('findOneBy')
             ->with(['command' => 'oro:cron:mailchimp:export'])
             ->willReturn($schedule);
@@ -78,10 +66,7 @@ class StaticSegmentSyncModeChoicesProviderTest extends \PHPUnit\Framework\TestCa
         self::assertSame($expectedChoices, $choices);
     }
 
-    /**
-     * @return array
-     */
-    public function getChoicesDataProvider()
+    public function getChoicesDataProvider(): array
     {
         $definition = '*/5 * * * *';
 
