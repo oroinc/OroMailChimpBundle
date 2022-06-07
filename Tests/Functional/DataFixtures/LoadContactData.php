@@ -6,6 +6,8 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\ContactBundle\Entity\Contact;
 use Oro\Bundle\ContactBundle\Entity\ContactEmail;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\UserBundle\Entity\User;
 
 class LoadContactData extends AbstractFixture
 {
@@ -30,8 +32,8 @@ class LoadContactData extends AbstractFixture
      */
     public function load(ObjectManager $manager)
     {
-        $user = $manager->getRepository('OroUserBundle:User')->findOneByUsername('admin');
-        $organization = $manager->getRepository('OroOrganizationBundle:Organization')->getFirst();
+        $user = $manager->getRepository(User::class)->findOneByUsername('admin');
+        $organization = $manager->getRepository(Organization::class)->getFirst();
 
         foreach ($this->contactsData as $contactData) {
             $contact = new Contact();

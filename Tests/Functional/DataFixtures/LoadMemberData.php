@@ -5,6 +5,7 @@ namespace Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\MailChimpBundle\Entity\Member;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class LoadMemberData extends AbstractMailChimpFixture implements DependentFixtureInterface
 {
@@ -46,7 +47,7 @@ class LoadMemberData extends AbstractMailChimpFixture implements DependentFixtur
      */
     public function load(ObjectManager $manager)
     {
-        $organization = $manager->getRepository('OroOrganizationBundle:Organization')
+        $organization = $manager->getRepository(Organization::class)
             ->getFirst();
 
         foreach ($this->data as $data) {

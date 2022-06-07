@@ -9,6 +9,7 @@ use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Entity\Campaign;
 use Oro\Bundle\MailChimpBundle\Entity\MailChimpTransportSettings;
 use Oro\Bundle\MailChimpBundle\Transport\MailChimpTransport;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class LoadCampaignData extends AbstractMailChimpFixture implements DependentFixtureInterface
 {
@@ -84,7 +85,7 @@ class LoadCampaignData extends AbstractMailChimpFixture implements DependentFixt
      */
     public function load(ObjectManager $manager)
     {
-        $organization = $manager->getRepository('OroOrganizationBundle:Organization')
+        $organization = $manager->getRepository(Organization::class)
             ->getFirst();
 
         foreach ($this->data as $data) {

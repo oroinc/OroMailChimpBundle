@@ -58,13 +58,13 @@ class UpdateEmailCampaignStatisticsTest extends WebTestCase
 
         // Check that all marketing list items are created
         /** @var MarketingListItem[] $items */
-        $items = $this->registry->getRepository('OroMarketingListBundle:MarketingListItem')
+        $items = $this->registry->getRepository(MarketingListItem::class)
             ->findAll();
         $this->assertCount(2, $items);
 
         // Check that statistics is updated correctly
         /** @var EmailCampaignStatistics[] $statistics */
-        $statistics = $this->registry->getRepository('OroCampaignBundle:EmailCampaignStatistics')
+        $statistics = $this->registry->getRepository(EmailCampaignStatistics::class)
             ->findAll();
         $this->assertCount(3, $statistics);
         $statisticsData = [];

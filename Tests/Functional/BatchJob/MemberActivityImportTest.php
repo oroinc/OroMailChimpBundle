@@ -5,7 +5,12 @@ namespace Oro\Bundle\MailChimpBundle\Tests\Functional\BatchJob;
 use Oro\Bundle\ImportExportBundle\Job\JobExecutor;
 use Oro\Bundle\ImportExportBundle\Job\JobResult;
 use Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry;
+use Oro\Bundle\MailChimpBundle\Entity\Campaign;
+use Oro\Bundle\MailChimpBundle\Entity\MemberActivity;
 use Oro\Bundle\MailChimpBundle\Provider\Connector\MemberActivityConnector;
+use Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures\LoadCampaignData;
+use Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures\LoadMemberData;
+use Oro\Bundle\MailChimpBundle\Tests\Functional\Stub\MailChimpClientStub;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Yaml\Yaml;
 
@@ -26,14 +31,9 @@ class MemberActivityImportTest extends WebTestCase
 
         $this->getContainer()
             ->get('oro_mailchimp.client.factory')
-            ->setClientClass('Oro\Bundle\MailChimpBundle\Tests\Functional\Stub\MailChimpClientStub');
+            ->setClientClass(MailChimpClientStub::class);
 
-        $this->loadFixtures(
-            [
-                'Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures\LoadCampaignData',
-                'Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures\LoadMemberData',
-            ]
-        );
+        $this->loadFixtures([LoadCampaignData::class, LoadMemberData::class,]);
     }
 
     public function testRunJob()
@@ -66,8 +66,8 @@ class MemberActivityImportTest extends WebTestCase
             \RecursiveDirectoryIterator::SKIP_DOTS
         );
 
-        $campaignRepo = $this->getContainer()->get('doctrine')->getRepository('OroMailChimpBundle:Campaign');
-        $repository = $this->getContainer()->get('doctrine')->getRepository('OroMailChimpBundle:MemberActivity');
+        $campaignRepo = $this->getContainer()->get('doctrine')->getRepository(Campaign::class);
+        $repository = $this->getContainer()->get('doctrine')->getRepository(MemberActivity::class);
 
         $addCount = 0;
         $fullCount = 0;
