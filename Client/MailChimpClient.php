@@ -9,36 +9,36 @@ use Oro\Bundle\MailChimpBundle\Exception\MailChimpClientException;
 /**
  * Mailchimp SDK client wrapper class.
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
-class MailChimpClient
+class MailChimpClient implements MailChimpClientConfigAwareInterface
 {
     /**
      * Max timeout in mailchimp.
      * Used in curl, integer in seconds.
      */
-    const MAILCHIMP_MAX_TIMEOUT = 300;
+    public const MAILCHIMP_MAX_TIMEOUT = 300;
 
     /**
      * The Mailchimp integration API key
-     * @var string
      */
-    private $apiKey;
+    private string $apiKey;
+
+    private MailChimp $client;
+    private ?MailChimpClientConfig $config = null;
 
     /**
-     * @var MailChimp
-     */
-    private $client;
-
-    /**
-     * MailChimpClient constructor.
-     *
-     * @param string $apiKey
      * @throws Exception
      */
-    public function __construct($apiKey)
+    public function __construct(string $apiKey)
     {
         $this->apiKey = $apiKey;
         $this->client = new MailChimp($apiKey);
+    }
+
+    public function setConfig(MailChimpClientConfig $clientConfig)
+    {
+        $this->config = $clientConfig;
     }
 
     /**
@@ -196,9 +196,20 @@ class MailChimpClient
      */
     public function getListMergeVars(string $listId)
     {
-        $result = $this->client->get("lists/$listId/merge-fields");
+        $result = $this->client->get($this->getListMergeVarsMethod($listId));
         $this->guardAgainstStatus($result);
         return $result;
+    }
+
+    protected function getListMergeVarsMethod(string $listId): string
+    {
+        $method = "lists/$listId/merge-fields";
+
+        if ($this->config) {
+            $method .= '?count='.$this->config->getMergeFieldsCount();
+        }
+
+        return $method;
     }
 
     /**
@@ -261,10 +272,25 @@ class MailChimpClient
         $listId = $this->getListId($options);
         $options['members'] = $this->getUniqueMembers($options['members']);
 
-        $result = $this->client->post("lists/$listId", $options, self::MAILCHIMP_MAX_TIMEOUT);
+        $result = $this->client->post(
+            $this->getBatchSubscribeMethod($listId),
+            $options,
+            self::MAILCHIMP_MAX_TIMEOUT
+        );
 
         $this->guardAgainstStatus($result);
         return $result;
+    }
+
+    protected function getBatchSubscribeMethod(string $listId): string
+    {
+        $method = "lists/$listId";
+
+        if ($this->config && $this->config->getMemberSkipMergeValidation()) {
+            $method .= '?skip_merge_validation=true';
+        }
+
+        return $method;
     }
 
     /**

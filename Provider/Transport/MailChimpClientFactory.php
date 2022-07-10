@@ -2,22 +2,25 @@
 
 namespace Oro\Bundle\MailChimpBundle\Provider\Transport;
 
+use Oro\Bundle\MailChimpBundle\Client\MailChimpClientConfig;
+use Oro\Bundle\MailChimpBundle\Client\MailChimpClientConfigAwareInterface;
+
 /**
  * Mailchimp API client factory.
  */
 class MailChimpClientFactory
 {
-    /**
-     * @var string
-     */
-    protected $clientClass = MailChimpClient::class;
+    protected string $clientClass = MailChimpClient::class;
+    protected ?MailChimpClientConfig $clientConfig = null;
 
-    /**
-     * @param string $clientClass
-     */
-    public function setClientClass($clientClass)
+    public function setClientClass(string $clientClass): void
     {
         $this->clientClass = $clientClass;
+    }
+
+    public function setClientConfig(MailChimpClientConfig $clientConfig): void
+    {
+        $this->clientConfig = $clientConfig;
     }
 
     /**
@@ -29,6 +32,12 @@ class MailChimpClientFactory
      */
     public function create($apiKey)
     {
-        return new $this->clientClass($apiKey);
+        $client = new $this->clientClass($apiKey);
+
+        if ($this->clientConfig && $client instanceof MailChimpClientConfigAwareInterface) {
+            $client->setConfig($this->clientConfig);
+        }
+
+        return $client;
     }
 }
