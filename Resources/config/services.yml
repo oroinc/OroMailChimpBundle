@@ -1,6 +1,21 @@
+parameters:
+    # The number of records to return. Default value is 10. Maximum value is 1000
+    oro_mailchimp.client.merge_fields_count: 100
+    # If skip_merge_validation is true, member data will be accepted without merge field values,
+    # even if the merge field is usually required. This defaults to false.
+    oro_mailchimp.client.member_skip_merge_validation: false
+
 services:
+    oro_mailchimp.client.config:
+        class: 'Oro\Bundle\MailChimpBundle\Client\MailChimpClientConfig'
+        calls:
+            - ['setMergeFieldsCount', ['%oro_mailchimp.client.merge_fields_count%']]
+            - ['setMemberSkipMergeValidation', ['%oro_mailchimp.client.member_skip_merge_validation%']]
+
     oro_mailchimp.client.factory:
         class: 'Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClientFactory'
+        calls:
+            - ['setClientConfig', ['@oro_mailchimp.client.config']]
 
     Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClientFactory:
         alias: 'oro_mailchimp.client.factory'

@@ -58,6 +58,8 @@ class MemberWriter extends AbstractExportWriter
      * @param Member[] $items
      * @throws Exception
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function batchSubscribe($subscribersListOriginId, array $items)
     {
@@ -113,7 +115,7 @@ class MemberWriter extends AbstractExportWriter
                             if (strpos($err['error'], 'fake')) {
                                 return false;
                             }
-                            if (strpos($err['error'], 'valid')) {
+                            if (strpos($err['error'], 'valid') && !strpos($err['error'], 'invalid')) {
                                 return false;
                             }
                             return true;
@@ -122,7 +124,9 @@ class MemberWriter extends AbstractExportWriter
                         if (empty($notFakeErrormessages)) {
                             $logger->warning('Mailchimp warning occurs during execution "batchSubscribe" method');
                         } else {
-                            $logger->error('Mailchimp error occurs during execution "batchSubscribe" method');
+                            $msg = 'Mailchimp error occurs during execution "batchSubscribe" method';
+                            $logger->error($msg);
+                            $this->stepExecution->addFailureException(new \Exception($msg));
                         }
 
                         $logger->debug('Mailchimp error occurs during execution "batchSubscribe" method', [

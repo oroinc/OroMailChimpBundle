@@ -80,9 +80,9 @@ abstract class AbstractExportWriter extends PersistentBatchWriter implements Cle
                     $message = $error['message'];
                 }
 
-                if (false !== strpos($message, 'fake') ||
-                    false !== strpos($message, 'valid') ||
-                    false !== strpos($message, 'already exist') ||
+                if (str_contains($message, 'fake') ||
+                    (str_contains($message, 'valid') && !str_contains($message, 'invalid')) ||
+                    str_contains($message, 'already exist') ||
                     false !== stripos($message, 'none of the emails provided')
                 ) {
                     $this->logger->warning('Mailchimp returns error from the server: message: "{message}"', [
