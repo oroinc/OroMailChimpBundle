@@ -4,7 +4,8 @@ declare(strict_types=1);
 namespace Oro\Bundle\MailChimpBundle\Command;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Oro\Bundle\CronBundle\Command\CronCommandInterface;
+use Oro\Bundle\CronBundle\Command\CronCommandActivationInterface;
+use Oro\Bundle\CronBundle\Command\CronCommandScheduleDefinitionInterface;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
 use Oro\Bundle\MailChimpBundle\Async\Topics;
 use Oro\Bundle\MailChimpBundle\Entity\Repository\StaticSegmentRepository;
@@ -20,29 +21,34 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Exports members and static segments to MailChimp.
  */
-class MailChimpExportCommand extends Command implements CronCommandInterface
+class MailChimpExportCommand extends Command implements
+    CronCommandScheduleDefinitionInterface,
+    CronCommandActivationInterface
 {
     protected static $defaultName = 'oro:cron:mailchimp:export';
 
-    private ManagerRegistry $managerRegistry;
-
+    private ManagerRegistry $doctrine;
     private MessageProducerInterface $messageProducer;
 
-    public function __construct(ManagerRegistry $managerRegistry, MessageProducerInterface $messageProducer)
+    public function __construct(ManagerRegistry $doctrine, MessageProducerInterface $messageProducer)
     {
         parent::__construct();
-
-        $this->managerRegistry = $managerRegistry;
+        $this->doctrine = $doctrine;
         $this->messageProducer = $messageProducer;
     }
 
-
-    public function getDefaultDefinition()
+    /**
+     * {@inheritDoc}
+     */
+    public function getDefaultDefinition(): string
     {
         return '*/5 * * * *';
     }
 
-    public function isActive()
+    /**
+     * {@inheritDoc}
+     */
+    public function isActive(): bool
     {
         return ($this->getStaticSegmentRepository()->countStaticSegments() > 0);
     }
@@ -130,6 +136,6 @@ HELP
 
     private function getStaticSegmentRepository(): StaticSegmentRepository
     {
-        return $this->managerRegistry->getRepository(StaticSegment::class);
+        return $this->doctrine->getRepository(StaticSegment::class);
     }
 }
