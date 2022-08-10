@@ -1,0 +1,22 @@
+features:
+    manage_integrations:
+        routes:
+            - oro_mailchimp_ping
+            - oro_mailchimp_marketing_list_connect
+            - oro_mailchimp_sync_status
+            - oro_mailchimp_email_campaign_status
+            - oro_mailchimp_email_campaign_activity_update_toggle
+            - oro_api_update_staticsegment_status
+            - oro_api_delete_staticsegment
+        entities:
+            - Oro\Bundle\MailChimpBundle\Entity\Campaign
+            - Oro\Bundle\MailChimpBundle\Entity\ExtendedMergeVar
+            - Oro\Bundle\MailChimpBundle\Entity\Member
+            - Oro\Bundle\MailChimpBundle\Entity\MemberActivity
+            - Oro\Bundle\MailChimpBundle\Entity\MemberExtendedMergeVar
+            - Oro\Bundle\MailChimpBundle\Entity\StaticSegment
+            - Oro\Bundle\MailChimpBundle\Entity\StaticSegmentMember
+            - Oro\Bundle\MailChimpBundle\Entity\SubscribersList
+            - Oro\Bundle\MailChimpBundle\Entity\Template
+        configuration:
+            - mailchimp_settings
