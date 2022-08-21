@@ -356,25 +356,25 @@ services:
         class: 'Oro\Bundle\MailChimpBundle\Autocomplete\TemplateSearchHandler'
         arguments:
             - 'Oro\Bundle\MailChimpBundle\Entity\Template'
-            - ["name"]
+            - ['name']
         calls:
-            - [initDoctrinePropertiesByManagerRegistry, ["@doctrine"]]
-            - [setAclHelper, ["@oro_security.acl_helper"]]
+            - [initDoctrinePropertiesByManagerRegistry, ['@doctrine']]
+            - [setAclHelper, ['@oro_security.acl_helper']]
             - [setPropertyAccessor, ['@property_accessor']]
         tags:
-            - { name: oro_form.autocomplete.search_handler, alias: "mailchimp_templates", acl_resource: "oro_email_campaign_view" }
+            - { name: oro_form.autocomplete.search_handler, alias: mailchimp_templates, acl_resource: oro_email_campaign_view }
 
     oro_mailchimp.form.autocomplete.list.search_handler:
         class: 'Oro\Bundle\MailChimpBundle\Autocomplete\ListSearchHandler'
         arguments:
             - 'Oro\Bundle\MailChimpBundle\Entity\SubscribersList'
-            - ["name"]
+            - ['name']
         calls:
-            - [initDoctrinePropertiesByManagerRegistry, ["@doctrine"]]
-            - [setAclHelper, ["@oro_security.acl_helper"]]
+            - [initDoctrinePropertiesByManagerRegistry, ['@doctrine']]
+            - [setAclHelper, ['@oro_security.acl_helper']]
             - [setPropertyAccessor, ['@property_accessor']]
         tags:
-            - { name: oro_form.autocomplete.search_handler, alias: "mailchimp_lists", acl_resource: "oro_email_campaign_view" }
+            - { name: oro_form.autocomplete.search_handler, alias: mailchimp_lists, acl_resource: oro_email_campaign_view }
 
     # Integration related services
     oro_mailchimp.provider.channel_type:
