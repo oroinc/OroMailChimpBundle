@@ -1,10 +1,11 @@
 <?php
 namespace Oro\Bundle\MailChimpBundle\Tests\Functional\Transport;
 
-use Oro\Bundle\IntegrationBundle\Async\Topics;
+use Oro\Bundle\IntegrationBundle\Async\Topic\SyncIntegrationTopic;
 use Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures\LoadStaticSegmentData;
 use Oro\Bundle\MessageQueueBundle\Test\Functional\MessageQueueExtension;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use Oro\Component\MessageQueue\Client\Message;
 use Oro\Component\MessageQueue\Client\MessagePriority;
 
 class SyncTest extends WebTestCase
@@ -20,29 +21,31 @@ class SyncTest extends WebTestCase
     /**
      * @dataProvider provideConnectorName
      */
-    public function testSyncCampaign($connectorName)
+    public function testSyncCampaign($connectorName): void
     {
         $params = ['--integration' => '1', '--connector' => $connectorName];
         $params['--integration'] = (string)$this->getReference(
             'mailchimp:channel_' . $params['--integration']
         )->getId();
-        $result = $this->runCommand('oro:cron:integration:sync', $params);
+        $result = self::runCommand('oro:cron:integration:sync', $params);
 
         static::assertStringContainsString('Schedule sync for "mailchimp1" integration.', $result);
 
-        $traces = self::getMessageCollector()->getTopicSentMessages(Topics::SYNC_INTEGRATION);
-
-        self::assertCount(1, $traces);
-        self::assertEquals([
-            'integration_id' => $params['--integration'],
-            'connector_parameters' => [],
-            'connector' => $connectorName,
-            'transport_batch_size' => 100
-        ], $traces[0]['message']->getBody());
-        self::assertEquals(MessagePriority::VERY_LOW, $traces[0]['message']->getPriority());
+        self::assertMessageSent(
+            SyncIntegrationTopic::getName(),
+            new Message(
+                [
+                    'integration_id' => $params['--integration'],
+                    'connector_parameters' => [],
+                    'connector' => $connectorName,
+                    'transport_batch_size' => 100
+                ],
+                MessagePriority::VERY_LOW
+            )
+        );
     }
 
-    public function provideConnectorName()
+    public function provideConnectorName(): array
     {
         return [
             ['campaign'],
