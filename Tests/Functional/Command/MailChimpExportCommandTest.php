@@ -7,7 +7,6 @@ use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures\LoadStaticSegmentData;
 use Oro\Bundle\MessageQueueBundle\Test\Functional\MessageQueueExtension;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-use Oro\Component\MessageQueue\Client\Message;
 use Oro\Component\MessageQueue\Client\MessagePriority;
 
 /**
@@ -25,28 +24,26 @@ class MailChimpExportCommandTest extends WebTestCase
         $this->loadFixtures([LoadStaticSegmentData::class]);
     }
 
-    public function testShouldSendExportMailChimpSegmentsMessage()
+    public function testShouldSendExportMailChimpSegmentsMessage(): void
     {
         /** @var StaticSegment $segment */
         $segment = $this->getReference('mailchimp:segment_one');
 
-        $result = $this->runCommand('oro:cron:mailchimp:export', ['--segments='.$segment->getId()]);
+        $result = self::runCommand('oro:cron:mailchimp:export', ['--segments=' . $segment->getId()]);
 
         static::assertStringContainsString('Send export MailChimp message for integration:', $result);
         static::assertStringContainsString(
-            'Integration "'.$segment->getChannel()->getId().'" and segments "'.$segment->getId().'"',
+            'Integration "' . $segment->getChannel()->getId() . '" and segments "' . $segment->getId() . '"',
             $result
         );
 
         self::assertMessageSent(
             Topics::EXPORT_MAILCHIMP_SEGMENTS,
-            new Message(
-                [
-                    'integrationId' => $segment->getChannel()->getId(),
-                    'segmentsIds' => [$segment->getId()],
-                ],
-                MessagePriority::VERY_LOW
-            )
+            [
+                'integrationId' => $segment->getChannel()->getId(),
+                'segmentsIds' => [$segment->getId()],
+            ]
         );
+        self::assertMessageSentWithPriority(Topics::EXPORT_MAILCHIMP_SEGMENTS, MessagePriority::VERY_LOW);
     }
 }
