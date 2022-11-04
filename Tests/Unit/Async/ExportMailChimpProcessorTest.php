@@ -13,7 +13,7 @@ use Oro\Bundle\IntegrationBundle\Logger\LoggerStrategy;
 use Oro\Bundle\IntegrationBundle\Provider\ReverseSyncProcessor;
 use Oro\Bundle\IntegrationBundle\Tests\Unit\Authentication\Token\IntegrationTokenAwareTestTrait;
 use Oro\Bundle\MailChimpBundle\Async\ExportMailChimpProcessor;
-use Oro\Bundle\MailChimpBundle\Async\Topics;
+use Oro\Bundle\MailChimpBundle\Async\Topic\ExportMailchimpSegmentsTopic;
 use Oro\Bundle\MailChimpBundle\Entity\Repository\StaticSegmentRepository;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Model\StaticSegment\StaticSegmentsMemberStateManager;
@@ -38,17 +38,17 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
     use ClassExtensionTrait;
     use IntegrationTokenAwareTestTrait;
 
-    public function testShouldImplementMessageProcessorInterface()
+    public function testShouldImplementMessageProcessorInterface(): void
     {
-        self::assertClassImplements(MessageProcessorInterface::class, ExportMailChimpProcessor::class);
+        $this->assertClassImplements(MessageProcessorInterface::class, ExportMailChimpProcessor::class);
     }
 
-    public function testShouldImplementTopicSubscriberInterface()
+    public function testShouldImplementTopicSubscriberInterface(): void
     {
-        self::assertClassImplements(TopicSubscriberInterface::class, ExportMailChimpProcessor::class);
+        $this->assertClassImplements(TopicSubscriberInterface::class, ExportMailChimpProcessor::class);
     }
 
-    public function testCouldBeConstructedWithExpectedArguments()
+    public function testCouldBeConstructedWithExpectedArguments(): void
     {
         new ExportMailChimpProcessor(
             $this->createMock(DoctrineHelper::class),
@@ -60,91 +60,25 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testShouldSubscribeOnExportMailChimpSegmentsTopic()
+    public function testShouldSubscribeOnExportMailChimpSegmentsTopic(): void
     {
-        $this->assertEquals([Topics::EXPORT_MAILCHIMP_SEGMENTS], ExportMailChimpProcessor::getSubscribedTopics());
+        self::assertEquals([ExportMailchimpSegmentsTopic::getName()], ExportMailChimpProcessor::getSubscribedTopics());
     }
 
-    public function testShouldLogAndRejectIfMessageBodyMissIntegrationId()
+    public function testShouldLogAndRejectIfIntegrationNotFound(): void
     {
         $message = new Message();
-        $message->setBody('[]');
-
-        $logger = $this->createLoggerMock();
-        $logger
-            ->expects($this->once())
-            ->method('critical')
-            ->with('The message invalid. It must have integrationId set');
-
-        $processor = new ExportMailChimpProcessor(
-            $this->createMock(DoctrineHelper::class),
-            $this->createReverseSyncProcessorMock(),
-            $this->createStaticSegmentsMemberStateManagerMock(),
-            $this->createJobRunnerMock(),
-            $this->createTokenStorageMock(),
-            $logger
-        );
-
-        $status = $processor->process($message, $this->createSessionMock());
-
-        $this->assertEquals(MessageProcessorInterface::REJECT, $status);
-    }
-
-    public function testShouldLogAndRejectIfMessageBodyMissSegmentsIds()
-    {
-        $message = new Message();
-        $message->setBody('{"integrationId":1}');
-
-        $logger = $this->createLoggerMock();
-        $logger
-            ->expects($this->once())
-            ->method('critical')
-            ->with('The message invalid. It must have segmentsIds set');
-
-        $processor = new ExportMailChimpProcessor(
-            $this->createMock(DoctrineHelper::class),
-            $this->createReverseSyncProcessorMock(),
-            $this->createStaticSegmentsMemberStateManagerMock(),
-            $this->createJobRunnerMock(),
-            $this->createTokenStorageMock(),
-            $logger
-        );
-
-        $status = $processor->process($message, $this->createSessionMock());
-
-        $this->assertEquals(MessageProcessorInterface::REJECT, $status);
-    }
-
-    public function testThrowIfMessageBodyInvalidJson()
-    {
-        $this->expectException(\JsonException::class);
-
-        $processor = new ExportMailChimpProcessor(
-            $this->createMock(DoctrineHelper::class),
-            $this->createReverseSyncProcessorMock(),
-            $this->createStaticSegmentsMemberStateManagerMock(),
-            $this->createJobRunnerMock(),
-            $this->createTokenStorageMock(),
-            $this->createLoggerMock()
-        );
-
-        $message = new Message();
-        $message->setBody('[}');
-
-        $processor->process($message, $this->createSessionMock());
-    }
-
-    public function testShouldLogAndRejectIfIntegrationNotFound()
-    {
-        $message = new Message();
-        $message->setBody('{"integrationId":"theIntegrationId", "segmentsIds": 1}');
+        $message->setBody([
+            'integrationId' => PHP_INT_MAX,
+            'segmentsIds' => [1, 2, 3],
+        ]);
         $message->setMessageId('theMessageId');
 
         $logger = $this->createLoggerMock();
         $logger
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('error')
-            ->with('The integration not found: theIntegrationId');
+            ->with('The integration not found: ' . PHP_INT_MAX);
 
         $processor = new ExportMailChimpProcessor(
             $this->createDoctrineHelperStub(),
@@ -157,10 +91,10 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
 
         $status = $processor->process($message, $this->createSessionMock());
 
-        $this->assertEquals(MessageProcessorInterface::REJECT, $status);
+        self::assertEquals(MessageProcessorInterface::REJECT, $status);
     }
 
-    public function testShouldLogAndRejectIfIntegrationNotEnabled()
+    public function testShouldLogAndRejectIfIntegrationNotEnabled(): void
     {
         $integration = new Integration();
         $integration->setEnabled(false);
@@ -169,14 +103,17 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
         $doctrineHelper = $this->createDoctrineHelperStub($integration);
 
         $message = new Message();
-        $message->setBody('{"integrationId":"theIntegrationId", "segmentsIds": 1}');
+        $message->setBody([
+            'integrationId' => 1,
+            'segmentsIds' => [1, 2, 3],
+        ]);
         $message->setMessageId('theMessageId');
 
         $logger = $this->createLoggerMock();
         $logger
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('error')
-            ->with('The integration is not enabled: theIntegrationId');
+            ->with('The integration is not enabled: 1');
 
         $processor = new ExportMailChimpProcessor(
             $doctrineHelper,
@@ -189,15 +126,15 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
 
         $status = $processor->process($message, $this->createSessionMock());
 
-        $this->assertEquals(MessageProcessorInterface::REJECT, $status);
+        self::assertEquals(MessageProcessorInterface::REJECT, $status);
     }
 
     /**
      * @dataProvider processMessageDataProvider
      */
-    public function testProcessMessageData(int $segmentId, array $segmentsIdsToSync, string $syncStatus)
+    public function testProcessMessageData(int $segmentId, array $segmentsIdsToSync, string $syncStatus): void
     {
-        $integrationId = 'theIntegrationId';
+        $integrationId = 1;
         $messageId = 'theMessageId';
 
         $jobRunner = $this->assertJobRunnerCalls($messageId, $integrationId);
@@ -227,7 +164,7 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
         ];
         $reverseSyncProcessor = $this->createReverseSyncProcessorMock();
         $reverseSyncProcessor
-            ->expects($this->exactly(2))
+            ->expects(self::exactly(2))
             ->method('process')
             ->withConsecutive(
                 [$integration, MemberConnector::TYPE, $expectedProcessorParameters],
@@ -247,13 +184,10 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
         $message = $this->getMessage($integrationId, $segmentId, $messageId);
         $status = $processor->process($message, $this->createSessionMock());
 
-        $this->assertEquals(MessageProcessorInterface::ACK, $status);
+        self::assertEquals(MessageProcessorInterface::ACK, $status);
     }
 
-    /**
-     * @return array
-     */
-    public function processMessageDataProvider()
+    public function processMessageDataProvider(): array
     {
         return [
             'static segment is in not_synced status' => [
@@ -284,7 +218,7 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function testProcessMessageDataMemberConnectorFail()
+    public function testProcessMessageDataMemberConnectorFail(): void
     {
         $segmentId = 1;
         $segmentsIdsToSync = [1];
@@ -319,7 +253,7 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
         ];
         $reverseSyncProcessor = $this->createReverseSyncProcessorMock();
         $reverseSyncProcessor
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('process')
             ->with($integration, MemberConnector::TYPE, $expectedProcessorParameters)
             ->willReturn(false);
@@ -336,10 +270,10 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
         $message = $this->getMessage($integrationId, $segmentId, $messageId);
         $status = $processor->process($message, $this->createSessionMock());
 
-        $this->assertEquals(MessageProcessorInterface::REJECT, $status);
+        self::assertEquals(MessageProcessorInterface::REJECT, $status);
     }
 
-    public function testProcessMessageDataSegmentConnectorFail()
+    public function testProcessMessageDataSegmentConnectorFail(): void
     {
         $segmentId = 1;
         $segmentsIdsToSync = [1];
@@ -374,7 +308,7 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
         ];
         $reverseSyncProcessor = $this->createReverseSyncProcessorMock();
         $reverseSyncProcessor
-            ->expects($this->exactly(2))
+            ->expects(self::exactly(2))
             ->method('process')
             ->withConsecutive(
                 [$integration, MemberConnector::TYPE, $expectedProcessorParameters],
@@ -394,7 +328,7 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
         $message = $this->getMessage($integrationId, $segmentId, $messageId);
         $status = $processor->process($message, $this->createSessionMock());
 
-        $this->assertEquals(MessageProcessorInterface::REJECT, $status);
+        self::assertEquals(MessageProcessorInterface::REJECT, $status);
     }
 
     /**
@@ -406,7 +340,7 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
 
         $doctrineHelper = $this->createMock(DoctrineHelper::class);
         $doctrineHelper
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getEntityManagerForClass')
             ->with(Integration::class)
             ->willReturn($integrationEntityManager);
@@ -421,7 +355,7 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
     {
         $reverseSyncProcessor = $this->createMock(ReverseSyncProcessor::class);
         $reverseSyncProcessor
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getLoggerStrategy')
             ->willReturn(new LoggerStrategy());
 
@@ -453,13 +387,13 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
 
         $connectionMock = $this->createMock(Connection::class);
         $connectionMock
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getConfiguration')
             ->willReturn($configuration);
 
         $entityManagerMock = $this->createMock(EntityManagerInterface::class);
         $entityManagerMock
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getConnection')
             ->willReturn($connectionMock);
 
@@ -501,16 +435,10 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
         return $integrationEntityManager;
     }
 
-    /**
-     * @param StaticSegment $staticSegment
-     * @param \PHPUnit\Framework\MockObject\Rule\InvokedCount $invokeCountMatcher
-     *
-     * @return EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected function getStaticSegmentEntityManager(
+    private function getStaticSegmentEntityManager(
         StaticSegment $staticSegment,
         InvokedCount $invokeCountMatcher
-    ) {
+    ):EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject {
         $segmentEntityManager = $this->createMock(EntityManagerInterface::class);
         $segmentEntityManager
             ->expects($invokeCountMatcher)
@@ -541,7 +469,7 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
         string $integrationId
     ): JobRunner|\PHPUnit\Framework\MockObject\MockObject {
         $jobRunner = $this->createJobRunnerMock();
-        $jobRunner->expects($this->once())
+        $jobRunner->expects(self::once())
             ->method('runUnique')
             ->with($messageId, 'oro_mailchimp:export_mailchimp:' . $integrationId, $this->isType('callable'))
             ->willReturnCallback(function ($ownerId, $jobName, $callback) {
@@ -551,47 +479,39 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
         return $jobRunner;
     }
 
-    /**
-     * @param string $syncStatus
-     * @param int $segmentId
-     * @param array $segmentsIdsToSync
-     * @param array $expectedSegmentStatuses
-     * @param DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject $doctrineHelper
-     * @return StaticSegment|\PHPUnit\Framework\MockObject\MockObject
-     */
     private function assertSegmentStatusChanges(
         string $syncStatus,
         int $segmentId,
         array $segmentsIdsToSync,
         array $expectedSegmentStatuses,
-        DoctrineHelper $doctrineHelper
+        DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject $doctrineHelper
     ): StaticSegment|\PHPUnit\Framework\MockObject\MockObject {
         $staticSegment = $this->createMock(StaticSegment::class);
         $staticSegment
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getSyncStatus')
             ->willReturn($syncStatus);
 
         $staticSegment
-            ->expects($this->exactly(count($segmentsIdsToSync) * 2))
+            ->expects(self::exactly(count($segmentsIdsToSync) * 2))
             ->method('setSyncStatus')
             ->withConsecutive(
                 ...$expectedSegmentStatuses
             );
 
         $staticSegment
-            ->expects($this->exactly(count($segmentsIdsToSync)))
+            ->expects(self::exactly(count($segmentsIdsToSync)))
             ->method('setLastSynced')
             ->with($this->isInstanceOf(\DateTime::class));
 
         $staticSegmentRepository = $this->createMock(StaticSegmentRepository::class);
         $staticSegmentRepository
-            ->expects($this->exactly(1 + count($segmentsIdsToSync)))
+            ->expects(self::exactly(1 + count($segmentsIdsToSync)))
             ->method('find')
             ->with($segmentId)
             ->willReturn($staticSegment);
         $doctrineHelper
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getEntityRepository')
             ->with(StaticSegment::class)
             ->willReturn($staticSegmentRepository);
@@ -615,12 +535,12 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
             ->getStaticSegmentEntityManager($staticSegment, $this->exactly(count($segmentsIdsToSync) * 4));
         $integrationEntityManager = $this->getIntegrationEntityManager($integration, $this->once());
         $doctrineHelper
-            ->expects($this->exactly(2))
+            ->expects(self::exactly(2))
             ->method('getEntityManagerForClass')
             ->with(Integration::class)
             ->willReturn($integrationEntityManager);
         $doctrineHelper
-            ->expects($this->exactly(count($segmentsIdsToSync) * 2))
+            ->expects(self::exactly(count($segmentsIdsToSync) * 2))
             ->method('getEntityManager')
             ->willReturn($segmentEntityManager);
     }
@@ -628,7 +548,10 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
     private function getMessage(string $integrationId, int $segmentId, string $messageId): Message
     {
         $message = new Message();
-        $message->setBody('{"integrationId":"' . $integrationId . '", "segmentsIds": [' . $segmentId . ']}');
+        $message->setBody([
+            'integrationId' => $integrationId,
+            'segmentsIds' => [$segmentId],
+        ]);
         $message->setMessageId($messageId);
 
         return $message;

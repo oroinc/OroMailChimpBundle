@@ -9,6 +9,7 @@ use Oro\Bundle\ImportExportBundle\Job\JobExecutor;
 use Oro\Bundle\IntegrationBundle\Authentication\Token\IntegrationTokenAwareTrait;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
 use Oro\Bundle\IntegrationBundle\Provider\ReverseSyncProcessor;
+use Oro\Bundle\MailChimpBundle\Async\Topic\ExportMailchimpSegmentsTopic;
 use Oro\Bundle\MailChimpBundle\Entity\Repository\StaticSegmentRepository;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Model\StaticSegment\StaticSegmentsMemberStateManager;
@@ -19,7 +20,6 @@ use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
 use Oro\Component\MessageQueue\Job\JobRunner;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Transport\SessionInterface;
-use Oro\Component\MessageQueue\Util\JSON;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -41,11 +41,6 @@ class ExportMailChimpProcessor implements MessageProcessorInterface, TopicSubscr
     private $reverseSyncProcessor;
 
     /**
-     * @var StaticSegmentsMemberStateManager
-     */
-    private $staticSegmentsMemberStateManager;
-
-    /**
      * @var JobRunner
      */
     private $jobRunner;
@@ -65,7 +60,6 @@ class ExportMailChimpProcessor implements MessageProcessorInterface, TopicSubscr
     ) {
         $this->doctrineHelper = $doctrineHelper;
         $this->reverseSyncProcessor = $reverseSyncProcessor;
-        $this->staticSegmentsMemberStateManager = $staticSegmentsMemberStateManager;
         $this->jobRunner = $jobRunner;
         $this->tokenStorage = $tokenStorage;
         $this->logger = $logger;
@@ -77,52 +71,36 @@ class ExportMailChimpProcessor implements MessageProcessorInterface, TopicSubscr
      */
     public function process(MessageInterface $message, SessionInterface $session)
     {
-        $body = JSON::decode($message->getBody());
-        $body = array_replace_recursive([
-            'integrationId' => null,
-            'segmentsIds' => [],
-        ], $body);
-
-        if (!$body['integrationId']) {
-            $this->logger->critical('The message invalid. It must have integrationId set');
-
-            return self::REJECT;
-        }
-
-        if (!$body['segmentsIds']) {
-            $this->logger->critical('The message invalid. It must have segmentsIds set');
-
-            return self::REJECT;
-        }
+        $messageBody = $message->getBody();
 
         /** @var EntityManagerInterface $em */
         $em = $this->doctrineHelper->getEntityManagerForClass(Integration::class);
 
         /** @var Integration $integration */
-        $integration = $em->find(Integration::class, $body['integrationId']);
+        $integration = $em->find(Integration::class, $messageBody['integrationId']);
 
         if (!$integration) {
             $this->logger->error(
-                sprintf('The integration not found: %s', $body['integrationId'])
+                sprintf('The integration not found: %s', $messageBody['integrationId'])
             );
 
             return self::REJECT;
         }
         if (!$integration->isEnabled()) {
             $this->logger->error(
-                sprintf('The integration is not enabled: %s', $body['integrationId'])
+                sprintf('The integration is not enabled: %s', $messageBody['integrationId'])
             );
 
             return self::REJECT;
         }
 
-        $jobName = 'oro_mailchimp:export_mailchimp:' . $body['integrationId'];
+        $jobName = 'oro_mailchimp:export_mailchimp:' . $messageBody['integrationId'];
         $ownerId = $message->getMessageId();
 
-        $result = $this->jobRunner->runUnique($ownerId, $jobName, function () use ($body, $integration) {
+        $result = $this->jobRunner->runUnique($ownerId, $jobName, function () use ($messageBody, $integration) {
             $this->setTemporaryIntegrationToken($integration);
 
-            return $this->processMessageData($body, $integration);
+            return $this->processMessageData($messageBody, $integration);
         });
 
         return $result ? self::ACK : self::REJECT;
@@ -209,6 +187,6 @@ class ExportMailChimpProcessor implements MessageProcessorInterface, TopicSubscr
      */
     public static function getSubscribedTopics()
     {
-        return [Topics::EXPORT_MAILCHIMP_SEGMENTS];
+        return [ExportMailchimpSegmentsTopic::getName()];
     }
 }
