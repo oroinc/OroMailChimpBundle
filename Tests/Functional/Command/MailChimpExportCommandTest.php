@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Functional\Command;
 
-use Oro\Bundle\MailChimpBundle\Async\Topics;
+use Oro\Bundle\MailChimpBundle\Async\Topic\ExportMailchimpSegmentsTopic;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures\LoadStaticSegmentData;
 use Oro\Bundle\MessageQueueBundle\Test\Functional\MessageQueueExtension;
@@ -38,12 +38,12 @@ class MailChimpExportCommandTest extends WebTestCase
         );
 
         self::assertMessageSent(
-            Topics::EXPORT_MAILCHIMP_SEGMENTS,
+            ExportMailchimpSegmentsTopic::getName(),
             [
                 'integrationId' => $segment->getChannel()->getId(),
                 'segmentsIds' => [$segment->getId()],
             ]
         );
-        self::assertMessageSentWithPriority(Topics::EXPORT_MAILCHIMP_SEGMENTS, MessagePriority::VERY_LOW);
+        self::assertMessageSentWithPriority(ExportMailchimpSegmentsTopic::getName(), MessagePriority::VERY_LOW);
     }
 }

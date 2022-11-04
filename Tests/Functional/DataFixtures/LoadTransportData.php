@@ -18,6 +18,10 @@ class LoadTransportData extends AbstractMailChimpFixture
         [
             'reference' => 'mailchimp:transport_two',
             'apiKey' => 'f9e179585f382c4def28653b1cbddba5-us9',
+        ],
+        [
+            'reference' => 'mailchimp:transport_three',
+            'apiKey' => 'f9e179585f382c4def28653b1cbddba5-us9',
         ]
     ];
 

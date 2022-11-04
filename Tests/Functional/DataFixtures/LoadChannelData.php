@@ -37,6 +37,17 @@ class LoadChannelData extends AbstractMailChimpFixture implements DependentFixtu
             'synchronizationSettings' => [
                 'isTwoWaySyncEnabled' => true
             ],
+        ],
+        [
+            'name' => 'disabledMailchimp1',
+            'type' => 'mailchimp',
+            'transport' => 'mailchimp:transport_three',
+            'connectors' => ['list'],
+            'enabled' => false,
+            'reference' => 'mailchimp_transport:channel_disabled_1',
+            'synchronizationSettings' => [
+                'isTwoWaySyncEnabled' => true
+            ],
         ]
     ];
 
@@ -85,7 +96,7 @@ class LoadChannelData extends AbstractMailChimpFixture implements DependentFixtu
     public function getDependencies()
     {
         return [
-            __NAMESPACE__ . '\LoadTransportData'
+            LoadTransportData::class,
         ];
     }
 }

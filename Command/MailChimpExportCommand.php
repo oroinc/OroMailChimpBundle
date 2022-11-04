@@ -7,11 +7,9 @@ use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CronBundle\Command\CronCommandActivationInterface;
 use Oro\Bundle\CronBundle\Command\CronCommandScheduleDefinitionInterface;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
-use Oro\Bundle\MailChimpBundle\Async\Topics;
+use Oro\Bundle\MailChimpBundle\Async\Topic\ExportMailchimpSegmentsTopic;
 use Oro\Bundle\MailChimpBundle\Entity\Repository\StaticSegmentRepository;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
-use Oro\Component\MessageQueue\Client\Message;
-use Oro\Component\MessageQueue\Client\MessagePriority;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -110,20 +108,16 @@ HELP
         if (count($integrationToSync) > 0) {
             $output->writeln('Send export MailChimp message for integration:');
             foreach ($integrationToSync as $integration) {
-                $message = new Message();
-                $message->setPriority(MessagePriority::VERY_LOW);
-                $message->setBody([
-                    'integrationId' => $integration->getId(),
-                    'segmentsIds' => $integrationSegments[$integration->getId()]
-                ]);
-
                 $output->writeln(sprintf(
                     'Integration "%s" and segments "%s"',
                     $integration->getId(),
-                    implode('", "', $message->getBody()['segmentsIds'])
+                    implode('", "', $integrationSegments[$integration->getId()])
                 ));
 
-                $this->messageProducer->send(Topics::EXPORT_MAILCHIMP_SEGMENTS, $message);
+                $this->messageProducer->send(ExportMailchimpSegmentsTopic::getName(), [
+                    'integrationId' => $integration->getId(),
+                    'segmentsIds' => $integrationSegments[$integration->getId()]
+                ]);
             }
         } else {
             $output->writeln('Active MailChimp Integrations not found.');

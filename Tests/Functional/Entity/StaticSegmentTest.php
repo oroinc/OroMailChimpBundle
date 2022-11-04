@@ -1,8 +1,9 @@
 <?php
+
 namespace Oro\Bundle\MailChimpBundle\Tests\Functional\Entity;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Oro\Bundle\MailChimpBundle\Async\Topics;
+use Oro\Bundle\MailChimpBundle\Async\Topic\ExportMailchimpSegmentsTopic;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures\LoadMarketingListData;
 use Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures\LoadSubscribersListData;
@@ -24,7 +25,7 @@ class StaticSegmentTest extends WebTestCase
         $this->loadFixtures([LoadMarketingListData::class, LoadSubscribersListData::class]);
     }
 
-    public function testShouldScheduleExportOnceStaticSegmentCreated()
+    public function testShouldScheduleExportOnceStaticSegmentCreated(): void
     {
         $organization = $this->getEntityManager()->getRepository(Organization::class)->getFirst();
 
@@ -40,17 +41,14 @@ class StaticSegmentTest extends WebTestCase
         $this->getEntityManager()->persist($segment);
         $this->getEntityManager()->flush();
 
-        self::assertMessagesCount(Topics::EXPORT_MAILCHIMP_SEGMENTS, 1);
-        self::assertMessageSent(Topics::EXPORT_MAILCHIMP_SEGMENTS, [
+        self::assertMessagesCount(ExportMailchimpSegmentsTopic::getName(), 1);
+        self::assertMessageSent(ExportMailchimpSegmentsTopic::getName(), [
             'integrationId' => $segment->getChannel()->getId(),
             'segmentsIds' => [$segment->getId()],
         ]);
     }
 
-    /**
-     * @return EntityManagerInterface
-     */
-    private function getEntityManager()
+    private function getEntityManager(): EntityManagerInterface
     {
         return self::getContainer()->get('doctrine.orm.entity_manager');
     }

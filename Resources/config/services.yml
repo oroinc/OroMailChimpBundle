@@ -929,18 +929,6 @@ services:
         class: 'Oro\Bundle\MailChimpBundle\Model\MarketingList\DataGridProvider'
         parent: oro_marketing_list.provider.marketing_list
 
-    oro_mailchimp.async.export_mailchimp_processor:
-        class: 'Oro\Bundle\MailChimpBundle\Async\ExportMailChimpProcessor'
-        arguments:
-            - '@oro_entity.doctrine_helper'
-            - '@oro_integration.reverse_sync.processor'
-            - '@oro_mailchimp.static_segment_manager.state_manager'
-            - '@oro_message_queue.job.runner'
-            - '@security.token_storage'
-            - '@logger'
-        tags:
-            - { name: 'oro_message_queue.client.message_processor' }
-
     oro_mailchimp.marketing_list_extend_merge_var_provider:
         class: Oro\Bundle\MailChimpBundle\Provider\MarketingListExtendedMergeVarProvider
         arguments:
