@@ -2,6 +2,16 @@ The upgrade instructions are available at [Oro documentation website](https://do
 
 The current file describes significant changes in the code that may affect the upgrade of your customizations.
 
+## Changes in the Mailchimp package versions
+
+- [3.1.5](#315)
+- [3.1.4](#314)
+- [3.1.0](#310-2019-01-30)
+- [3.0.0](#300-2018-07-27)
+- [2.3.0](#230-2017-07-28)
+- [2.2.0](#220-2017-05-31)
+- [2.1.0](#210-2017-03-30)
+
 ## 3.1.5
 ### Added
 * STATUS_SYNC_FAILED status was added to `Oro\Bundle\MailChimpBundle\Entity\StaticSegment` which indicates that 
@@ -13,14 +23,9 @@ The current file describes significant changes in the code that may affect the u
  (`oro_mailchimp_email_campaign_activity_update_toggle` route)
  action the request method was changed to POST. 
  
-## 3.1.0-rc (2018-11-30)
-[Show detailed list of changes](incompatibilities-3-1-rc.md)
+## 3.1.0 (2019-01-30)
 
-## 3.0.0-rc (2018-05-31)
-[Show detailed list of changes](incompatibilities-3-0-rc.md)
-
-## 3.0.0-beta (2018-03-30)
-[Show detailed list of changes](incompatibilities-3-0-beta.md)
+## 3.0.0 (2018-07-27)
 
 ## 2.3.0 (2017-07-28)
 [Show detailed list of changes](incompatibilities-2-3.md)
@@ -29,6 +34,7 @@ The current file describes significant changes in the code that may affect the u
 [Show detailed list of changes](incompatibilities-2-2.md)
 
 ## 2.1.0 (2017-03-30)
+
 ### Changed
 - Class `StaticSegmentRepository`<sup>[[?]](https://github.com/oroinc/OroCRMMailChimpBundle/tree/2.1.0/Entity/Repository/StaticSegmentRepository.php "Oro\Bundle\MailChimpBundle\Entity\Repository\StaticSegmentRepository")</sup>
     - changed the return type of `getStaticSegments` method from `BufferedQueryResultIterator` to `BufferedQueryResultIteratorInterface`
