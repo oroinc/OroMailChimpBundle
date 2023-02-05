@@ -11,50 +11,38 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class StaticSegmentSyncModeTypeTest extends FormIntegrationTestCase
 {
-    /**
-     * @internal
-     */
-    const CHOICES = ['scheduled' => 'scheduled', 'on_update' => 'on_update'];
+    private const CHOICES = ['scheduled' => 'scheduled', 'on_update' => 'on_update'];
 
-    /**
-     * @var StaticSegmentSyncModeType
-     */
-    private $staticSegmentSyncModeType;
-
-    /**
-     * @var StaticSegmentSyncModeChoicesProvider|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var StaticSegmentSyncModeChoicesProvider|\PHPUnit\Framework\MockObject\MockObject */
     private $staticSegmentSyncModesProvider;
 
-    /**
-     * {@inheritDoc}
-     */
+    /** @var StaticSegmentSyncModeType */
+    private $formType;
+
     protected function setUp(): void
     {
         $this->staticSegmentSyncModesProvider = $this->createMock(StaticSegmentSyncModeChoicesProvider::class);
 
-        $this->staticSegmentSyncModeType = new StaticSegmentSyncModeType($this->staticSegmentSyncModesProvider);
+        $this->formType = new StaticSegmentSyncModeType($this->staticSegmentSyncModesProvider);
+
         parent::setUp();
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    protected function getExtensions()
+    protected function getExtensions(): array
     {
         return [
-            new PreloadedExtension(
-                [
-                    StaticSegmentSyncModeType::class => $this->staticSegmentSyncModeType
-                ],
-                []
-            ),
+            new PreloadedExtension([$this->formType], [])
         ];
     }
 
     public function testSubmitForm()
     {
-        $this->mockStaticSegmentSyncModesProvider();
+        $this->staticSegmentSyncModesProvider->expects(self::once())
+            ->method('getTranslatedChoices')
+            ->willReturn(self::CHOICES);
 
         $submittedData = 'scheduled';
 
@@ -69,10 +57,12 @@ class StaticSegmentSyncModeTypeTest extends FormIntegrationTestCase
 
     public function testConfigureOptions()
     {
-        $this->mockStaticSegmentSyncModesProvider();
+        $this->staticSegmentSyncModesProvider->expects(self::once())
+            ->method('getTranslatedChoices')
+            ->willReturn(self::CHOICES);
 
         $resolver = new OptionsResolver();
-        $this->staticSegmentSyncModeType->configureOptions($resolver);
+        $this->formType->configureOptions($resolver);
 
         $actualOptions = $resolver->resolve();
         $expectedOptions = [
@@ -86,19 +76,11 @@ class StaticSegmentSyncModeTypeTest extends FormIntegrationTestCase
 
     public function testGetBlockPrefix()
     {
-        self::assertEquals(StaticSegmentSyncModeType::NAME, $this->staticSegmentSyncModeType->getBlockPrefix());
+        self::assertEquals(StaticSegmentSyncModeType::NAME, $this->formType->getBlockPrefix());
     }
 
     public function testGetParent()
     {
-        self::assertEquals(ChoiceType::class, $this->staticSegmentSyncModeType->getParent());
-    }
-
-    private function mockStaticSegmentSyncModesProvider()
-    {
-        $this->staticSegmentSyncModesProvider
-            ->expects(self::once())
-            ->method('getTranslatedChoices')
-            ->willReturn(self::CHOICES);
+        self::assertEquals(ChoiceType::class, $this->formType->getParent());
     }
 }
