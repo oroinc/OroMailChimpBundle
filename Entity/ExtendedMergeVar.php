@@ -267,6 +267,13 @@ class ExtendedMergeVar
      */
     protected function generateTag($name)
     {
+        // if its related entity, extract only attribute name
+        // customer+Oro\Bundle\CustomerBundle\Entity\Customer::internal_rating -> internal_rating
+        if (str_contains($name, '\\') && str_contains($name, '::')) {
+            $name = explode('::', $name);
+            $name = end($name);
+        }
+
         $tag = self::TAG_PREFIX . strtoupper($name);
         if (strlen($tag) > self::MAXIMUM_TAG_LENGTH) {
             $tag = preg_replace('#[aeiou\s]+#i', '', $name);
