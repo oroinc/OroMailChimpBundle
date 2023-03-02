@@ -134,7 +134,11 @@ class ExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
         return [
             ['total', ExtendedMergeVar::TAG_PREFIX . 'TOTAL'],
             ['entity_total', ExtendedMergeVar::TAG_PREFIX . 'NTTY_TTL'],
-            ['anyEntityAttr', ExtendedMergeVar::TAG_PREFIX . 'NYNTTYTT']
+            ['anyEntityAttr', ExtendedMergeVar::TAG_PREFIX . 'NYNTTYTT'],
+            ['email', ExtendedMergeVar::TAG_PREFIX . 'EMAIL'],
+            ['customer+Oro\Bundle\CustomerBundle\Entity\Customer::name', ExtendedMergeVar::TAG_PREFIX . 'NAME'],
+            ['customer+Oro\Bundle\CustomerBundle\Entity\Customer::internal_rating', ExtendedMergeVar::TAG_PREFIX . 'NTRNL_RT'],
+            []
         ];
     }
 
