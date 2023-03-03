@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Entity;
 
+use Oro\Bundle\EntityExtendBundle\PropertyAccess;
 use Oro\Bundle\MailChimpBundle\Entity\MemberExtendedMergeVar;
 use Oro\Component\Testing\ReflectionUtil;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class MemberExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
 {

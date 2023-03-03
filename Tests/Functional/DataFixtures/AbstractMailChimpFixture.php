@@ -3,7 +3,7 @@
 namespace Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Symfony\Component\PropertyAccess\PropertyAccess;
+use Oro\Bundle\EntityExtendBundle\PropertyAccess;
 
 abstract class AbstractMailChimpFixture extends AbstractFixture
 {

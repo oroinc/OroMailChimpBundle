@@ -10,11 +10,11 @@ use Doctrine\ORM\Mapping\ClassMetadataFactory;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Oro\Bundle\EntityExtendBundle\PropertyAccess;
 use Oro\Bundle\MailChimpBundle\Autocomplete\TemplateSearchHandler;
 use Oro\Bundle\MailChimpBundle\Entity\Template;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 use Oro\Component\Testing\ReflectionUtil;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class TemplateSearchHandlerTest extends \PHPUnit\Framework\TestCase
 {
@@ -59,7 +59,7 @@ class TemplateSearchHandlerTest extends \PHPUnit\Framework\TestCase
         $this->aclHelper = $this->createMock(AclHelper::class);
 
         $this->searchHandler = new TemplateSearchHandler(self::TEST_ENTITY_CLASS, $this->testProperties);
-        $this->searchHandler->setPropertyAccessor(new PropertyAccessor());
+        $this->searchHandler->setPropertyAccessor(PropertyAccess::createPropertyAccessor());
         $this->searchHandler->setAclHelper($this->aclHelper);
     }
 

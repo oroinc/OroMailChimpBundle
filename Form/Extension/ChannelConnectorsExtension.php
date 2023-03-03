@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\MailChimpBundle\Form\Extension;
 
+use Oro\Bundle\EntityExtendBundle\PropertyAccess;
 use Oro\Bundle\FormBundle\Utils\FormUtils;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Form\Type\ChannelType;
@@ -10,7 +11,6 @@ use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * Form lisetener to hide connectors for MailChimp channel on integration setup page.
