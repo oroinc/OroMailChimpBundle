@@ -138,7 +138,6 @@ class ExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
             ['email', ExtendedMergeVar::TAG_PREFIX . 'EMAIL'],
             ['customer+Oro\Bundle\CustomerBundle\Entity\Customer::name', ExtendedMergeVar::TAG_PREFIX . 'NAME'],
             ['customer+Oro\Bundle\CustomerBundle\Entity\Customer::internal_rating', ExtendedMergeVar::TAG_PREFIX . 'NTRNL_RT'],
-            []
         ];
     }
 
