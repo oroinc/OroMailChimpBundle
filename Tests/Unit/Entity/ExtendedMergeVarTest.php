@@ -131,13 +131,14 @@ class ExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
      */
     public function tagGenerationDataProvider()
     {
+        $prefix = ExtendedMergeVar::TAG_PREFIX;
         return [
-            ['total', ExtendedMergeVar::TAG_PREFIX . 'TOTAL'],
-            ['entity_total', ExtendedMergeVar::TAG_PREFIX . 'NTTY_TTL'],
-            ['anyEntityAttr', ExtendedMergeVar::TAG_PREFIX . 'NYNTTYTT'],
-            ['email', ExtendedMergeVar::TAG_PREFIX . 'EMAIL'],
-            ['customer+Oro\Bundle\CustomerBundle\Entity\Customer::name', ExtendedMergeVar::TAG_PREFIX . 'NAME'],
-            ['customer+Oro\Bundle\CustomerBundle\Entity\Customer::internal_rating', ExtendedMergeVar::TAG_PREFIX . 'NTRNL_RT'],
+            ['total', $prefix . 'TOTAL'],
+            ['entity_total', $prefix . 'NTTY_TTL'],
+            ['anyEntityAttr', $prefix . 'NYNTTYTT'],
+            ['email', $prefix . 'EMAIL'],
+            ['customer+Oro\Bundle\CustomerBundle\Entity\Customer::name', $prefix . 'NAME'],
+            ['customer+Oro\Bundle\CustomerBundle\Entity\Customer::internal_rating', $prefix . 'NTRNL_RT'],
         ];
     }
 
