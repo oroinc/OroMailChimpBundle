@@ -25,21 +25,21 @@ class ExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
     {
         $entity = new ExtendedMergeVar();
 
-        $this->assertEquals(ExtendedMergeVar::STATE_ADD, $entity->getState());
-        $this->assertEquals(ExtendedMergeVar::TAG_TEXT_FIELD_TYPE, $entity->getFieldType());
-        $this->assertFalse($entity->isRequired());
-        $this->assertNull($entity->getName());
-        $this->assertNull($entity->getLabel());
-        $this->assertNull($entity->getTag());
+        self::assertEquals(ExtendedMergeVar::STATE_ADD, $entity->getState());
+        self::assertEquals(ExtendedMergeVar::TAG_TEXT_FIELD_TYPE, $entity->getFieldType());
+        self::assertFalse($entity->isRequired());
+        self::assertNull($entity->getName());
+        self::assertNull($entity->getLabel());
+        self::assertNull($entity->getTag());
     }
 
     public function testGetId()
     {
-        $this->assertNull($this->entity->getId());
+        self::assertNull($this->entity->getId());
 
         $value = 8;
         ReflectionUtil::setId($this->entity, $value);
-        $this->assertSame($value, $this->entity->getId());
+        self::assertSame($value, $this->entity->getId());
     }
 
     /**
@@ -52,14 +52,14 @@ class ExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
-        $this->assertEquals(
+        self::assertEquals(
             $default,
             $propertyAccessor->getValue($this->entity, $property)
         );
 
         $propertyAccessor->setValue($this->entity, $property, $value);
 
-        $this->assertEquals(
+        self::assertEquals(
             $value,
             $propertyAccessor->getValue($this->entity, $property)
         );
@@ -83,8 +83,8 @@ class ExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
      */
     public function testSetNameWhenInputIsWrong($value)
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Name must be not empty string.');
+        self::expectException(\InvalidArgumentException::class);
+        self::expectExceptionMessage('Name must be not empty string.');
 
         $this->entity->setName($value);
     }
@@ -109,8 +109,8 @@ class ExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
         $expectedTag = ExtendedMergeVar::TAG_PREFIX . strtoupper($name);
         $this->entity->setName($name);
 
-        $this->assertEquals($name, $this->entity->getName());
-        $this->assertEquals($expectedTag, $this->entity->getTag());
+        self::assertEquals($name, $this->entity->getName());
+        self::assertEquals($expectedTag, $this->entity->getTag());
     }
 
     /**
@@ -122,7 +122,7 @@ class ExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
     {
         $this->entity->setName($value);
 
-        $this->assertEquals($expected, $this->entity->getTag());
+        self::assertEquals($expected, $this->entity->getTag());
     }
 
     /**
@@ -130,34 +130,38 @@ class ExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
      */
     public function tagGenerationDataProvider()
     {
+        $prefix = ExtendedMergeVar::TAG_PREFIX;
         return [
-            ['total', ExtendedMergeVar::TAG_PREFIX . 'TOTAL'],
-            ['entity_total', ExtendedMergeVar::TAG_PREFIX . 'NTTY_TTL'],
-            ['anyEntityAttr', ExtendedMergeVar::TAG_PREFIX . 'NYNTTYTT']
+            ['total', $prefix . 'TOTAL'],
+            ['entity_total', $prefix . 'NTTY_TTL'],
+            ['anyEntityAttr', $prefix . 'NYNTTYTT'],
+            ['email', $prefix . 'EMAIL'],
+            ['customer+Oro\Bundle\CustomerBundle\Entity\Customer::name', $prefix . 'NAME'],
+            ['customer+Oro\Bundle\CustomerBundle\Entity\Customer::internal_rating', $prefix . 'NTRNL_RT'],
         ];
     }
 
     public function testIsAddState()
     {
         $this->entity->setState(ExtendedMergeVar::STATE_ADD);
-        $this->assertTrue($this->entity->isAddState());
+        self::assertTrue($this->entity->isAddState());
     }
 
     public function testIsRemoveState()
     {
         $this->entity->setState(ExtendedMergeVar::STATE_REMOVE);
-        $this->assertTrue($this->entity->isRemoveState());
+        self::assertTrue($this->entity->isRemoveState());
     }
 
     public function testSetSyncedState()
     {
         $this->entity->markSynced();
-        $this->assertEquals(ExtendedMergeVar::STATE_SYNCED, $this->entity->getState());
+        self::assertEquals(ExtendedMergeVar::STATE_SYNCED, $this->entity->getState());
     }
 
     public function testSetDroppedState()
     {
         $this->entity->markDropped();
-        $this->assertEquals(ExtendedMergeVar::STATE_DROPPED, $this->entity->getState());
+        self::assertEquals(ExtendedMergeVar::STATE_DROPPED, $this->entity->getState());
     }
 }
