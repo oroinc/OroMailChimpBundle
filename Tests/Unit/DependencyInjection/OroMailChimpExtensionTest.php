@@ -2,22 +2,31 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\DependencyInjection;
 
-use Oro\Bundle\MailChimpBundle\Controller\Api\Rest\StaticSegmentController;
 use Oro\Bundle\MailChimpBundle\DependencyInjection\OroMailChimpExtension;
-use Oro\Bundle\TestFrameworkBundle\Test\DependencyInjection\ExtensionTestCase;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class OroMailChimpExtensionTest extends ExtensionTestCase
+class OroMailChimpExtensionTest extends \PHPUnit\Framework\TestCase
 {
     public function testLoad(): void
     {
-        $this->loadExtension(new OroMailChimpExtension());
+        $container = new ContainerBuilder();
+        $container->setParameter('kernel.environment', 'prod');
 
-        $expectedDefinitions = [
-            StaticSegmentController::class,
-        ];
-        $this->assertDefinitionsLoaded($expectedDefinitions);
+        $extension = new OroMailChimpExtension();
+        $extension->load([], $container);
 
-        $this->assertExtensionConfigsLoaded(['oro_mailchimp']);
+        self::assertNotEmpty($container->getDefinitions());
+        self::assertSame(
+            [
+                [
+                    'settings' => [
+                        'resolved' => true,
+                        'static_segment_sync_mode' => ['value' => 'on_update', 'scope' => 'app']
+                    ]
+                ]
+            ],
+            $container->getExtensionConfig('oro_mailchimp')
+        );
     }
 
     public function testGetAlias(): void
