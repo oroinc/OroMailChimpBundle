@@ -4,6 +4,7 @@ namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Entity;
 
 use Oro\Bundle\EntityExtendBundle\PropertyAccess;
 use Oro\Bundle\MailChimpBundle\Entity\ExtendedMergeVar;
+use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Component\Testing\ReflectionUtil;
 
 /**
@@ -11,10 +12,7 @@ use Oro\Component\Testing\ReflectionUtil;
  */
 class ExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var ExtendedMergeVar
-     */
-    protected $entity;
+    private ExtendedMergeVar $entity;
 
     protected function setUp(): void
     {
@@ -44,11 +42,8 @@ class ExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider settersAndGettersDataProvider
-     * @param string $property
-     * @param mixed $value
-     * @param mixed $default
      */
-    public function testSettersAndGetters($property, $value, $default = null)
+    public function testSettersAndGetters(string $property, mixed $value, mixed $default = null)
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
@@ -65,13 +60,10 @@ class ExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function settersAndGettersDataProvider()
+    public function settersAndGettersDataProvider(): array
     {
         return [
-            ['staticSegment', $this->createMock('Oro\\Bundle\\MailChimpBundle\\Entity\\StaticSegment')],
+            ['staticSegment', $this->createMock(StaticSegment::class)],
             ['label', 'Dummy Label'],
             ['state', ExtendedMergeVar::STATE_SYNCED, ExtendedMergeVar::STATE_ADD]
         ];
@@ -79,20 +71,16 @@ class ExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider setNameDataProvider
-     * @param mixed $value
      */
-    public function testSetNameWhenInputIsWrong($value)
+    public function testSetNameWhenInputIsWrong(mixed $value)
     {
-        self::expectException(\InvalidArgumentException::class);
-        self::expectExceptionMessage('Name must be not empty string.');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Name must be not empty string.');
 
         $this->entity->setName($value);
     }
 
-    /**
-     * @return array
-     */
-    public function setNameDataProvider()
+    public function setNameDataProvider(): array
     {
         return [
             [''],
@@ -115,22 +103,18 @@ class ExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider tagGenerationDataProvider
-     * @param string $value
-     * @param string $expected
      */
-    public function testTagGenerationWithDifferentNameLength($value, $expected)
+    public function testTagGenerationWithDifferentNameLength(string $value, string $expected)
     {
         $this->entity->setName($value);
 
         self::assertEquals($expected, $this->entity->getTag());
     }
 
-    /**
-     * @return array
-     */
-    public function tagGenerationDataProvider()
+    public function tagGenerationDataProvider(): array
     {
         $prefix = ExtendedMergeVar::TAG_PREFIX;
+
         return [
             ['total', $prefix . 'TOTAL'],
             ['entity_total', $prefix . 'NTTY_TTL'],
