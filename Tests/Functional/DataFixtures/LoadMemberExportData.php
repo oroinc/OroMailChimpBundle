@@ -6,10 +6,7 @@ use Oro\Bundle\MailChimpBundle\Entity\Member;
 
 class LoadMemberExportData extends LoadMemberData
 {
-    /**
-     * @var array Channels configuration
-     */
-    protected $data = [
+    protected array $data = [
         [
             'originId' => 210000002,
             'email' => 'member2@example.com',

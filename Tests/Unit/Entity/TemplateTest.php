@@ -2,14 +2,13 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Entity;
 
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Entity\Template;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class TemplateTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var Template
-     */
-    protected $target;
+    private Template $target;
 
     protected function setUp(): void
     {
@@ -17,12 +16,9 @@ class TemplateTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param string $property
-     * @param mixed $value
-     *
      * @dataProvider settersAndGettersDataProvider
      */
-    public function testSettersAndGetters($property, $value)
+    public function testSettersAndGetters(string $property, mixed $value)
     {
         $method = 'set' . ucfirst($property);
         $result = $this->target->$method($value);
@@ -32,12 +28,9 @@ class TemplateTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param string $property
-     * @param mixed $value
-     *
      * @dataProvider boolSettersAndGettersDataProvider
      */
-    public function testBoolSettersAndGetters($property, $value)
+    public function testBoolSettersAndGetters(string $property, mixed $value)
     {
         $method = 'set' . ucfirst($property);
         $result = $this->target->$method($value);
@@ -46,15 +39,12 @@ class TemplateTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($value, $this->target->{'is' . $property}());
     }
 
-    /**
-     * @return array
-     */
-    public function settersAndGettersDataProvider()
+    public function settersAndGettersDataProvider(): array
     {
         return [
             ['originId', 123456789],
-            ['channel', $this->createMock('Oro\\Bundle\\IntegrationBundle\\Entity\\Channel')],
-            ['owner', $this->createMock('Oro\\Bundle\\OrganizationBundle\\Entity\\Organization')],
+            ['channel', $this->createMock(Channel::class)],
+            ['owner', $this->createMock(Organization::class)],
             ['type', Template::TYPE_USER],
             ['name', 'String'],
             ['layout', 'Text'],
@@ -68,10 +58,7 @@ class TemplateTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function boolSettersAndGettersDataProvider()
+    public function boolSettersAndGettersDataProvider(): array
     {
         return [
             ['active', true],
@@ -85,8 +72,8 @@ class TemplateTest extends \PHPUnit\Framework\TestCase
 
         $this->target->prePersist();
 
-        $this->assertInstanceOf('\DateTime', $this->target->getCreatedAt());
-        $this->assertInstanceOf('\DateTime', $this->target->getUpdatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->target->getCreatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->target->getUpdatedAt());
 
         $expectedCreated = $this->target->getCreatedAt();
         $expectedUpdated = $this->target->getUpdatedAt();
@@ -102,6 +89,6 @@ class TemplateTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertNull($this->target->getUpdatedAt());
         $this->target->preUpdate();
-        $this->assertInstanceOf('\DateTime', $this->target->getUpdatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->target->getUpdatedAt());
     }
 }

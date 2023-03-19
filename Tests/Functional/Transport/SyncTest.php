@@ -29,7 +29,7 @@ class SyncTest extends WebTestCase
         )->getId();
         $result = self::runCommand(SyncCommand::getDefaultName(), $params);
 
-        static::assertStringContainsString('Schedule sync for "mailchimp1" integration.', $result);
+        self::assertStringContainsString('Schedule sync for "mailchimp1" integration.', $result);
         self::assertMessageSent(SyncIntegrationTopic::getName(), [
             'integration_id' => $params['--integration'],
             'connector_parameters' => [],

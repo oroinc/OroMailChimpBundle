@@ -7,10 +7,7 @@ use Oro\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadB2bCustomerEmailDat
 
 class LoadMarketingListB2bCustomerData extends LoadMarketingListData
 {
-    /**
-     * @var array Channels configuration
-     */
-    protected $mlData = [
+    protected array $mlData = [
         [
             'type' => 'dynamic',
             'name' => 'Test B2bCustomer ML',
@@ -22,9 +19,9 @@ class LoadMarketingListB2bCustomerData extends LoadMarketingListData
     ];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadB2bCustomerEmailData::class,

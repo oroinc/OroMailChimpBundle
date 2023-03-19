@@ -6,32 +6,16 @@ use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaignStatistics;
 use Oro\Bundle\MailChimpBundle\Entity\MemberActivity;
 use Oro\Bundle\MailChimpBundle\Model\Action\UpdateEmailCampaignStatistics;
+use Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures\LoadMemberActivityData;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListItem;
-use Oro\Bundle\MarketingListBundle\Provider\MarketingListProvider;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\WorkflowBundle\Model\ProcessData;
 
 class UpdateEmailCampaignStatisticsTest extends WebTestCase
 {
-    /**
-     * @var bool
-     */
-    protected $sceduled = false;
-
-    /**
-     * @var UpdateEmailCampaignStatistics
-     */
-    protected $action;
-
-    /**
-     * @var ManagerRegistry
-     */
-    protected $registry;
-
-    /**
-     * @var MarketingListProvider
-     */
-    protected $provider;
+    private bool $sceduled = false;
+    private UpdateEmailCampaignStatistics $action;
+    private ManagerRegistry $doctrine;
 
     protected function setUp(): void
     {
@@ -41,13 +25,9 @@ class UpdateEmailCampaignStatisticsTest extends WebTestCase
         $this->action = $this->getContainer()
             ->get('oro_mailchimp.workflow.action.update_email_campaign_statistics');
 
-        $this->registry = $this->getContainer()->get('doctrine');
+        $this->doctrine = $this->getContainer()->get('doctrine');
 
-        $this->loadFixtures(
-            [
-                'Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures\LoadMemberActivityData'
-            ]
-        );
+        $this->loadFixtures([LoadMemberActivityData::class]);
     }
 
     public function testExecute()
@@ -58,14 +38,12 @@ class UpdateEmailCampaignStatisticsTest extends WebTestCase
 
         // Check that all marketing list items are created
         /** @var MarketingListItem[] $items */
-        $items = $this->registry->getRepository(MarketingListItem::class)
-            ->findAll();
+        $items = $this->doctrine->getRepository(MarketingListItem::class)->findAll();
         $this->assertCount(2, $items);
 
         // Check that statistics is updated correctly
         /** @var EmailCampaignStatistics[] $statistics */
-        $statistics = $this->registry->getRepository(EmailCampaignStatistics::class)
-            ->findAll();
+        $statistics = $this->doctrine->getRepository(EmailCampaignStatistics::class)->findAll();
         $this->assertCount(3, $statistics);
         $statisticsData = [];
         foreach ($statistics as $record) {
@@ -106,7 +84,7 @@ class UpdateEmailCampaignStatisticsTest extends WebTestCase
         );
     }
 
-    protected function executeAction()
+    private function executeAction()
     {
         $activities = [
             'mailchimp:member_one:activity:open',
@@ -123,6 +101,6 @@ class UpdateEmailCampaignStatisticsTest extends WebTestCase
             $context->set('data', $activity);
             $this->action->execute($context);
         }
-        $this->registry->getManager()->flush();
+        $this->doctrine->getManager()->flush();
     }
 }

@@ -16,10 +16,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class MemberActivityImportTest extends WebTestCase
 {
-    /**
-     * @var JobExecutor
-     */
-    protected $jobExecutor;
+    private JobExecutor $jobExecutor;
 
     protected function setUp(): void
     {
@@ -59,7 +56,7 @@ class MemberActivityImportTest extends WebTestCase
         $this->assertDatabaseContent($jobResult);
     }
 
-    protected function assertDatabaseContent(JobResult $jobResult)
+    private function assertDatabaseContent(JobResult $jobResult): void
     {
         $fixtures = new \RecursiveDirectoryIterator(
             __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Stub' . DIRECTORY_SEPARATOR . 'fixtures',

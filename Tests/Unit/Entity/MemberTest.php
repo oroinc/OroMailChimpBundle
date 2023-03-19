@@ -2,14 +2,14 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Entity;
 
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Entity\Member;
+use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class MemberTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var Member
-     */
-    protected $target;
+    private Member $target;
 
     protected function setUp(): void
     {
@@ -18,10 +18,8 @@ class MemberTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider settersAndGettersDataProvider
-     * @param string $property
-     * @param mixed $value
      */
-    public function testSettersAndGetters($property, $value)
+    public function testSettersAndGetters(string $property, mixed $value)
     {
         $method = 'set' . ucfirst($property);
         $result = $this->target->$method($value);
@@ -30,14 +28,11 @@ class MemberTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($value, $this->target->{'get' . $property}());
     }
 
-    /**
-     * @return array
-     */
-    public function settersAndGettersDataProvider()
+    public function settersAndGettersDataProvider(): array
     {
         return [
             ['originId', 123456789],
-            ['channel', $this->createMock('Oro\\Bundle\\IntegrationBundle\\Entity\\Channel')],
+            ['channel', $this->createMock(Channel::class)],
             ['email', 'email@example.com'],
             ['phone', '555-666-777'],
             ['status', Member::STATUS_CLEANED],
@@ -62,9 +57,9 @@ class MemberTest extends \PHPUnit\Framework\TestCase
             ['createdAt', new \DateTime()],
             ['updatedAt', new \DateTime()],
             ['updatedAt', null],
-            ['subscribersList', $this->createMock('Oro\\Bundle\\MailChimpBundle\\Entity\\SubscribersList')],
+            ['subscribersList', $this->createMock(SubscribersList::class)],
             ['mergeVarValues', ['Email Address' => 'test@example.com']],
-            ['owner', $this->createMock('Oro\\Bundle\\OrganizationBundle\\Entity\\Organization')],
+            ['owner', $this->createMock(Organization::class)],
         ];
     }
 
@@ -75,8 +70,8 @@ class MemberTest extends \PHPUnit\Framework\TestCase
 
         $this->target->prePersist();
 
-        $this->assertInstanceOf('\DateTime', $this->target->getCreatedAt());
-        $this->assertInstanceOf('\DateTime', $this->target->getUpdatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->target->getCreatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->target->getUpdatedAt());
 
         $expectedCreated = $this->target->getCreatedAt();
         $expectedUpdated = $this->target->getUpdatedAt();
@@ -91,6 +86,6 @@ class MemberTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertNull($this->target->getUpdatedAt());
         $this->target->preUpdate();
-        $this->assertInstanceOf('\DateTime', $this->target->getUpdatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->target->getUpdatedAt());
     }
 }

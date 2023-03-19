@@ -10,30 +10,25 @@ use Oro\Component\Testing\ReflectionUtil;
 class StaticSegmentReaderTest extends \PHPUnit\Framework\TestCase
 {
     /** @var \PHPUnit\Framework\MockObject\MockObject */
-    protected $contaxtRegistry;
+    private $contextRegistry;
 
     /** @var \PHPUnit\Framework\MockObject\MockObject */
-    protected $doctrineHelper;
+    private $doctrineHelper;
 
     /** @var StaticSegmentReader */
-    protected $reader;
+    private $reader;
 
     protected function setUp(): void
     {
-        $this->contaxtRegistry = $this->getMockBuilder(ContextRegistry::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->contextRegistry = $this->createMock(ContextRegistry::class);
+        $this->doctrineHelper = $this->createMock(DoctrineHelper::class);
 
-        $this->doctrineHelper = $this->getMockBuilder(DoctrineHelper::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->reader = new StaticSegmentReader($this->contaxtRegistry, $this->doctrineHelper, 'Acme\Demo\TestClass');
+        $this->reader = new StaticSegmentReader($this->contextRegistry, $this->doctrineHelper, 'Acme\Demo\TestClass');
     }
 
     public function testCloseOnNonSelfGeneratedIterator()
     {
-        $iterator = $this->createMock('\Iterator');
+        $iterator = $this->createMock(\Iterator::class);
         $this->reader->setSourceIterator($iterator);
 
         $this->reader->close();
@@ -45,7 +40,7 @@ class StaticSegmentReaderTest extends \PHPUnit\Framework\TestCase
     {
         ReflectionUtil::setPropertyValue($this->reader, 'isSelfCreatedIterator', true);
 
-        $iterator = $this->createMock('\Iterator');
+        $iterator = $this->createMock(\Iterator::class);
         $this->reader->setSourceIterator($iterator);
 
         $this->reader->close();

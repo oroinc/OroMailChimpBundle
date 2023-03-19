@@ -7,127 +7,118 @@ use Oro\Bundle\MailChimpBundle\Model\MergeVar\MergeVarInterface;
 
 class MergeVarFieldsTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @param MergeVarInterface[] $mergeVars
-     * @return MergeVarFields
-     */
-    protected function createMergeVarFields(array $mergeVars)
-    {
-        return new MergeVarFields($mergeVars);
-    }
-
     public function testGetEmailFieldNotFound()
     {
-        $field = $this->createMock('Oro\\Bundle\\MailChimpBundle\\Model\\MergeVar\\MergeVarInterface');
+        $field = $this->createMock(MergeVarInterface::class);
         $field->expects($this->once())
             ->method('isEmail')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
-        $mergeVarFields = $this->createMergeVarFields([$field]);
+        $mergeVarFields = new MergeVarFields([$field]);
 
         $this->assertNull($mergeVarFields->getEmail());
     }
 
     public function testGetEmailFieldFound()
     {
-        $field = $this->createMock('Oro\\Bundle\\MailChimpBundle\\Model\\MergeVar\\MergeVarInterface');
+        $field = $this->createMock(MergeVarInterface::class);
         $field->expects($this->once())
             ->method('isEmail')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
-        $foundField = $this->createMock('Oro\\Bundle\\MailChimpBundle\\Model\\MergeVar\\MergeVarInterface');
+        $foundField = $this->createMock(MergeVarInterface::class);
         $foundField->expects($this->once())
             ->method('isEmail')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
-        $mergeVarFields = $this->createMergeVarFields([$field, $foundField]);
+        $mergeVarFields = new MergeVarFields([$field, $foundField]);
 
         $this->assertSame($foundField, $mergeVarFields->getEmail());
     }
 
     public function testGetPhoneFieldNotFound()
     {
-        $field = $this->createMock('Oro\\Bundle\\MailChimpBundle\\Model\\MergeVar\\MergeVarInterface');
+        $field = $this->createMock(MergeVarInterface::class);
         $field->expects($this->once())
             ->method('isPhone')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
-        $mergeVarFields = $this->createMergeVarFields([$field]);
+        $mergeVarFields = new MergeVarFields([$field]);
 
         $this->assertNull($mergeVarFields->getPhone());
     }
 
     public function testGetPhoneFieldFound()
     {
-        $field = $this->createMock('Oro\\Bundle\\MailChimpBundle\\Model\\MergeVar\\MergeVarInterface');
+        $field = $this->createMock(MergeVarInterface::class);
         $field->expects($this->once())
             ->method('isPhone')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
-        $foundField = $this->createMock('Oro\\Bundle\\MailChimpBundle\\Model\\MergeVar\\MergeVarInterface');
+        $foundField = $this->createMock(MergeVarInterface::class);
         $foundField->expects($this->once())
             ->method('isPhone')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
-        $mergeVarFields = $this->createMergeVarFields([$field, $foundField]);
+        $mergeVarFields = new MergeVarFields([$field, $foundField]);
 
         $this->assertSame($foundField, $mergeVarFields->getPhone());
     }
 
     public function testGetFirstNameFieldNotFound()
     {
-        $field = $this->createMock('Oro\\Bundle\\MailChimpBundle\\Model\\MergeVar\\MergeVarInterface');
+        $field = $this->createMock(MergeVarInterface::class);
         $field->expects($this->once())
             ->method('isFirstName')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
-        $mergeVarFields = $this->createMergeVarFields([$field]);
+        $mergeVarFields = new MergeVarFields([$field]);
 
         $this->assertNull($mergeVarFields->getFirstName());
     }
 
     public function testGetFirstNameFieldFound()
     {
-        $field = $this->createMock('Oro\\Bundle\\MailChimpBundle\\Model\\MergeVar\\MergeVarInterface');
+        $field = $this->createMock(MergeVarInterface::class);
         $field->expects($this->once())
             ->method('isFirstName')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
-        $foundField = $this->createMock('Oro\\Bundle\\MailChimpBundle\\Model\\MergeVar\\MergeVarInterface');
+        $foundField = $this->createMock(MergeVarInterface::class);
         $foundField->expects($this->once())
             ->method('isFirstName')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
-        $mergeVarFields = $this->createMergeVarFields([$field, $foundField]);
+        $mergeVarFields = new MergeVarFields([$field, $foundField]);
 
         $this->assertSame($foundField, $mergeVarFields->getFirstName());
     }
 
     public function testGetLastNameFieldNotFound()
     {
-        $field = $this->createMock('Oro\\Bundle\\MailChimpBundle\\Model\\MergeVar\\MergeVarInterface');
+        $field = $this->createMock(MergeVarInterface::class);
         $field->expects($this->once())
             ->method('isLastName')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
-        $mergeVarFields = $this->createMergeVarFields([$field]);
+        $mergeVarFields = new MergeVarFields([$field]);
 
         $this->assertNull($mergeVarFields->getLastName());
     }
 
     public function testGetLastNameFieldFound()
     {
-        $field = $this->createMock('Oro\\Bundle\\MailChimpBundle\\Model\\MergeVar\\MergeVarInterface');
+        $field = $this->createMock(MergeVarInterface::class);
         $field->expects($this->once())
             ->method('isLastName')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
-        $foundField = $this->createMock('Oro\\Bundle\\MailChimpBundle\\Model\\MergeVar\\MergeVarInterface');
+        $foundField = $this->createMock(MergeVarInterface::class);
         $foundField->expects($this->once())
             ->method('isLastName')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
-        $mergeVarFields = $this->createMergeVarFields([$field, $foundField]);
+        $mergeVarFields = new MergeVarFields([$field, $foundField]);
 
         $this->assertSame($foundField, $mergeVarFields->getLastName());
     }

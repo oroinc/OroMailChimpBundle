@@ -19,9 +19,7 @@ class MemberSyncWriterTest extends WebTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->initClient();
-
         $this->loadFixtures([LoadStaticSegmentData::class]);
     }
 

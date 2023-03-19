@@ -12,7 +12,7 @@ class MemberIteratorTest extends \PHPUnit\Framework\TestCase
     private const TEST_LIST_ID = 42;
     private const TEST_LIST_ORIGIN_ID = 100;
 
-    /** @var \PHPUnit\Framework\MockObject\MockObject */
+    /** @var MailChimpClient|\PHPUnit\Framework\MockObject\MockObject */
     private $client;
 
     protected function setUp(): void
@@ -20,11 +20,10 @@ class MemberIteratorTest extends \PHPUnit\Framework\TestCase
         $this->client = $this->createMock(MailChimpClient::class);
     }
 
-    /**
-     * @return MemberIterator|\PHPUnit\Framework\MockObject\MockObject
-     */
-    private function createIterator(\Iterator $subscriberLists, array $parameters)
-    {
+    private function createIterator(
+        \Iterator $subscriberLists,
+        array $parameters
+    ): MemberIterator|\PHPUnit\Framework\MockObject\MockObject {
         return $this->getMockBuilder(MemberIterator::class)
             ->onlyMethods(['createExportIterator'])
             ->setConstructorArgs([$subscriberLists, $this->client, $parameters])

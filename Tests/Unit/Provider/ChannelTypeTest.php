@@ -2,12 +2,13 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Provider;
 
+use Oro\Bundle\IntegrationBundle\Provider\ChannelInterface;
+use Oro\Bundle\IntegrationBundle\Provider\IconAwareIntegrationInterface;
 use Oro\Bundle\MailChimpBundle\Provider\ChannelType;
 
 class ChannelTypeTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var ChannelType */
-    protected $channel;
+    private ChannelType $channel;
 
     protected function setUp(): void
     {
@@ -16,13 +17,13 @@ class ChannelTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testGetLabel()
     {
-        $this->assertInstanceOf('Oro\Bundle\IntegrationBundle\Provider\ChannelInterface', $this->channel);
+        $this->assertInstanceOf(ChannelInterface::class, $this->channel);
         $this->assertEquals('oro.mailchimp.channel_type.label', $this->channel->getLabel());
     }
 
     public function testGetIcon()
     {
-        $this->assertInstanceOf('Oro\Bundle\IntegrationBundle\Provider\IconAwareIntegrationInterface', $this->channel);
+        $this->assertInstanceOf(IconAwareIntegrationInterface::class, $this->channel);
         $this->assertEquals('bundles/oromailchimp/img/freddie.ico', $this->channel->getIcon());
     }
 }

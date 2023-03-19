@@ -15,39 +15,25 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
  */
 class ExportMailChimpTest extends WebTestCase
 {
-    /**
-     * @var ReverseSyncProcessor
-     */
-    protected $reverseSyncProcessor;
+    private ReverseSyncProcessor $reverseSyncProcessor;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->initClient();
-
         $this->loadFixtures([
-            LoadB2bChannelData::class, // add new chanel what uses B2bCustomer entity.
+            LoadB2bChannelData::class, // add new channel what uses B2bCustomer entity.
             LoadChannelData::class,
             LoadStaticSegmentB2bCustomerData::class
         ]);
 
-        $this
-            ->getContainer()
-            ->set(
-                'oro_mailchimp.tests.transport.integration_transport',
-                $this->createMock(MailChimpTransport::class)
-            );
+        $this->getContainer()->set(
+            'oro_mailchimp.tests.transport.integration_transport',
+            $this->createMock(MailChimpTransport::class)
+        );
 
-        /**
-         * @var ReverseSyncProcessor
-         */
-        $this->reverseSyncProcessor = $this
-            ->getContainer()
-            ->get('oro_integration.reverse_sync.processor');
+        /** @var ReverseSyncProcessor */
+        $this->reverseSyncProcessor = $this->getContainer()->get('oro_integration.reverse_sync.processor');
     }
 
     public function testExportSegmentsSeveralTimesWithinOneRequest()

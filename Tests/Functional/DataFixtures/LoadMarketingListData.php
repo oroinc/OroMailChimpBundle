@@ -11,10 +11,7 @@ use Oro\Bundle\TestFrameworkCRMBundle\Entity\TestCustomerWithContactInformation;
 
 class LoadMarketingListData extends AbstractMailChimpFixture implements DependentFixtureInterface
 {
-    /**
-     * @var array Channels configuration
-     */
-    protected $mlData = [
+    protected array $mlData = [
         [
             'type' => 'dynamic',
             'name' => 'Test ML',
@@ -34,9 +31,9 @@ class LoadMarketingListData extends AbstractMailChimpFixture implements Dependen
     ];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         foreach ($this->mlData as $data) {
             $entity = new MarketingList();
@@ -54,9 +51,9 @@ class LoadMarketingListData extends AbstractMailChimpFixture implements Dependen
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadSegmentData::class,

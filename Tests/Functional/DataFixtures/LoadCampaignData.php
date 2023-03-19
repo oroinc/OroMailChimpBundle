@@ -13,10 +13,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class LoadCampaignData extends AbstractMailChimpFixture implements DependentFixtureInterface
 {
-    /**
-     * @var array Channels configuration
-     */
-    protected $data = [
+    private array $data = [
         [
             'originId' => 'campaign1',
             'webId' => '111',
@@ -81,9 +78,9 @@ class LoadCampaignData extends AbstractMailChimpFixture implements DependentFixt
     ];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $organization = $manager->getRepository(Organization::class)
             ->getFirst();
@@ -118,12 +115,10 @@ class LoadCampaignData extends AbstractMailChimpFixture implements DependentFixt
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function getDependencies()
+    public function getDependencies(): array
     {
-        return [
-            __NAMESPACE__ . '\LoadStaticSegmentData',
-        ];
+        return [LoadStaticSegmentData::class];
     }
 }

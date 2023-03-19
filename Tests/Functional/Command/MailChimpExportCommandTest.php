@@ -19,7 +19,6 @@ class MailChimpExportCommandTest extends WebTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->initClient();
         $this->loadFixtures([LoadStaticSegmentData::class]);
     }
@@ -31,8 +30,8 @@ class MailChimpExportCommandTest extends WebTestCase
 
         $result = self::runCommand('oro:cron:mailchimp:export', ['--segments=' . $segment->getId()]);
 
-        static::assertStringContainsString('Send export MailChimp message for integration:', $result);
-        static::assertStringContainsString(
+        self::assertStringContainsString('Send export MailChimp message for integration:', $result);
+        self::assertStringContainsString(
             'Integration "' . $segment->getChannel()->getId() . '" and segments "' . $segment->getId() . '"',
             $result
         );

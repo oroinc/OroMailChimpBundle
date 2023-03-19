@@ -3,15 +3,16 @@
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Entity;
 
 use Oro\Bundle\EntityExtendBundle\PropertyAccess;
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Entity\ExtendedMergeVar;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
+use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
+use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class SegmentTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var StaticSegment
-     */
-    protected $entity;
+    private StaticSegment $entity;
 
     protected function setUp(): void
     {
@@ -25,11 +26,8 @@ class SegmentTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider settersAndGettersDataProvider
-     * @param string $property
-     * @param mixed $value
-     * @param mixed $default
      */
-    public function testSettersAndGetters($property, $value, $default = null)
+    public function testSettersAndGetters(string $property, mixed $value, mixed $default = null)
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
@@ -46,19 +44,16 @@ class SegmentTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function settersAndGettersDataProvider()
+    public function settersAndGettersDataProvider(): array
     {
         return [
             ['name', 'segment'],
             ['originId', 123456789],
-            ['channel', $this->createMock('Oro\\Bundle\\IntegrationBundle\\Entity\\Channel')],
-            ['marketingList', $this->createMock('Oro\\Bundle\\MarketingListBundle\\Entity\\MarketingList')],
-            ['subscribersList', $this->createMock('Oro\\Bundle\\MailChimpBundle\\Entity\\SubscribersList')],
-            ['subscribersList', $this->createMock('Oro\\Bundle\\MailChimpBundle\\Entity\\SubscribersList')],
-            ['owner', $this->createMock('Oro\\Bundle\\OrganizationBundle\\Entity\\Organization')],
+            ['channel', $this->createMock(Channel::class)],
+            ['marketingList', $this->createMock(MarketingList::class)],
+            ['subscribersList', $this->createMock(SubscribersList::class)],
+            ['subscribersList', $this->createMock(SubscribersList::class)],
+            ['owner', $this->createMock(Organization::class)],
             ['syncStatus', 1],
             ['lastSynced', new \DateTime()],
             ['remoteRemove', true, false],
@@ -74,8 +69,8 @@ class SegmentTest extends \PHPUnit\Framework\TestCase
 
         $this->entity->prePersist();
 
-        $this->assertInstanceOf('\DateTime', $this->entity->getCreatedAt());
-        $this->assertInstanceOf('\DateTime', $this->entity->getUpdatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->entity->getCreatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->entity->getUpdatedAt());
 
         $expectedCreated = $this->entity->getCreatedAt();
         $expectedUpdated = $this->entity->getUpdatedAt();
@@ -90,7 +85,7 @@ class SegmentTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertNull($this->entity->getUpdatedAt());
         $this->entity->preUpdate();
-        $this->assertInstanceOf('\DateTime', $this->entity->getUpdatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->entity->getUpdatedAt());
     }
 
     public function testGetExtendedMergeVars()

@@ -18,75 +18,61 @@ use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\MemberIterator;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClient;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClientFactory;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpTransport;
-use PHPUnit\Framework\MockObject\MockObject;
+use Oro\Component\Testing\ReflectionUtil;
 use Psr\Log\NullLogger;
 
 class MailChimpTransportTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var MockObject|MailChimpClientFactory */
-    protected $clientFactory;
+    /** @var MailChimpClientFactory|\PHPUnit\Framework\MockObject\MockObject */
+    private $clientFactory;
 
-    /** @var MockObject|ManagerRegistry */
-    protected $managerRegistry;
+    /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
+    private $managerRegistry;
 
     /** @var MailChimpTransport */
-    protected $transport;
+    private $transport;
 
     protected function setUp(): void
     {
-        $this->clientFactory = $this->getMockBuilder(MailChimpClientFactory::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
+        $this->clientFactory = $this->createMock(MailChimpClientFactory::class);
         $this->managerRegistry = $this->createMock(ManagerRegistry::class);
 
-        $this->transport = new class($this->clientFactory, $this->managerRegistry) extends MailChimpTransport {
-            public function xgetClient(): MailChimpClient
-            {
-                return $this->client;
-            }
-        };
+        $this->transport = new MailChimpTransport($this->clientFactory, $this->managerRegistry);
         $this->transport->setLogger(new NullLogger());
     }
 
     public function testGetSettingsEntityFQCN()
     {
-        static::assertInstanceOf($this->transport->getSettingsEntityFQCN(), new MailChimpTransportEntity());
+        self::assertInstanceOf($this->transport->getSettingsEntityFQCN(), new MailChimpTransportEntity());
     }
 
     public function testGetLabel()
     {
-        static::assertEquals('oro.mailchimp.integration_transport.label', $this->transport->getLabel());
+        self::assertEquals('oro.mailchimp.integration_transport.label', $this->transport->getLabel());
     }
 
     public function testGetSettingsFormType()
     {
-        static::assertEquals(
-            IntegrationSettingsType::class,
-            $this->transport->getSettingsFormType()
-        );
+        self::assertEquals(IntegrationSettingsType::class, $this->transport->getSettingsFormType());
     }
 
     public function testInitWorks()
     {
         $client = $this->initTransport();
 
-        static::assertEquals($client, $this->transport->xgetClient());
+        self::assertEquals($client, ReflectionUtil::getPropertyValue($this->transport, 'client'));
     }
 
-    /**
-     * @return MockObject
-     */
-    protected function initTransport()
+    private function initTransport(): \PHPUnit\Framework\MockObject\MockObject
     {
-        $apiKey = md5(rand());
+        $apiKey = md5('test_api_key');
 
         $transportEntity = new MailChimpTransportEntity();
         $transportEntity->setApiKey($apiKey);
 
-        $client = $this->getMockBuilder(MailChimpClient::class)->disableOriginalConstructor()->getMock();
+        $client = $this->createMock(MailChimpClient::class);
 
-        $this->clientFactory->expects(static::once())
+        $this->clientFactory->expects(self::once())
             ->method('create')
             ->with($apiKey)
             ->willReturn($client);
@@ -103,69 +89,51 @@ class MailChimpTransportTest extends \PHPUnit\Framework\TestCase
 
         $transportEntity = new MailChimpTransportEntity();
 
-        $this->clientFactory->expects(static::never())->method(static::anything());
+        $this->clientFactory->expects(self::never())
+            ->method(self::anything());
         $this->transport->init($transportEntity);
     }
 
     /**
      * @dataProvider getCampaignsDataProvider
-     *
-     * @param string|null $status
-     * @param bool|null $usesSegment
-     * @param array $expectedFilters
      */
-    public function testGetCampaigns($status, $usesSegment, array $expectedFilters)
+    public function testGetCampaigns(?string $status, ?bool $usesSegment, array $expectedFilters)
     {
-        $staticSegmentRepository = $this->getMockBuilder(StaticSegmentRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $staticSegmentRepository = $this->createMock(StaticSegmentRepository::class);
 
-        $this->managerRegistry
-            ->expects(static::once())
+        $this->managerRegistry->expects(self::once())
             ->method('getRepository')
             ->willReturn($staticSegmentRepository);
 
-        $staticSegmentRepository
-            ->expects(static::once())
+        $staticSegmentRepository->expects(self::once())
             ->method('getStaticSegments')
-            ->willReturn([$this->getStaticSegmentMock()]);
+            ->willReturn([$this->getStaticSegment()]);
 
-        /** @var Channel $channel */
-        $channel = $this->getMockBuilder(Channel::class)->disableOriginalConstructor()->getMock();
+        $channel = $this->createMock(Channel::class);
 
         $this->initTransport();
         $result = $this->transport->getCampaigns($channel, $status, $usesSegment);
 
-        static::assertInstanceOf(CampaignIterator::class, $result);
-        static::assertSame($expectedFilters, $result->getFilters());
+        self::assertInstanceOf(CampaignIterator::class, $result);
+        self::assertSame($expectedFilters, $result->getFilters());
     }
 
-    /**
-     * @return MockObject
-     */
-    protected function getStaticSegmentMock()
+    private function getStaticSegment(): StaticSegment
     {
-        $staticSegmentMock = $this->getMockBuilder(StaticSegment::class)->disableOriginalConstructor()->getMock();
-
-        $subscribersList = $this->getMockBuilder(SubscribersList::class)->disableOriginalConstructor()->getMock();
-
-        $staticSegmentMock
-            ->expects(static::once())
-            ->method('getSubscribersList')
-            ->willReturn($subscribersList);
-
-        $subscribersList
-            ->expects(static::once())
+        $subscribersList = $this->createMock(SubscribersList::class);
+        $subscribersList->expects(self::once())
             ->method('getOriginId')
             ->willReturn('originId');
 
-        return $staticSegmentMock;
+        $staticSegment = $this->createMock(StaticSegment::class);
+        $staticSegment->expects(self::once())
+            ->method('getSubscribersList')
+            ->willReturn($subscribersList);
+
+        return $staticSegment;
     }
 
-    /**
-     * @return array
-     */
-    public function getCampaignsDataProvider()
+    public function getCampaignsDataProvider(): array
     {
         return [
             [
@@ -209,33 +177,30 @@ class MailChimpTransportTest extends \PHPUnit\Framework\TestCase
 
     public function testGetMembersToSync()
     {
-        $subscribersListRepository = $this->getMockBuilder(SubscribersListRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $subscribersListRepository = $this->createMock(SubscribersListRepository::class);
 
-        $this->managerRegistry->expects(static::once())
+        $this->managerRegistry->expects(self::once())
             ->method('getRepository')
             ->willReturn($subscribersListRepository);
 
         $subscribersList = $this->createMock(SubscribersList::class);
         $subscribersLists = new \ArrayIterator([$subscribersList]);
 
-        $subscribersListRepository->expects(static::once())
+        $subscribersListRepository->expects(self::once())
             ->method('getUsedSubscribersListIterator')
             ->willReturn($subscribersLists);
 
         $since = new \DateTime('2015-02-15 21:00:01', new \DateTimeZone('Europe/Kiev'));
 
-        /** @var Channel $channel */
-        $channel = $this->getMockBuilder(Channel::class)->disableOriginalConstructor()->getMock();
+        $channel = $this->createMock(Channel::class);
 
         $client = $this->initTransport();
         $result = $this->transport->getMembersToSync($channel, $since);
 
-        static::assertInstanceOf(MemberIterator::class, $result);
-        static::assertSame($client, $result->getClient());
-        static::assertSame($subscribersLists, $result->getMainIterator());
-        static::assertEquals(
+        self::assertInstanceOf(MemberIterator::class, $result);
+        self::assertSame($client, $result->getClient());
+        self::assertSame($subscribersLists, $result->getMainIterator());
+        self::assertEquals(
             [
                 'status' => [Member::STATUS_SUBSCRIBED, Member::STATUS_UNSUBSCRIBED, Member::STATUS_CLEANED],
                 'since' => '2015-02-15 19:00:00',

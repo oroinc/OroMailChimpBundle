@@ -11,10 +11,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 
 class LoadContactData extends AbstractFixture
 {
-    /**
-     * @var array
-     */
-    protected $contactsData = [
+    private array $contactsData = [
         [
             'firstName' => "Daniel\tst",
             'lastName'  => 'Case <a href="https://www.goo.com/search?q=json&oq=json&aqs=chrome..69">Дж.[s`ón]</a>',
@@ -28,9 +25,9 @@ class LoadContactData extends AbstractFixture
     ];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $user = $manager->getRepository(User::class)->findOneByUsername('admin');
         $organization = $manager->getRepository(Organization::class)->getFirst();

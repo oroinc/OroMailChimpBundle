@@ -7,17 +7,13 @@ use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\MmbrExtdMergeVarIterator;
 use Oro\Bundle\MarketingListBundle\Provider\MarketingListProvider;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProviderInterface;
-use Oro\Component\Testing\Unit\EntityTrait;
+use Oro\Component\Testing\ReflectionUtil;
 
 class MmbrExtdMergeVarIteratorTest extends \PHPUnit\Framework\TestCase
 {
-    use EntityTrait;
-
-    /**
-     * @return MmbrExtdMergeVarIterator|\PHPUnit\Framework\MockObject\MockObject
-     */
-    private function createIterator(\Iterator $mainIterator)
-    {
+    private function createIterator(
+        \Iterator $mainIterator
+    ): MmbrExtdMergeVarIterator|\PHPUnit\Framework\MockObject\MockObject {
         $iterator = $this->getMockBuilder(MmbrExtdMergeVarIterator::class)
             ->onlyMethods(['createBufferedIterator'])
             ->setConstructorArgs([
@@ -57,15 +53,14 @@ class MmbrExtdMergeVarIteratorTest extends \PHPUnit\Framework\TestCase
         $subscribersListId = 1;
         $staticSegmentId = 1;
 
-        $subscribersList = $this->getEntity(SubscribersList::class, ['id' => $subscribersListId]);
-        $staticSegment   = $this->getEntity(
-            StaticSegment::class,
-            [
-                'id'=> $staticSegmentId,
-                'subscribersList' => $subscribersList
-            ]
-        );
-        $mainIterator   = new \ArrayIterator([$staticSegment]);
+        $subscribersList = new SubscribersList();
+        ReflectionUtil::setId($subscribersList, $subscribersListId);
+
+        $staticSegment = new StaticSegment();
+        ReflectionUtil::setId($staticSegment, $staticSegmentId);
+        $staticSegment->setSubscribersList($subscribersList);
+
+        $mainIterator = new \ArrayIterator([$staticSegment]);
 
         return [
             'without array' => [

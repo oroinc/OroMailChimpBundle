@@ -7,10 +7,10 @@ use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClient;
 
 class TemplateIteratorTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var \PHPUnit\Framework\MockObject\MockObject|MailChimpClient */
+    /** @var MailChimpClient|\PHPUnit\Framework\MockObject\MockObject */
     private $client;
 
-    /** @var \Iterator */
+    /** @var TemplateIterator */
     private $iterator;
 
     protected function setUp(): void

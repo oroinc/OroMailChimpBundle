@@ -9,10 +9,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class LoadMemberData extends AbstractMailChimpFixture implements DependentFixtureInterface
 {
-    /**
-     * @var array Channels configuration
-     */
-    protected $data = [
+    protected array $data = [
         [
             'originId' => 210000000,
             'email' => 'member1@example.com',
@@ -43,9 +40,9 @@ class LoadMemberData extends AbstractMailChimpFixture implements DependentFixtur
     ];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $organization = $manager->getRepository(Organization::class)
             ->getFirst();
@@ -63,12 +60,10 @@ class LoadMemberData extends AbstractMailChimpFixture implements DependentFixtur
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function getDependencies()
+    public function getDependencies(): array
     {
-        return [
-            __NAMESPACE__ . '\LoadCampaignData',
-        ];
+        return [LoadCampaignData::class];
     }
 }

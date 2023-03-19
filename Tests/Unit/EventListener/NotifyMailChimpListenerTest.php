@@ -10,61 +10,40 @@ use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\EventListener\NotifyMailChimpListener;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Event\UpdateMarketingListEvent;
-use Oro\Component\Testing\Unit\EntityTrait;
+use Oro\Component\Testing\ReflectionUtil;
 
 class NotifyMailChimpListenerTest extends \PHPUnit\Framework\TestCase
 {
-    use EntityTrait;
-
-    /**
-     * @var NotifyMailChimpListener
-     */
-    private $listener;
-
-    /**
-     * @var DoctrineHelper|\PHPUnit\Framework\MockObject\MockObject
-     */
-    private $doctrineHelper;
-
-    /**
-     * @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    private $entityManager;
-
-    /**
-     * @var EntityRepository|\PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var EntityRepository|\PHPUnit\Framework\MockObject\MockObject */
     private $repository;
+
+    /** @var NotifyMailChimpListener */
+    private $listener;
 
     protected function setUp(): void
     {
-        $this->repository = $this->getMockBuilder(EntityRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->repository = $this->createMock(EntityRepository::class);
 
-        $this->entityManager = $this->getMockBuilder(EntityManagerInterface::class)
-            ->getMock();
-        $this->entityManager->expects($this->any())
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager->expects($this->any())
             ->method('getRepository')
             ->willReturn($this->repository);
 
-        $this->doctrineHelper = $this->getMockBuilder(DoctrineHelper::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->doctrineHelper->expects($this->any())
+        $doctrineHelper = $this->createMock(DoctrineHelper::class);
+        $doctrineHelper->expects($this->any())
             ->method('getEntityManager')
-            ->willReturn($this->entityManager);
+            ->willReturn($entityManager);
 
-        $this->listener = new NotifyMailChimpListener($this->doctrineHelper);
+        $this->listener = new NotifyMailChimpListener($doctrineHelper);
     }
 
     public function testUpdateStaticSegmentSyncStatus()
     {
-        /** @var MarketingList $marketingList */
-        $marketingList = $this->getEntity(MarketingList::class, ['id' => 1]);
+        $marketingList = new MarketingList();
+        ReflectionUtil::setId($marketingList, 1);
 
-        /** @var StaticSegment $staticSegment */
-        $staticSegment = $this->getEntity(StaticSegment::class, ['id' => 1]);
+        $staticSegment = new StaticSegment();
+        ReflectionUtil::setId($marketingList, 1);
         $staticSegment->setSegmentMembers(new ArrayCollection());
 
         $event = new UpdateMarketingListEvent();

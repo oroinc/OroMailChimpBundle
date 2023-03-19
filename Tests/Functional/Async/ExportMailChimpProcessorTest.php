@@ -22,12 +22,8 @@ class ExportMailChimpProcessorTest extends WebTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->initClient();
-
-        $this->loadFixtures([
-            LoadChannelData::class,
-        ]);
+        $this->loadFixtures([LoadChannelData::class]);
     }
 
     public function testCouldBeGetFromContainerAsService(): void

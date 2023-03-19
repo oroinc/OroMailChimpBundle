@@ -9,7 +9,7 @@ class ListIteratorTest extends \PHPUnit\Framework\TestCase
 {
     private const TEST_BATCH_SIZE = 2;
 
-    /** @var \PHPUnit\Framework\MockObject\MockObject */
+    /** @var MailChimpClient|\PHPUnit\Framework\MockObject\MockObject */
     private $client;
 
     /** @var ListIterator */

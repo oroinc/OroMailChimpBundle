@@ -4,14 +4,12 @@ namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Entity;
 
 use Oro\Bundle\EntityExtendBundle\PropertyAccess;
 use Oro\Bundle\MailChimpBundle\Entity\MemberExtendedMergeVar;
+use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Component\Testing\ReflectionUtil;
 
 class MemberExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var MemberExtendedMergeVar
-     */
-    protected $entity;
+    private MemberExtendedMergeVar $entity;
 
     protected function setUp(): void
     {
@@ -40,11 +38,8 @@ class MemberExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider settersAndGettersDataProvider
-     * @param string $property
-     * @param mixed $value
-     * @param mixed $default
      */
-    public function testSettersAndGetters($property, $value, $default = null)
+    public function testSettersAndGetters(string $property, mixed $value, mixed $default = null)
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
@@ -61,13 +56,10 @@ class MemberExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function settersAndGettersDataProvider()
+    public function settersAndGettersDataProvider(): array
     {
         return [
-            ['staticSegment', $this->createMock('Oro\\Bundle\\MailChimpBundle\\Entity\\StaticSegment')],
+            ['staticSegment', $this->createMock(StaticSegment::class)],
             ['state', MemberExtendedMergeVar::STATE_SYNCED, MemberExtendedMergeVar::STATE_ADD],
             ['merge_var_values', ['var' => 'value'], []],
             ['merge_var_values_context', ['context'], []]
@@ -88,11 +80,8 @@ class MemberExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider invalidMergeVarNamesAndValues
-     *
-     * @param string $name
-     * @param string $value
      */
-    public function testAddMergeVarValueWhenNameOrValueIsInvalid($name, $value)
+    public function testAddMergeVarValueWhenNameOrValueIsInvalid(string|array $name, string|array $value)
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Merge name and value should be not empty strings.');
@@ -100,10 +89,7 @@ class MemberExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
         $this->entity->addMergeVarValue($name, $value);
     }
 
-    /**
-     * @return array
-     */
-    public function invalidMergeVarNamesAndValues()
+    public function invalidMergeVarNamesAndValues(): array
     {
         return [
             ['', ''],
@@ -116,17 +102,12 @@ class MemberExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider validMergeVarNamesAndValues
-     *
-     * @param array $initialMergeVarValues
-     * @param array $newMergeVarValues
-     * @param string $initialState
-     * @param string $expectedState
      */
     public function testAddMergeVarValue(
         array $initialMergeVarValues,
         array $newMergeVarValues,
-        $initialState,
-        $expectedState
+        string $initialState,
+        string $expectedState
     ) {
         foreach ($initialMergeVarValues as $name => $value) {
             $this->entity->addMergeVarValue($name, $value);
@@ -141,10 +122,7 @@ class MemberExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedState, $this->entity->getState());
     }
 
-    /**
-     * @return array
-     */
-    public function validMergeVarNamesAndValues()
+    public function validMergeVarNamesAndValues(): array
     {
         return [
             [

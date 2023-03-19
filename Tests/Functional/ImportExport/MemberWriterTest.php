@@ -13,25 +13,17 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 class MemberWriterTest extends WebTestCase
 {
-    /**
-     * @var MailChimpTransport|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $transport;
+    /** @var MailChimpTransport|\PHPUnit\Framework\MockObject\MockObject */
+    private $transport;
 
-    /**
-     * @var StepExecution|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $stepExecution;
+    /** @var StepExecution|\PHPUnit\Framework\MockObject\MockObject */
+    private $stepExecution;
 
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->initClient();
-
-        $this->loadFixtures([
-            LoadMemberData::class
-        ]);
+        $this->loadFixtures([LoadMemberData::class]);
 
         $this->transport = $this->createMock(MailChimpTransport::class);
         $this->stepExecution = $this->createMock(StepExecution::class);

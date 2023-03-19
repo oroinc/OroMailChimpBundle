@@ -8,10 +8,7 @@ use Oro\Bundle\MailChimpBundle\Entity\MarketingListEmail;
 
 class LoadMarketingListEmailData extends AbstractMailChimpFixture implements DependentFixtureInterface
 {
-    /**
-     * @var array Segment configuration
-     */
-    protected $segmentData = [
+    private array $segmentData = [
         [
             'marketingList' => 'mailchimp:ml_one',
             'email' => 'test@example.com',
@@ -21,9 +18,9 @@ class LoadMarketingListEmailData extends AbstractMailChimpFixture implements Dep
     ];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         foreach ($this->segmentData as $data) {
             $entity = new MarketingListEmail();
@@ -36,9 +33,9 @@ class LoadMarketingListEmailData extends AbstractMailChimpFixture implements Dep
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [LoadStaticSegmentData::class];
     }

@@ -6,10 +6,7 @@ use Oro\Bundle\SalesBundle\Entity\B2bCustomer;
 
 class LoadSegmentB2bCustomerData extends LoadSegmentData
 {
-    /**
-     * @var array Channels configuration
-     */
-    protected $data = [
+    protected array $data = [
         [
             'type' => 'dynamic',
             'name' => 'Test ML B2b customer Segment',

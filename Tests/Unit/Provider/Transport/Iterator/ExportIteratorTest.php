@@ -105,10 +105,11 @@ class ExportIteratorTest extends TestCase
 
     public function iteratorDataProvider(): array
     {
-        $streamInterfaceMock = $this->createMock(StreamInterface::class);
-        $streamInterfaceMock
+        $stream = $this->createMock(StreamInterface::class);
+        $stream->expects($this->any())
             ->method('eof')
             ->willReturn(true);
+
         return [
             'with content' => [
                 'methodName' => 'list',
@@ -166,7 +167,7 @@ class ExportIteratorTest extends TestCase
             'empty' => [
                 'methodName' => 'list',
                 'parameters' => ['id' => 123456789],
-                'stream' => $streamInterfaceMock,
+                'stream' => $stream,
                 'expected' => [],
             ]
         ];

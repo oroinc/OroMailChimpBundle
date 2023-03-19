@@ -34,7 +34,7 @@ class EmailColumnValidatorTest extends \PHPUnit\Framework\TestCase
 
     public function testInitialize()
     {
-        $context = $this->getMockForAbstractClass(ExecutionContextInterface::class);
+        $context = $this->createMock(ExecutionContextInterface::class);
 
         $this->fieldInformationValidator->expects($this->once())
             ->method('initialize')

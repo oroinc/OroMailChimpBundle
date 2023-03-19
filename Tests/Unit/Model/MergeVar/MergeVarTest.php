@@ -11,7 +11,7 @@ class MergeVarTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetName(array $data)
     {
-        $mergeVar = $this->createMergeVarObject($data);
+        $mergeVar = new MergeVar($data);
         $this->assertEquals($data['name'], $mergeVar->getName());
     }
 
@@ -20,7 +20,7 @@ class MergeVarTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetFieldType(array $data)
     {
-        $mergeVar = $this->createMergeVarObject($data);
+        $mergeVar = new MergeVar($data);
         $this->assertEquals($data['field_type'], $mergeVar->getFieldType());
     }
 
@@ -29,7 +29,7 @@ class MergeVarTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetTag(array $data)
     {
-        $mergeVar = $this->createMergeVarObject($data);
+        $mergeVar = new MergeVar($data);
         $this->assertEquals($data['tag'], $mergeVar->getTag());
     }
 
@@ -38,7 +38,7 @@ class MergeVarTest extends \PHPUnit\Framework\TestCase
      */
     public function testIsFirstName(array $data)
     {
-        $mergeVar = $this->createMergeVarObject($data);
+        $mergeVar = new MergeVar($data);
         $this->assertEquals($data['tag'] === 'FNAME', $mergeVar->isFirstName());
     }
 
@@ -47,7 +47,7 @@ class MergeVarTest extends \PHPUnit\Framework\TestCase
      */
     public function testIsLastName(array $data)
     {
-        $mergeVar = $this->createMergeVarObject($data);
+        $mergeVar = new MergeVar($data);
         $this->assertEquals($data['tag'] === 'LNAME', $mergeVar->isLastName());
     }
 
@@ -56,7 +56,7 @@ class MergeVarTest extends \PHPUnit\Framework\TestCase
      */
     public function testIsEmail(array $data)
     {
-        $mergeVar = $this->createMergeVarObject($data);
+        $mergeVar = new MergeVar($data);
         $this->assertEquals($data['tag'] === 'EMAIL', $mergeVar->isEmail());
     }
 
@@ -65,14 +65,11 @@ class MergeVarTest extends \PHPUnit\Framework\TestCase
      */
     public function testIsPhone(array $data)
     {
-        $mergeVar = $this->createMergeVarObject($data);
+        $mergeVar = new MergeVar($data);
         $this->assertEquals($data['field_type'] === 'phone', $mergeVar->isPhone());
     }
 
-    /**
-     * @return array
-     */
-    public function mergeVarDataProvider()
+    public function mergeVarDataProvider(): array
     {
         return [
             [
@@ -152,10 +149,5 @@ class MergeVarTest extends \PHPUnit\Framework\TestCase
                 ],
             ],
         ];
-    }
-
-    protected function createMergeVarObject(array $data)
-    {
-        return new MergeVar($data);
     }
 }

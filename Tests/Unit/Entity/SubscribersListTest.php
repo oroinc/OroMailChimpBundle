@@ -2,15 +2,14 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Entity;
 
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
 use Oro\Bundle\MailChimpBundle\Model\MergeVar\MergeVarFieldsInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class SubscribersListTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var SubscribersList
-     */
-    protected $target;
+    private SubscribersList $target;
 
     protected function setUp(): void
     {
@@ -18,12 +17,9 @@ class SubscribersListTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param string $property
-     * @param mixed $value
-     *
      * @dataProvider settersAndGettersDataProvider
      */
-    public function testSettersAndGetters($property, $value)
+    public function testSettersAndGetters(string $property, mixed $value)
     {
         $method = 'set' . ucfirst($property);
         $result = $this->target->$method($value);
@@ -33,12 +29,9 @@ class SubscribersListTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param string $property
-     * @param mixed $value
-     *
      * @dataProvider settersAndIsDataProvider
      */
-    public function testSettersAndIs($property, $value)
+    public function testSettersAndIs(string $property, mixed $value)
     {
         $method = 'set' . ucfirst($property);
         $result = $this->target->$method($value);
@@ -47,15 +40,12 @@ class SubscribersListTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($value, $this->target->{'is' . $property}());
     }
 
-    /**
-     * @return array
-     */
-    public function settersAndGettersDataProvider()
+    public function settersAndGettersDataProvider(): array
     {
         return [
             ['originId', 123456789],
-            ['channel', $this->createMock('Oro\\Bundle\\IntegrationBundle\\Entity\\Channel')],
-            ['owner', $this->createMock('Oro\\Bundle\\OrganizationBundle\\Entity\\Organization')],
+            ['channel', $this->createMock(Channel::class)],
+            ['owner', $this->createMock(Organization::class)],
             ['webId', 12],
             ['name', 'string'],
             ['defaultFromName', 'string'],
@@ -68,13 +58,13 @@ class SubscribersListTest extends \PHPUnit\Framework\TestCase
             ['defaultLanguage', null],
             ['listRating', 1.3],
             ['listRating', null],
-            ['subscribeUrlShort', "string"],
+            ['subscribeUrlShort', 'string'],
             ['subscribeUrlShort', null],
-            ['subscribeUrlLong', "string"],
+            ['subscribeUrlLong', 'string'],
             ['subscribeUrlLong', null],
-            ['beamerAddress', "string"],
+            ['beamerAddress', 'string'],
             ['beamerAddress', null],
-            ['visibility', "string"],
+            ['visibility', 'string'],
             ['visibility', null],
             ['memberCount', 3.4],
             ['memberCount', null],
@@ -108,7 +98,7 @@ class SubscribersListTest extends \PHPUnit\Framework\TestCase
             ['clickRate', null],
             [
                 'mergeVarFields',
-                $this->createMock('Oro\\Bundle\\MailChimpBundle\\Model\\MergeVar\\MergeVarFieldsInterface')
+                $this->createMock(MergeVarFieldsInterface::class)
             ],
             ['mergeVarConfig', [['foo' => 'bar']]],
             ['createdAt', new \DateTime()],
@@ -117,10 +107,7 @@ class SubscribersListTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function settersAndIsDataProvider()
+    public function settersAndIsDataProvider(): array
     {
         return [
             ['emailTypeOption', true],
@@ -130,8 +117,7 @@ class SubscribersListTest extends \PHPUnit\Framework\TestCase
 
     public function testSetMergeVarConfigResetsMergeVarFields()
     {
-        /** @var MergeVarFieldsInterface|\PHPUnit\Framework\MockObject\MockObject $mergeVarsFields */
-        $mergeVarsFields = $this->createMock('Oro\\Bundle\\MailChimpBundle\\Model\\MergeVar\\MergeVarFieldsInterface');
+        $mergeVarsFields = $this->createMock(MergeVarFieldsInterface::class);
 
         $this->target->setMergeVarFields($mergeVarsFields);
 
@@ -147,8 +133,8 @@ class SubscribersListTest extends \PHPUnit\Framework\TestCase
 
         $this->target->prePersist();
 
-        $this->assertInstanceOf('\DateTime', $this->target->getCreatedAt());
-        $this->assertInstanceOf('\DateTime', $this->target->getUpdatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->target->getCreatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->target->getUpdatedAt());
 
         $expectedCreated = $this->target->getCreatedAt();
         $expectedUpdated = $this->target->getUpdatedAt();
@@ -163,6 +149,6 @@ class SubscribersListTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertNull($this->target->getUpdatedAt());
         $this->target->preUpdate();
-        $this->assertInstanceOf('\DateTime', $this->target->getUpdatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->target->getUpdatedAt());
     }
 }

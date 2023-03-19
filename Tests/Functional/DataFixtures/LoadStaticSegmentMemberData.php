@@ -8,10 +8,7 @@ use Oro\Bundle\MailChimpBundle\Entity\StaticSegmentMember;
 
 class LoadStaticSegmentMemberData extends AbstractMailChimpFixture implements DependentFixtureInterface
 {
-    /**
-     * @var array
-     */
-    protected $data = [
+    private array $data = [
         [
             'member' => 'mailchimp:member',
             'segment' => 'mailchimp:segment_one',
@@ -33,9 +30,9 @@ class LoadStaticSegmentMemberData extends AbstractMailChimpFixture implements De
     ];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         foreach ($this->data as $data) {
             $entity = new StaticSegmentMember();
@@ -51,9 +48,9 @@ class LoadStaticSegmentMemberData extends AbstractMailChimpFixture implements De
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [LoadMemberExportData::class];
     }

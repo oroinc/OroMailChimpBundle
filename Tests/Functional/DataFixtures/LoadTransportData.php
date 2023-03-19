@@ -7,10 +7,7 @@ use Oro\Bundle\MailChimpBundle\Entity\MailChimpTransport;
 
 class LoadTransportData extends AbstractMailChimpFixture
 {
-    /**
-     * @var array Transports configuration
-     */
-    protected $transportData = [
+    private array $transportData = [
         [
             'reference' => 'mailchimp:transport_one',
             'apiKey' => 'f9e179585f382c4def28653b1cbddba5-us9',
@@ -26,9 +23,9 @@ class LoadTransportData extends AbstractMailChimpFixture
     ];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         foreach ($this->transportData as $data) {
             $entity = new MailChimpTransport();

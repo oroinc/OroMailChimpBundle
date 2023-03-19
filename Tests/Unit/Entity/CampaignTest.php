@@ -7,13 +7,14 @@ use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Entity\Campaign;
 use Oro\Bundle\MailChimpBundle\Entity\MailChimpTransport;
 use Oro\Bundle\MailChimpBundle\Entity\MailChimpTransportSettings;
+use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
+use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
+use Oro\Bundle\MailChimpBundle\Entity\Template;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class CampaignTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var Campaign
-     */
-    protected $target;
+    private Campaign $target;
 
     protected function setUp(): void
     {
@@ -21,12 +22,9 @@ class CampaignTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param string $property
-     * @param mixed $value
-     *
      * @dataProvider settersAndGettersDataProvider
      */
-    public function testSettersAndGetters($property, $value)
+    public function testSettersAndGetters(string $property, mixed $value)
     {
         $method = 'set' . ucfirst($property);
         $result = $this->target->$method($value);
@@ -35,24 +33,21 @@ class CampaignTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($value, $this->target->{'get' . $property}());
     }
 
-    /**
-     * @return array
-     */
-    public function settersAndGettersDataProvider()
+    public function settersAndGettersDataProvider(): array
     {
         return [
             ['originId', 123456789],
-            ['channel', $this->createMock('Oro\\Bundle\\IntegrationBundle\\Entity\\Channel')],
+            ['channel', $this->createMock(Channel::class)],
             ['title', 'Test title'],
             ['subject', 'Test subject'],
             ['fromName', 'John Doe'],
             ['fromEmail', 'text@example.com'],
-            ['owner', $this->createMock('Oro\\Bundle\\OrganizationBundle\\Entity\\Organization')],
+            ['owner', $this->createMock(Organization::class)],
             ['webId', 123425223],
-            ['template', $this->createMock('Oro\\Bundle\\MailChimpBundle\\Entity\\Template')],
-            ['subscribersList', $this->createMock('Oro\\Bundle\\MailChimpBundle\\Entity\\SubscribersList')],
-            ['staticSegment', $this->createMock('Oro\\Bundle\\MailChimpBundle\\Entity\\StaticSegment')],
-            ['emailCampaign', $this->createMock('Oro\\Bundle\\CampaignBundle\\Entity\\EmailCampaign')],
+            ['template', $this->createMock(Template::class)],
+            ['subscribersList', $this->createMock(SubscribersList::class)],
+            ['staticSegment', $this->createMock(StaticSegment::class)],
+            ['emailCampaign', $this->createMock(EmailCampaign::class)],
             ['contentType', 'Content Type'],
             ['contentType', null],
             ['type', 'Type'],
@@ -115,8 +110,8 @@ class CampaignTest extends \PHPUnit\Framework\TestCase
 
         $this->target->prePersist();
 
-        $this->assertInstanceOf('\DateTime', $this->target->getCreatedAt());
-        $this->assertInstanceOf('\DateTime', $this->target->getUpdatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->target->getCreatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->target->getUpdatedAt());
 
         $expectedCreated = $this->target->getCreatedAt();
         $expectedUpdated = $this->target->getUpdatedAt();
@@ -131,21 +126,17 @@ class CampaignTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertNull($this->target->getUpdatedAt());
         $this->target->preUpdate();
-        $this->assertInstanceOf('\DateTime', $this->target->getUpdatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->target->getUpdatedAt());
     }
 
     /**
      * @dataProvider activityUpdateStateDataProvider
-     * @param EmailCampaign|null $emailCampaign
-     * @param \DateTime|null $sendTime
-     * @param int $activityUpdateInterval
-     * @param string $expected
      */
     public function testGetActivityUpdateState(
-        $emailCampaign,
-        $sendTime,
-        $activityUpdateInterval,
-        $expected
+        ?EmailCampaign $emailCampaign,
+        ?\DateTime $sendTime,
+        ?int $activityUpdateInterval,
+        string $expected
     ) {
         $this->target->setEmailCampaign($emailCampaign);
         $this->target->setSendTime($sendTime);
@@ -159,10 +150,7 @@ class CampaignTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $this->target->getActivityUpdateState());
     }
 
-    /**
-     * @return array
-     */
-    public function activityUpdateStateDataProvider()
+    public function activityUpdateStateDataProvider(): array
     {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
         $threeMonthAgo = clone($now);

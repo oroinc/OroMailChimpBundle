@@ -10,25 +10,17 @@ use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
 
 class FilterMergeVarsProviderTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var ProviderInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $provider;
+    /** @var ProviderInterface|\PHPUnit\Framework\MockObject\MockObject */
+    private $provider;
 
-    /**
-     * @var DQLNameFormatter|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $nameFormatter;
+    /** @var DQLNameFormatter|\PHPUnit\Framework\MockObject\MockObject */
+    private $nameFormatter;
 
-    /**
-     * @var ContactInformationFieldsProvider|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $contactInformationFieldsProvider;
+    /** @var ContactInformationFieldsProvider|\PHPUnit\Framework\MockObject\MockObject */
+    private $contactInformationFieldsProvider;
 
-    /**
-     * @var FilteredMergeVarsProvider
-     */
-    protected $filterProvider;
+    /** @var FilteredMergeVarsProvider */
+    private $filterProvider;
 
     protected function setUp(): void
     {
@@ -50,10 +42,10 @@ class FilterMergeVarsProviderTest extends \PHPUnit\Framework\TestCase
 
         $this->provider->expects($this->atLeastOnce())
             ->method('isApplicable')
-            ->will($this->returnValueMap([
+            ->willReturnMap([
                 [$firstMarketingList, true],
                 [$secondMarketingList, false]
-            ]));
+            ]);
 
         $this->assertTrue($this->filterProvider->isApplicable($firstMarketingList));
         $this->assertFalse($this->filterProvider->isApplicable($secondMarketingList));

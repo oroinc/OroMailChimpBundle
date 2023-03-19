@@ -7,22 +7,20 @@ use Oro\Bundle\MailChimpBundle\Provider\MarketingListExtendedMergeVarProvider;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Bundle\UserBundle\Entity\User;
-use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 
-class MarketingListExtendedMergeVarProviderTest extends TestCase
+class MarketingListExtendedMergeVarProviderTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var EntityFieldProvider|MockObject */
+    /** @var EntityFieldProvider|\PHPUnit\Framework\MockObject\MockObject */
     private $entityFieldProvider;
+
+    /** @var MarketingListExtendedMergeVarProvider */
     private $provider;
 
     protected function setUp(): void
     {
         $this->entityFieldProvider = $this->createMock(EntityFieldProvider::class);
 
-        $this->provider = new MarketingListExtendedMergeVarProvider(
-            $this->entityFieldProvider
-        );
+        $this->provider = new MarketingListExtendedMergeVarProvider($this->entityFieldProvider);
     }
 
     public function testIsApplicable()

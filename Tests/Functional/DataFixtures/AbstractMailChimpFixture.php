@@ -7,16 +7,11 @@ use Oro\Bundle\EntityExtendBundle\PropertyAccess;
 
 abstract class AbstractMailChimpFixture extends AbstractFixture
 {
-    /**
-     * @param object $entity
-     * @param array $data
-     * @param array $excludeProperties
-     */
-    public function setEntityPropertyValues($entity, array $data, array $excludeProperties = [])
+    protected function setEntityPropertyValues(object $entity, array $data, array $excludeProperties = []): void
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         foreach ($data as $property => $value) {
-            if (in_array($property, $excludeProperties)) {
+            if (\in_array($property, $excludeProperties, true)) {
                 continue;
             }
             $propertyAccessor->setValue($entity, $property, $value);

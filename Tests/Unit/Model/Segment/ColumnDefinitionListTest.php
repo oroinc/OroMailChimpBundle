@@ -13,18 +13,21 @@ class ColumnDefinitionListTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(InvalidConfigurationException::class);
 
-        $segment = $this->getSegment();
-        $segment->expects($this->once())->method('getDefinition')
-            ->will($this->returnValue('incorrect_definition'));
+        $segment = $this->createMock(Segment::class);
+        $segment->expects($this->once())
+            ->method('getDefinition')
+            ->willReturn('incorrect_definition');
 
         new ColumnDefinitionList($segment);
     }
 
     public function testGetColumnsWhenDefinitionHasNoColumns()
     {
-        $segment = $this->getSegment();
+        $segment = $this->createMock(Segment::class);
         $definition = QueryDefinitionUtil::encodeDefinition(['filters' => []]);
-        $segment->expects($this->once())->method('getDefinition')->will($this->returnValue($definition));
+        $segment->expects($this->once())
+            ->method('getDefinition')
+            ->willReturn($definition);
 
         $list = new ColumnDefinitionList($segment);
 
@@ -33,7 +36,7 @@ class ColumnDefinitionListTest extends \PHPUnit\Framework\TestCase
 
     public function testGetColumnsWhenColumnDefinitionIsIncorrect()
     {
-        $segment = $this->getSegment();
+        $segment = $this->createMock(Segment::class);
 
         $definition = QueryDefinitionUtil::encodeDefinition([
             'columns' => [
@@ -43,7 +46,9 @@ class ColumnDefinitionListTest extends \PHPUnit\Framework\TestCase
             'filters' => []
         ]);
 
-        $segment->expects($this->once())->method('getDefinition')->will($this->returnValue($definition));
+        $segment->expects($this->once())
+            ->method('getDefinition')
+            ->willReturn($definition);
 
         $list = new ColumnDefinitionList($segment);
         $columns = $list->getColumns();
@@ -56,12 +61,13 @@ class ColumnDefinitionListTest extends \PHPUnit\Framework\TestCase
 
     public function testGetColumns()
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|Segment $segment */
-        $segment = $this->getMockBuilder('Oro\Bundle\SegmentBundle\Entity\Segment')->getMock();
+        $segment = $this->createMock(Segment::class);
 
         $definition = QueryDefinitionUtil::encodeDefinition($this->getCorrectSegmentDefinition());
 
-        $segment->expects($this->once())->method('getDefinition')->will($this->returnValue($definition));
+        $segment->expects($this->once())
+            ->method('getDefinition')
+            ->willReturn($definition);
 
         $list = new ColumnDefinitionList($segment);
 
@@ -80,18 +86,7 @@ class ColumnDefinitionListTest extends \PHPUnit\Framework\TestCase
         $this->assertThat($column2['label'], $this->equalTo('Total'));
     }
 
-    /**
-     * @return \PHPUnit\Framework\MockObject\MockObject|Segment
-     */
-    protected function getSegment()
-    {
-        return $this->getMockBuilder('Oro\Bundle\SegmentBundle\Entity\Segment')->getMock();
-    }
-
-    /**
-     * @return array
-     */
-    protected function getCorrectSegmentDefinition()
+    private function getCorrectSegmentDefinition(): array
     {
         return [
             'columns' => [

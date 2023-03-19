@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Model\MarketingList;
 
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Oro\Bundle\MailChimpBundle\Model\MarketingList\DataGridProvider;
 use Oro\Bundle\MarketingListBundle\Datagrid\ConfigurationProvider;
@@ -11,57 +13,41 @@ use Oro\Bundle\MarketingListBundle\Provider\MarketingListProvider;
 
 class DataGridProviderTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|Manager
-     */
-    protected $dataGridManager;
+    /** @var Manager|\PHPUnit\Framework\MockObject\MockObject */
+    private $dataGridManager;
 
-    /**
-     * @var DataGridProvider
-     */
-    protected $dataGridProvider;
+    /** @var DataGridProvider */
+    private $dataGridProvider;
 
     protected function setUp(): void
     {
-        $this->dataGridManager = $this
-            ->getMockBuilder('Oro\Bundle\DataGridBundle\Datagrid\Manager')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->dataGridManager = $this->createMock(Manager::class);
 
         $this->dataGridProvider = new DataGridProvider($this->dataGridManager);
     }
 
-    protected function tearDown(): void
-    {
-        unset($this->dataGridManager);
-        unset($this->dataGridProvider);
-    }
-
     /**
      * @dataProvider marketingListTypeDataProvider
-     * @param string $type
      */
-    public function testGetDataGridColumns($type)
+    public function testGetDataGridColumns(string $type)
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|MarketingList $marketingList */
-        $marketingList = $this
-            ->getMockBuilder('Oro\Bundle\MarketingListBundle\Entity\MarketingList')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $marketingList->expects($this->any())->method('getId')->will($this->returnValue(1));
-        $marketingList->expects($this->any())->method('isManual')
-            ->will($this->returnValue($type === MarketingListType::TYPE_MANUAL));
+        $marketingList = $this->createMock(MarketingList::class);
+        $marketingList->expects($this->any())
+            ->method('getId')
+            ->willReturn(1);
+        $marketingList->expects($this->any())
+            ->method('isManual')
+            ->willReturn($type === MarketingListType::TYPE_MANUAL);
 
-        $config = $this
-            ->getMockBuilder('Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $config = $this->createMock(DatagridConfiguration::class);
 
-        $dataGrid = $this->createMock('Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface');
+        $dataGrid = $this->createMock(DatagridInterface::class);
+        $dataGrid->expects($this->once())
+            ->method('getConfig')
+            ->willReturn($config);
 
-        $dataGrid->expects($this->once())->method('getConfig')->will($this->returnValue($config));
-
-        $this->dataGridManager->expects($this->atLeastOnce())->method('getDatagrid')
+        $this->dataGridManager->expects($this->atLeastOnce())
+            ->method('getDatagrid')
             ->with(
                 ConfigurationProvider::GRID_PREFIX . $marketingList->getId(),
                 $this->logicalAnd(
@@ -76,17 +62,14 @@ class DataGridProviderTest extends \PHPUnit\Framework\TestCase
                     })
                 )
             )
-            ->will($this->returnValue($dataGrid));
+            ->willReturn($dataGrid);
 
         $dataGridConfiguration = $this->dataGridProvider->getDataGridConfiguration($marketingList);
 
         $this->assertEquals($config, $dataGridConfiguration);
     }
 
-    /**
-     * @return array
-     */
-    public function marketingListTypeDataProvider()
+    public function marketingListTypeDataProvider(): array
     {
         return [
             [MarketingListType::TYPE_MANUAL],

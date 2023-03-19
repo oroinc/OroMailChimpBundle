@@ -8,25 +8,13 @@ use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 
 class ProviderTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var Provider
-     */
-    protected $provider;
-
-    /**
-     * @var MarketingList
-     */
-    protected $marketingList;
+    private MarketingList $marketingList;
+    private Provider $provider;
 
     protected function setUp(): void
     {
         $this->marketingList = new MarketingList();
         $this->provider = new Provider();
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->provider, $this->marketingList);
     }
 
     public function testProvideExtendedMergeVarsWithOutExternalProviders()
@@ -42,19 +30,15 @@ class ProviderTest extends \PHPUnit\Framework\TestCase
         array $externalProviderMergeVars,
         array $inheritedProviderMergeVars
     ) {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|ProviderInterface $externalProvider */
-        $externalProvider = $this
-            ->createMock('Oro\Bundle\MailChimpBundle\Model\ExtendedMergeVar\ProviderInterface');
-        $externalProvider->expects($this->once())->method('provideExtendedMergeVars')
-            ->will($this->returnValue($externalProviderMergeVars));
+        $externalProvider = $this->createMock(ProviderInterface::class);
+        $externalProvider->expects($this->once())
+            ->method('provideExtendedMergeVars')
+            ->willReturn($externalProviderMergeVars);
 
-        /** @var \PHPUnit\Framework\MockObject\MockObject|ProviderInterface $inheritedExternalProvider */
-        $inheritedExternalProvider = $this
-            ->getMockBuilder('Oro\Bundle\MailChimpBundle\Model\ExtendedMergeVar\ProviderInterface')
-            ->setMockClassName('InheritedProvider')
-            ->getMock();
-        $externalProvider->expects($this->once())->method('provideExtendedMergeVars')
-            ->will($this->returnValue($inheritedProviderMergeVars));
+        $inheritedExternalProvider = $this->createMock(ProviderInterface::class);
+        $externalProvider->expects($this->once())
+            ->method('provideExtendedMergeVars')
+            ->willReturn($inheritedProviderMergeVars);
 
         $this->provider->addProvider($externalProvider);
         $this->provider->addProvider($externalProvider);
@@ -65,10 +49,7 @@ class ProviderTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($externalProviderMergeVars, $actual);
     }
 
-    /**
-     * @return array
-     */
-    public function extendedMergeVarsDataProvider()
+    public function extendedMergeVarsDataProvider(): array
     {
         return [
             [
@@ -84,19 +65,6 @@ class ProviderTest extends \PHPUnit\Framework\TestCase
                         'label' => 'inherited_label'
                     ]
                 ]
-            ]
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    protected function getSegmentExtendedMergeVars()
-    {
-        return [
-            [
-                'name' => 'dummy_name',
-                'label' => 'dummy_label'
             ]
         ];
     }

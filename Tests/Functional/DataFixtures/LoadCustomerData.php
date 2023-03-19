@@ -8,10 +8,7 @@ use Oro\Bundle\TestFrameworkCRMBundle\Entity\TestCustomerWithContactInformation;
 
 class LoadCustomerData extends AbstractFixture
 {
-    /**
-     * @var array
-     */
-    protected $data = [
+    private array $data = [
         [
             'name' => 'customer1',
             'email' => 'customer1@example.com',
@@ -20,9 +17,9 @@ class LoadCustomerData extends AbstractFixture
     ];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         foreach ($this->data as $data) {
             $customer = new TestCustomerWithContactInformation();

@@ -12,10 +12,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 
 class LoadSegmentData extends AbstractMailChimpFixture
 {
-    /**
-     * @var array Channels configuration
-     */
-    protected $data = [
+    protected array $data = [
         [
             'type' => 'dynamic',
             'name' => 'Test ML Segment',
@@ -98,9 +95,9 @@ class LoadSegmentData extends AbstractMailChimpFixture
     ];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         /** @var User $user */
         $user = $manager->getRepository(User::class)->findOneByUsername('admin');

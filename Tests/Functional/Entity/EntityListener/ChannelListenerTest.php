@@ -15,7 +15,6 @@ class ChannelListenerTest extends WebTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->initClient();
         $this->loadFixtures([LoadMarketingListEmailData::class]);
     }

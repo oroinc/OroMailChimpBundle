@@ -14,13 +14,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ConnectionFormHandlerTest extends \PHPUnit\Framework\TestCase
 {
-    /** @var \PHPUnit\Framework\MockObject\MockObject|FormInterface */
+    /** @var FormInterface|\PHPUnit\Framework\MockObject\MockObject */
     private $form;
 
-    /** @var \PHPUnit\Framework\MockObject\MockObject|Request */
+    /** @var Request|\PHPUnit\Framework\MockObject\MockObject */
     private $request;
 
-    /** @var \PHPUnit\Framework\MockObject\MockObject|ManagerRegistry */
+    /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
     private $registry;
 
     /** @var ConnectionFormHandler */
@@ -204,12 +204,10 @@ class ConnectionFormHandlerTest extends \PHPUnit\Framework\TestCase
             ->willReturn(true);
     }
 
-    /**
-     * @param ObjectManager|\PHPUnit\Framework\MockObject\MockObject $staticSegmentManager
-     * @param StaticSegment $staticSegment
-     */
-    private function assertSave(ObjectManager $staticSegmentManager, StaticSegment $staticSegment)
-    {
+    private function assertSave(
+        ObjectManager|\PHPUnit\Framework\MockObject\MockObject $staticSegmentManager,
+        StaticSegment|\PHPUnit\Framework\MockObject\MockObject $staticSegment
+    ): void {
         $staticSegmentManager->expects($this->once())
             ->method('persist')
             ->with($staticSegment);

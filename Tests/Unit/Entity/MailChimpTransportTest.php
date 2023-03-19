@@ -7,10 +7,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class MailChimpTransportTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var MailChimpTransport
-     */
-    protected $entity;
+    private MailChimpTransport $entity;
 
     protected function setUp(): void
     {
@@ -19,7 +16,7 @@ class MailChimpTransportTest extends \PHPUnit\Framework\TestCase
 
     public function testApiKey()
     {
-        $apiKey = uniqid();
+        $apiKey = 'test_api_key';
         $this->entity->setApiKey($apiKey);
 
         $this->assertEquals($apiKey, $this->entity->getApiKey());
@@ -37,7 +34,7 @@ class MailChimpTransportTest extends \PHPUnit\Framework\TestCase
 
     public function testSettingsBag()
     {
-        $apiKey = uniqid();
+        $apiKey = 'test_api_key';
         $this->entity->setApiKey($apiKey);
         $this->entity->setActivityUpdateInterval(42);
         $this->assertNotNull($this->entity->getApiKey());

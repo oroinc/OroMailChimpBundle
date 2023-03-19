@@ -2,14 +2,15 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Entity;
 
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Oro\Bundle\MailChimpBundle\Entity\Campaign;
+use Oro\Bundle\MailChimpBundle\Entity\Member;
 use Oro\Bundle\MailChimpBundle\Entity\MemberActivity;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class MemberActivityTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var MemberActivity
-     */
-    protected $target;
+    private MemberActivity $target;
 
     protected function setUp(): void
     {
@@ -18,10 +19,8 @@ class MemberActivityTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider settersAndGettersDataProvider
-     * @param string $property
-     * @param mixed $value
      */
-    public function testSettersAndGetters($property, $value)
+    public function testSettersAndGetters(string $property, mixed $value)
     {
         $method = 'set' . ucfirst($property);
         $result = $this->target->$method($value);
@@ -30,16 +29,13 @@ class MemberActivityTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($value, $this->target->{'get' . $property}());
     }
 
-    /**
-     * @return array
-     */
-    public function settersAndGettersDataProvider()
+    public function settersAndGettersDataProvider(): array
     {
         return [
-            ['channel', $this->createMock('Oro\Bundle\IntegrationBundle\Entity\Channel')],
-            ['campaign', $this->createMock('Oro\Bundle\MailChimpBundle\Entity\Campaign')],
-            ['member', $this->createMock('Oro\Bundle\MailChimpBundle\Entity\Member')],
-            ['owner', $this->createMock('Oro\Bundle\OrganizationBundle\Entity\Organization')],
+            ['channel', $this->createMock(Channel::class)],
+            ['campaign', $this->createMock(Campaign::class)],
+            ['member', $this->createMock(Member::class)],
+            ['owner', $this->createMock(Organization::class)],
             ['email', 'test@test.com'],
             ['action', 'open'],
             ['ip', '127.0.0.1'],

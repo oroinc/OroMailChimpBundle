@@ -9,10 +9,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class MailChimpTransportSettingsTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var MailChimpTransportSettings
-     */
-    protected $target;
+    private MailChimpTransportSettings $target;
 
     protected function setUp(): void
     {
@@ -20,12 +17,9 @@ class MailChimpTransportSettingsTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param string $property
-     * @param mixed $value
-     *
      * @dataProvider settersAndGettersDataProvider
      */
-    public function testSettersAndGetters($property, $value)
+    public function testSettersAndGetters(string $property, mixed $value)
     {
         $method = 'set' . ucfirst($property);
         $result = $this->target->$method($value);
@@ -34,14 +28,11 @@ class MailChimpTransportSettingsTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($value, $this->target->{'get' . $property}());
     }
 
-    /**
-     * @return array
-     */
-    public function settersAndGettersDataProvider()
+    public function settersAndGettersDataProvider(): array
     {
         return [
-            ['channel', $this->createMock('Oro\\Bundle\\IntegrationBundle\\Entity\\Channel')],
-            ['template', $this->createMock('Oro\\Bundle\\MailChimpBundle\\Entity\\Template')],
+            ['channel', $this->createMock(Channel::class)],
+            ['template', $this->createMock(Template::class)],
         ];
     }
 
@@ -54,8 +45,7 @@ class MailChimpTransportSettingsTest extends \PHPUnit\Framework\TestCase
 
     public function testSettingsBag()
     {
-        /** @var Channel|\PHPUnit\Framework\MockObject\MockObject $channel */
-        $channel = $this->createMock('Oro\\Bundle\\IntegrationBundle\\Entity\\Channel');
+        $channel = $this->createMock(Channel::class);
         $template = new Template();
         $this->target->setChannel($channel);
         $this->target->setTemplate($template);
@@ -66,7 +56,6 @@ class MailChimpTransportSettingsTest extends \PHPUnit\Framework\TestCase
         $expectedSettings = [
             'channel' => $channel,
             'receiveActivities' => true
-            // 'template' => $template
         ];
         $this->assertEquals(
             new ParameterBag($expectedSettings),

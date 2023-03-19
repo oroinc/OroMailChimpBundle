@@ -9,10 +9,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class LoadStaticSegmentData extends AbstractMailChimpFixture implements DependentFixtureInterface
 {
-    /**
-     * @var array Segment configuration
-     */
-    protected $segmentData = [
+    protected array $segmentData = [
         [
             'subscribersList' => 'mailchimp:subscribers_list_one',
             'marketingList' => 'mailchimp:ml_one',
@@ -43,9 +40,9 @@ class LoadStaticSegmentData extends AbstractMailChimpFixture implements Dependen
     ];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $organization = $manager->getRepository(Organization::class)
             ->getFirst();
@@ -64,9 +61,9 @@ class LoadStaticSegmentData extends AbstractMailChimpFixture implements Dependen
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [LoadMarketingListData::class, LoadSubscribersListData::class];
     }

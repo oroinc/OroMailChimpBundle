@@ -2,45 +2,25 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Provider\Transport\Iterator;
 
+use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\AbstractSubordinateIterator;
+
 class AbstractSubordinateIteratorTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $iterator;
-
-    protected function setUp(): void
+    private function createIterator(\Iterator $mainIterator): \Iterator|\PHPUnit\Framework\MockObject\MockObject
     {
-        $this->iterator = $this->getMockBuilder(
-            'Oro\\Bundle\\MailChimpBundle\\Provider\\Transport\\MailChimpClient'
-        )->disableOriginalConstructor()->getMock();
-    }
-
-    /**
-     * @param \Iterator $mainIterator
-     * @return \PHPUnit\Framework\MockObject\MockObject
-     */
-    protected function createIterator(\Iterator $mainIterator)
-    {
-        return $this->getMockForAbstractClass(
-            'Oro\\Bundle\\MailChimpBundle\\Provider\\Transport\\Iterator\\AbstractSubordinateIterator',
-            [$mainIterator]
-        );
+        return $this->getMockForAbstractClass(AbstractSubordinateIterator::class, [$mainIterator]);
     }
 
     /**
      * @dataProvider optionsDataProvider
-     * @param \Iterator $mainIterator
-     * @param array $expectedValueMap
-     * @param array $expected
      */
-    public function testIteratorWorks($mainIterator, $expectedValueMap, $expected)
+    public function testIteratorWorks(\Iterator $mainIterator, array $expectedValueMap, array $expected)
     {
         $iterator = $this->createIterator($mainIterator);
 
         $iterator->expects($this->exactly(count($expectedValueMap)))
             ->method('createSubordinateIterator')
-            ->will($this->returnValueMap($expectedValueMap));
+            ->willReturnMap($expectedValueMap);
 
         $actual = [];
         foreach ($iterator as $key => $value) {
@@ -51,17 +31,14 @@ class AbstractSubordinateIteratorTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider optionsDataProvider
-     * @param \Iterator $mainIterator
-     * @param array $expectedValueMap
-     * @param array $expected
      */
-    public function testIteratorRewindWorks($mainIterator, $expectedValueMap, $expected)
+    public function testIteratorRewindWorks(\Iterator $mainIterator, array $expectedValueMap, array $expected)
     {
         $iterator = $this->createIterator($mainIterator);
 
         $iterator->expects($this->exactly(count($expectedValueMap) * 2))
             ->method('createSubordinateIterator')
-            ->will($this->returnValueMap($expectedValueMap));
+            ->willReturnMap($expectedValueMap);
 
         $actual = [];
         foreach ($iterator as $key => $value) {
@@ -77,10 +54,7 @@ class AbstractSubordinateIteratorTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @return array
-     */
-    public function optionsDataProvider()
+    public function optionsDataProvider(): array
     {
         return [
             'with content' => [
