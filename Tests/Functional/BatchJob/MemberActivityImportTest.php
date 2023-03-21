@@ -30,7 +30,7 @@ class MemberActivityImportTest extends WebTestCase
             ->get('oro_mailchimp.client.factory')
             ->setClientClass(MailChimpClientStub::class);
 
-        $this->loadFixtures([LoadCampaignData::class, LoadMemberData::class,]);
+        $this->loadFixtures([LoadCampaignData::class, LoadMemberData::class]);
     }
 
     public function testRunJob()
