@@ -117,8 +117,8 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
     {
         $integrationId = 1;
         $messageId = 'theMessageId';
-
-        $jobRunner = $this->getJobRunner($messageId, $integrationId);
+        $message = $this->getMessage($integrationId, $segmentId, $messageId);
+        $jobRunner = $this->assertJobRunnerCalls($message);
 
         $integration = new Integration();
         $integration->setEnabled(true);
@@ -160,8 +160,7 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
             $this->createMock(LoggerInterface::class)
         );
 
-        $message = $this->getMessage($integrationId, $segmentId, $messageId);
-        $status = $processor->process($message, $this->createMock(SessionInterface::class));
+        $status = $processor->process($message, $this->createSessionMock());
 
         self::assertEquals(MessageProcessorInterface::ACK, $status);
     }
@@ -205,7 +204,8 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
         $integrationId = 'theIntegrationId';
         $messageId = 'theMessageId';
 
-        $jobRunner = $this->getJobRunner($messageId, $integrationId);
+        $message = $this->getMessage($integrationId, $segmentId, $messageId);
+        $jobRunner = $this->assertJobRunnerCalls($message);
 
         $integration = new Integration();
         $integration->setEnabled(true);
@@ -244,8 +244,7 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
             $this->createMock(LoggerInterface::class)
         );
 
-        $message = $this->getMessage($integrationId, $segmentId, $messageId);
-        $status = $processor->process($message, $this->createMock(SessionInterface::class));
+        $status = $processor->process($message, $this->createSessionMock());
 
         self::assertEquals(MessageProcessorInterface::REJECT, $status);
     }
@@ -258,7 +257,8 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
         $integrationId = 'theIntegrationId';
         $messageId = 'theMessageId';
 
-        $jobRunner = $this->getJobRunner($messageId, $integrationId);
+        $message = $this->getMessage($integrationId, $segmentId, $messageId);
+        $jobRunner = $this->assertJobRunnerCalls($message);
 
         $integration = new Integration();
         $integration->setEnabled(true);
@@ -300,8 +300,7 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
             $this->createMock(LoggerInterface::class)
         );
 
-        $message = $this->getMessage($integrationId, $segmentId, $messageId);
-        $status = $processor->process($message, $this->createMock(SessionInterface::class));
+        $status = $processor->process($message, $this->createSessionMock());
 
         self::assertEquals(MessageProcessorInterface::REJECT, $status);
     }
@@ -375,11 +374,21 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
 
     private function getJobRunner(string $messageId, string $integrationId): JobRunner
     {
-        $jobRunner = $this->createMock(JobRunner::class);
+        return $this->createMock(SessionInterface::class);
+    }
+
+    /**
+     * @param  Message $message
+     * @return JobRunner|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private function assertJobRunnerCalls(
+        Message $message
+    ): JobRunner|\PHPUnit\Framework\MockObject\MockObject {
+        $jobRunner = $this->createJobRunnerMock();
         $jobRunner->expects(self::once())
-            ->method('runUnique')
-            ->with($messageId, 'oro_mailchimp:export_mailchimp:' . $integrationId, $this->isType('callable'))
-            ->willReturnCallback(function ($ownerId, $jobName, $callback) {
+            ->method('runUniqueByMessage')
+            ->with($message, $this->isType('callable'))
+            ->willReturnCallback(function ($message, $callback) {
                 return $callback();
             });
 
@@ -445,5 +454,15 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
         $message->setMessageId($messageId);
 
         return $message;
+    }
+
+    private function createJobRunnerMock()
+    {
+        return $this->createMock(JobRunner::class);
+    }
+
+    private function createSessionMock()
+    {
+        return $this->createMock(SessionInterface::class);
     }
 }

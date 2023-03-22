@@ -4,12 +4,13 @@ namespace Oro\Bundle\MailChimpBundle\Async\Topic;
 
 use Oro\Component\MessageQueue\Client\MessagePriority;
 use Oro\Component\MessageQueue\Topic\AbstractTopic;
+use Oro\Component\MessageQueue\Topic\JobAwareTopicInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * A topic to export Mailchimp segments
  */
-class ExportMailchimpSegmentsTopic extends AbstractTopic
+class ExportMailchimpSegmentsTopic extends AbstractTopic implements JobAwareTopicInterface
 {
     public const NAME = 'oro.mailchimp.export_mailchimp_segments';
 
@@ -37,5 +38,10 @@ class ExportMailchimpSegmentsTopic extends AbstractTopic
         $resolver
             ->setRequired('segmentsIds')
             ->setAllowedTypes('segmentsIds', 'int[]');
+    }
+
+    public function createJobName($messageBody): string
+    {
+        return 'oro_mailchimp:export_mailchimp:' . $messageBody['integrationId'];
     }
 }

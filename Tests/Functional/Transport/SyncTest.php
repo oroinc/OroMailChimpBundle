@@ -27,6 +27,7 @@ class SyncTest extends WebTestCase
         $params['--integration'] = (string)$this->getReference(
             'mailchimp:channel_' . $params['--integration']
         )->getId();
+
         $result = self::runCommand(SyncCommand::getDefaultName(), $params);
 
         self::assertStringContainsString('Schedule sync for "mailchimp1" integration.', $result);
@@ -37,6 +38,8 @@ class SyncTest extends WebTestCase
             'transport_batch_size' => 100
         ]);
         self::assertMessageSentWithPriority(SyncIntegrationTopic::getName(), MessagePriority::VERY_LOW);
+
+        self::consume();
     }
 
     public function provideConnectorName(): array

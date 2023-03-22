@@ -74,4 +74,12 @@ class ExportMailchimpSegmentsTopicTest extends AbstractTopicTestCase
     {
         self::assertEquals(MessagePriority::VERY_LOW, $this->getTopic()->getDefaultPriority('queueName'));
     }
+
+    public function testCreateJobName(): void
+    {
+        self::assertSame(
+            'oro_mailchimp:export_mailchimp:42',
+            $this->getTopic()->createJobName(['integrationId' => 42])
+        );
+    }
 }
