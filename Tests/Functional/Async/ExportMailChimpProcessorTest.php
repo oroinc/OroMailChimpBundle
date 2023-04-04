@@ -9,6 +9,7 @@ use Oro\Bundle\MailChimpBundle\Async\Topic\ExportMailchimpSegmentsTopic;
 use Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures\LoadChannelData;
 use Oro\Bundle\MessageQueueBundle\Test\Functional\MessageQueueExtension;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use Oro\Bundle\UserBundle\Migrations\Data\ORM\LoadAdminUserData;
 use Oro\Component\MessageQueue\Client\MessagePriority;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
 
@@ -39,6 +40,7 @@ class ExportMailChimpProcessorTest extends WebTestCase
             ExportMailchimpSegmentsTopic::getName(),
             [
                 'integrationId' => PHP_INT_MAX,
+                'userId' => $this->getUserId(true),
                 'segmentsIds' => [PHP_INT_MAX],
             ]
         );
@@ -50,7 +52,7 @@ class ExportMailChimpProcessorTest extends WebTestCase
             $sentMessage
         );
         self::assertTrue(
-            self::getLoggerTestHandler()->hasError('The integration not found: ' . PHP_INT_MAX)
+            self::getLoggerTestHandler()->hasErrorThatContains('The integration not found: ' . PHP_INT_MAX)
         );
     }
 
@@ -62,6 +64,7 @@ class ExportMailChimpProcessorTest extends WebTestCase
             ExportMailchimpSegmentsTopic::getName(),
             [
                 'integrationId' => $integrationId,
+                'userId' => $this->getUserId(true),
                 'segmentsIds' => [PHP_INT_MAX],
             ]
         );
@@ -73,7 +76,54 @@ class ExportMailChimpProcessorTest extends WebTestCase
             $sentMessage
         );
         self::assertTrue(
-            self::getLoggerTestHandler()->hasError('The integration is not enabled: ' . $integrationId)
+            self::getLoggerTestHandler()->hasErrorThatContains('The integration is not enabled: ' . $integrationId)
+        );
+    }
+
+    public function testProcessUserNotFound(): void
+    {
+        $integrationId = $this->getReference('mailchimp:channel_1')->getId();
+        $sentMessage = self::sendMessage(
+            ExportMailchimpSegmentsTopic::getName(),
+            [
+                'integrationId' => $integrationId,
+                'userId' => PHP_INT_MAX,
+                'segmentsIds' => [PHP_INT_MAX],
+            ]
+        );
+        self::consumeMessage($sentMessage);
+
+        self::assertProcessedMessageStatus(MessageProcessorInterface::REJECT, $sentMessage);
+        self::assertProcessedMessageProcessor(
+            'oro_mailchimp.async.export_mailchimp_processor',
+            $sentMessage
+        );
+        self::assertTrue(
+            self::getLoggerTestHandler()->hasErrorThatContains('The user not found: ' . PHP_INT_MAX)
+        );
+    }
+
+    public function testProcessUserIsNotActive(): void
+    {
+        $integrationId = $this->getReference('mailchimp:channel_1')->getId();
+        $userId = $this->getUserId(false);
+        $sentMessage = self::sendMessage(
+            ExportMailchimpSegmentsTopic::getName(),
+            [
+                'integrationId' => $integrationId,
+                'userId' => $this->getUserId(false),
+                'segmentsIds' => [PHP_INT_MAX],
+            ]
+        );
+        self::consumeMessage($sentMessage);
+
+        self::assertProcessedMessageStatus(MessageProcessorInterface::REJECT, $sentMessage);
+        self::assertProcessedMessageProcessor(
+            'oro_mailchimp.async.export_mailchimp_processor',
+            $sentMessage
+        );
+        self::assertTrue(
+            self::getLoggerTestHandler()->hasErrorThatContains('The user is not enabled: ' . $userId)
         );
     }
 
@@ -81,6 +131,8 @@ class ExportMailChimpProcessorTest extends WebTestCase
     {
         /** @var Channel $integration */
         $integration = $this->getReference('mailchimp:channel_1');
+        $user = self::getContainer()->get('oro_user.manager')
+            ->findUserByEmail(LoadAdminUserData::DEFAULT_ADMIN_EMAIL);
 
         self::assertEmpty($integration->getStatuses());
 
@@ -88,6 +140,7 @@ class ExportMailChimpProcessorTest extends WebTestCase
             ExportMailchimpSegmentsTopic::getName(),
             [
                 'integrationId' => $integration->getId(),
+                'userId' => $user->getId(),
                 'segmentsIds' => [PHP_INT_MAX],
             ]
         );
@@ -109,5 +162,11 @@ class ExportMailChimpProcessorTest extends WebTestCase
 
         self::assertEquals($integration->getId(), $status->getChannel()->getId());
         self::assertEquals(Status::STATUS_COMPLETED, $status->getCode());
+    }
+
+    private function getUserId(bool $enabled): int
+    {
+        $reference = $enabled ? 'mailchimp:channel_1' : 'mailchimp_transport:channel_disabled_1';
+        return $this->getReference($reference)->getDefaultUserOwner()->getId();
     }
 }

@@ -71,29 +71,11 @@ class ExportMailChimpProcessor implements MessageProcessorInterface, TopicSubscr
     {
         $messageBody = $message->getBody();
 
-        /** @var EntityManagerInterface $em */
-        $em = $this->doctrineHelper->getEntityManagerForClass(Integration::class);
+        $result = $this->jobRunner->runUniqueByMessage($message, function () use ($messageBody) {
+            $integration = $messageBody['integrationId'];
+            $user = $messageBody['userId'];
 
-        /** @var Integration $integration */
-        $integration = $em->find(Integration::class, $messageBody['integrationId']);
-
-        if (!$integration) {
-            $this->logger->error(
-                sprintf('The integration not found: %s', $messageBody['integrationId'])
-            );
-
-            return self::REJECT;
-        }
-        if (!$integration->isEnabled()) {
-            $this->logger->error(
-                sprintf('The integration is not enabled: %s', $messageBody['integrationId'])
-            );
-
-            return self::REJECT;
-        }
-
-        $result = $this->jobRunner->runUniqueByMessage($message, function () use ($messageBody, $integration) {
-            $this->setTemporaryIntegrationToken($integration);
+            $this->setTemporaryIntegrationTokenWithUser($integration, $user);
 
             return $this->processMessageData($messageBody, $integration);
         });

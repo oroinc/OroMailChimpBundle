@@ -8,6 +8,7 @@ use Oro\Bundle\ContactBundle\Entity\Contact;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
 use Oro\Bundle\TestFrameworkCRMBundle\Entity\TestCustomerWithContactInformation;
+use Oro\Bundle\UserBundle\Entity\User;
 
 class LoadMarketingListData extends AbstractMailChimpFixture implements DependentFixtureInterface
 {
@@ -35,6 +36,8 @@ class LoadMarketingListData extends AbstractMailChimpFixture implements Dependen
      */
     public function load(ObjectManager $manager): void
     {
+        $owner = $manager->getRepository(User::class)->findOneByUsername('admin');
+
         foreach ($this->mlData as $data) {
             $entity = new MarketingList();
             $type = $manager
@@ -43,6 +46,7 @@ class LoadMarketingListData extends AbstractMailChimpFixture implements Dependen
             $segment = $this->getReference($data['segment']);
             $entity->setType($type);
             $entity->setSegment($segment);
+            $entity->setOwner($owner);
             $this->setEntityPropertyValues($entity, $data, ['reference', 'type', 'segment']);
             $this->setReference($data['reference'], $entity);
             $manager->persist($entity);

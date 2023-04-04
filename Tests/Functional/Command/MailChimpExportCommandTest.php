@@ -27,20 +27,24 @@ class MailChimpExportCommandTest extends WebTestCase
     {
         /** @var StaticSegment $segment */
         $segment = $this->getReference('mailchimp:segment_one');
+        $segmentId = $segment->getId();
+        $integrationId = $segment->getChannel()->getId();
+        $userId = $segment->getMarketingList()->getOwner()->getId();
 
-        $result = self::runCommand('oro:cron:mailchimp:export', ['--segments=' . $segment->getId()]);
+        $result = self::runCommand('oro:cron:mailchimp:export', ['--segments=' . $segmentId]);
 
         self::assertStringContainsString('Send export MailChimp message for integration:', $result);
         self::assertStringContainsString(
-            'Integration "' . $segment->getChannel()->getId() . '" and segments "' . $segment->getId() . '"',
+            "Integration \"$integrationId\" user \"$userId\" and segments \"$segmentId\"",
             $result
         );
 
         self::assertMessageSent(
             ExportMailchimpSegmentsTopic::getName(),
             [
-                'integrationId' => $segment->getChannel()->getId(),
-                'segmentsIds' => [$segment->getId()],
+                'integrationId' => $integrationId,
+                'userId' => $userId,
+                'segmentsIds' => [$segmentId],
             ]
         );
         self::assertMessageSentWithPriority(ExportMailchimpSegmentsTopic::getName(), MessagePriority::VERY_LOW);
