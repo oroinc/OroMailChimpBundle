@@ -96,30 +96,36 @@ HELP
         $integrationSegments = [];
         foreach ($iterator as $staticSegment) {
             $integration = $staticSegment->getChannel();
+            $userId = $staticSegment->getMarketingList()->getOwner()->getId();
             $integrationToSync[$integration->getId()] = $integration;
-            $integrationSegments[$integration->getId()][] = $staticSegment->getId();
+            $integrationSegments[$integration->getId()][$userId][] = $staticSegment->getId();
         }
         if (count($integrationToSync) > 0) {
             $output->writeln('Send export MailChimp message for integration:');
             foreach ($integrationToSync as $integration) {
-                $output->writeln(sprintf(
-                    'Integration "%s" and segments "%s"',
-                    $integration->getId(),
-                    implode('", "', $integrationSegments[$integration->getId()])
-                ));
+                $integrationId = $integration->getId();
+                foreach ($integrationSegments[$integrationId] as $userId => $segmentIds) {
+                    $output->writeln(sprintf(
+                        'Integration "%s" user "%s" and segments "%s"',
+                        $integrationId,
+                        $userId,
+                        implode('", "', $segmentIds)
+                    ));
 
-                $this->messageProducer->send(ExportMailchimpSegmentsTopic::getName(), [
-                    'integrationId' => $integration->getId(),
-                    'segmentsIds' => $integrationSegments[$integration->getId()]
-                ]);
+                    $this->messageProducer->send(ExportMailchimpSegmentsTopic::getName(), [
+                        'integrationId' => $integrationId,
+                        'segmentsIds' => $segmentIds,
+                        'userId' => $userId,
+                    ]);
+                }
             }
         } else {
             $output->writeln('Active MailChimp Integrations not found.');
 
-            return 1;
+            return self::FAILURE;
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     private function getStaticSegmentRepository(): StaticSegmentRepository

@@ -73,32 +73,14 @@ class ExportMailChimpProcessor implements MessageProcessorInterface, TopicSubscr
     {
         $messageBody = $message->getBody();
 
-        /** @var EntityManagerInterface $em */
-        $em = $this->doctrineHelper->getEntityManagerForClass(Integration::class);
-
-        /** @var Integration $integration */
-        $integration = $em->find(Integration::class, $messageBody['integrationId']);
-
-        if (!$integration) {
-            $this->logger->error(
-                sprintf('The integration not found: %s', $messageBody['integrationId'])
-            );
-
-            return self::REJECT;
-        }
-        if (!$integration->isEnabled()) {
-            $this->logger->error(
-                sprintf('The integration is not enabled: %s', $messageBody['integrationId'])
-            );
-
-            return self::REJECT;
-        }
-
-        $jobName = 'oro_mailchimp:export_mailchimp:' . $messageBody['integrationId'];
+        $jobName = 'oro_mailchimp:export_mailchimp:' . $messageBody['integrationId']->getId();
         $ownerId = $message->getMessageId();
 
-        $result = $this->jobRunner->runUnique($ownerId, $jobName, function () use ($messageBody, $integration) {
-            $this->setTemporaryIntegrationToken($integration);
+        $result = $this->jobRunner->runUnique($ownerId, $jobName, function () use ($messageBody) {
+            $integration = $messageBody['integrationId'];
+            $user = $messageBody['userId'];
+
+            $this->setTemporaryIntegrationTokenWithUser($integration, $user);
 
             return $this->processMessageData($messageBody, $integration);
         });

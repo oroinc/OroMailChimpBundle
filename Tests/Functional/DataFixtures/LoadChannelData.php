@@ -5,6 +5,9 @@ namespace Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\UserBundle\Entity\UserManager;
 use Oro\Bundle\UserBundle\Migrations\Data\ORM\LoadAdminUserData;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -70,12 +73,13 @@ class LoadChannelData extends AbstractMailChimpFixture implements DependentFixtu
     {
         $userManager = $this->container->get('oro_user.manager');
         $admin = $userManager->findUserByEmail(LoadAdminUserData::DEFAULT_ADMIN_EMAIL);
-        $organization = $manager->getRepository('OroOrganizationBundle:Organization')->getFirst();
+        $inactiveUser = $this->loadInactiveUser($userManager);
+        $organization = $manager->getRepository(Organization::class)->getFirst();
 
         foreach ($this->channelData as $data) {
             $entity = new Channel();
             $data['transport'] = $this->getReference($data['transport']);
-            $entity->setDefaultUserOwner($admin);
+            $entity->setDefaultUserOwner($data['enabled'] ? $admin : $inactiveUser);
             $entity->setOrganization($organization);
             $this->setEntityPropertyValues($entity, $data, ['reference', 'synchronizationSettings']);
             $this->setReference($data['reference'], $entity);
@@ -87,6 +91,21 @@ class LoadChannelData extends AbstractMailChimpFixture implements DependentFixtu
             $manager->persist($entity);
         }
         $manager->flush();
+    }
+
+    private function loadInactiveUser(UserManager $userManager): User
+    {
+        /** @var User $user */
+        $user = $userManager->createUser();
+
+        $user->setUsername(uniqid('inactive.'));
+        $user->setEmail('inactive@example.com');
+        $user->setPassword('the_password');
+        $user->setEnabled(false);
+
+        $userManager->updateUser($user);
+
+        return $user;
     }
 
     /**
