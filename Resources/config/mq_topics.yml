@@ -3,4 +3,6 @@ services:
         tags:
             - { name: oro_message_queue.topic }
 
-    Oro\Bundle\MailChimpBundle\Async\Topic\ExportMailchimpSegmentsTopic: ~
+    Oro\Bundle\MailChimpBundle\Async\Topic\ExportMailchimpSegmentsTopic:
+        arguments:
+            - '@oro_entity.doctrine_helper'
