@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\MailChimpBundle\Tests\Functional\Transport;
 
 use Oro\Bundle\IntegrationBundle\Async\Topic\SyncIntegrationTopic;

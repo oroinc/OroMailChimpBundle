@@ -289,7 +289,7 @@ class ExportMailChimpProcessorTest extends \PHPUnit\Framework\TestCase
     private function getStaticSegmentEntityManager(
         StaticSegment $staticSegment,
         InvokedCount $invokeCountMatcher
-    ):EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject {
+    ): EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject {
         $segmentEntityManager = $this->createMock(EntityManagerInterface::class);
         $segmentEntityManager->expects($invokeCountMatcher)
             ->method('persist')

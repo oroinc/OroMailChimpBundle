@@ -439,7 +439,7 @@ class StaticSegmentExportWriter extends AbstractExportWriter implements ContextA
         }
 
         if ($method === 'addStaticSegmentMembers' || $method === 'deleteStaticSegmentMembers') {
-            $batchParameters['static_segment_id'] = (integer)$staticSegment->getOriginId();
+            $batchParameters['static_segment_id'] = (int)$staticSegment->getOriginId();
         }
 
         if ($deleteMember) {
