@@ -36,7 +36,7 @@ class MailChimpClientTest extends \PHPUnit\Framework\TestCase
 
         $this->client->expects(self::once())
             ->method('callExportApi')
-            ->with('https://us9.api.mailchimp.com/export/1.0/someMethod/', \sprintf('{"apikey":"%s"}', self::API_KEY))
+            ->with('https://us9.api.mailchimp.com/export/1.0/someMethod/', sprintf('{"apikey":"%s"}', self::API_KEY))
             ->willReturn($response);
 
         $this->client->export('someMethod', []);
