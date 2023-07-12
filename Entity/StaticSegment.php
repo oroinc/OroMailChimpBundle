@@ -329,7 +329,7 @@ class StaticSegment implements OriginAwareInterface
     /**
      * Set marketingList
      *
-     * @param MarketingList $marketingList
+     * @param MarketingList|null $marketingList
      * @return StaticSegment
      */
     public function setMarketingList(MarketingList $marketingList = null)
@@ -352,7 +352,7 @@ class StaticSegment implements OriginAwareInterface
     /**
      * Set subscribersList
      *
-     * @param SubscribersList $subscribersList
+     * @param SubscribersList|null $subscribersList
      * @return StaticSegment
      */
     public function setSubscribersList(SubscribersList $subscribersList = null)
@@ -419,7 +419,7 @@ class StaticSegment implements OriginAwareInterface
     }
 
     /**
-     * @param DateTime $updatedAt
+     * @param DateTime|null $updatedAt
      * @return StaticSegment
      */
     public function setUpdatedAt(DateTime $updatedAt = null)
@@ -460,7 +460,7 @@ class StaticSegment implements OriginAwareInterface
     }
 
     /**
-     * @param DateTime $lastReset
+     * @param DateTime|null $lastReset
      *
      * @return StaticSegment
      */

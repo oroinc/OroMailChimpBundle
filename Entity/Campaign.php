@@ -425,7 +425,7 @@ class Campaign implements OriginAwareInterface
     }
 
     /**
-     * @param EmailCampaign $emailCampaign
+     * @param EmailCampaign|null $emailCampaign
      * @return Campaign
      */
     public function setEmailCampaign(EmailCampaign $emailCampaign = null)
@@ -840,7 +840,7 @@ class Campaign implements OriginAwareInterface
     }
 
     /**
-     * @param StaticSegment $segment
+     * @param StaticSegment|null $segment
      * @return Campaign
      */
     public function setStaticSegment(StaticSegment $segment = null)
@@ -858,7 +858,7 @@ class Campaign implements OriginAwareInterface
     }
 
     /**
-     * @param SubscribersList $subscribersList
+     * @param SubscribersList|null $subscribersList
      * @return Campaign
      */
     public function setSubscribersList(SubscribersList $subscribersList = null)

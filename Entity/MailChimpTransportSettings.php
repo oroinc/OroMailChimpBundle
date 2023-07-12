@@ -58,7 +58,7 @@ class MailChimpTransportSettings extends TransportSettings
     /**
      * Set template
      *
-     * @param Template $emailTemplate
+     * @param Template|null $emailTemplate
      *
      * @return MailChimpTransportSettings
      */

@@ -38,12 +38,6 @@ class QueryWithOptionsIterator implements \Iterator
      */
     private $position = 0;
 
-    /**
-     * @param QueryBuilder $queryBuilder
-     * @param array $options
-     * @param bool $readOnce
-     * @param null $batchSize
-     */
     public function __construct(
         QueryBuilder $queryBuilder,
         array $options = [],

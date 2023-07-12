@@ -26,9 +26,6 @@ class CallbackFilterIteratorCompatible extends \FilterIterator
         parent::__construct($iterator);
     }
 
-    /**
-     * @return bool
-     */
     public function accept(): bool
     {
         $iterator = $this->getInnerIterator();
