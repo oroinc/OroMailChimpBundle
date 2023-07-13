@@ -14,7 +14,7 @@ class MemberActivityRepository extends EntityRepository
      * Return latest activityTime grouped by campaign.
      *
      * @param Channel $channel
-     * @param array $actions
+     * @param array|null $actions
      * @return array
      */
     public function getLastSyncedActivitiesByCampaign(Channel $channel, array $actions = null)

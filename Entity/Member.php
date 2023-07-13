@@ -429,7 +429,7 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
     }
 
     /**
-     * @param \DateTime $confirmedAt
+     * @param \DateTime|null $confirmedAt
      * @return Member
      */
     public function setConfirmedAt(\DateTime $confirmedAt = null)
@@ -585,7 +585,7 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
     }
 
     /**
-     * @param \DateTime $lastChangedAt
+     * @param \DateTime|null $lastChangedAt
      * @return Member
      */
     public function setLastChangedAt(\DateTime $lastChangedAt = null)
@@ -699,7 +699,7 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
     }
 
     /**
-     * @param \DateTime $optedInAt
+     * @param \DateTime|null $optedInAt
      * @return Member
      */
     public function setOptedInAt(\DateTime $optedInAt = null)
@@ -813,7 +813,7 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
     }
 
     /**
-     * @param SubscribersList $subscribersList
+     * @param SubscribersList|null $subscribersList
      * @return Member
      */
     public function setSubscribersList(SubscribersList $subscribersList = null)
@@ -870,7 +870,7 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
     }
 
     /**
-     * @param \DateTime $updatedAt
+     * @param \DateTime|null $updatedAt
      * @return Member
      */
     public function setUpdatedAt(\DateTime $updatedAt = null)

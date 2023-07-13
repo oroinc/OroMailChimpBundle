@@ -339,7 +339,7 @@ class MailChimpTransport implements TransportInterface
 
     /**
      * @param Channel $channel
-     * @param array[] $sinceMap
+     * @param array[]|null $sinceMap
      * @return MemberActivityIterator
      * @throws Exception
      */
@@ -403,7 +403,7 @@ class MailChimpTransport implements TransportInterface
 
     /**
      * @param Channel $channel
-     * @param DateTime $since
+     * @param DateTime|null $since
      * @return Iterator
      * @throws Exception
      */

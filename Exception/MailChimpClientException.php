@@ -12,7 +12,7 @@ class MailChimpClientException extends Exception implements MailChimpException
     /**
      * @param string $message
      * @param int $code
-     * @param Exception $previous
+     * @param Exception|null $previous
      */
     public function __construct($message = '', $code = 0, Exception $previous = null)
     {

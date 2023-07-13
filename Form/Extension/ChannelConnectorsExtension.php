@@ -36,7 +36,7 @@ class ChannelConnectorsExtension extends AbstractTypeExtension
     }
 
     /**
-     * @param Channel $data
+     * @param Channel|null $data
      * @return bool
      */
     public function isApplicable(Channel $data = null)

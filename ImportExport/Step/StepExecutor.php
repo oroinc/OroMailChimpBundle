@@ -16,7 +16,7 @@ use Oro\Bundle\MailChimpBundle\ImportExport\Writer\ClearableInterface;
 class StepExecutor extends BaseStepExecutor
 {
     /**
-     * @var ItemReaderInterface|IteratorBasedReader
+     * @var ItemReaderInterface|IteratorBasedReader|null
      */
     protected ?ItemReaderInterface $reader;
 

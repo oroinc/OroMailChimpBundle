@@ -902,7 +902,7 @@ class SubscribersList implements OriginAwareInterface
     }
 
     /**
-     * @param array $data
+     * @param array|null $data
      * @return SubscribersList
      */
     public function setMergeVarConfig(array $data = null)
