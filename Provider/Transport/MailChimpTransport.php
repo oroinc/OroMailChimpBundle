@@ -9,6 +9,7 @@ use Iterator;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Oro\Bundle\IntegrationBundle\Provider\TransportInterface;
+use Oro\Bundle\MailChimpBundle\Entity\Campaign;
 use Oro\Bundle\MailChimpBundle\Entity\Member;
 use Oro\Bundle\MailChimpBundle\Entity\Repository\CampaignRepository;
 use Oro\Bundle\MailChimpBundle\Entity\Repository\StaticSegmentRepository;
@@ -20,11 +21,11 @@ use Oro\Bundle\MailChimpBundle\Exception\RequiredOptionException;
 use Oro\Bundle\MailChimpBundle\Form\Type\IntegrationSettingsType;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\CampaignIterator;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\ListIterator;
+use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\ListsMembersSubordinateIterator;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\MemberAbuseIterator;
-use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\MemberActivityIterator;
-use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\MemberIterator;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\MemberSentToIterator;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\MemberUnsubscribesIterator;
+use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\ReportsCampaignEmailActivitySubordinateIterator;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\StaticSegmentIterator;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\StaticSegmentListIterator;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\TemplateIterator;
@@ -319,53 +320,40 @@ class MailChimpTransport implements TransportInterface
     public function getMembersToSync(Channel $channel, DateTime $since = null)
     {
         /** @var SubscribersListRepository $subscribersListRepository */
-        $subscribersListRepository = $this->managerRegistry->getRepository('OroMailChimpBundle:SubscribersList');
-        $subscribersLists = $subscribersListRepository->getUsedSubscribersListIterator($channel);
-
-        $parameters = ['status' => [Member::STATUS_SUBSCRIBED, Member::STATUS_UNSUBSCRIBED, Member::STATUS_CLEANED]];
-
+        $subscribersListRepository = $this->managerRegistry->getRepository(SubscribersList::class);
+        $subscribersListsIterator = $subscribersListRepository->getUsedSubscribersListIterator($channel);
+        $options['status'] = [Member::STATUS_SUBSCRIBED, Member::STATUS_UNSUBSCRIBED, Member::STATUS_CLEANED];
         if ($since) {
-            $parameters['since'] = $this->getSinceForApi($since);
+            $options['since_timestamp_opt'] = $this->getSinceForApi($since);
         }
 
-        $memberIterator = new MemberIterator($subscribersLists, $this->client, $parameters);
-
-        if ($this->logger) {
-            $memberIterator->setLogger($this->logger);
-        }
-
-        return $memberIterator;
+        return new ListsMembersSubordinateIterator($subscribersListsIterator, $this->client, $options);
     }
 
     /**
      * @param Channel $channel
      * @param array[] $sinceMap
-     * @return MemberActivityIterator
+     * @return ReportsCampaignEmailActivitySubordinateIterator
      * @throws Exception
      */
-    public function getMemberActivitiesToSync(Channel $channel, array $sinceMap = null)
-    {
-        $parameters = ['include_empty' => false];
+    public function getMemberActivitiesToSync(
+        Channel $channel,
+        array $sinceMap = null
+    ): ReportsCampaignEmailActivitySubordinateIterator {
         if ($sinceMap) {
             foreach ($sinceMap as $campaign => $since) {
                 // Seems that MailChimp has delay on activities collecting
                 // and activities list may be extended in past
-                $sinceDate = min($since);
-                if (!$sinceDate) {
-                    $sinceDate = max($since);
-                }
+                $sinceDate = min($since) ?? max($since);
                 if ($sinceDate) {
                     $sinceMap[$campaign]['since'] = $this->getSinceForApi($sinceDate, 'PT10M');
                 }
             }
         }
 
-        return new MemberActivityIterator(
-            $this->getSentCampaignsIterator($channel),
-            $this->client,
-            $parameters,
-            $sinceMap
-        );
+        $campaignsIterator = $this->getSentCampaignsIterator($channel);
+
+        return new ReportsCampaignEmailActivitySubordinateIterator($campaignsIterator, $this->client, $sinceMap);
     }
 
     // ** NOT CALLED ** //
@@ -379,7 +367,8 @@ class MailChimpTransport implements TransportInterface
     protected function getSentCampaignsIterator(Channel $channel)
     {
         /** @var CampaignRepository $repository */
-        $repository = $this->managerRegistry->getRepository('OroMailChimpBundle:Campaign');
+        $repository = $this->managerRegistry->getRepository(Campaign::class);
+
         return $repository->getSentCampaigns($channel);
     }
 

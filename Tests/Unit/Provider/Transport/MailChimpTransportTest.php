@@ -6,7 +6,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Entity\Campaign;
 use Oro\Bundle\MailChimpBundle\Entity\MailChimpTransport as MailChimpTransportEntity;
-use Oro\Bundle\MailChimpBundle\Entity\Member;
 use Oro\Bundle\MailChimpBundle\Entity\Repository\StaticSegmentRepository;
 use Oro\Bundle\MailChimpBundle\Entity\Repository\SubscribersListRepository;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
@@ -14,7 +13,7 @@ use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
 use Oro\Bundle\MailChimpBundle\Exception\RequiredOptionException;
 use Oro\Bundle\MailChimpBundle\Form\Type\IntegrationSettingsType;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\CampaignIterator;
-use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\MemberIterator;
+use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\ListsMembersSubordinateIterator;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClient;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClientFactory;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpTransport;
@@ -209,38 +208,34 @@ class MailChimpTransportTest extends \PHPUnit\Framework\TestCase
 
     public function testGetMembersToSync()
     {
-        $subscribersListRepository = $this->getMockBuilder(SubscribersListRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->managerRegistry->expects(static::once())
-            ->method('getRepository')
-            ->willReturn($subscribersListRepository);
-
         $subscribersList = $this->createMock(SubscribersList::class);
+        $subscribersList
+            ->expects($this->once())
+            ->method('getOriginId')
+            ->willReturn('origin_id');
         $subscribersLists = new \ArrayIterator([$subscribersList]);
-
-        $subscribersListRepository->expects(static::once())
+        $subscribersListRepository = $this->createMock(SubscribersListRepository::class);
+        $subscribersListRepository
+            ->expects($this->once())
             ->method('getUsedSubscribersListIterator')
             ->willReturn($subscribersLists);
 
-        $since = new \DateTime('2015-02-15 21:00:01', new \DateTimeZone('Europe/Kiev'));
+        $this->managerRegistry
+            ->expects($this->once())
+            ->method('getRepository')
+            ->willReturn($subscribersListRepository);
 
-        /** @var Channel $channel */
-        $channel = $this->getMockBuilder(Channel::class)->disableOriginalConstructor()->getMock();
+        $since = new \DateTime('2015-02-15 21:00:01', new \DateTimeZone('Europe/Kiev'));
+        $channel = $this->createMock(Channel::class);
 
         $client = $this->initTransport();
+        $client
+            ->expects($this->once())
+            ->method('getListMembers')
+            ->willReturn(['members' => [['id' => 1], ['id' => 2]], 'total_items' => 2]);
         $result = $this->transport->getMembersToSync($channel, $since);
 
-        static::assertInstanceOf(MemberIterator::class, $result);
-        static::assertSame($client, $result->getClient());
-        static::assertSame($subscribersLists, $result->getMainIterator());
-        static::assertEquals(
-            [
-                'status' => [Member::STATUS_SUBSCRIBED, Member::STATUS_UNSUBSCRIBED, Member::STATUS_CLEANED],
-                'since' => '2015-02-15 19:00:00',
-            ],
-            $result->getParameters()
-        );
+        $this->assertInstanceOf(ListsMembersSubordinateIterator::class, $result);
+        $this->assertEquals([['id' => 1], ['id' => 2]], iterator_to_array($result));
     }
 }

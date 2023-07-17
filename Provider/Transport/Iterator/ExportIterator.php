@@ -9,6 +9,8 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Mailchimp API export calls queue iterator.
+ *
+ * @deprecated since 5.1, will be removed in 6.0. Use {@see MembersListIterator} instead.
  */
 class ExportIterator implements \Iterator
 {

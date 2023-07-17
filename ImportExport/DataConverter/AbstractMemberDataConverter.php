@@ -2,44 +2,34 @@
 
 namespace Oro\Bundle\MailChimpBundle\ImportExport\DataConverter;
 
-use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Validation;
-
 /**
  * Abstract data converter to export/import format for mailchimp member data.
  */
 abstract class AbstractMemberDataConverter extends IntegrationAwareDataConverter
 {
     /**
-     * {@inheritdoc}
+     * @inheridoc
      */
     protected function getHeaderConversionRules()
     {
         return [
+            'id' => 'originId',
             'status' => 'status',
             'list_id' => 'subscribersList:originId',
-            'channel_id' => 'channel:id',
-            'subscribersList_id' => 'subscribersList:id',
-            'email' => 'email',
-            'origin_id' => 'originId',
-            'MEMBER_RATING' => 'memberRating',
-            'OPTIN_TIME' => 'optedInAt',
-            'OPTIN_IP' => 'optedInIpAddress',
-            'CONFIRM_TIME' => 'confirmedAt',
-            'CONFIRM_IP' => 'confirmedIpAddress',
-            'LATITUDE' => 'latitude',
-            'LONGITUDE' => 'longitude',
-            'GMTOFF' => 'gmtOffset',
-            'DSTOFF' => 'dstOffset',
-            'TIMEZONE' => 'timezone',
-            'CC' => 'cc',
-            'REGION' => 'region',
-            'LAST_CHANGED' => 'lastChangedAt',
-            'EUID' => 'euid',
-            'LEID' => 'leid',
-            'NOTES' => 'notes',
+            'email_address' => 'email',
+            'member_rating' => 'memberRating',
+            'timestamp_opt' => 'optedInAt',
+            'ip_opt' => 'optedInIpAddress',
+            'timestamp_signup' => 'confirmedAt',
+            'ip_signup' => 'confirmedIpAddress',
+            'latitude' => 'latitude',
+            'longitude' => 'longitude',
+            'gmtoff' => 'gmtOffset',
+            'dstoff' => 'dstOffset',
+            'timezone' => 'timezone',
+            'country_code' => 'cc',
+            'region' => 'region',
+            'last_changed' => 'lastChangedAt',
         ];
     }
 
@@ -48,31 +38,19 @@ abstract class AbstractMemberDataConverter extends IntegrationAwareDataConverter
      */
     public function convertToImportFormat(array $importedRecord, $skipNullValues = true)
     {
-        reset($importedRecord);
-        $email = current($importedRecord);
-
-        $validator = Validation::createValidator();
-        $emailViolations = $validator->validate($email, [new Email(), new NotNull(), new NotBlank()]);
-        if (count($emailViolations) === 0) {
-            $importedRecord['email'] = $email;
-            $importedRecord['origin_id'] = md5(strtolower($email));
-        }
-
         if ($this->context->hasOption('channel')) {
             $channel = $this->context->getOption('channel');
             $importedRecord['subscribersList:channel:id'] = $channel;
         }
 
-        $mergeVarValues = [];
-
-        foreach ($importedRecord as $key => $value) {
-            if ($this->isMergeVarValueColumn($key)) {
-                $mergeVarValues[$key] = $value;
-                unset($importedRecord[$key]);
-            }
+        if (isset($importedRecord['location'])) {
+            $importedRecord += $importedRecord['location'];
+            unset($importedRecord['location']);
         }
 
-        $importedRecord['mergeVarValues'] = $mergeVarValues;
+        if (isset($importedRecord['merge_fields'])) {
+            $importedRecord['mergeVarValues'] = $importedRecord['merge_fields'];
+        }
 
         return parent::convertToImportFormat($importedRecord, $skipNullValues);
     }
