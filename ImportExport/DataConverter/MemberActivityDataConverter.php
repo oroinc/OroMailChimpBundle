@@ -14,7 +14,7 @@ class MemberActivityDataConverter extends IntegrationAwareDataConverter
     {
         return [
             'timestamp' => 'activityTime',
-            'campaign' => 'campaign',
+            'email_address' => 'email',
         ];
     }
 
@@ -23,7 +23,10 @@ class MemberActivityDataConverter extends IntegrationAwareDataConverter
      */
     public function convertToImportFormat(array $importedRecord, $skipNullValues = true)
     {
-        $importedRecord['member:email'] = $importedRecord['email'];
+        $importedRecord['member:email'] = $importedRecord['email'] ?? $importedRecord['email_address'];
+        $importedRecord['action'] = $importedRecord['activity']['action'] ?? $importedRecord['action'];
+        $importedRecord['activityTime'] = $importedRecord['activity']['timestamp'] ?? $importedRecord['activityTime'];
+        $importedRecord['ip'] = $importedRecord['activity']['ip'] ?? $importedRecord['ip'];
 
         return parent::convertToImportFormat($importedRecord, $skipNullValues);
     }

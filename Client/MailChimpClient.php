@@ -364,6 +364,19 @@ class MailChimpClient implements MailChimpClientConfigAwareInterface
     }
 
     /**
+     * @throws MailChimpClientException
+     */
+    public function getCampaignEmailActivityReport(array $options): array|bool
+    {
+        $campaignId = $this->getCampaignId($options);
+
+        $result = $this->client->get(sprintf('reports/%s/email-activity', $campaignId), $options);
+        $this->guardAgainstStatus($result);
+
+        return $result;
+    }
+
+    /**
      * @link https://developer.mailchimp.com/documentation/mailchimp/reference/lists/
      *
      * @param array $options
@@ -391,6 +404,23 @@ class MailChimpClient implements MailChimpClientConfigAwareInterface
         $listId = $this->getListId($options);
 
         $result = $this->client->delete("lists/$listId/merge-fields", $options);
+        $this->guardAgainstStatus($result);
+
+        return $result;
+    }
+
+    /**
+     * @link https://mailchimp.com/developer/marketing/api/list-members/
+     *
+     * @param array $options
+     * @return array
+     * @throws MailChimpClientException
+     */
+    public function getListMembers(array $options)
+    {
+        $listId = $this->getListId($options);
+
+        $result = $this->client->get("lists/$listId/members/", $options);
         $this->guardAgainstStatus($result);
 
         return $result;
