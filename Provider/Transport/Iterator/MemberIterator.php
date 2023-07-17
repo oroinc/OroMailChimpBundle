@@ -10,6 +10,8 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Mailchimp members iterator.
+ *
+ * @deprecated since 5.1, will be removed in 6.0. Use {@see MembersListIterator} instead.
  */
 class MemberIterator extends AbstractSubordinateIterator
 {
