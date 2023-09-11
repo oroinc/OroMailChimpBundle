@@ -17,7 +17,7 @@ class UniqueStaticSegmentNameConstraint extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return [self::CLASS_CONSTRAINT];
     }
@@ -25,7 +25,7 @@ class UniqueStaticSegmentNameConstraint extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'oro_mailchimp.validator.unique_static_segment_name';
     }
