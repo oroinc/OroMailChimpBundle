@@ -2,33 +2,19 @@
 
 namespace Oro\Bundle\MailChimpBundle\Migrations\Schema\v1_9;
 
-use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Oro\Bundle\MigrationBundle\Migration\Extension\DatabasePlatformAwareInterface;
+use Oro\Bundle\MigrationBundle\Migration\Extension\DatabasePlatformAwareTrait;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\MigrationConstraintTrait;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
 class OroMailChimpBundle implements Migration, DatabasePlatformAwareInterface
 {
+    use DatabasePlatformAwareTrait;
     use MigrationConstraintTrait;
-
-    /**
-     * @var AbstractPlatform $platform
-     */
-    private $platform;
-
-    /**
-     * Sets the database platform
-     */
-    public function setDatabasePlatform(AbstractPlatform $platform)
-    {
-        $this->platform = $platform;
-    }
 
     /**
      * {@inheritdoc}
@@ -39,10 +25,6 @@ class OroMailChimpBundle implements Migration, DatabasePlatformAwareInterface
         $queries->addPostQuery(new UpdateOriginIdQuery($this->platform));
     }
 
-    /**
-     * @throws SchemaException
-     * @throws DBALException
-     */
     private function changeOriginIdOnMailchimpMember(Schema $schema)
     {
         $mailChimpMemberTable = $schema->getTable('orocrm_mailchimp_member');
