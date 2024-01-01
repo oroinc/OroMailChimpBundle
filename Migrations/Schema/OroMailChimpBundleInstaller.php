@@ -3,31 +3,27 @@
 namespace Oro\Bundle\MailChimpBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\SchemaException;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
 /**
- * Handles all migrations logic executed during installation
- *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
 class OroMailChimpBundleInstaller implements Installation
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function getMigrationVersion()
+    public function getMigrationVersion(): string
     {
         return 'v1_9';
     }
 
     /**
-     * {@inheritdoc}
-     * @throws SchemaException
+     * {@inheritDoc}
      */
-    public function up(Schema $schema, QueryBag $queries)
+    public function up(Schema $schema, QueryBag $queries): void
     {
         /** Tables generation **/
         $this->createOroIntegrationTransportTable($schema);
@@ -61,10 +57,8 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Create oro_integration_transport table
-     *
-     * @throws SchemaException
      */
-    protected function createOroIntegrationTransportTable(Schema $schema)
+    private function createOroIntegrationTransportTable(Schema $schema): void
     {
         $table = $schema->getTable('oro_integration_transport');
         $table->addColumn('orocrm_mailchimp_apikey', 'string', ['notnull' => false, 'length' => 255]);
@@ -73,10 +67,8 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Create orocrm_cmpgn_transport_stngs table
-     *
-     * @throws SchemaException
      */
-    protected function createOrocrmCmpgnTransportStngsTable(Schema $schema)
+    private function createOrocrmCmpgnTransportStngsTable(Schema $schema): void
     {
         $table = $schema->getTable('orocrm_cmpgn_transport_stngs');
         $table->addColumn('mailchimp_template_id', 'integer', ['notnull' => false]);
@@ -87,7 +79,7 @@ class OroMailChimpBundleInstaller implements Installation
     /**
      * Create orocrm_mc_mmbr_activity table
      */
-    protected function createOrocrmMailchimpMemberActivityTable(Schema $schema)
+    private function createOrocrmMailchimpMemberActivityTable(Schema $schema): void
     {
         $table = $schema->createTable('orocrm_mc_mmbr_activity');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
@@ -100,14 +92,14 @@ class OroMailChimpBundleInstaller implements Installation
         $table->addColumn('ip_address', 'string', ['notnull' => false, 'length' => 45]);
         $table->addColumn('activity_time', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
         $table->addColumn('url', 'text', ['notnull' => false]);
-        $table->addIndex(['action'], 'mc_mmbr_activity_action_idx', []);
         $table->setPrimaryKey(['id']);
+        $table->addIndex(['action'], 'mc_mmbr_activity_action_idx');
     }
 
     /**
      * Create orocrm_mailchimp_campaign table
      */
-    protected function createOrocrmMailchimpCampaignTable(Schema $schema)
+    private function createOrocrmMailchimpCampaignTable(Schema $schema): void
     {
         $table = $schema->createTable('orocrm_mailchimp_campaign');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
@@ -118,7 +110,7 @@ class OroMailChimpBundleInstaller implements Installation
         $table->addColumn('owner_id', 'integer', ['notnull' => false]);
         $table->addColumn('channel_id', 'integer', ['notnull' => true]);
         $table->addColumn('origin_id', 'string', ['length' => 32]);
-        $table->addColumn('web_id', 'bigint', []);
+        $table->addColumn('web_id', 'bigint');
         $table->addColumn('title', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('subject', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('from_email', 'string', ['notnull' => false, 'length' => 255]);
@@ -158,31 +150,31 @@ class OroMailChimpBundleInstaller implements Installation
     /**
      * Create orocrm_mailchimp_template table
      */
-    protected function createOrocrmMailchimpTemplateTable(Schema $schema)
+    private function createOrocrmMailchimpTemplateTable(Schema $schema): void
     {
         $table = $schema->createTable('orocrm_mailchimp_template');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('owner_id', 'integer', ['notnull' => false]);
         $table->addColumn('channel_id', 'integer', ['notnull' => true]);
-        $table->addColumn('origin_id', 'bigint', []);
+        $table->addColumn('origin_id', 'bigint');
         $table->addColumn('type', 'string', ['length' => 255]);
         $table->addColumn('name', 'string', ['length' => 255]);
-        $table->addColumn('is_active', 'boolean', []);
+        $table->addColumn('is_active', 'boolean');
         $table->addColumn('layout', 'text', ['notnull' => false]);
         $table->addColumn('category', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('preview_image', 'text', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime', ['comment' => '(DC2Type:datetime)']);
         $table->addColumn('updated_at', 'datetime', ['comment' => '(DC2Type:datetime)']);
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['category'], 'mc_template_category', []);
+        $table->addIndex(['category'], 'mc_template_category');
         $table->addUniqueIndex(['origin_id', 'channel_id'], 'mc_template_oid_cid_unq');
-        $table->addIndex(['name'], 'mc_template_name', []);
+        $table->addIndex(['name'], 'mc_template_name');
     }
 
     /**
      * Create orocrm_mailchimp_member table
      */
-    protected function createOrocrmMailchimpMemberTable(Schema $schema)
+    private function createOrocrmMailchimpMemberTable(Schema $schema): void
     {
         $table = $schema->createTable('orocrm_mailchimp_member');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
@@ -213,31 +205,31 @@ class OroMailChimpBundleInstaller implements Installation
         $table->addColumn('merge_var_values', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->addColumn('created_at', 'datetime', ['comment' => '(DC2Type:datetime)']);
         $table->addColumn('updated_at', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
-        $table->addIndex(['email', 'subscribers_list_id'], 'mc_mmbr_email_list_idx');
-        $table->addIndex(['origin_id'], 'mc_mmbr_origin_idx', []);
-        $table->addIndex(['status'], 'mc_mmbr_status_idx', []);
         $table->setPrimaryKey(['id']);
+        $table->addIndex(['email', 'subscribers_list_id'], 'mc_mmbr_email_list_idx');
+        $table->addIndex(['origin_id'], 'mc_mmbr_origin_idx');
+        $table->addIndex(['status'], 'mc_mmbr_status_idx');
     }
 
     /**
      * Create orocrm_mc_static_segment_mmbr table
      */
-    protected function createOrocrmMailchimpStaticSegmentMemberTable(Schema $schema)
+    private function createOrocrmMailchimpStaticSegmentMemberTable(Schema $schema): void
     {
         $table = $schema->createTable('orocrm_mc_static_segment_mmbr');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('member_id', 'integer', []);
-        $table->addColumn('static_segment_id', 'integer', []);
+        $table->addColumn('member_id', 'integer');
+        $table->addColumn('static_segment_id', 'integer');
         $table->addColumn('state', 'string', ['length' => 255]);
+        $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['static_segment_id', 'member_id'], 'mc_segment_sid_mid_unq');
         $table->addIndex(['static_segment_id', 'state'], 'mc_segment_mmbr_sid_st');
-        $table->setPrimaryKey(['id']);
     }
 
     /**
      * Create orocrm_mc_static_segment table
      */
-    protected function createOrocrmMailchimpStaticSegmentTable(Schema $schema)
+    private function createOrocrmMailchimpStaticSegmentTable(Schema $schema): void
     {
         $table = $schema->createTable('orocrm_mc_static_segment');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
@@ -249,7 +241,7 @@ class OroMailChimpBundleInstaller implements Installation
         $table->addColumn('origin_id', 'bigint', ['notnull' => false]);
         $table->addColumn('sync_status', 'string', ['length' => 255]);
         $table->addColumn('last_synced', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
-        $table->addColumn('remote_remove', 'boolean', []);
+        $table->addColumn('remote_remove', 'boolean');
         $table->addColumn('created_at', 'datetime', ['comment' => '(DC2Type:datetime)']);
         $table->addColumn('updated_at', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
         $table->addColumn('last_reset', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
@@ -260,17 +252,17 @@ class OroMailChimpBundleInstaller implements Installation
     /**
      * Create orocrm_mc_subscribers_list table
      */
-    protected function createOrocrmMailchimpSubscribersListTable(Schema $schema)
+    private function createOrocrmMailchimpSubscribersListTable(Schema $schema): void
     {
         $table = $schema->createTable('orocrm_mc_subscribers_list');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('owner_id', 'integer', ['notnull' => false]);
         $table->addColumn('channel_id', 'integer', ['notnull' => true]);
         $table->addColumn('origin_id', 'string', ['length' => 32]);
-        $table->addColumn('web_id', 'bigint', []);
+        $table->addColumn('web_id', 'bigint');
         $table->addColumn('name', 'string', ['length' => 255]);
-        $table->addColumn('email_type_option', 'boolean', []);
-        $table->addColumn('use_awesomebar', 'boolean', []);
+        $table->addColumn('email_type_option', 'boolean');
+        $table->addColumn('use_awesomebar', 'boolean');
         $table->addColumn('default_from_name', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('default_from_email', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('default_subject', 'string', ['notnull' => false, 'length' => 255]);
@@ -304,14 +296,14 @@ class OroMailChimpBundleInstaller implements Installation
     /**
      * Create orocrm_mc_extended_merge_var table
      */
-    protected function createOrocrmMcExtendedMergeVarTable(Schema $schema)
+    private function createOrocrmMcExtendedMergeVarTable(Schema $schema): void
     {
         $table = $schema->createTable('orocrm_mc_extended_merge_var');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('static_segment_id', 'integer', []);
+        $table->addColumn('static_segment_id', 'integer');
         $table->addColumn('name', 'string', ['length' => 255]);
         $table->addColumn('label', 'string', ['length' => 255]);
-        $table->addColumn('is_required', 'boolean', []);
+        $table->addColumn('is_required', 'boolean');
         $table->addColumn('field_type', 'string', ['length' => 255]);
         $table->addColumn('tag', 'string', ['length' => 10]);
         $table->addColumn('state', 'string', ['length' => 255]);
@@ -322,12 +314,12 @@ class OroMailChimpBundleInstaller implements Installation
     /**
      * Create orocrm_mc_mmbr_extd_merge_var table
      */
-    protected function createOrocrmMcMmbrExtdMergeVarTable(Schema $schema)
+    private function createOrocrmMcMmbrExtdMergeVarTable(Schema $schema): void
     {
         $table = $schema->createTable('orocrm_mc_mmbr_extd_merge_var');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('member_id', 'integer', []);
-        $table->addColumn('static_segment_id', 'integer', []);
+        $table->addColumn('member_id', 'integer');
+        $table->addColumn('static_segment_id', 'integer');
         $table->addColumn('merge_var_values', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->addColumn('state', 'string', ['length' => 255]);
         $table->setPrimaryKey(['id']);
@@ -337,36 +329,34 @@ class OroMailChimpBundleInstaller implements Installation
     /**
      * Create orocrm_mc_tmp_mmbr_to_remove table
      */
-    protected function createOrocrmMcTmpMmbrToRemoveTable(Schema $schema)
+    private function createOrocrmMcTmpMmbrToRemoveTable(Schema $schema): void
     {
         $table = $schema->createTable('orocrm_mc_tmp_mmbr_to_remove');
-        $table->addColumn('member_id', 'integer', []);
-        $table->addColumn('static_segment_id', 'integer', []);
+        $table->addColumn('member_id', 'integer');
+        $table->addColumn('static_segment_id', 'integer');
         $table->addColumn('state', 'string', ['length' => 25]);
-        $table->addIndex(['state'], 'mc_smbr_rm_state_idx', []);
         $table->setPrimaryKey(['member_id', 'static_segment_id']);
+        $table->addIndex(['state'], 'mc_smbr_rm_state_idx');
     }
 
     /**
      * Create orocrm_mailchimp_ml_email table
      */
-    protected function createOrocrmMailchimpMlEmailTable(Schema $schema)
+    private function createOrocrmMailchimpMlEmailTable(Schema $schema): void
     {
         $table = $schema->createTable('orocrm_mailchimp_ml_email');
         $table->addColumn('marketing_list_id', 'integer', ['notnull' => false]);
         $table->addColumn('email', 'string', ['length' => 255]);
         $table->addColumn('state', 'string', ['length' => 25]);
         $table->setPrimaryKey(['marketing_list_id', 'email']);
-        $table->addIndex(['state'], 'mc_ml_email_state_idx', []);
-        $table->addIndex(['email'], 'mc_ml_email_idx', []);
+        $table->addIndex(['state'], 'mc_ml_email_state_idx');
+        $table->addIndex(['email'], 'mc_ml_email_idx');
     }
 
     /**
      * Add orocrm_cmpgn_transport_stngs foreign keys.
-     *
-     * @throws SchemaException
      */
-    protected function addOrocrmCmpgnTransportStngsForeignKeys(Schema $schema)
+    private function addOrocrmCmpgnTransportStngsForeignKeys(Schema $schema): void
     {
         $table = $schema->getTable('orocrm_cmpgn_transport_stngs');
         $table->addForeignKeyConstraint(
@@ -385,10 +375,8 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Add orocrm_mc_mmbr_activity foreign keys.
-     *
-     * @throws SchemaException
      */
-    protected function addOrocrmMailchimpMemberActivityForeignKeys(Schema $schema)
+    private function addOrocrmMailchimpMemberActivityForeignKeys(Schema $schema): void
     {
         $table = $schema->getTable('orocrm_mc_mmbr_activity');
         $table->addForeignKeyConstraint(
@@ -419,10 +407,8 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Add orocrm_mailchimp_campaign foreign keys.
-     *
-     * @throws SchemaException
      */
-    protected function addOrocrmMailchimpCampaignForeignKeys(Schema $schema)
+    private function addOrocrmMailchimpCampaignForeignKeys(Schema $schema): void
     {
         $table = $schema->getTable('orocrm_mailchimp_campaign');
         $table->addForeignKeyConstraint(
@@ -465,10 +451,8 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Add orocrm_mailchimp_template foreign keys.
-     *
-     * @throws SchemaException
      */
-    protected function addOrocrmMailchimpTemplateForeignKeys(Schema $schema)
+    private function addOrocrmMailchimpTemplateForeignKeys(Schema $schema): void
     {
         $table = $schema->getTable('orocrm_mailchimp_template');
         $table->addForeignKeyConstraint(
@@ -487,10 +471,8 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Add orocrm_mailchimp_member foreign keys.
-     *
-     * @throws SchemaException
      */
-    protected function addOrocrmMailchimpMemberForeignKeys(Schema $schema)
+    private function addOrocrmMailchimpMemberForeignKeys(Schema $schema): void
     {
         $table = $schema->getTable('orocrm_mailchimp_member');
         $table->addForeignKeyConstraint(
@@ -515,10 +497,8 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Add orocrm_mc_static_segment_mmbr foreign keys.
-     *
-     * @throws SchemaException
      */
-    protected function addOrocrmMailchimpStaticSegmentMemberForeignKeys(Schema $schema)
+    private function addOrocrmMailchimpStaticSegmentMemberForeignKeys(Schema $schema): void
     {
         $table = $schema->getTable('orocrm_mc_static_segment_mmbr');
         $table->addForeignKeyConstraint(
@@ -537,10 +517,8 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Add orocrm_mc_static_segment foreign keys.
-     *
-     * @throws SchemaException
      */
-    protected function addOrocrmMailchimpStaticSegmentForeignKeys(Schema $schema)
+    private function addOrocrmMailchimpStaticSegmentForeignKeys(Schema $schema): void
     {
         $table = $schema->getTable('orocrm_mc_static_segment');
         $table->addForeignKeyConstraint(
@@ -571,10 +549,8 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Add orocrm_mc_subscribers_list foreign keys.
-     *
-     * @throws SchemaException
      */
-    protected function addOrocrmMailchimpSubscribersListForeignKeys(Schema $schema)
+    private function addOrocrmMailchimpSubscribersListForeignKeys(Schema $schema): void
     {
         $table = $schema->getTable('orocrm_mc_subscribers_list');
         $table->addForeignKeyConstraint(
@@ -593,10 +569,8 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Add orocrm_mc_extended_merge_var foreign keys.
-     *
-     * @throws SchemaException
      */
-    protected function addOrocrmMcExtendedMergeVarForeignKeys(Schema $schema)
+    private function addOrocrmMcExtendedMergeVarForeignKeys(Schema $schema): void
     {
         $table = $schema->getTable('orocrm_mc_extended_merge_var');
         $table->addForeignKeyConstraint(
@@ -609,10 +583,8 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Add orocrm_mc_mmbr_extd_merge_var foreign keys.
-     *
-     * @throws SchemaException
      */
-    protected function addOrocrmMcMmbrExtdMergeVarForeignKeys(Schema $schema)
+    private function addOrocrmMcMmbrExtdMergeVarForeignKeys(Schema $schema): void
     {
         $table = $schema->getTable('orocrm_mc_mmbr_extd_merge_var');
         $table->addForeignKeyConstraint(
@@ -631,10 +603,8 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Add orocrm_mc_tmp_mmbr_to_remove foreign keys.
-     *
-     * @throws SchemaException
      */
-    protected function addOrocrmMcTmpMmbrToRemoveForeignKeys(Schema $schema)
+    private function addOrocrmMcTmpMmbrToRemoveForeignKeys(Schema $schema): void
     {
         $table = $schema->getTable('orocrm_mc_tmp_mmbr_to_remove');
         $table->addForeignKeyConstraint(
@@ -653,10 +623,8 @@ class OroMailChimpBundleInstaller implements Installation
 
     /**
      * Add orocrm_mailchimp_ml_email foreign keys.
-     *
-     * @throws SchemaException
      */
-    protected function addOrocrmMailchimpMlEmailForeignKeys(Schema $schema)
+    private function addOrocrmMailchimpMlEmailForeignKeys(Schema $schema): void
     {
         $table = $schema->getTable('orocrm_mailchimp_ml_email');
         $table->addForeignKeyConstraint(
