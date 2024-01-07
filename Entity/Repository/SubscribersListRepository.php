@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Oro\Bundle\BatchBundle\ORM\Query\BufferedIdentityQueryResultIterator;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 
 /**
  * Mailchimp subscribers list entity repository class.
@@ -24,7 +25,7 @@ class SubscribersListRepository extends EntityRepository
             ->createQueryBuilder('subscribersList')
             ->select('subscribersList')
             ->join(
-                'OroMailChimpBundle:StaticSegment',
+                StaticSegment::class,
                 'staticSegment',
                 Join::WITH,
                 'staticSegment.subscribersList = subscribersList.id'

@@ -3,6 +3,7 @@
 namespace Oro\Bundle\MailChimpBundle\Placeholder;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Provider\ChannelType;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
@@ -53,7 +54,7 @@ class ButtonsPlaceholderFilter
      */
     protected function hasMailChimpIntegration()
     {
-        return (bool)$this->registry->getRepository('OroIntegrationBundle:Channel')
+        return (bool)$this->registry->getRepository(Channel::class)
             ->getConfiguredChannelsForSync(ChannelType::TYPE, true);
     }
 }

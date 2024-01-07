@@ -9,18 +9,20 @@ use Oro\Bundle\MailChimpBundle\Entity\Campaign;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
 use Oro\Bundle\MailChimpBundle\Form\Handler\ConnectionFormHandler;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class ConnectionFormHandlerTest extends \PHPUnit\Framework\TestCase
+class ConnectionFormHandlerTest extends TestCase
 {
-    /** @var FormInterface|\PHPUnit\Framework\MockObject\MockObject */
+    /** @var FormInterface|MockObject */
     private $form;
 
-    /** @var Request|\PHPUnit\Framework\MockObject\MockObject */
+    /** @var Request|MockObject */
     private $request;
 
-    /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
+    /** @var ManagerRegistry|MockObject */
     private $registry;
 
     /** @var ConnectionFormHandler */
@@ -45,7 +47,7 @@ class ConnectionFormHandlerTest extends \PHPUnit\Framework\TestCase
         $staticSegmentManager = $this->createMock(ObjectManager::class);
         $this->registry->expects($this->once())
             ->method('getManagerForClass')
-            ->with('OroMailChimpBundle:StaticSegment');
+            ->with(StaticSegment::class);
 
         $staticSegmentManager->expects($this->never())
             ->method($this->anything());
@@ -67,7 +69,7 @@ class ConnectionFormHandlerTest extends \PHPUnit\Framework\TestCase
         $staticSegmentManager = $this->createMock(ObjectManager::class);
         $this->registry->expects($this->once())
             ->method('getManagerForClass')
-            ->with('OroMailChimpBundle:StaticSegment')
+            ->with(StaticSegment::class)
             ->willReturn($staticSegmentManager);
 
         $this->assertSubmit();
@@ -97,7 +99,7 @@ class ConnectionFormHandlerTest extends \PHPUnit\Framework\TestCase
         $staticSegmentManager = $this->createMock(ObjectManager::class);
         $this->registry->expects($this->once())
             ->method('getManagerForClass')
-            ->with('OroMailChimpBundle:StaticSegment')
+            ->with(StaticSegment::class)
             ->willReturn($staticSegmentManager);
 
         $this->assertSubmit();
@@ -136,14 +138,14 @@ class ConnectionFormHandlerTest extends \PHPUnit\Framework\TestCase
             ->willReturn($campaign);
         $campaignManager->expects($this->any())
             ->method('getRepository')
-            ->with('OroMailChimpBundle:Campaign')
+            ->with(Campaign::class)
             ->willReturn($campaignRepository);
 
         $this->registry->expects($this->any())
             ->method('getManagerForClass')
             ->willReturnMap([
-                ['OroMailChimpBundle:StaticSegment', $staticSegmentManager],
-                ['OroMailChimpBundle:Campaign', $campaignManager]
+                [StaticSegment::class, $staticSegmentManager],
+                [Campaign::class, $campaignManager]
             ]);
 
         $this->request->expects($this->once())
@@ -151,15 +153,18 @@ class ConnectionFormHandlerTest extends \PHPUnit\Framework\TestCase
             ->with(Request::METHOD_POST)
             ->willReturn(true);
 
-        $this->form->expects($this->once())
+        $form = $this->form;
+        $form->expects($this->once())
             ->method('handleRequest')
             ->with($this->request)
-            ->willReturnCallback(function () use ($staticSegment) {
+            ->willReturnCallback(function () use ($staticSegment, $form) {
                 $subscribersList = $this->createMock(SubscribersList::class);
                 $subscribersList->expects($this->any())
                     ->method('getId')
                     ->willReturn(1);
                 $staticSegment->setSubscribersList($subscribersList);
+
+                return $form;
             });
         $this->form->expects($this->once())
             ->method('isSubmitted')
@@ -205,8 +210,8 @@ class ConnectionFormHandlerTest extends \PHPUnit\Framework\TestCase
     }
 
     private function assertSave(
-        ObjectManager|\PHPUnit\Framework\MockObject\MockObject $staticSegmentManager,
-        StaticSegment|\PHPUnit\Framework\MockObject\MockObject $staticSegment
+        ObjectManager|MockObject $staticSegmentManager,
+        StaticSegment|MockObject $staticSegment
     ): void {
         $staticSegmentManager->expects($this->once())
             ->method('persist')

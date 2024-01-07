@@ -3,6 +3,7 @@
 namespace Oro\Bundle\MailChimpBundle\Validator;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
 use Oro\Bundle\MarketingListBundle\Validator\Constraints\ContactInformationColumn;
@@ -57,7 +58,7 @@ class EmailColumnValidator extends ConstraintValidator
      */
     protected function isConnectedToMailChimp(MarketingList $marketingList)
     {
-        return (bool)$this->registry->getRepository('OroMailChimpBundle:StaticSegment')
+        return (bool)$this->registry->getRepository(StaticSegment::class)
             ->findOneBy(['marketingList' => $marketingList]);
     }
 }

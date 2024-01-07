@@ -56,7 +56,7 @@ abstract class AbstractMailChimpConnector extends AbstractConnector
 
         $channel = $this->getChannel();
         /** @var EntityRepository $repository */
-        $repository = $this->managerRegistry->getRepository('OroIntegrationBundle:Status');
+        $repository = $this->managerRegistry->getRepository(Status::class);
 
         /**
          * @var Status $status

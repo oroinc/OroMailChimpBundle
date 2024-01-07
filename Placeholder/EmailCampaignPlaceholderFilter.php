@@ -4,6 +4,7 @@ namespace Oro\Bundle\MailChimpBundle\Placeholder;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
+use Oro\Bundle\MailChimpBundle\Entity\Campaign;
 use Oro\Bundle\MailChimpBundle\Transport\MailChimpTransport;
 
 /**
@@ -31,7 +32,7 @@ class EmailCampaignPlaceholderFilter
     {
         if ($entity instanceof EmailCampaign && $entity->getTransport() === MailChimpTransport::NAME) {
             $campaign = $this->registry->getManager()
-                ->getRepository('OroMailChimpBundle:Campaign')
+                ->getRepository(Campaign::class)
                 ->findOneBy(['emailCampaign' => $entity]);
             return (bool) $campaign;
         } else {

@@ -14,6 +14,7 @@ use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Model\MergeVar\MergeVarProviderInterface;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\QueryDesignerBundle\Model\GroupByHelper;
+use Oro\Bundle\TagBundle\Entity\Tagging;
 use Oro\Component\PhpUtils\ArrayUtil;
 
 /**
@@ -242,7 +243,7 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
         if ($hasTagField) {
             $qb
                 ->join(
-                    'OroTagBundle:Tagging',
+                    Tagging::class,
                     'tagging',
                     'WITH',
                     'tagging.entityName = :entity_name AND tagging.recordId = t1.id'

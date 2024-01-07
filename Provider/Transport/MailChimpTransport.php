@@ -14,6 +14,7 @@ use Oro\Bundle\MailChimpBundle\Entity\Member;
 use Oro\Bundle\MailChimpBundle\Entity\Repository\CampaignRepository;
 use Oro\Bundle\MailChimpBundle\Entity\Repository\StaticSegmentRepository;
 use Oro\Bundle\MailChimpBundle\Entity\Repository\SubscribersListRepository;
+use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
 use Oro\Bundle\MailChimpBundle\Entity\Template;
 use Oro\Bundle\MailChimpBundle\Exception\MailChimpClientException;
@@ -120,7 +121,7 @@ class MailChimpTransport implements TransportInterface
 
         // Synchronize only campaigns that are connected to subscriber lists that are used within Oro.
         /** @var StaticSegmentRepository $repository */
-        $repository = $this->managerRegistry->getRepository('OroMailChimpBundle:StaticSegment');
+        $repository = $this->managerRegistry->getRepository(StaticSegment::class);
         $staticSegments = $repository->getStaticSegments($channel);
 
         $listsToSynchronize = [];
@@ -405,7 +406,7 @@ class MailChimpTransport implements TransportInterface
     public function getSegmentsToSync(Channel $channel)
     {
         /** @var SubscribersListRepository $subscribersListRepository */
-        $subscribersListRepository = $this->managerRegistry->getRepository('OroMailChimpBundle:SubscribersList');
+        $subscribersListRepository = $this->managerRegistry->getRepository(SubscribersList::class);
         $subscribersLists = $subscribersListRepository->getUsedSubscribersListIterator($channel);
 
         return new StaticSegmentListIterator($subscribersLists, $this->client);

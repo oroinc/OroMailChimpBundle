@@ -6,6 +6,7 @@ use Doctrine\ORM\Query\Expr\Join;
 use Oro\Bundle\BatchBundle\ORM\Query\BufferedIdentityQueryResultIterator;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\MailChimpBundle\Entity\Member;
+use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListStateItemInterface;
@@ -81,14 +82,14 @@ class MarketingListStateItemAction extends AbstractMarketingListEntitiesAction
     protected function getMarketingListIterator(SubscribersList $subscriberList)
     {
         $qb = $this->doctrineHelper
-            ->getEntityManager('OroMarketingListBundle:MarketingList')
-            ->getRepository('OroMarketingListBundle:MarketingList')
+            ->getEntityManager(MarketingList::class)
+            ->getRepository(MarketingList::class)
             ->createQueryBuilder('ml');
 
         $qb
             ->select('ml')
             ->join(
-                'OroMailChimpBundle:StaticSegment',
+                StaticSegment::class,
                 'staticSegment',
                 Join::WITH,
                 'staticSegment.marketingList = ml.id'

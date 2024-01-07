@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\MailChimpBundle\Controller\Api\Rest;
 
+use Doctrine\Persistence\ManagerRegistry;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
@@ -56,7 +57,7 @@ class StaticSegmentController extends RestController
         $status = $request->get('status');
         $staticSegment->setSyncStatus($status);
 
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->container->get('doctrine')->getManager();
         $em->persist($staticSegment);
         $em->flush();
 
@@ -68,7 +69,7 @@ class StaticSegmentController extends RestController
      */
     public function getManager()
     {
-        return $this->get('oro_mailchimp.static_segment.manager.api');
+        return $this->container->get('oro_mailchimp.static_segment.manager.api');
     }
 
     /**
@@ -85,5 +86,13 @@ class StaticSegmentController extends RestController
     public function getFormHandler()
     {
         throw new \BadMethodCallException('FormHandler is not available.');
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(
+            parent::getSubscribedServices(),
+            ['doctrine' => ManagerRegistry::class]
+        );
     }
 }

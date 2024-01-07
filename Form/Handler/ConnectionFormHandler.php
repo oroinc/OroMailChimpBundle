@@ -4,6 +4,7 @@ namespace Oro\Bundle\MailChimpBundle\Form\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
+use Oro\Bundle\MailChimpBundle\Entity\Campaign;
 use Oro\Bundle\MailChimpBundle\Entity\Repository\CampaignRepository;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Symfony\Component\Form\FormInterface;
@@ -42,7 +43,7 @@ class ConnectionFormHandler
      */
     public function process($entity)
     {
-        $manager = $this->registry->getManagerForClass('OroMailChimpBundle:StaticSegment');
+        $manager = $this->registry->getManagerForClass(StaticSegment::class);
 
         $oldSubscribersListId = null;
         $oldStaticSegment = $entity;
@@ -89,8 +90,8 @@ class ConnectionFormHandler
     {
         /** @var CampaignRepository $campaignRepository */
         $campaignRepository = $this->registry
-            ->getManagerForClass('OroMailChimpBundle:Campaign')
-            ->getRepository('OroMailChimpBundle:Campaign');
+            ->getManagerForClass(Campaign::class)
+            ->getRepository(Campaign::class);
 
         return (bool)$campaignRepository->findOneBy(['staticSegment' => $segment]);
     }

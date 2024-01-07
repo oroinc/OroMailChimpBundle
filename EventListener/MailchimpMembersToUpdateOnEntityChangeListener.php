@@ -56,7 +56,7 @@ class MailchimpMembersToUpdateOnEntityChangeListener
 
     public function onFlush(OnFlushEventArgs $args)
     {
-        $em = $args->getEntityManager();
+        $em = $args->getObjectManager();
         $uow = $em->getUnitOfWork();
 
         $entitiesToUpdates = $uow->getScheduledEntityUpdates();

@@ -4,21 +4,24 @@ namespace Oro\Bundle\MailChimpBundle\Tests\Unit\Validator;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectRepository;
+use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\MailChimpBundle\Validator\EmailColumnValidator;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider;
 use Oro\Bundle\MarketingListBundle\Validator\Constraints\ContactInformationColumn;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class EmailColumnValidatorTest extends \PHPUnit\Framework\TestCase
+class EmailColumnValidatorTest extends TestCase
 {
-    /** @var ConstraintValidator|\PHPUnit\Framework\MockObject\MockObject */
+    /** @var ConstraintValidator|MockObject */
     private $fieldInformationValidator;
 
-    /** @var ManagerRegistry|\PHPUnit\Framework\MockObject\MockObject */
+    /** @var ManagerRegistry|MockObject */
     private $registry;
 
     /** @var EmailColumnValidator */
@@ -79,7 +82,7 @@ class EmailColumnValidatorTest extends \PHPUnit\Framework\TestCase
             ->with(['marketingList' => $marketingList]);
         $this->registry->expects($this->once())
             ->method('getRepository')
-            ->with('OroMailChimpBundle:StaticSegment')
+            ->with(StaticSegment::class)
             ->willReturn($repository);
 
         $this->fieldInformationValidator->expects($this->never())
@@ -108,7 +111,7 @@ class EmailColumnValidatorTest extends \PHPUnit\Framework\TestCase
             ->willReturn(new \stdClass());
         $this->registry->expects($this->once())
             ->method('getRepository')
-            ->with('OroMailChimpBundle:StaticSegment')
+            ->with(StaticSegment::class)
             ->willReturn($repository);
 
         $fieldValidatorConstraint = new ContactInformationColumn();

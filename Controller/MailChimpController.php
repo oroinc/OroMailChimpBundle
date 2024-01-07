@@ -3,6 +3,7 @@
 namespace Oro\Bundle\MailChimpBundle\Controller;
 
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
 use Oro\Bundle\MailChimpBundle\Entity\Campaign;
 use Oro\Bundle\MailChimpBundle\Entity\MailChimpTransportSettings;
@@ -38,7 +39,7 @@ class MailChimpController extends AbstractController
     {
         try {
             $apiKey = $request->get('api_key');
-            $mailChimpClientFactory = $this->get(MailChimpClientFactory::class);
+            $mailChimpClientFactory = $this->container->get(MailChimpClientFactory::class);
             $client = $mailChimpClientFactory->create($apiKey);
             $ping = $client->ping();
         } catch (\Exception $e) {
@@ -70,7 +71,7 @@ class MailChimpController extends AbstractController
     {
         $staticSegment = $this->getStaticSegmentByMarketingList($marketingList);
         $form = $this->createForm(MarketingListConnectionType::class, $staticSegment);
-        $handler = new ConnectionFormHandler($request, $this->getDoctrine(), $form);
+        $handler = new ConnectionFormHandler($request, $this->container->get('doctrine'), $form);
 
         $result = [];
         if ($savedSegment = $handler->process($staticSegment)) {
@@ -87,7 +88,7 @@ class MailChimpController extends AbstractController
     /**
      * @ParamConverter(
      *      "marketingList",
-     *      class="OroMarketingListBundle:MarketingList",
+     *      class="Oro\Bundle\MarketingListBundle\Entity\MarketingList",
      *      options={"id" = "entity"}
      * )
      * @AclAncestor("oro_mailchimp")
@@ -110,7 +111,7 @@ class MailChimpController extends AbstractController
      *      name="oro_mailchimp_sync_status",
      *      requirements={"marketingList"="\d+"})
      * @ParamConverter("marketingList",
-     *      class="OroMarketingListBundle:MarketingList",
+     *      class="Oro\Bundle\MarketingListBundle\Entity\MarketingList",
      *      options={"id" = "marketingList"})
      * @AclAncestor("oro_mailchimp")
      *
@@ -129,7 +130,7 @@ class MailChimpController extends AbstractController
      *      name="oro_mailchimp_email_campaign_status",
      *      requirements={"entity"="\d+"})
      * @ParamConverter("emailCampaign",
-     *      class="OroCampaignBundle:EmailCampaign",
+     *      class="Oro\Bundle\CampaignBundle\Entity\EmailCampaign",
      *      options={"id" = "entity"})
      * @AclAncestor("oro_mailchimp")
      *
@@ -148,7 +149,7 @@ class MailChimpController extends AbstractController
     /**
      * @ParamConverter(
      *      "emailCampaign",
-     *      class="OroCampaignBundle:EmailCampaign",
+     *      class="Oro\Bundle\CampaignBundle\Entity\EmailCampaign",
      *      options={"id" = "entity"}
      * )
      * @AclAncestor("oro_mailchimp")
@@ -185,7 +186,7 @@ class MailChimpController extends AbstractController
         $settings = $emailCampaign->getTransportSettings();
         $settings->setReceiveActivities(!$settings->isReceiveActivities());
 
-        $em = $this->getDoctrine()->getManagerForClass(ClassUtils::getClass($settings));
+        $em = $this->container->get('doctrine')->getManagerForClass(ClassUtils::getClass($settings));
         $em->persist($settings);
         $em->flush();
 
@@ -195,7 +196,7 @@ class MailChimpController extends AbstractController
             $message = 'oro.mailchimp.controller.email_campaign.receive_activities.disabled.message';
         }
 
-        return new JsonResponse(['message' => $this->get(TranslatorInterface::class)->trans($message)]);
+        return new JsonResponse(['message' => $this->container->get(TranslatorInterface::class)->trans($message)]);
     }
 
     /**
@@ -222,7 +223,7 @@ class MailChimpController extends AbstractController
      */
     protected function findStaticSegmentByMarketingList(MarketingList $marketingList)
     {
-        return $this->getDoctrine()
+        return $this->container->get('doctrine')
             ->getRepository(StaticSegment::class)
             ->findOneBy(['marketingList' => $marketingList]);
     }
@@ -233,7 +234,7 @@ class MailChimpController extends AbstractController
      */
     protected function getCampaignByEmailCampaign(EmailCampaign $emailCampaign)
     {
-        $campaign = $this->getDoctrine()
+        $campaign = $this->container->get('doctrine')
             ->getRepository(Campaign::class)
             ->findOneBy(['emailCampaign' => $emailCampaign]);
 
@@ -248,6 +249,7 @@ class MailChimpController extends AbstractController
         return array_merge(parent::getSubscribedServices(), [
             MailChimpClientFactory::class,
             TranslatorInterface::class,
+            'doctrine' => ManagerRegistry::class,
         ]);
     }
 }

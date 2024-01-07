@@ -9,6 +9,7 @@ use Doctrine\ORM\Query\Expr\Join;
 use Oro\Bundle\BatchBundle\ORM\Query\BufferedIdentityQueryResultIterator;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Entity\Campaign;
+use Oro\Bundle\MailChimpBundle\Entity\MailChimpTransportSettings;
 
 /**
  * Mailchimp campaign entity repository class.
@@ -26,10 +27,10 @@ class CampaignRepository extends EntityRepository
         $qb = $this->getEntityManager()->createQueryBuilder();
 
         $qb->select('c')
-            ->from('OroMailChimpBundle:Campaign', 'c')
+            ->from(Campaign::class, 'c')
             ->innerJoin('c.emailCampaign', 'emailCampaign')
             ->innerJoin(
-                'OroMailChimpBundle:MailChimpTransportSettings',
+                MailChimpTransportSettings::class,
                 'transportSettings',
                 Join::WITH,
                 $qb->expr()->eq('IDENTITY(emailCampaign.transportSettings)', 'transportSettings.id')

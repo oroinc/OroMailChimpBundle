@@ -4,7 +4,6 @@ Oro\Bundle\MailChimpBundle\Entity\MailChimpTransport:
             - NotBlank: ~
             - Length:
                 min: 32
-                allowEmptyString: false
             - Regex:
                 pattern: '/^[a-z0-9]{32,}-[a-z]{2,}[0-9]+$/'
                 message: API Key is invalid

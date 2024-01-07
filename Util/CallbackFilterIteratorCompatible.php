@@ -33,10 +33,7 @@ class CallbackFilterIteratorCompatible extends \FilterIterator
         return call_user_func_array($this->callback, array(&$this->current, $iterator->key(), $iterator));
     }
 
-    /**
-     * @return mixed|void
-     */
-    public function current()
+    public function current(): mixed
     {
         if (!$this->getInnerIterator()->valid()) {
             return null;
