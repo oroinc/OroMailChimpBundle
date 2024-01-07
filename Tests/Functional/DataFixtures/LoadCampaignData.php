@@ -9,7 +9,7 @@ use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Entity\Campaign;
 use Oro\Bundle\MailChimpBundle\Entity\MailChimpTransportSettings;
 use Oro\Bundle\MailChimpBundle\Transport\MailChimpTransport;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadOrganization;
 
 class LoadCampaignData extends AbstractMailChimpFixture implements DependentFixtureInterface
 {
@@ -80,11 +80,16 @@ class LoadCampaignData extends AbstractMailChimpFixture implements DependentFixt
     /**
      * {@inheritDoc}
      */
+    public function getDependencies(): array
+    {
+        return [LoadStaticSegmentData::class, LoadOrganization::class];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function load(ObjectManager $manager): void
     {
-        $organization = $manager->getRepository(Organization::class)
-            ->getFirst();
-
         foreach ($this->data as $data) {
             /** @var Channel $channel */
             $channel = $this->getReference($data['channel']);
@@ -102,7 +107,7 @@ class LoadCampaignData extends AbstractMailChimpFixture implements DependentFixt
             $manager->persist($emailCampaign);
 
             $entity = new Campaign();
-            $entity->setOwner($organization);
+            $entity->setOwner($this->getReference(LoadOrganization::ORGANIZATION));
             $entity->setEmailCampaign($emailCampaign);
             $entity->setSendTime(new \DateTime('now', new \DateTimeZone('UTC')));
             $data['subscribersList'] = $this->getReference($data['subscribersList']);
@@ -112,13 +117,5 @@ class LoadCampaignData extends AbstractMailChimpFixture implements DependentFixt
             $manager->persist($entity);
         }
         $manager->flush();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getDependencies(): array
-    {
-        return [LoadStaticSegmentData::class];
     }
 }

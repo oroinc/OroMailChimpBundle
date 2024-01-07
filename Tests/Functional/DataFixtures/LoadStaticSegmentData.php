@@ -5,7 +5,7 @@ namespace Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadOrganization;
 
 class LoadStaticSegmentData extends AbstractMailChimpFixture implements DependentFixtureInterface
 {
@@ -42,14 +42,23 @@ class LoadStaticSegmentData extends AbstractMailChimpFixture implements Dependen
     /**
      * {@inheritDoc}
      */
+    public function getDependencies(): array
+    {
+        return [
+            LoadMarketingListData::class,
+            LoadSubscribersListData::class,
+            LoadOrganization::class
+        ];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function load(ObjectManager $manager): void
     {
-        $organization = $manager->getRepository(Organization::class)
-            ->getFirst();
-
         foreach ($this->segmentData as $data) {
             $entity = new StaticSegment();
-            $entity->setOwner($organization);
+            $entity->setOwner($this->getReference(LoadOrganization::ORGANIZATION));
             $data['marketingList'] = $this->getReference($data['marketingList']);
             $data['subscribersList'] = $this->getReference($data['subscribersList']);
             $data['channel'] = $this->getReference($data['channel']);
@@ -58,13 +67,5 @@ class LoadStaticSegmentData extends AbstractMailChimpFixture implements Dependen
             $manager->persist($entity);
         }
         $manager->flush();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getDependencies(): array
-    {
-        return [LoadMarketingListData::class, LoadSubscribersListData::class];
     }
 }

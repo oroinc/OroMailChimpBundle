@@ -3,13 +3,14 @@
 namespace Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\ContactBundle\Entity\Contact;
 use Oro\Bundle\ContactBundle\Entity\ContactEmail;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadOrganization;
+use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadUser;
 
-class LoadContactData extends AbstractFixture
+class LoadContactData extends AbstractFixture implements DependentFixtureInterface
 {
     private array $contactsData = [
         [
@@ -27,15 +28,20 @@ class LoadContactData extends AbstractFixture
     /**
      * {@inheritDoc}
      */
+    public function getDependencies(): array
+    {
+        return [LoadOrganization::class, LoadUser::class];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function load(ObjectManager $manager): void
     {
-        $user = $manager->getRepository(User::class)->findOneByUsername('admin');
-        $organization = $manager->getRepository(Organization::class)->getFirst();
-
         foreach ($this->contactsData as $contactData) {
             $contact = new Contact();
-            $contact->setOwner($user);
-            $contact->setOrganization($organization);
+            $contact->setOwner($this->getReference(LoadUser::USER));
+            $contact->setOrganization($this->getReference(LoadOrganization::ORGANIZATION));
             $contact->setFirstName($contactData['firstName']);
             $contact->setLastName($contactData['lastName']);
             $email = new ContactEmail();
@@ -46,7 +52,6 @@ class LoadContactData extends AbstractFixture
             $manager->persist($contact);
             $this->setReference('contact:' . $contactData['email'], $contact);
         }
-
         $manager->flush();
     }
 }

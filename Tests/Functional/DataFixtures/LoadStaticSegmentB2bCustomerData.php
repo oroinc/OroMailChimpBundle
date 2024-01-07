@@ -3,6 +3,7 @@
 namespace Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures;
 
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
+use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadOrganization;
 
 class LoadStaticSegmentB2bCustomerData extends LoadStaticSegmentData
 {
@@ -23,6 +24,10 @@ class LoadStaticSegmentB2bCustomerData extends LoadStaticSegmentData
      */
     public function getDependencies(): array
     {
-        return [LoadMarketingListB2bCustomerData::class, LoadSubscribersListData::class];
+        return [
+            LoadMarketingListB2bCustomerData::class,
+            LoadSubscribersListData::class,
+            LoadOrganization::class
+        ];
     }
 }

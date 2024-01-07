@@ -4,6 +4,7 @@ namespace Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures;
 
 use Oro\Bundle\SalesBundle\Entity\B2bCustomer;
 use Oro\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadB2bCustomerEmailData;
+use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadUser;
 
 class LoadMarketingListB2bCustomerData extends LoadMarketingListData
 {
@@ -25,7 +26,8 @@ class LoadMarketingListB2bCustomerData extends LoadMarketingListData
     {
         return [
             LoadB2bCustomerEmailData::class,
-            LoadSegmentB2bCustomerData::class
+            LoadSegmentB2bCustomerData::class,
+            LoadUser::class
         ];
     }
 }

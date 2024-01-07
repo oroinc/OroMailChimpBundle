@@ -5,7 +5,7 @@ namespace Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\MailChimpBundle\Entity\Member;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadOrganization;
 
 class LoadMemberData extends AbstractMailChimpFixture implements DependentFixtureInterface
 {
@@ -42,14 +42,19 @@ class LoadMemberData extends AbstractMailChimpFixture implements DependentFixtur
     /**
      * {@inheritDoc}
      */
+    public function getDependencies(): array
+    {
+        return [LoadCampaignData::class, LoadOrganization::class];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function load(ObjectManager $manager): void
     {
-        $organization = $manager->getRepository(Organization::class)
-            ->getFirst();
-
         foreach ($this->data as $data) {
             $entity = new Member();
-            $entity->setOwner($organization);
+            $entity->setOwner($this->getReference(LoadOrganization::ORGANIZATION));
             $data['subscribersList'] = $this->getReference($data['subscribersList']);
             $data['channel'] = $this->getReference($data['channel']);
             $this->setEntityPropertyValues($entity, $data, ['reference']);
@@ -57,13 +62,5 @@ class LoadMemberData extends AbstractMailChimpFixture implements DependentFixtur
             $manager->persist($entity);
         }
         $manager->flush();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getDependencies(): array
-    {
-        return [LoadCampaignData::class];
     }
 }

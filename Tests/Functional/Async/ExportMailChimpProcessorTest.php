@@ -9,7 +9,8 @@ use Oro\Bundle\MailChimpBundle\Async\Topic\ExportMailchimpSegmentsTopic;
 use Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures\LoadChannelData;
 use Oro\Bundle\MessageQueueBundle\Test\Functional\MessageQueueExtension;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-use Oro\Bundle\UserBundle\Migrations\Data\ORM\LoadAdminUserData;
+use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadUser;
+use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Component\MessageQueue\Client\MessagePriority;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
 
@@ -24,7 +25,7 @@ class ExportMailChimpProcessorTest extends WebTestCase
     {
         parent::setUp();
         $this->initClient();
-        $this->loadFixtures([LoadChannelData::class]);
+        $this->loadFixtures([LoadChannelData::class, LoadUser::class]);
     }
 
     public function testCouldBeGetFromContainerAsService(): void
@@ -131,8 +132,8 @@ class ExportMailChimpProcessorTest extends WebTestCase
     {
         /** @var Channel $integration */
         $integration = $this->getReference('mailchimp:channel_1');
-        $user = self::getContainer()->get('oro_user.manager')
-            ->findUserByEmail(LoadAdminUserData::DEFAULT_ADMIN_EMAIL);
+        /** @var User $user */
+        $user = $this->getReference(LoadUser::USER);
 
         self::assertEmpty($integration->getStatuses());
 

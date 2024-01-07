@@ -2,15 +2,17 @@
 
 namespace Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures;
 
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\ContactBundle\Entity\Contact;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Bundle\SegmentBundle\Entity\SegmentType;
+use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadOrganization;
+use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadUser;
 use Oro\Bundle\TestFrameworkCRMBundle\Entity\TestCustomerWithContactInformation;
 use Oro\Bundle\UserBundle\Entity\User;
 
-class LoadSegmentData extends AbstractMailChimpFixture
+class LoadSegmentData extends AbstractMailChimpFixture implements DependentFixtureInterface
 {
     protected array $data = [
         [
@@ -97,22 +99,24 @@ class LoadSegmentData extends AbstractMailChimpFixture
     /**
      * {@inheritDoc}
      */
+    public function getDependencies(): array
+    {
+        return [LoadOrganization::class, LoadUser::class];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function load(ObjectManager $manager): void
     {
         /** @var User $user */
-        $user = $manager->getRepository(User::class)->findOneByUsername('admin');
-        $organization = $manager->getRepository(Organization::class)->getFirst();
-
+        $user = $this->getReference(LoadUser::USER);
         foreach ($this->data as $data) {
             $entity = new Segment();
-            $type = $manager
-                ->getRepository(SegmentType::class)
-                ->find($data['type']);
-            $entity->setType($type);
-            $entity->setDefinition(json_encode($data['definition']));
-            $entity->setOrganization($organization);
+            $entity->setType($manager->getRepository(SegmentType::class)->find($data['type']));
+            $entity->setDefinition(json_encode($data['definition'], JSON_THROW_ON_ERROR));
+            $entity->setOrganization($this->getReference(LoadOrganization::ORGANIZATION));
             $entity->setOwner($user->getBusinessUnits()->first());
-
             $this->setEntityPropertyValues($entity, $data, ['reference', 'type', 'definition']);
             $this->setReference($data['reference'], $entity);
             $manager->persist($entity);

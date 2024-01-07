@@ -5,10 +5,10 @@ namespace Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadOrganization;
+use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadUser;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserManager;
-use Oro\Bundle\UserBundle\Migrations\Data\ORM\LoadAdminUserData;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -55,18 +55,24 @@ class LoadChannelData extends AbstractMailChimpFixture implements DependentFixtu
     /**
      * {@inheritDoc}
      */
+    public function getDependencies(): array
+    {
+        return [LoadTransportData::class, LoadOrganization::class, LoadUser::class];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function load(ObjectManager $manager): void
     {
         $userManager = $this->container->get('oro_user.manager');
-        $admin = $userManager->findUserByEmail(LoadAdminUserData::DEFAULT_ADMIN_EMAIL);
+        $admin = $this->getReference(LoadUser::USER);
         $inactiveUser = $this->loadInactiveUser($userManager);
-        $organization = $manager->getRepository(Organization::class)->getFirst();
-
         foreach ($this->channelData as $data) {
             $entity = new Channel();
             $data['transport'] = $this->getReference($data['transport']);
             $entity->setDefaultUserOwner($data['enabled'] ? $admin : $inactiveUser);
-            $entity->setOrganization($organization);
+            $entity->setOrganization($this->getReference(LoadOrganization::ORGANIZATION));
             $this->setEntityPropertyValues($entity, $data, ['reference', 'synchronizationSettings']);
             $this->setReference($data['reference'], $entity);
             if (isset($data['synchronizationSettings'])) {
@@ -83,7 +89,6 @@ class LoadChannelData extends AbstractMailChimpFixture implements DependentFixtu
     {
         /** @var User $user */
         $user = $userManager->createUser();
-
         $user->setUsername(uniqid('inactive.'));
         $user->setEmail('inactive@example.com');
         $user->setPassword('the_password');
@@ -92,13 +97,5 @@ class LoadChannelData extends AbstractMailChimpFixture implements DependentFixtu
         $userManager->updateUser($user);
 
         return $user;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getDependencies(): array
-    {
-        return [LoadTransportData::class];
     }
 }

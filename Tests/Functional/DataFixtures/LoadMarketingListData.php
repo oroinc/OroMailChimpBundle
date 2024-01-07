@@ -7,8 +7,8 @@ use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\ContactBundle\Entity\Contact;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingListType;
+use Oro\Bundle\TestFrameworkBundle\Tests\Functional\DataFixtures\LoadUser;
 use Oro\Bundle\TestFrameworkCRMBundle\Entity\TestCustomerWithContactInformation;
-use Oro\Bundle\UserBundle\Entity\User;
 
 class LoadMarketingListData extends AbstractMailChimpFixture implements DependentFixtureInterface
 {
@@ -34,35 +34,30 @@ class LoadMarketingListData extends AbstractMailChimpFixture implements Dependen
     /**
      * {@inheritDoc}
      */
-    public function load(ObjectManager $manager): void
-    {
-        $owner = $manager->getRepository(User::class)->findOneByUsername('admin');
-
-        foreach ($this->mlData as $data) {
-            $entity = new MarketingList();
-            $type = $manager
-                ->getRepository(MarketingListType::class)
-                ->find($data['type']);
-            $segment = $this->getReference($data['segment']);
-            $entity->setType($type);
-            $entity->setSegment($segment);
-            $entity->setOwner($owner);
-            $this->setEntityPropertyValues($entity, $data, ['reference', 'type', 'segment']);
-            $this->setReference($data['reference'], $entity);
-            $manager->persist($entity);
-        }
-        $manager->flush();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getDependencies(): array
     {
         return [
             LoadSegmentData::class,
             LoadContactData::class,
             LoadCustomerData::class,
+            LoadUser::class
         ];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function load(ObjectManager $manager): void
+    {
+        foreach ($this->mlData as $data) {
+            $entity = new MarketingList();
+            $entity->setType($manager->getRepository(MarketingListType::class)->find($data['type']));
+            $entity->setSegment($this->getReference($data['segment']));
+            $entity->setOwner($this->getReference(LoadUser::USER));
+            $this->setEntityPropertyValues($entity, $data, ['reference', 'type', 'segment']);
+            $this->setReference($data['reference'], $entity);
+            $manager->persist($entity);
+        }
+        $manager->flush();
     }
 }
