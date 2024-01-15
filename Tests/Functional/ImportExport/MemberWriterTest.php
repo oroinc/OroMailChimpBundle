@@ -19,6 +19,9 @@ class MemberWriterTest extends WebTestCase
     /** @var StepExecution|\PHPUnit\Framework\MockObject\MockObject */
     private $stepExecution;
 
+    private MemberWriter $writer;
+    private int $oldWaitTime;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -32,6 +35,16 @@ class MemberWriterTest extends WebTestCase
             ->willReturn($this->createMock(JobExecution::class));
 
         $this->getContainer()->set('oro_mailchimp.tests.transport.integration_transport', $this->transport);
+
+        $this->writer = $this->getContainer()->get('oro_mailchimp.importexport.writer.member');
+        $this->oldWaitTime = $this->writer->getWaitTime();
+        $this->writer->setWaitTime(0);
+        $this->writer->setStepExecution($this->stepExecution);
+    }
+
+    protected function tearDown(): void
+    {
+        $this->writer->setWaitTime($this->oldWaitTime);
     }
 
     public function testWrite()
@@ -84,14 +97,17 @@ class MemberWriterTest extends WebTestCase
             ->willReturn([
                 'total_created' => 0,
                 'total_updated' => 2,
-                'error_count' => 0
+                'error_count' => 0,
+                'new_members' => [
+                    ['unique_email_id' => 1, 'id' => 2, 'email_address' => 'MEMBER1@example.com'],
+                    ['unique_email_id' => 3, 'id' => 4, 'email_address' => 'member2@example.com'],
+                ],
+                'updated_members' => [
+                    ['unique_email_id' => 5, 'id' => 6, 'email_address' => 'member3@example.com'],
+                ]
             ]);
 
-        /** @var MemberWriter $writer */
-        $writer = $this->getContainer()->get('oro_mailchimp.importexport.writer.member');
-        $writer->setStepExecution($this->stepExecution);
-
-        $writer->write([$member1, $member2, $member3]);
+        $this->writer->write([$member1, $member2, $member3]);
 
         $em = $this->getContainer()->get('oro_entity.doctrine_helper')->getEntityManagerForClass(Member::class);
         $em->refresh($member1);
@@ -117,5 +133,12 @@ class MemberWriterTest extends WebTestCase
             ['name' => 'id', 'tag' => 'E_ID', 'type' => 'text', 'id' => 2],
             ['name' => 'firstName', 'tag' => 'FIRSTNAME', 'type' => 'text', 'id' => 3]
         ], $subscribersList->getMergeVarConfig());
+
+        $this->assertEquals(Member::STATUS_SUBSCRIBED, $member1->getStatus());
+        $this->assertEquals(1, $member1->getEuid());
+        $this->assertEquals(Member::STATUS_SUBSCRIBED, $member2->getStatus());
+        $this->assertEquals(3, $member2->getEuid());
+        $this->assertEquals(Member::STATUS_SUBSCRIBED, $member3->getStatus());
+        $this->assertEquals(5, $member3->getEuid());
     }
 }

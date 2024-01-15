@@ -232,9 +232,11 @@ class ExportMailchimpSegmentsTopicTest extends AbstractTopicTestCase
 
     public function testCreateJobName(): void
     {
+        $message = ['integrationId' => 42, 'userId' => 43, 'segmentsIds' => [2, 1]];
+
         self::assertSame(
-            'oro_mailchimp:export_mailchimp:42',
-            $this->getTopic()->createJobName(['integrationId' => 42, 'userId' => 42])
+            'oro_mailchimp:export_mailchimp:42:' . md5(json_encode([1, 2])),
+            $this->getTopic()->createJobName($message)
         );
     }
 }

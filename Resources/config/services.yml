@@ -4,6 +4,10 @@ parameters:
     # If skip_merge_validation is true, member data will be accepted without merge field values,
     # even if the merge field is usually required. This defaults to false.
     oro_mailchimp.client.member_skip_merge_validation: false
+    # Members that are batch subscribed to list are not immediately processed by the MailChimp.
+    # To allow segments processing we need to wait some time to be sure that all records are available.
+    # Default value: 5 seconds
+    oro_mailchimp.client.wait_time: 5
 
 services:
     oro_mailchimp.client.config:
@@ -197,6 +201,8 @@ services:
     oro_mailchimp.importexport.writer.member:
         class: 'Oro\Bundle\MailChimpBundle\ImportExport\Writer\MemberWriter'
         parent: oro_mailchimp.importexport.writer.abstract_export
+        calls:
+            - ['setWaitTime', ['%oro_mailchimp.client.wait_time%']]
 
     oro_mailchimp.importexport.writer.static_segment:
         class: 'Oro\Bundle\MailChimpBundle\ImportExport\Writer\StaticSegmentExportWriter'

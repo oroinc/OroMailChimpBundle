@@ -4,6 +4,7 @@ namespace Oro\Bundle\MailChimpBundle\ImportExport\Writer;
 
 use Exception;
 use Oro\Bundle\MailChimpBundle\Entity\Member;
+use Oro\Bundle\MailChimpBundle\Exception\MailChimpClientException;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -11,6 +12,24 @@ use Psr\Log\LoggerInterface;
  */
 class MemberWriter extends AbstractExportWriter
 {
+    /**
+     * Members that are batch subscribed to list are not immediately processed by the MailChimp.
+     * To allow segments processing we need to wait some time to be sure that all records are available.
+     *
+     * @var int
+     */
+    private int $waitTime = 0;
+
+    public function setWaitTime(int $waitTime): void
+    {
+        $this->waitTime = $waitTime;
+    }
+
+    public function getWaitTime(): int
+    {
+        return $this->waitTime;
+    }
+
     /**
      * @param Member[] $items
      *
@@ -51,6 +70,15 @@ class MemberWriter extends AbstractExportWriter
 
         $this->logger->info(sprintf('%d members processed', count($items)));
         $this->stepExecution->setWriteCount($this->stepExecution->getWriteCount() + count($items));
+
+        $this->waitForProcessing();
+    }
+
+    protected function waitForProcessing(): void
+    {
+        if ($this->waitTime) {
+            sleep($this->waitTime);
+        }
     }
 
     /**
@@ -67,7 +95,7 @@ class MemberWriter extends AbstractExportWriter
         $members = array_map(
             function (Member $member) use (&$emails) {
                 $email = $member->getEmail();
-                $emails[] = $email;
+                $emails[] = mb_strtolower($email);
 
                 $return = [
                     'email_address' => $email,
@@ -108,29 +136,43 @@ class MemberWriter extends AbstractExportWriter
                     );
 
                     if (!empty($response['errors']) && is_array($response['errors'])) {
-                        $notFakeErrorMessages = array_filter($response['errors'], function ($err) {
-                            if (false === array_key_exists('error', $err)) {
+                        $criticalErrorMessages = array_filter($response['errors'], function ($err) {
+                            if (!array_key_exists('error', $err)) {
                                 return true;
                             }
-                            if (strpos($err['error'], 'fake')) {
+
+                            if (str_contains($err['error'], 'fake')) {
                                 return false;
                             }
-                            if (strpos($err['error'], 'valid') && !strpos($err['error'], 'invalid')) {
+
+                            if (str_contains($err['error'], 'has signed up to a lot of lists very recently')) {
                                 return false;
                             }
+
+                            if (str_contains($err['error'], 'valid') && !str_contains($err['error'], 'invalid')) {
+                                return false;
+                            }
+
                             return true;
                         });
 
-                        if (empty($notFakeErrorMessages)) {
+                        if (empty($criticalErrorMessages)) {
                             $logger->warning('Mailchimp warning occurs during execution "batchSubscribe" method');
                         } else {
                             $msg = 'Mailchimp error occurs during execution "batchSubscribe" method';
                             $logger->error($msg);
-                            $this->stepExecution->addFailureException(new \Exception($msg));
+
+                            # Mark sync as failed if no records were synced and there were errors.
+                            if (empty($response['total_created']) && empty($response['total_updated'])) {
+                                $this->stepExecution->addFailureException(new MailChimpClientException(
+                                    'No records were synced during execution of the "batchSubscribe" method'
+                                ));
+                            }
                         }
 
                         $logger->debug('Mailchimp error occurs during execution "batchSubscribe" method', [
                             'requestParams' => $requestParams,
+                            'response' => $response
                         ]);
                     }
                 }
@@ -140,7 +182,8 @@ class MemberWriter extends AbstractExportWriter
         $emailsUpdated = $this->getArrayData($response, 'updated_members');
 
         foreach (array_merge($emailsAdded, $emailsUpdated) as $emailData) {
-            if (!array_key_exists($emailData['email_address'], $items)) {
+            $emailAddress = mb_strtolower($emailData['email_address']);
+            if (!array_key_exists($emailAddress, $items)) {
                 $this->logger->alert(
                     sprintf('A member with "%s" email was not found', $emailData['email_address'])
                 );
@@ -149,7 +192,7 @@ class MemberWriter extends AbstractExportWriter
             }
 
             /** @var Member $member */
-            $member = $items[$emailData['email_address']];
+            $member = $items[$emailAddress];
 
             $member
                 ->setEuid($emailData['unique_email_id'])
