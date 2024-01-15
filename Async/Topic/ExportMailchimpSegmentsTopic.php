@@ -111,7 +111,10 @@ class ExportMailchimpSegmentsTopic extends AbstractTopic implements JobAwareTopi
 
     public function createJobName($messageBody): string
     {
-        return 'oro_mailchimp:export_mailchimp:' . $messageBody['integrationId'];
+        $segmentIds = $messageBody['segmentsIds'] ?? [];
+        sort($segmentIds);
+
+        return 'oro_mailchimp:export_mailchimp:' . $messageBody['integrationId'] . ':' . md5(json_encode($segmentIds));
     }
 
     private function getRepository(string $className): EntityRepository
