@@ -2,25 +2,19 @@
 
 namespace Oro\Bundle\MailChimpBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 
 /**
  * Mailchimp static segment member entity class.
- *
- * @ORM\Entity()
- * @ORM\Table(
- *      name="orocrm_mc_static_segment_mmbr",
- *      uniqueConstraints={
- *          @ORM\UniqueConstraint(name="mc_segment_sid_mid_unq", columns={"static_segment_id", "member_id"})
- *      },
- *      indexes={
- *          @ORM\Index(name="mc_segment_mmbr_sid_st", columns={"static_segment_id", "state"})
- *      },
- * )
- * @Config()
  */
+#[ORM\Entity]
+#[ORM\Table(name: 'orocrm_mc_static_segment_mmbr')]
+#[ORM\Index(columns: ['static_segment_id', 'state'], name: 'mc_segment_mmbr_sid_st')]
+#[ORM\UniqueConstraint(name: 'mc_segment_sid_mid_unq', columns: ['static_segment_id', 'member_id'])]
+#[Config]
 class StaticSegmentMember
 {
     /**
@@ -58,46 +52,23 @@ class StaticSegmentMember
      */
     const STATE_UNSUBSCRIBE_DELETE = 'unsubscribe_delete';
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\MailChimpBundle\Entity\StaticSegment", inversedBy="segmentMembers")
-     * @ORM\JoinColumn(name="static_segment_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "identity"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $staticSegment;
+    #[ORM\ManyToOne(targetEntity: StaticSegment::class, inversedBy: 'segmentMembers')]
+    #[ORM\JoinColumn(name: 'static_segment_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    protected ?StaticSegment $staticSegment = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\MailChimpBundle\Entity\Member", inversedBy="segmentMembers")
-     * @ORM\JoinColumn(name="member_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "identity"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $member;
+    #[ORM\ManyToOne(targetEntity: Member::class, inversedBy: 'segmentMembers')]
+    #[ORM\JoinColumn(name: 'member_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    protected ?Member $member = null;
 
-    /**
-     * @var string
-     * @ORM\Column(name="state", type="string", length=255, nullable=false)
-     */
-    protected $state = self::STATE_ADD;
+    #[ORM\Column(name: 'state', type: Types::STRING, length: 255, nullable: false)]
+    protected ?string $state = self::STATE_ADD;
 
     /**
      * @return int

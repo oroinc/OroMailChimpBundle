@@ -2,45 +2,33 @@
 
 namespace Oro\Bundle\MailChimpBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
  * Mailchimp template entity class.
- *
- * @ORM\Entity
- * @ORM\Table(
- *      name="orocrm_mailchimp_template",
- *      indexes={
- *          @ORM\Index(name="mc_template_category", columns={"category"}),
- *          @ORM\Index(name="mc_template_name", columns={"name"})
- *      },
- *      uniqueConstraints={
- *          @ORM\UniqueConstraint(name="mc_template_oid_cid_unq", columns={"origin_id", "channel_id"})
- *     }
- * )
- * @ORM\HasLifecycleCallbacks()
- * @Config(
- *  defaultValues={
- *      "ownership"={
- *          "owner_type"="ORGANIZATION",
- *          "owner_field_name"="owner",
- *          "owner_column_name"="owner_id"
- *      },
- *      "security"={
- *          "type"="ACL",
- *          "group_name"="",
- *          "category"="marketing"
- *      },
- *      "entity"={
- *          "icon"="fa-file-o"
- *      }
- *  }
- * )
  */
+#[ORM\Entity]
+#[ORM\Table(name: 'orocrm_mailchimp_template')]
+#[ORM\Index(columns: ['category'], name: 'mc_template_category')]
+#[ORM\Index(columns: ['name'], name: 'mc_template_name')]
+#[ORM\UniqueConstraint(name: 'mc_template_oid_cid_unq', columns: ['origin_id', 'channel_id'])]
+#[ORM\HasLifecycleCallbacks]
+#[Config(
+    defaultValues: [
+        'ownership' => [
+            'owner_type' => 'ORGANIZATION',
+            'owner_field_name' => 'owner',
+            'owner_column_name' => 'owner_id'
+        ],
+        'security' => ['type' => 'ACL', 'group_name' => '', 'category' => 'marketing'],
+        'entity' => ['icon' => 'fa-file-o']
+    ]
+)]
 class Template implements OriginAwareInterface
 {
     /**#@+
@@ -50,101 +38,50 @@ class Template implements OriginAwareInterface
     const TYPE_GALLERY = 'gallery';
     const TYPE_BASE = 'base';
     /**#@-*/
+    #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
-
-    /**
-     * @var int
-     * @ORM\Column(name="origin_id", type="bigint", nullable=false)
-     * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "identity"=true
-     *          }
-     *      }
-     * )
-     */
+    #[ORM\Column(name: 'origin_id', type: Types::BIGINT, nullable: false)]
+    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
     protected $originId;
 
-    /**
-     * @var Channel
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\IntegrationBundle\Entity\Channel")
-     * @ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "identity"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $channel;
+    #[ORM\ManyToOne(targetEntity: Channel::class)]
+    #[ORM\JoinColumn(name: 'channel_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    protected ?Channel $channel = null;
 
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $owner;
+    #[ORM\ManyToOne(targetEntity: Organization::class)]
+    #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?Organization $owner = null;
 
-    /**
-     * @var string
-     * @ORM\Column(name="type", type="string", length=255, nullable=false)
-     */
-    protected $type;
+    #[ORM\Column(name: 'type', type: Types::STRING, length: 255, nullable: false)]
+    protected ?string $type = null;
 
-    /**
-     * @var string
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
-     */
-    protected $name;
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 255, nullable: false)]
+    protected ?string $name = null;
 
-    /**
-     * @var bool
-     * @ORM\Column(name="is_active", type="boolean")
-     */
-    protected $active;
+    #[ORM\Column(name: 'is_active', type: Types::BOOLEAN)]
+    protected ?bool $active = null;
 
-    /**
-     * @var string
-     * @ORM\Column(name="layout", type="text", nullable=true)
-     */
-    protected $layout;
+    #[ORM\Column(name: 'layout', type: Types::TEXT, nullable: true)]
+    protected ?string $layout = null;
 
-    /**
-     * @var string
-     * @ORM\Column(name="category", type="string", length=255, nullable=true)
-     */
-    protected $category;
+    #[ORM\Column(name: 'category', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $category = null;
 
-    /**
-     * @var string
-     * @ORM\Column(name="preview_image", type="text", nullable=true)
-     */
-    protected $previewImage;
+    #[ORM\Column(name: 'preview_image', type: Types::TEXT, nullable: true)]
+    protected ?string $previewImage = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    protected $createdAt;
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
+    protected ?\DateTimeInterface $createdAt = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime")
-     */
-    protected $updatedAt;
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE)]
+    protected ?\DateTimeInterface $updatedAt = null;
 
     /**
      * @return int
@@ -371,9 +308,7 @@ class Template implements OriginAwareInterface
         return $this;
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function prePersist()
     {
         if (!$this->createdAt) {
@@ -383,9 +318,7 @@ class Template implements OriginAwareInterface
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
+    #[ORM\PreUpdate]
     public function preUpdate()
     {
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));

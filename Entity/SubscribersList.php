@@ -2,10 +2,12 @@
 
 namespace Oro\Bundle\MailChimpBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Oro\Bundle\MailChimpBundle\Entity\Repository\SubscribersListRepository;
 use Oro\Bundle\MailChimpBundle\Model\MergeVar\MergeVarFieldsInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
@@ -16,268 +18,174 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.TooManyFields)
  *\
- * @ORM\Entity(repositoryClass="Oro\Bundle\MailChimpBundle\Entity\Repository\SubscribersListRepository")
- * @ORM\Table(
- *      name="orocrm_mc_subscribers_list"
- * )
- * @ORM\HasLifecycleCallbacks()
- * @Config(
- *  defaultValues={
- *      "ownership"={
- *          "owner_type"="ORGANIZATION",
- *          "owner_field_name"="owner",
- *          "owner_column_name"="owner_id"
- *      },
- *      "security"={
- *          "type"="ACL",
- *          "group_name"="",
- *          "category"="marketing"
- *      },
- *      "entity"={
- *          "icon"="fa-users"
- *      }
- *  }
- * )
  */
+#[ORM\Entity(repositoryClass: SubscribersListRepository::class)]
+#[ORM\Table(name: 'orocrm_mc_subscribers_list')]
+#[ORM\HasLifecycleCallbacks]
+#[Config(
+    defaultValues: [
+        'ownership' => [
+            'owner_type' => 'ORGANIZATION',
+            'owner_field_name' => 'owner',
+            'owner_column_name' => 'owner_id'
+        ],
+        'security' => ['type' => 'ACL', 'group_name' => '', 'category' => 'marketing'],
+        'entity' => ['icon' => 'fa-users']
+    ]
+)]
 class SubscribersList implements OriginAwareInterface
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="origin_id", type="string", length=32, nullable=false)
-     * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "identity"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $originId;
+    #[ORM\Column(name: 'origin_id', type: Types::STRING, length: 32, nullable: false)]
+    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    protected ?string $originId = null;
 
-    /**
-     * @var Channel
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\IntegrationBundle\Entity\Channel")
-     * @ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "identity"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $channel;
+    #[ORM\ManyToOne(targetEntity: Channel::class)]
+    #[ORM\JoinColumn(name: 'channel_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    protected ?Channel $channel = null;
 
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $owner;
+    #[ORM\ManyToOne(targetEntity: Organization::class)]
+    #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?Organization $owner = null;
 
     /**
      * @var int
-     * @ORM\Column(name="web_id", type="bigint", nullable=false)
      */
+    #[ORM\Column(name: 'web_id', type: Types::BIGINT, nullable: false)]
     protected $webId;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
-     */
-    protected $name;
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 255, nullable: false)]
+    protected ?string $name = null;
+
+    #[ORM\Column(name: 'email_type_option', type: Types::BOOLEAN)]
+    protected ?bool $emailTypeOption = null;
+
+    #[ORM\Column(name: 'use_awesomebar', type: Types::BOOLEAN)]
+    protected ?bool $useAwesomeBar = null;
+
+    #[ORM\Column(name: 'default_from_name', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $defaultFromName = null;
+
+    #[ORM\Column(name: 'default_from_email', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $defaultFromEmail = null;
+
+    #[ORM\Column(name: 'default_subject', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $defaultSubject = null;
+
+    #[ORM\Column(name: 'default_language', type: Types::STRING, length: 50, nullable: true)]
+    protected ?string $defaultLanguage = null;
 
     /**
-     * @var bool
-     * @ORM\Column(name="email_type_option", type="boolean")
+     * @return float|null
      */
-    protected $emailTypeOption;
-
-    /**
-     * @var bool
-     * @ORM\Column(name="use_awesomebar", type="boolean")
-     */
-    protected $useAwesomeBar;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="default_from_name", type="string", length=255, nullable=true)
-     */
-    protected $defaultFromName;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="default_from_email", type="string", length=255, nullable=true)
-     */
-    protected $defaultFromEmail;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="default_subject", type="string", length=255, nullable=true)
-     */
-    protected $defaultSubject;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="default_language", type="string", length=50, nullable=true)
-     */
-    protected $defaultLanguage;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="list_rating", type="float", nullable=true)
-     */
+    #[ORM\Column(name: 'list_rating', type: Types::FLOAT, nullable: true)]
     protected $listRating;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="subscribe_url_short", type="text", nullable=true)
-     */
-    protected $subscribeUrlShort;
+    #[ORM\Column(name: 'subscribe_url_short', type: Types::TEXT, nullable: true)]
+    protected ?string $subscribeUrlShort = null;
+
+    #[ORM\Column(name: 'subscribe_url_long', type: Types::TEXT, nullable: true)]
+    protected ?string $subscribeUrlLong = null;
+
+    #[ORM\Column(name: 'beamer_address', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $beamerAddress = null;
+
+    #[ORM\Column(name: 'visibility', type: Types::TEXT, nullable: true)]
+    protected ?string $visibility = null;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="subscribe_url_long", type="text", nullable=true)
+     * @return float|null
      */
-    protected $subscribeUrlLong;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="beamer_address", type="string", length=255, nullable=true)
-     */
-    protected $beamerAddress;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="visibility", type="text", nullable=true)
-     */
-    protected $visibility;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="member_count", type="float", nullable=true)
-     */
+    #[ORM\Column(name: 'member_count', type: Types::FLOAT, nullable: true)]
     protected $memberCount;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="unsubscribe_count", type="float", nullable=true)
+     * @return float|null
      */
+    #[ORM\Column(name: 'unsubscribe_count', type: Types::FLOAT, nullable: true)]
     protected $unsubscribeCount;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="cleaned_count", type="float", nullable=true)
+     * @return float|null
      */
+    #[ORM\Column(name: 'cleaned_count', type: Types::FLOAT, nullable: true)]
     protected $cleanedCount;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="member_count_since_send", type="float", nullable=true)
+     * @return float|null
      */
+    #[ORM\Column(name: 'member_count_since_send', type: Types::FLOAT, nullable: true)]
     protected $memberCountSinceSend;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="unsubscribe_count_since_send", type="float", nullable=true)
+     * @return float|null
      */
+    #[ORM\Column(name: 'unsubscribe_count_since_send', type: Types::FLOAT, nullable: true)]
     protected $unsubscribeCountSinceSend;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="cleaned_count_since_send", type="float", nullable=true)
+     * @return float|null
      */
+    #[ORM\Column(name: 'cleaned_count_since_send', type: Types::FLOAT, nullable: true)]
     protected $cleanedCountSinceSend;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="campaign_count", type="float", nullable=true)
+     * @return float|null
      */
+    #[ORM\Column(name: 'campaign_count', type: Types::FLOAT, nullable: true)]
     protected $campaignCount;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="grouping_count", type="float", nullable=true)
+     * @return float|null
      */
+    #[ORM\Column(name: 'grouping_count', type: Types::FLOAT, nullable: true)]
     protected $groupingCount;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="group_count", type="float", nullable=true)
+     * @return float|null
      */
+    #[ORM\Column(name: 'group_count', type: Types::FLOAT, nullable: true)]
     protected $groupCount;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="merge_var_count", type="float", nullable=true)
+     * @return float|null
      */
+    #[ORM\Column(name: 'merge_var_count', type: Types::FLOAT, nullable: true)]
     protected $mergeVarCount;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="avg_sub_rate", type="float", nullable=true)
+     * @return float|null
      */
+    #[ORM\Column(name: 'avg_sub_rate', type: Types::FLOAT, nullable: true)]
     protected $avgSubRate;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="avg_unsub_rate", type="float", nullable=true)
+     * @return float|null
      */
+    #[ORM\Column(name: 'avg_unsub_rate', type: Types::FLOAT, nullable: true)]
     protected $avgUsubRate;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="target_sub_rate", type="float", nullable=true)
+     * @return float|null
      */
+    #[ORM\Column(name: 'target_sub_rate', type: Types::FLOAT, nullable: true)]
     protected $targetSubRate;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="open_rate", type="float", nullable=true)
+     * @return float|null
      */
+    #[ORM\Column(name: 'open_rate', type: Types::FLOAT, nullable: true)]
     protected $openRate;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="click_rate", type="float", nullable=true)
+     * @return float|null
      */
+    #[ORM\Column(name: 'click_rate', type: Types::FLOAT, nullable: true)]
     protected $clickRate;
 
     /**
@@ -287,24 +195,15 @@ class SubscribersList implements OriginAwareInterface
 
     /**
      * @var array
-     *
-     * @ORM\Column(name="merge_var_config", type="json_array", nullable=true)
      */
+    #[ORM\Column(name: 'merge_var_config', type: 'json_array', nullable: true)]
     protected $mergeVarConfig;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    protected $createdAt;
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
+    protected ?\DateTimeInterface $createdAt = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
-     */
-    protected $updatedAt;
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    protected ?\DateTimeInterface $updatedAt = null;
 
     /**
      * @return int
@@ -949,9 +848,7 @@ class SubscribersList implements OriginAwareInterface
         return $this;
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function prePersist()
     {
         if (!$this->createdAt) {
@@ -963,9 +860,7 @@ class SubscribersList implements OriginAwareInterface
         }
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
+    #[ORM\PreUpdate]
     public function preUpdate()
     {
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));

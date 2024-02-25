@@ -4,9 +4,10 @@ namespace Oro\Bundle\MailChimpBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\LocaleBundle\Model\FirstNameInterface;
 use Oro\Bundle\LocaleBundle\Model\LastNameInterface;
@@ -19,38 +20,25 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  * @SuppressWarnings(PHPMD.ExcessivePublicCount)
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.TooManyFields)
- *
- * @ORM\Entity
- * @ORM\Table(
- *      name="orocrm_mailchimp_member",
- *      indexes={
- *          @ORM\Index(name="mc_mmbr_email_list_idx", columns={"email", "subscribers_list_id"}),
- *          @ORM\Index(name="mc_mmbr_origin_idx", columns={"origin_id"}),
- *          @ORM\Index(name="mc_mmbr_status_idx", columns={"status"}),
- *      },
- * )
- * @ORM\HasLifecycleCallbacks()
- * @Config(
- *  defaultValues={
- *      "entity"={
- *          "icon"="fa-user"
- *      },
- *      "ownership"={
- *          "owner_type"="ORGANIZATION",
- *          "owner_field_name"="owner",
- *          "owner_column_name"="owner_id"
- *      },
- *      "security"={
- *          "type"="ACL",
- *          "group_name"="",
- *          "category"="marketing"
- *      },
- *      "form"={
- *          "grid_name"="orocrm-mailchimp-member-grid",
- *      },
- *  }
- * )
  */
+#[ORM\Entity]
+#[ORM\Table(name: 'orocrm_mailchimp_member')]
+#[ORM\Index(columns: ['email', 'subscribers_list_id'], name: 'mc_mmbr_email_list_idx')]
+#[ORM\Index(columns: ['origin_id'], name: 'mc_mmbr_origin_idx')]
+#[ORM\Index(columns: ['status'], name: 'mc_mmbr_status_idx')]
+#[ORM\HasLifecycleCallbacks]
+#[Config(
+    defaultValues: [
+        'entity' => ['icon' => 'fa-user'],
+        'ownership' => [
+            'owner_type' => 'ORGANIZATION',
+            'owner_field_name' => 'owner',
+            'owner_column_name' => 'owner_id'
+        ],
+        'security' => ['type' => 'ACL', 'group_name' => '', 'category' => 'marketing'],
+        'form' => ['grid_name' => 'orocrm-mailchimp-member-grid']
+    ]
+)]
 class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterface
 {
     /**
@@ -88,263 +76,151 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
      */
     const STATUS_UPDATE = 'update';
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="origin_id", type="string", length=32, nullable=true)
-     * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "identity"=true
-     *          }
-     *      }
-     * )
+     * @var integer|null
      */
+    #[ORM\Column(name: 'origin_id', type: Types::STRING, length: 32, nullable: true)]
+    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
     protected $originId;
 
-    /**
-     * @var Channel
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\IntegrationBundle\Entity\Channel")
-     * @ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "identity"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $channel;
+    #[ORM\ManyToOne(targetEntity: Channel::class)]
+    #[ORM\JoinColumn(name: 'channel_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    protected ?Channel $channel = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=255, nullable=false)
-     */
-    protected $email;
+    #[ORM\Column(name: 'email', type: Types::STRING, length: 255, nullable: false)]
+    protected ?string $email = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="phone", type="string", length=255, nullable=true)
-     */
-    protected $phone;
+    #[ORM\Column(name: 'phone', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $phone = null;
 
     /**
      * The subscription status for this email address, either pending, subscribed, unsubscribed, or cleaned
-     *
-     * @var string
-     *
-     * @ORM\Column(name="status", type="string", length=16, nullable=false)
      */
-    protected $status;
+    #[ORM\Column(name: 'status', type: Types::STRING, length: 16, nullable: false)]
+    protected ?string $status = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="first_name", type="string", length=255, nullable=true)
-     */
-    protected $firstName;
+    #[ORM\Column(name: 'first_name', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $firstName = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="last_name", type="string", length=255, nullable=true)
-     */
-    protected $lastName;
+    #[ORM\Column(name: 'last_name', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $lastName = null;
 
     /**
      * The rating of the subscriber. This will be 1 - 5
-     *
-     * @var integer
-     *
-     * @ORM\Column(name="member_rating", type="smallint", nullable=true)
      */
-    protected $memberRating;
+    #[ORM\Column(name: 'member_rating', type: Types::SMALLINT, nullable: true)]
+    protected ?int $memberRating = null;
 
     /**
      * The date+time the opt-in completed.
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="optedin_at", type="datetime", nullable=true)
      */
-    protected $optedInAt;
+    #[ORM\Column(name: 'optedin_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    protected ?\DateTimeInterface $optedInAt = null;
 
     /**
      * IP Address this address opted in from.
-     *
-     * @var string
-     *
-     * @ORM\Column(name="optedin_ip", type="string", length=20, nullable=true)
      */
-    protected $optedInIpAddress;
+    #[ORM\Column(name: 'optedin_ip', type: Types::STRING, length: 20, nullable: true)]
+    protected ?string $optedInIpAddress = null;
 
     /**
      * The date+time the confirm completed.
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="confirmed_at", type="datetime", nullable=true)
      */
-    protected $confirmedAt;
+    #[ORM\Column(name: 'confirmed_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    protected ?\DateTimeInterface $confirmedAt = null;
 
     /**
      * IP Address this address confirmed from.
-     *
-     * @var string
-     *
-     * @ORM\Column(name="confirmed_ip", type="string", length=16, nullable=true)
      */
-    protected $confirmedIpAddress;
+    #[ORM\Column(name: 'confirmed_ip', type: Types::STRING, length: 16, nullable: true)]
+    protected ?string $confirmedIpAddress = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="latitude", type="string", length=64, nullable=true)
-     */
-    protected $latitude;
+    #[ORM\Column(name: 'latitude', type: Types::STRING, length: 64, nullable: true)]
+    protected ?string $latitude = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="longitude", type="string", length=64, nullable=true)
-     */
-    protected $longitude;
+    #[ORM\Column(name: 'longitude', type: Types::STRING, length: 64, nullable: true)]
+    protected ?string $longitude = null;
 
-    /**
-     * GMT offset
-     *
-     * @var string
-     *
-     * @ORM\Column(name="gmt_offset", type="string", length=16, nullable=true)
-     */
-    protected $gmtOffset;
+    #[ORM\Column(name: 'gmt_offset', type: Types::STRING, length: 16, nullable: true)]
+    protected ?string $gmtOffset = null;
 
     /**
      * GMT offset during daylight savings (if DST not observered, will be same as gmtoff)
-     *
-     * @var string
-     *
-     * @ORM\Column(name="dst_offset", type="string", length=16, nullable=true)
      */
-    protected $dstOffset;
+    #[ORM\Column(name: 'dst_offset', type: Types::STRING, length: 16, nullable: true)]
+    protected ?string $dstOffset = null;
 
     /**
      * The timezone we've place them in
-     *
-     * @var string
-     *
-     * @ORM\Column(name="timezone", type="string", length=40, nullable=true)
      */
-    protected $timezone;
+    #[ORM\Column(name: 'timezone', type: Types::STRING, length: 40, nullable: true)]
+    protected ?string $timezone = null;
 
     /**
      * 2 digit ISO-3166 country code
-     *
-     * @var string
-     *
-     * @ORM\Column(name="cc", type="string", length=2, nullable=true)
      */
-    protected $cc;
+    #[ORM\Column(name: 'cc', type: Types::STRING, length: 2, nullable: true)]
+    protected ?string $cc = null;
 
     /**
      * Generally state, province, or similar
-     *
-     * @var string
-     *
-     * @ORM\Column(name="region", type="string", length=255, nullable=true)
      */
-    protected $region;
+    #[ORM\Column(name: 'region', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $region = null;
 
     /**
      * The last time this record was changed. If the record is old enough, this may be blank.
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="last_changed_at", type="datetime", nullable=true)
      */
-    protected $lastChangedAt;
+    #[ORM\Column(name: 'last_changed_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    protected ?\DateTimeInterface $lastChangedAt = null;
 
     /**
      * The unique id for an email address (not list related) - the email "id" returned from listMemberInfo,
      * Webhooks, Campaigns, etc.
-     *
-     * @var string
-     *
-     * @ORM\Column(name="euid", type="string", length=255, nullable=true)
      */
-    protected $euid;
+    #[ORM\Column(name: 'euid', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $euid = null;
 
     /**
      * Id used from the old v2 api. Also added on the export api v1.
      *
-     * @var int
-     *
-     * @ORM\Column(name="leid", type="bigint", nullable=true)
+     * @var int|null
      */
+    #[ORM\Column(name: 'leid', type: Types::BIGINT, nullable: true)]
     protected $leid;
 
     /**
      * @var array
-     *
-     * @ORM\Column(name="merge_var_values", type="json_array", nullable=true)
      */
+    #[ORM\Column(name: 'merge_var_values', type: 'json_array', nullable: true)]
     protected $mergeVarValues;
 
-    /**
-     * @var SubscribersList
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\MailChimpBundle\Entity\SubscribersList")
-     * @ORM\JoinColumn(name="subscribers_list_id", referencedColumnName="id", onDelete="CASCADE")
-     * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "identity"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $subscribersList;
+    #[ORM\ManyToOne(targetEntity: SubscribersList::class)]
+    #[ORM\JoinColumn(name: 'subscribers_list_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    protected ?SubscribersList $subscribersList = null;
+
+    #[ORM\ManyToOne(targetEntity: Organization::class)]
+    #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?Organization $owner = null;
 
     /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @var Collection<int, StaticSegmentMember>
      */
-    protected $owner;
+    #[ORM\OneToMany(mappedBy: 'member', targetEntity: StaticSegmentMember::class)]
+    protected ?Collection $segmentMembers = null;
 
-    /**
-     * @var Collection|ArrayCollection|Member[]
-     *
-     * @ORM\OneToMany(targetEntity="Oro\Bundle\MailChimpBundle\Entity\StaticSegmentMember", mappedBy="member")
-     */
-    protected $segmentMembers;
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
+    protected ?\DateTimeInterface $createdAt = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    protected $createdAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
-     */
-    protected $updatedAt;
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    protected ?\DateTimeInterface $updatedAt = null;
 
     /**
      * Constructor
@@ -880,9 +756,7 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
         return $this;
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function prePersist()
     {
         if (!$this->createdAt) {
@@ -894,9 +768,7 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
         }
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
+    #[ORM\PreUpdate]
     public function preUpdate()
     {
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));

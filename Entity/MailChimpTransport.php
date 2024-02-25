@@ -2,34 +2,27 @@
 
 namespace Oro\Bundle\MailChimpBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * Entity class to extend integrations data transport entity with mailchimp related data.
- *
- * @ORM\Entity()
  */
+#[ORM\Entity]
 class MailChimpTransport extends Transport
 {
     const DEFAULT_ACTIVITY_UPDATE_INTERVAL = 90;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="orocrm_mailchimp_apikey", type="string", length=255, nullable=false)
-     */
-    protected $apiKey;
+    #[ORM\Column(name: 'orocrm_mailchimp_apikey', type: Types::STRING, length: 255, nullable: false)]
+    protected ?string $apiKey = null;
 
     /**
      * Activity update interval after send date. Days.
-     *
-     * @var int
-     *
-     * @ORM\Column(name="orocrm_mailchimp_act_up_int", type="integer", nullable=true)
      */
-    protected $activityUpdateInterval = self::DEFAULT_ACTIVITY_UPDATE_INTERVAL;
+    #[ORM\Column(name: 'orocrm_mailchimp_act_up_int', type: Types::INTEGER, nullable: true)]
+    protected ?int $activityUpdateInterval = self::DEFAULT_ACTIVITY_UPDATE_INTERVAL;
 
     /**
      * @var ParameterBag

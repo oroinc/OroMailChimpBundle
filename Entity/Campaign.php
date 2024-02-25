@@ -2,11 +2,13 @@
 
 namespace Oro\Bundle\MailChimpBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\CampaignBundle\Entity\EmailCampaign;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Oro\Bundle\MailChimpBundle\Entity\Repository\CampaignRepository;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
@@ -17,33 +19,22 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  * @SuppressWarnings(PHPMD.ExcessivePublicCount)
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
- *
- * @ORM\Entity(repositoryClass="Oro\Bundle\MailChimpBundle\Entity\Repository\CampaignRepository")
- * @ORM\Table(
- *      name="orocrm_mailchimp_campaign",
- *      uniqueConstraints={
- *          @ORM\UniqueConstraint(name="mc_campaign_oid_cid_unq", columns={"origin_id", "channel_id"})
- *     }
- * )
- * @ORM\HasLifecycleCallbacks()
- * @Config(
- *  defaultValues={
- *      "ownership"={
- *          "owner_type"="ORGANIZATION",
- *          "owner_field_name"="owner",
- *          "owner_column_name"="owner_id"
- *      },
- *      "security"={
- *          "type"="ACL",
- *          "group_name"="",
- *          "category"="marketing"
- *      },
- *      "entity"={
- *          "icon"="fa-envelope"
- *      }
- *  }
- * )
  */
+#[ORM\Entity(repositoryClass: CampaignRepository::class)]
+#[ORM\Table(name: 'orocrm_mailchimp_campaign')]
+#[ORM\UniqueConstraint(name: 'mc_campaign_oid_cid_unq', columns: ['origin_id', 'channel_id'])]
+#[ORM\HasLifecycleCallbacks]
+#[Config(
+    defaultValues: [
+        'ownership' => [
+            'owner_type' => 'ORGANIZATION',
+            'owner_field_name' => 'owner',
+            'owner_column_name' => 'owner_id'
+        ],
+        'security' => ['type' => 'ACL', 'group_name' => '', 'category' => 'marketing'],
+        'entity' => ['icon' => 'fa-envelope']
+    ]
+)]
 class Campaign implements OriginAwareInterface
 {
     const ACTIVITY_ENABLED = 'enabled';
@@ -70,303 +61,138 @@ class Campaign implements OriginAwareInterface
     const TYPE_VAR = 'variate';
 
     /**#@-*/
+    #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
+
+    #[ORM\Column(name: 'origin_id', type: Types::STRING, length: 32, nullable: false)]
+    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    protected ?string $originId = null;
+
+    #[ORM\ManyToOne(targetEntity: Channel::class)]
+    #[ORM\JoinColumn(name: 'channel_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    protected ?Channel $channel = null;
+
+    #[ORM\ManyToOne(targetEntity: Organization::class)]
+    #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?Organization $owner = null;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="origin_id", type="string", length=32, nullable=false)
-     * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "identity"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $originId;
-
-    /**
-     * @var Channel
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\IntegrationBundle\Entity\Channel")
-     * @ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "identity"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $channel;
-
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $owner;
-
-    /**
-     * @var int
-     * @ORM\Column(name="web_id", type="bigint", nullable=false)
-     */
+    #[ORM\Column(name: 'web_id', type: Types::BIGINT, nullable: false)]
     protected $webId;
 
-    /**
-     * @var string
-     * @ORM\Column(name="title", type="string", length=255, nullable=true)
-     */
-    protected $title;
+    #[ORM\Column(name: 'title', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $title = null;
 
-    /**
-     * @var string
-     * @ORM\Column(name="subject", type="string", length=255, nullable=true)
-     */
-    protected $subject;
+    #[ORM\Column(name: 'subject', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $subject = null;
 
-    /**
-     * @var string
-     * @ORM\Column(name="from_email", type="string", length=255, nullable=true)
-     */
-    protected $fromEmail;
+    #[ORM\Column(name: 'from_email', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $fromEmail = null;
 
-    /**
-     * @var string
-     * @ORM\Column(name="from_name", type="string", length=255, nullable=true)
-     */
-    protected $fromName;
+    #[ORM\Column(name: 'from_name', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $fromName = null;
 
-    /**
-     * @var Template
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\MailChimpBundle\Entity\Template")
-     * @ORM\JoinColumn(name="template_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $template;
+    #[ORM\ManyToOne(targetEntity: Template::class)]
+    #[ORM\JoinColumn(name: 'template_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?Template $template = null;
 
-    /**
-     * @var SubscribersList
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\MailChimpBundle\Entity\StaticSegment")
-     * @ORM\JoinColumn(name="static_segment_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $staticSegment;
+    #[ORM\ManyToOne(targetEntity: StaticSegment::class)]
+    #[ORM\JoinColumn(name: 'static_segment_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?StaticSegment $staticSegment = null;
 
-    /**
-     * @var SubscribersList
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\MailChimpBundle\Entity\SubscribersList")
-     * @ORM\JoinColumn(name="subscribers_list_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $subscribersList;
+    #[ORM\ManyToOne(targetEntity: SubscribersList::class)]
+    #[ORM\JoinColumn(name: 'subscribers_list_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?SubscribersList $subscribersList = null;
 
-    /**
-     * @var EmailCampaign
-     *
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\CampaignBundle\Entity\EmailCampaign")
-     * @ORM\JoinColumn(name="email_campaign_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $emailCampaign;
+    #[ORM\OneToOne(targetEntity: EmailCampaign::class)]
+    #[ORM\JoinColumn(name: 'email_campaign_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?EmailCampaign $emailCampaign = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="content_type", type="string", length=50, nullable=true)
-     */
-    protected $contentType;
+    #[ORM\Column(name: 'content_type', type: Types::STRING, length: 50, nullable: true)]
+    protected ?string $contentType = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="type", type="string", length=50, nullable=true)
-     */
-    protected $type;
+    #[ORM\Column(name: 'type', type: Types::STRING, length: 50, nullable: true)]
+    protected ?string $type = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="status", type="string", length=16, nullable=false)
-     */
-    protected $status;
+    #[ORM\Column(name: 'status', type: Types::STRING, length: 16, nullable: false)]
+    protected ?string $status = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="send_time", type="datetime", nullable=true)
-     */
-    protected $sendTime;
+    #[ORM\Column(name: 'send_time', type: Types::DATETIME_MUTABLE, nullable: true)]
+    protected ?\DateTimeInterface $sendTime = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="last_open_date", type="datetime", nullable=true)
-     */
-    protected $lastOpenDate;
+    #[ORM\Column(name: 'last_open_date', type: Types::DATETIME_MUTABLE, nullable: true)]
+    protected ?\DateTimeInterface $lastOpenDate = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="archive_url", type="string", length=255, nullable=true)
-     */
-    protected $archiveUrl;
+    #[ORM\Column(name: 'archive_url', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $archiveUrl = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="archive_url_long", type="text", nullable=true)
-     */
-    protected $archiveUrlLong;
+    #[ORM\Column(name: 'archive_url_long', type: Types::TEXT, nullable: true)]
+    protected ?string $archiveUrlLong = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="emails_sent", type="integer", nullable=true)
-     */
-    protected $emailsSent;
+    #[ORM\Column(name: 'emails_sent', type: Types::INTEGER, nullable: true)]
+    protected ?int $emailsSent = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="tests_sent", type="integer", nullable=true)
-     */
-    protected $testsSent;
+    #[ORM\Column(name: 'tests_sent', type: Types::INTEGER, nullable: true)]
+    protected ?int $testsSent = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="tests_remain", type="integer", nullable=true)
-     */
-    protected $testsRemain;
+    #[ORM\Column(name: 'tests_remain', type: Types::INTEGER, nullable: true)]
+    protected ?int $testsRemain = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="syntax_errors", type="integer", nullable=true)
-     */
-    protected $syntaxErrors;
+    #[ORM\Column(name: 'syntax_errors', type: Types::INTEGER, nullable: true)]
+    protected ?int $syntaxErrors = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="hard_bounces", type="integer", nullable=true)
-     */
-    protected $hardBounces;
+    #[ORM\Column(name: 'hard_bounces', type: Types::INTEGER, nullable: true)]
+    protected ?int $hardBounces = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="soft_bounces", type="integer", nullable=true)
-     */
-    protected $softBounces;
+    #[ORM\Column(name: 'soft_bounces', type: Types::INTEGER, nullable: true)]
+    protected ?int $softBounces = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="unsubscribes", type="integer", nullable=true)
-     */
-    protected $unsubscribes;
+    #[ORM\Column(name: 'unsubscribes', type: Types::INTEGER, nullable: true)]
+    protected ?int $unsubscribes = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="abuse_reports", type="integer", nullable=true)
-     */
-    protected $abuseReports;
+    #[ORM\Column(name: 'abuse_reports', type: Types::INTEGER, nullable: true)]
+    protected ?int $abuseReports = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="forwards", type="integer", nullable=true)
-     */
-    protected $forwards;
+    #[ORM\Column(name: 'forwards', type: Types::INTEGER, nullable: true)]
+    protected ?int $forwards = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="forwards_opens", type="integer", nullable=true)
-     */
-    protected $forwardsOpens;
+    #[ORM\Column(name: 'forwards_opens', type: Types::INTEGER, nullable: true)]
+    protected ?int $forwardsOpens = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="opens", type="integer", nullable=true)
-     */
-    protected $opens;
+    #[ORM\Column(name: 'opens', type: Types::INTEGER, nullable: true)]
+    protected ?int $opens = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="unique_opens", type="integer", nullable=true)
-     */
-    protected $uniqueOpens;
+    #[ORM\Column(name: 'unique_opens', type: Types::INTEGER, nullable: true)]
+    protected ?int $uniqueOpens = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="clicks", type="integer", nullable=true)
-     */
-    protected $clicks;
+    #[ORM\Column(name: 'clicks', type: Types::INTEGER, nullable: true)]
+    protected ?int $clicks = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="unique_clicks", type="integer", nullable=true)
-     */
-    protected $uniqueClicks;
+    #[ORM\Column(name: 'unique_clicks', type: Types::INTEGER, nullable: true)]
+    protected ?int $uniqueClicks = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="users_who_clicked", type="integer", nullable=true)
-     */
-    protected $usersWhoClicked;
+    #[ORM\Column(name: 'users_who_clicked', type: Types::INTEGER, nullable: true)]
+    protected ?int $usersWhoClicked = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="unique_likes", type="integer", nullable=true)
-     */
-    protected $uniqueLikes;
+    #[ORM\Column(name: 'unique_likes', type: Types::INTEGER, nullable: true)]
+    protected ?int $uniqueLikes = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="recipient_likes", type="integer", nullable=true)
-     */
-    protected $recipientLikes;
+    #[ORM\Column(name: 'recipient_likes', type: Types::INTEGER, nullable: true)]
+    protected ?int $recipientLikes = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="facebook_likes", type="integer", nullable=true)
-     */
-    protected $facebookLikes;
+    #[ORM\Column(name: 'facebook_likes', type: Types::INTEGER, nullable: true)]
+    protected ?int $facebookLikes = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    protected $createdAt;
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
+    protected ?\DateTimeInterface $createdAt = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
-     */
-    protected $updatedAt;
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    protected ?\DateTimeInterface $updatedAt = null;
 
     /**
      * Get id
@@ -1116,9 +942,7 @@ class Campaign implements OriginAwareInterface
         return self::ACTIVITY_ENABLED;
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function prePersist()
     {
         if (!$this->createdAt) {
@@ -1130,9 +954,7 @@ class Campaign implements OriginAwareInterface
         }
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
+    #[ORM\PreUpdate]
     public function preUpdate()
     {
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));

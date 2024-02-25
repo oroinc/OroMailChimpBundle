@@ -2,47 +2,33 @@
 
 namespace Oro\Bundle\MailChimpBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\MailChimpBundle\Entity\Repository\MarketingListEmailRepository;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 
 /**
  * Mailchimp marketing list email entity class.
- *
- * @ORM\Entity(repositoryClass="Oro\Bundle\MailChimpBundle\Entity\Repository\MarketingListEmailRepository")
- * @ORM\Table(
- *      name="orocrm_mailchimp_ml_email",
- *      indexes={
- *          @ORM\Index(name="mc_ml_email_idx", columns={"email"}),
- *          @ORM\Index(name="mc_ml_email_state_idx", columns={"state"})
- *      },
- * )
  */
+#[ORM\Entity(repositoryClass: MarketingListEmailRepository::class)]
+#[ORM\Table(name: 'orocrm_mailchimp_ml_email')]
+#[ORM\Index(columns: ['email'], name: 'mc_ml_email_idx')]
+#[ORM\Index(columns: ['state'], name: 'mc_ml_email_state_idx')]
 class MarketingListEmail
 {
     const STATE_IN_LIST = 'in_list';
 
-    /**
-     * @var MarketingList
-     *
-     * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\MarketingListBundle\Entity\MarketingList")
-     * @ORM\JoinColumn(name="marketing_list_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     */
-    protected $marketingList;
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: MarketingList::class)]
+    #[ORM\JoinColumn(name: 'marketing_list_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    protected ?MarketingList $marketingList = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Id
-     * @ORM\Column(name="email", type="string", length=255, nullable=false)
-     */
-    protected $email;
+    #[ORM\Id]
+    #[ORM\Column(name: 'email', type: Types::STRING, length: 255, nullable: false)]
+    protected ?string $email = null;
 
-    /**
-     * @var string
-     * @ORM\Column(name="state", type="string", length=25, nullable=false)
-     */
-    protected $state = self::STATE_IN_LIST;
+    #[ORM\Column(name: 'state', type: Types::STRING, length: 25, nullable: false)]
+    protected ?string $state = self::STATE_IN_LIST;
 
     /**
      * @return string

@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\MailChimpBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\CampaignBundle\Entity\TransportSettings;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
@@ -9,32 +10,20 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * Entity class to extend integration transport settings with mailchimp related data.
- *
- * @ORM\Entity
  */
+#[ORM\Entity]
 class MailChimpTransportSettings extends TransportSettings
 {
-    /**
-     * @var Channel
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\IntegrationBundle\Entity\Channel")
-     * @ORM\JoinColumn(name="mailchimp_channel_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $channel;
+    #[ORM\ManyToOne(targetEntity: Channel::class)]
+    #[ORM\JoinColumn(name: 'mailchimp_channel_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?Channel $channel = null;
 
-    /**
-     * @var Template
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\MailChimpBundle\Entity\Template")
-     * @ORM\JoinColumn(name="mailchimp_template_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
-     */
-    protected $template;
+    #[ORM\ManyToOne(targetEntity: Template::class)]
+    #[ORM\JoinColumn(name: 'mailchimp_template_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    protected ?Template $template = null;
 
-    /**
-     * @var bool
-     * @ORM\Column(name="mailchimp_receive_activities", type="boolean")
-     */
-    protected $receiveActivities = true;
+    #[ORM\Column(name: 'mailchimp_receive_activities', type: Types::BOOLEAN)]
+    protected ?bool $receiveActivities = true;
 
     /**
      * @return Channel

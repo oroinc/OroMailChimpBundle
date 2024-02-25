@@ -5,38 +5,34 @@ namespace Oro\Bundle\MailChimpBundle\Entity;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Oro\Bundle\MailChimpBundle\Entity\Repository\StaticSegmentRepository;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
  * Mailchimp static segment entity class.
  *
- * @ORM\Entity(repositoryClass="Oro\Bundle\MailChimpBundle\Entity\Repository\StaticSegmentRepository")
- * @ORM\Table(name="orocrm_mc_static_segment")
- * @ORM\HasLifecycleCallbacks()
- * @Config(
- *  defaultValues={
- *      "entity"={
- *          "icon"="fa-user"
- *      },
- *      "ownership"={
- *          "owner_type"="ORGANIZATION",
- *          "owner_field_name"="owner",
- *          "owner_column_name"="owner_id"
- *      },
- *      "security"={
- *          "type"="ACL",
- *          "group_name"="",
- *          "category"="marketing"
- *      }
- *  }
- * )
  * @SuppressWarnings(PHPMD.TooManyFields)
  */
+#[ORM\Entity(repositoryClass: StaticSegmentRepository::class)]
+#[ORM\Table(name: 'orocrm_mc_static_segment')]
+#[ORM\HasLifecycleCallbacks]
+#[Config(
+    defaultValues: [
+        'entity' => ['icon' => 'fa-user'],
+        'ownership' => [
+            'owner_type' => 'ORGANIZATION',
+            'owner_field_name' => 'owner',
+            'owner_column_name' => 'owner_id'
+        ],
+        'security' => ['type' => 'ACL', 'group_name' => '', 'category' => 'marketing']
+    ]
+)]
 class StaticSegment implements OriginAwareInterface
 {
     /**#@+
@@ -50,139 +46,74 @@ class StaticSegment implements OriginAwareInterface
     const STATUS_SCHEDULED_BY_CHANGE = 'scheduled_by_change';
     const STATUS_IMPORTED = 'imported';
     /**#@-*/
+    #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
+
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $name = null;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @var integer|null
      */
-    protected $id;
-
-    /**
-     * @var string
-     * @ORM\Column(name="name", type="string", length=255, nullable=true)
-     */
-    protected $name;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="origin_id", type="bigint", nullable=true)
-     * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "identity"=true
-     *          }
-     *      }
-     * )
-     */
+    #[ORM\Column(name: 'origin_id', type: Types::BIGINT, nullable: true)]
+    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
     protected $originId;
 
-    /**
-     * @var Channel
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\IntegrationBundle\Entity\Channel")
-     * @ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "identity"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $channel;
+    #[ORM\ManyToOne(targetEntity: Channel::class)]
+    #[ORM\JoinColumn(name: 'channel_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    protected ?Channel $channel = null;
+
+    #[ORM\ManyToOne(targetEntity: MarketingList::class)]
+    #[ORM\JoinColumn(name: 'marketing_list_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected ?MarketingList $marketingList = null;
+
+    #[ORM\ManyToOne(targetEntity: SubscribersList::class)]
+    #[ORM\JoinColumn(name: 'subscribers_list_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected ?SubscribersList $subscribersList = null;
 
     /**
-     * @var MarketingList
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\MarketingListBundle\Entity\MarketingList")
-     * @ORM\JoinColumn(name="marketing_list_id", referencedColumnName="id", onDelete="CASCADE")
+     * @var Collection<int, StaticSegmentMember>
      */
-    protected $marketingList;
+    #[ORM\OneToMany(mappedBy: 'staticSegment', targetEntity: StaticSegmentMember::class)]
+    protected ?Collection $segmentMembers = null;
 
     /**
-     * @var SubscribersList
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\MailChimpBundle\Entity\SubscribersList")
-     * @ORM\JoinColumn(name="subscribers_list_id", referencedColumnName="id", onDelete="CASCADE")
+     * @var Collection<int, ExtendedMergeVar>
      */
-    protected $subscribersList;
+    #[ORM\OneToMany(mappedBy: 'staticSegment', targetEntity: ExtendedMergeVar::class)]
+    protected ?Collection $extendedMergeVars = null;
 
-    /**
-    * @var Collection|StaticSegmentMember[]
-     *
-     * @ORM\OneToMany(targetEntity="Oro\Bundle\MailChimpBundle\Entity\StaticSegmentMember", mappedBy="staticSegment")
-     */
-    protected $segmentMembers;
+    #[ORM\ManyToOne(targetEntity: Organization::class)]
+    #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?Organization $owner = null;
 
-    /**
-     * @var Collection|ExtendedMergeVar[]
-     *
-     * @ORM\OneToMany(targetEntity="Oro\Bundle\MailChimpBundle\Entity\ExtendedMergeVar", mappedBy="staticSegment")
-     */
-    protected $extendedMergeVars;
+    #[ORM\Column(name: 'sync_status', type: Types::STRING, length: 255, nullable: false)]
+    protected ?string $syncStatus = null;
 
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $owner;
+    #[ORM\Column(name: 'last_synced', type: Types::DATETIME_MUTABLE, nullable: true)]
+    protected ?\DateTimeInterface $lastSynced = null;
 
-    /**
-     * @var string
-     * @ORM\Column(name="sync_status", type="string", length=255, nullable=false)
-     */
-    protected $syncStatus;
+    #[ORM\Column(name: 'remote_remove', type: Types::BOOLEAN, nullable: false)]
+    protected ?bool $remoteRemove = false;
 
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="last_synced", type="datetime", nullable=true)
-     */
-    protected $lastSynced;
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
+    protected ?\DateTimeInterface $createdAt = null;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="remote_remove", type="boolean", nullable=false)
-     */
-    protected $remoteRemove = false;
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    protected ?\DateTimeInterface $updatedAt = null;
 
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    protected $createdAt;
+    #[ORM\Column(name: 'last_reset', type: Types::DATETIME_MUTABLE, nullable: true)]
+    protected ?\DateTimeInterface $lastReset = null;
 
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
-     */
-    protected $updatedAt;
-
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="last_reset", type="datetime", nullable=true)
-     */
-    protected $lastReset;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="member_count", type="integer", nullable=true)
-     */
-    protected $memberCount;
+    #[ORM\Column(name: 'member_count', type: Types::INTEGER, nullable: true)]
+    protected ?int $memberCount = null;
 
     public function __construct()
     {
+        $this->segmentMembers = new ArrayCollection();
         $this->extendedMergeVars = new ArrayCollection();
     }
 
@@ -429,9 +360,7 @@ class StaticSegment implements OriginAwareInterface
         return $this;
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function prePersist()
     {
         if (!$this->createdAt) {
@@ -443,9 +372,7 @@ class StaticSegment implements OriginAwareInterface
         }
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
+    #[ORM\PreUpdate]
     public function preUpdate()
     {
         $this->updatedAt = new DateTime('now', new \DateTimeZone('UTC'));

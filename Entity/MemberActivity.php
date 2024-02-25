@@ -2,41 +2,32 @@
 
 namespace Oro\Bundle\MailChimpBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Oro\Bundle\MailChimpBundle\Entity\Repository\MemberActivityRepository;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
  * Mailchimp member's activity entity class.
  *
  * @link http://apidocs.mailchimp.com/api/2.0/lists/member-activity.php
- *
- * @ORM\Entity(repositoryClass="Oro\Bundle\MailChimpBundle\Entity\Repository\MemberActivityRepository")
- * @ORM\Table(
- *      name="orocrm_mc_mmbr_activity",
- *      indexes={
- *          @ORM\Index(name="mc_mmbr_activity_action_idx", columns={"action"})
- *      },
- * )
- * @Config(
- *  defaultValues={
- *      "entity"={
- *          "icon"="fa-bar-chart-o"
- *      },
- *      "ownership"={
- *          "owner_type"="ORGANIZATION",
- *          "owner_field_name"="owner",
- *          "owner_column_name"="owner_id"
- *      },
- *      "security"={
- *          "type"="ACL",
- *          "group_name"="",
- *          "category"="marketing"
- *      }
- *  }
- * )
  */
+#[ORM\Entity(repositoryClass: MemberActivityRepository::class)]
+#[ORM\Table(name: 'orocrm_mc_mmbr_activity')]
+#[ORM\Index(columns: ['action'], name: 'mc_mmbr_activity_action_idx')]
+#[Config(
+    defaultValues: [
+        'entity' => ['icon' => 'fa-bar-chart-o'],
+        'ownership' => [
+            'owner_type' => 'ORGANIZATION',
+            'owner_field_name' => 'owner',
+            'owner_column_name' => 'owner_id'
+        ],
+        'security' => ['type' => 'ACL', 'group_name' => '', 'category' => 'marketing']
+    ]
+)]
 class MemberActivity
 {
     /**#@+
@@ -58,82 +49,41 @@ class MemberActivity
     const ACTIVITY_MANDRILL_UNSUB = 'mandrill_unsub';
     const ACTIVITY_MANDRILL_REJECT = 'mandrill_reject';
     /**#@-*/
+    #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\ManyToOne(targetEntity: Channel::class)]
+    #[ORM\JoinColumn(name: 'channel_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?Channel $channel = null;
 
-    /**
-     * @var Channel
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\IntegrationBundle\Entity\Channel")
-     * @ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $channel;
+    #[ORM\ManyToOne(targetEntity: Campaign::class)]
+    #[ORM\JoinColumn(name: 'campaign_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?Campaign $campaign = null;
 
-    /**
-     * @var Campaign
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\MailChimpBundle\Entity\Campaign")
-     * @ORM\JoinColumn(name="campaign_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $campaign;
+    #[ORM\ManyToOne(targetEntity: Member::class)]
+    #[ORM\JoinColumn(name: 'member_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    protected ?Member $member = null;
 
-    /**
-     * @var Member
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\MailChimpBundle\Entity\Member")
-     * @ORM\JoinColumn(name="member_id", referencedColumnName="id", onDelete="CASCADE")
-     */
-    protected $member;
+    #[ORM\ManyToOne(targetEntity: Organization::class)]
+    #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected ?Organization $owner = null;
 
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $owner;
+    #[ORM\Column(name: 'email', type: Types::STRING, length: 255, nullable: false)]
+    protected ?string $email = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=255, nullable=false)
-     */
-    protected $email;
+    #[ORM\Column(name: 'action', type: Types::STRING, length: 25, nullable: false)]
+    protected ?string $action = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="action", type="string", length=25, nullable=false)
-     */
-    protected $action;
+    #[ORM\Column(name: 'ip_address', type: Types::STRING, length: 45, nullable: true)]
+    protected ?string $ip = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="ip_address", type="string", length=45, nullable=true)
-     */
-    protected $ip;
+    #[ORM\Column(name: 'activity_time', type: Types::DATETIME_MUTABLE, nullable: true)]
+    protected ?\DateTimeInterface $activityTime = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="activity_time", type="datetime", nullable=true)
-     */
-    protected $activityTime;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="url", type="text", nullable=true)
-     */
-    protected $url;
+    #[ORM\Column(name: 'url', type: Types::TEXT, nullable: true)]
+    protected ?string $url = null;
 
     /**
      * @return int

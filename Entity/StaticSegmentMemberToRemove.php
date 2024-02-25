@@ -2,44 +2,29 @@
 
 namespace Oro\Bundle\MailChimpBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Mailchimp static segment member to remove entity class.
- *
- * @ORM\Entity
- * @ORM\Table(
- *      name="orocrm_mc_tmp_mmbr_to_remove",
- *      indexes={
- *          @ORM\Index(name="mc_smbr_rm_state_idx", columns={"state"})
- *      }
- * )
  */
+#[ORM\Entity]
+#[ORM\Table(name: 'orocrm_mc_tmp_mmbr_to_remove')]
+#[ORM\Index(columns: ['state'], name: 'mc_smbr_rm_state_idx')]
 class StaticSegmentMemberToRemove
 {
-    /**
-     * @var Member
-     *
-     * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\MailChimpBundle\Entity\Member")
-     * @ORM\JoinColumn(name="member_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     */
-    protected $member;
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: Member::class)]
+    #[ORM\JoinColumn(name: 'member_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    protected ?Member $member = null;
 
-    /**
-     * @var StaticSegment
-     *
-     * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\MailChimpBundle\Entity\StaticSegment")
-     * @ORM\JoinColumn(name="static_segment_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     */
-    protected $staticSegment;
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: StaticSegment::class)]
+    #[ORM\JoinColumn(name: 'static_segment_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    protected ?StaticSegment $staticSegment = null;
 
-    /**
-     * @var string
-     * @ORM\Column(name="state", type="string", length=25, nullable=false)
-     */
-    protected $state = StaticSegmentMember::STATE_REMOVE;
+    #[ORM\Column(name: 'state', type: Types::STRING, length: 25, nullable: false)]
+    protected ?string $state = StaticSegmentMember::STATE_REMOVE;
 
     /**
      * @return Member

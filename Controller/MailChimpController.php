@@ -12,8 +12,8 @@ use Oro\Bundle\MailChimpBundle\Form\Handler\ConnectionFormHandler;
 use Oro\Bundle\MailChimpBundle\Form\Type\MarketingListConnectionType;
 use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClientFactory;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\SecurityBundle\Annotation\CsrfProtection;
+use Oro\Bundle\SecurityBundle\Attribute\AclAncestor;
+use Oro\Bundle\SecurityBundle\Attribute\CsrfProtection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,17 +24,16 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * MailChimp Controller
- *
- * @Route("/mailchimp")
  */
+#[Route(path: '/mailchimp')]
 class MailChimpController extends AbstractController
 {
     /**
-     * @Route("/ping", name="oro_mailchimp_ping")
-     * @AclAncestor("oro_mailchimp")
      * @param Request $request
      * @return JsonResponse
      */
+    #[Route(path: '/ping', name: 'oro_mailchimp_ping')]
+    #[AclAncestor('oro_mailchimp')]
     public function pingAction(Request $request)
     {
         try {
@@ -55,18 +54,18 @@ class MailChimpController extends AbstractController
     }
 
     /**
-     * @Route(
-     *      "/manage-connection/marketing-list/{id}",
-     *      name="oro_mailchimp_marketing_list_connect",
-     *      requirements={"id"="\d+"}
-     * )
-     * @AclAncestor("oro_mailchimp")
      *
-     * @Template
      * @param MarketingList $marketingList
      * @param Request $request
      * @return array
      */
+    #[Route(
+        path: '/manage-connection/marketing-list/{id}',
+        name: 'oro_mailchimp_marketing_list_connect',
+        requirements: ['id' => '\d+']
+    )]
+    #[Template]
+    #[AclAncestor('oro_mailchimp')]
     public function manageConnectionAction(MarketingList $marketingList, Request $request)
     {
         $staticSegment = $this->getStaticSegmentByMarketingList($marketingList);
@@ -86,18 +85,14 @@ class MailChimpController extends AbstractController
     }
 
     /**
-     * @ParamConverter(
-     *      "marketingList",
-     *      class="Oro\Bundle\MarketingListBundle\Entity\MarketingList",
-     *      options={"id" = "entity"}
-     * )
-     * @AclAncestor("oro_mailchimp")
      *
-     * @Template
      *
      * @param MarketingList $marketingList
      * @return array
      */
+    #[ParamConverter('marketingList', class: MarketingList::class, options: ['id' => 'entity'])]
+    #[Template]
+    #[AclAncestor('oro_mailchimp')]
     public function connectionButtonsAction(MarketingList $marketingList)
     {
         return [
@@ -107,38 +102,38 @@ class MailChimpController extends AbstractController
     }
 
     /**
-     * @Route("/sync-status/{marketingList}",
-     *      name="oro_mailchimp_sync_status",
-     *      requirements={"marketingList"="\d+"})
-     * @ParamConverter("marketingList",
-     *      class="Oro\Bundle\MarketingListBundle\Entity\MarketingList",
-     *      options={"id" = "marketingList"})
-     * @AclAncestor("oro_mailchimp")
      *
-     * @Template
      *
      * @param MarketingList $marketingList
      * @return array
      */
+    #[Route(
+        path: '/sync-status/{marketingList}',
+        name: 'oro_mailchimp_sync_status',
+        requirements: ['marketingList' => '\d+']
+    )]
+    #[ParamConverter('marketingList', class: MarketingList::class, options: ['id' => 'marketingList'])]
+    #[Template]
+    #[AclAncestor('oro_mailchimp')]
     public function marketingListSyncStatusAction(MarketingList $marketingList)
     {
         return ['static_segment' => $this->findStaticSegmentByMarketingList($marketingList)];
     }
 
     /**
-     * @Route("/email-campaign-status-positive/{entity}",
-     *      name="oro_mailchimp_email_campaign_status",
-     *      requirements={"entity"="\d+"})
-     * @ParamConverter("emailCampaign",
-     *      class="Oro\Bundle\CampaignBundle\Entity\EmailCampaign",
-     *      options={"id" = "entity"})
-     * @AclAncestor("oro_mailchimp")
      *
-     * @Template
      *
      * @param EmailCampaign $emailCampaign
      * @return array
      */
+    #[Route(
+        path: '/email-campaign-status-positive/{entity}',
+        name: 'oro_mailchimp_email_campaign_status',
+        requirements: ['entity' => '\d+']
+    )]
+    #[ParamConverter('emailCampaign', class: EmailCampaign::class, options: ['id' => 'entity'])]
+    #[Template]
+    #[AclAncestor('oro_mailchimp')]
     public function emailCampaignStatsAction(EmailCampaign $emailCampaign)
     {
         $campaign = $this->getCampaignByEmailCampaign($emailCampaign);
@@ -147,18 +142,14 @@ class MailChimpController extends AbstractController
     }
 
     /**
-     * @ParamConverter(
-     *      "emailCampaign",
-     *      class="Oro\Bundle\CampaignBundle\Entity\EmailCampaign",
-     *      options={"id" = "entity"}
-     * )
-     * @AclAncestor("oro_mailchimp")
      *
-     * @Template
      *
      * @param EmailCampaign $emailCampaign
      * @return array
      */
+    #[ParamConverter('emailCampaign', class: EmailCampaign::class, options: ['id' => 'entity'])]
+    #[Template]
+    #[AclAncestor('oro_mailchimp')]
     public function emailCampaignActivityUpdateButtonsAction(EmailCampaign $emailCampaign)
     {
         return [
@@ -168,18 +159,18 @@ class MailChimpController extends AbstractController
     }
 
     /**
-     * @Route(
-     *      "/email-campaign/{id}/activity-updates/toggle",
-     *      name="oro_mailchimp_email_campaign_activity_update_toggle",
-     *      requirements={"id"="\d+"},
-     *      methods={"POST"}
-     * )
-     * @AclAncestor("oro_mailchimp")
-     * @CsrfProtection()
      *
      * @param EmailCampaign $emailCampaign
      * @return JsonResponse
      */
+    #[Route(
+        path: '/email-campaign/{id}/activity-updates/toggle',
+        name: 'oro_mailchimp_email_campaign_activity_update_toggle',
+        requirements: ['id' => '\d+'],
+        methods: ['POST']
+    )]
+    #[AclAncestor('oro_mailchimp')]
+    #[CsrfProtection()]
     public function toggleUpdateStateAction(EmailCampaign $emailCampaign)
     {
         /** @var MailChimpTransportSettings $settings */

@@ -2,23 +2,19 @@
 
 namespace Oro\Bundle\MailChimpBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 
 /**
  * Mailchimp extended merge variable((single cell commulated additional data)) entity class.
- *
- * @ORM\Entity
- * @ORM\Table(
- *      name="orocrm_mc_extended_merge_var",
- *      uniqueConstraints={
- *          @ORM\UniqueConstraint(name="mc_emv_sid_name_unq", columns={"static_segment_id", "name"})
- *     }
- * )
- * @ORM\HasLifecycleCallbacks()
- * @Config()
  */
+#[ORM\Entity]
+#[ORM\Table(name: 'orocrm_mc_extended_merge_var')]
+#[ORM\UniqueConstraint(name: 'mc_emv_sid_name_unq', columns: ['static_segment_id', 'name'])]
+#[ORM\HasLifecycleCallbacks]
+#[Config]
 class ExtendedMergeVar
 {
     const STATE_ADD = 'add';
@@ -33,78 +29,34 @@ class ExtendedMergeVar
     const TAG_PREFIX = 'E_';
     const MAXIMUM_TAG_LENGTH = 10;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
 
-    /**
-     * @var StaticSegment
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\MailChimpBundle\Entity\StaticSegment", inversedBy="extendedMergeVars")
-     * @ORM\JoinColumn(name="static_segment_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "identity"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $staticSegment;
+    #[ORM\ManyToOne(targetEntity: StaticSegment::class, inversedBy: 'extendedMergeVars')]
+    #[ORM\JoinColumn(name: 'static_segment_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    protected ?StaticSegment $staticSegment = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
-     * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "identity"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $name;
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 255, nullable: false)]
+    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    protected ?string $name = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="label", type="string", length=255, nullable=false)
-     */
-    protected $label;
+    #[ORM\Column(name: 'label', type: Types::STRING, length: 255, nullable: false)]
+    protected ?string $label = null;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_required", type="boolean")
-     */
-    protected $required;
+    #[ORM\Column(name: 'is_required', type: Types::BOOLEAN)]
+    protected ?bool $required = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="field_type", type="string", length=255, nullable=false)
-     */
-    protected $fieldType;
+    #[ORM\Column(name: 'field_type', type: Types::STRING, length: 255, nullable: false)]
+    protected ?string $fieldType = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="tag", type="string", length=10, nullable=false)
-     */
-    protected $tag;
+    #[ORM\Column(name: 'tag', type: Types::STRING, length: 10, nullable: false)]
+    protected ?string $tag = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="state", type="string", length=255, nullable=false)
-     */
-    protected $state;
+    #[ORM\Column(name: 'state', type: Types::STRING, length: 255, nullable: false)]
+    protected ?string $state = null;
 
     /**
      * Initialize default values for the entity

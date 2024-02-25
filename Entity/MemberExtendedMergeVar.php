@@ -2,24 +2,19 @@
 
 namespace Oro\Bundle\MailChimpBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 
 /**
  * Mailchimp member's additional info(merge vars) entity class.
- *
- * @ORM\Entity
- * @ORM\Table(
- *      name="orocrm_mc_mmbr_extd_merge_var",
- *      uniqueConstraints={
- *          @ORM\UniqueConstraint(name="mc_mmbr_emv_sid_mmbr_unq",
- *          columns={"static_segment_id", "member_id"})
- *     }
- * )
- * @ORM\HasLifecycleCallbacks()
- * @Config()
  */
+#[ORM\Entity]
+#[ORM\Table(name: 'orocrm_mc_mmbr_extd_merge_var')]
+#[ORM\UniqueConstraint(name: 'mc_mmbr_emv_sid_mmbr_unq', columns: ['static_segment_id', 'member_id'])]
+#[ORM\HasLifecycleCallbacks]
+#[Config]
 class MemberExtendedMergeVar
 {
     const STATE_ADD = 'add';
@@ -27,58 +22,29 @@ class MemberExtendedMergeVar
     const STATE_SYNCED = 'synced';
     const STATE_DROPPED = 'dropped';
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
 
-    /**
-     * @var StaticSegment
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\MailChimpBundle\Entity\StaticSegment", inversedBy="extendedMergeVars")
-     * @ORM\JoinColumn(name="static_segment_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "identity"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $staticSegment;
+    #[ORM\ManyToOne(targetEntity: StaticSegment::class, inversedBy: 'extendedMergeVars')]
+    #[ORM\JoinColumn(name: 'static_segment_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    protected ?StaticSegment $staticSegment = null;
 
-    /**
-     * @var Member
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\MailChimpBundle\Entity\Member")
-     * @ORM\JoinColumn(name="member_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "identity"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $member;
+    #[ORM\ManyToOne(targetEntity: Member::class)]
+    #[ORM\JoinColumn(name: 'member_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    protected ?Member $member = null;
 
     /**
      * @var array
-     *
-     * @ORM\Column(name="merge_var_values", type="json_array", nullable=true)
      */
+    #[ORM\Column(name: 'merge_var_values', type: 'json_array', nullable: true)]
     protected $mergeVarValues;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="state", type="string", length=255, nullable=false)
-     */
-    protected $state;
+    #[ORM\Column(name: 'state', type: Types::STRING, length: 255, nullable: false)]
+    protected ?string $state = null;
 
     /**
      * @var array
