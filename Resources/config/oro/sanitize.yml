@@ -1,0 +1,26 @@
+oro_sanitize:
+    entity:
+        oro_integration_transport:
+            fields:
+                orocrm_mailchimp_apikey: md5
+        orocrm_mailchimp_campaign:
+            fields:
+                from_email: email
+                from_name: md5
+        orocrm_mailchimp_member:
+            fields:
+                email: email
+                phone: generic_phone
+                last_name: md5
+                confirmed_ip: md5
+        orocrm_mailchimp_ml_email:
+            fields:
+                email: email
+        orocrm_mc_mmbr_activity:
+            fields:
+                email: email
+                ip_address: md5
+        orocrm_mc_subscribers_list:
+            fields:
+                default_from_name: md5
+                default_from_email: md5
