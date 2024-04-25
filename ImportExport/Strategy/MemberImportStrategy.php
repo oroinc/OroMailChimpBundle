@@ -36,13 +36,13 @@ class MemberImportStrategy extends AbstractImportStrategy
         $existingEntity = $this->findExistingEntity($entity);
         if ($existingEntity) {
             if ($this->logger) {
-                $this->logger->notice('Syncing Existing MailChimp Member [origin_id=' . $entity->getOriginId() . ']');
+                $this->logger->info('Syncing Existing MailChimp Member [origin_id=' . $entity->getOriginId() . ']');
             }
 
             $entity = $this->importExistingMember($entity, $existingEntity);
         } else {
             if ($this->logger) {
-                $this->logger->notice('Adding new MailChimp Member [origin_id=' . $entity->getOriginId() . ']');
+                $this->logger->info('Adding new MailChimp Member [origin_id=' . $entity->getOriginId() . ']');
             }
 
             $entity = $this->processEntity($entity, true, true, $this->context->getValue('itemData'));
