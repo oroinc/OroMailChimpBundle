@@ -82,7 +82,7 @@ class MemberActivityImportStrategy extends BasicImportStrategy implements Logger
     protected function processEntity($entity)
     {
         if ($this->logger) {
-            $this->logger->notice(
+            $this->logger->info(
                 sprintf(
                     'Processing MailChimp Member Activity [email=%s, action=%s]',
                     $entity->getEmail(),
@@ -109,7 +109,7 @@ class MemberActivityImportStrategy extends BasicImportStrategy implements Logger
             $this->context->incrementAddCount();
 
             if ($this->logger) {
-                $this->logger->notice(
+                $this->logger->info(
                     sprintf(
                         '    Activity added for MailChimp Member [id=%d]',
                         $member->getId()
@@ -119,7 +119,7 @@ class MemberActivityImportStrategy extends BasicImportStrategy implements Logger
 
             return $entity;
         } elseif ($this->logger) {
-            $this->logger->notice('    Activity skipped');
+            $this->logger->info('    Activity skipped');
         }
 
         return null;
