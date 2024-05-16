@@ -25,7 +25,7 @@ class StaticSegmentsMemberStateManager
     /**
      * @var string
      */
-    protected $mailChimpMemberСlassName;
+    protected $mailChimpMemberClassName;
 
     /**
      * @var string
@@ -35,12 +35,12 @@ class StaticSegmentsMemberStateManager
     public function __construct(
         DoctrineHelper $doctrineHelper,
         $staticSegmentMember,
-        $mailChimpMemberСlassName,
+        $mailChimpMemberClassName,
         $extMergeVarClassName
     ) {
         $this->doctrineHelper = $doctrineHelper;
         $this->staticSegmentMember = $staticSegmentMember;
-        $this->mailChimpMemberСlassName = $mailChimpMemberСlassName;
+        $this->mailChimpMemberClassName = $mailChimpMemberClassName;
         $this->extMergeVarClassName = $extMergeVarClassName;
     }
 
@@ -93,11 +93,11 @@ class StaticSegmentsMemberStateManager
     protected function deleteMailChimpMembers(array $deletedMembersIds, SubscribersList $subscribersList)
     {
         $qb = $this->doctrineHelper
-            ->getEntityRepository($this->mailChimpMemberСlassName)
+            ->getEntityRepository($this->mailChimpMemberClassName)
             ->createQueryBuilder('mmb');
 
         $qb
-            ->delete($this->mailChimpMemberСlassName, 'mmb')
+            ->delete($this->mailChimpMemberClassName, 'mmb')
             ->where(
                 $qb->expr()->andX(
                     $qb->expr()->in('mmb.id', ':deletedMembersIds'),

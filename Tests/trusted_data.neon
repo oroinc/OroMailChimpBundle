@@ -30,7 +30,7 @@ trusted_data:
             handleDroppedMembers:
                 staticSegmentMember: true
             deleteMailChimpMembers:
-                mailChimpMemberСlassName: true
+                mailChimpMemberClassName: true
             deleteMailChimpMembersExtendedVars:
                 extMergeVarClassName: true
         Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\AbstractStaticSegmentMembersIterator:
