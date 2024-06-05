@@ -85,7 +85,7 @@ class ExportMailchimpSegmentsTopic extends AbstractTopic implements JobAwareTopi
 
                 // if user id is null and only one target static segment
                 // lets get user from static segment
-                if (!$value && 1 === \count($segmentsIds= $options['segmentsIds'])) {
+                if (!$value && 1 === \count($segmentsIds = $options['segmentsIds'])) {
                     $segmentId = reset($segmentsIds);
                     /** @var StaticSegment $segment */
                     $segment = $this->getRepository(StaticSegment::class)->find($segmentId);
