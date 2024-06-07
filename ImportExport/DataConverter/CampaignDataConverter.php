@@ -16,7 +16,6 @@ class CampaignDataConverter extends IntegrationAwareDataConverter
             // MailChimp campaign fields
             'id' => 'originId',
             'web_id' => 'webId',
-            'title' => 'title',
             'subject_line' => 'subject',
             'type' => 'type',
             'list_id' => 'subscribersList:originId',
@@ -67,6 +66,10 @@ class CampaignDataConverter extends IntegrationAwareDataConverter
         if (is_array($importedRecord['settings'])) {
             $importedRecord = array_merge($importedRecord, $importedRecord['settings']);
             unset($importedRecord['settings']);
+        }
+
+        if (empty($importedRecord['title'])) {
+            $importedRecord['title'] = $importedRecord['subject_line'];
         }
 
         if (is_array($importedRecord['recipients'])) {
