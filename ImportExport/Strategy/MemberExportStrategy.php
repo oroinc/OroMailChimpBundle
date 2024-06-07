@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\MailChimpBundle\ImportExport\Strategy;
 
+use Monolog\Logger;
 use Oro\Bundle\ImportExportBundle\Strategy\Import\AbstractImportStrategy as BaseStrategy;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Entity\Member;
@@ -18,12 +19,21 @@ class MemberExportStrategy extends BaseStrategy implements LoggerAwareInterface
      */
     protected $logger;
 
+    protected int $logLevel = Logger::INFO;
+
     /**
      * {@inheritdoc}
      */
     public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
+    }
+
+    public function setLogLevel(int $logLevel): self
+    {
+        $this->logLevel = $logLevel;
+
+        return $this;
     }
 
     /**
@@ -39,9 +49,7 @@ class MemberExportStrategy extends BaseStrategy implements LoggerAwareInterface
         $entity = $this->processEntity($entity);
         $entity = $this->afterProcessEntity($entity);
 
-        if ($this->logger) {
-            $this->logger->notice(sprintf('Exporting MailChimp Member [id=%s]', $entity->getId()));
-        }
+        $this->logger?->log($this->logLevel, sprintf('Exporting MailChimp Member [id=%s]', $entity->getId()));
 
         return $entity;
     }
