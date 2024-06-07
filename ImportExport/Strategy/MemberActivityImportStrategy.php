@@ -3,6 +3,7 @@
 namespace Oro\Bundle\MailChimpBundle\ImportExport\Strategy;
 
 use Doctrine\ORM\AbstractQuery;
+use Monolog\Logger;
 use Oro\Bundle\ImportExportBundle\Strategy\Import\AbstractImportStrategy as BasicImportStrategy;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\ImportExport\Helper\DefaultOwnerHelper;
@@ -24,6 +25,8 @@ class MemberActivityImportStrategy extends BasicImportStrategy implements Logger
      * @var LoggerInterface
      */
     protected $logger;
+
+    protected int $logLevel = Logger::INFO;
 
     /**
      * @var ValidatorInterface
@@ -50,6 +53,13 @@ class MemberActivityImportStrategy extends BasicImportStrategy implements Logger
     public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
+    }
+
+    public function setLogLevel(int $logLevel): self
+    {
+        $this->logLevel = $logLevel;
+
+        return $this;
     }
 
     public function setValidator(ValidatorInterface $validator)
@@ -81,15 +91,14 @@ class MemberActivityImportStrategy extends BasicImportStrategy implements Logger
      */
     protected function processEntity($entity)
     {
-        if ($this->logger) {
-            $this->logger->notice(
-                sprintf(
-                    'Processing MailChimp Member Activity [email=%s, action=%s]',
-                    $entity->getEmail(),
-                    $entity->getAction()
-                )
-            );
-        }
+        $this->logger?->log(
+            $this->logLevel,
+            sprintf(
+                'Processing MailChimp Member Activity [email=%s, action=%s]',
+                $entity->getEmail(),
+                $entity->getAction()
+            )
+        );
 
         /** @var Channel $channel */
         $channel = $this->databaseHelper->getEntityReference($entity->getChannel());
@@ -108,18 +117,17 @@ class MemberActivityImportStrategy extends BasicImportStrategy implements Logger
             }
             $this->context->incrementAddCount();
 
-            if ($this->logger) {
-                $this->logger->notice(
-                    sprintf(
-                        '    Activity added for MailChimp Member [id=%d]',
-                        $member->getId()
-                    )
-                );
-            }
+            $this->logger?->log(
+                $this->logLevel,
+                sprintf(
+                    '    Activity added for MailChimp Member [id=%d]',
+                    $member->getId()
+                )
+            );
 
             return $entity;
-        } elseif ($this->logger) {
-            $this->logger->notice('    Activity skipped');
+        } else {
+            $this->logger?->log($this->logLevel, '    Activity skipped');
         }
 
         return null;
