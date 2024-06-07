@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\MailChimpBundle\ImportExport\Strategy;
 
+use Monolog\Logger;
 use Oro\Bundle\MailChimpBundle\Entity\Member;
 use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
 use Oro\Bundle\MailChimpBundle\Model\MergeVar\MergeVarProviderInterface;
@@ -15,6 +16,15 @@ class MemberImportStrategy extends AbstractImportStrategy
      * @var MergeVarProviderInterface
      */
     protected $mergeVarProvider;
+
+    protected int $logLevel = Logger::INFO;
+
+    public function setLogLevel(int $logLevel): self
+    {
+        $this->logLevel = $logLevel;
+
+        return $this;
+    }
 
     /**
      * @param Member $entity
@@ -35,15 +45,17 @@ class MemberImportStrategy extends AbstractImportStrategy
         /** @var Member $existingEntity */
         $existingEntity = $this->findExistingEntity($entity);
         if ($existingEntity) {
-            if ($this->logger) {
-                $this->logger->notice('Syncing Existing MailChimp Member [origin_id=' . $entity->getOriginId() . ']');
-            }
+            $this->logger?->log(
+                $this->logLevel,
+                'Syncing Existing MailChimp Member [origin_id=' . $entity->getOriginId() . ']'
+            );
 
             $entity = $this->importExistingMember($entity, $existingEntity);
         } else {
-            if ($this->logger) {
-                $this->logger->notice('Adding new MailChimp Member [origin_id=' . $entity->getOriginId() . ']');
-            }
+            $this->logger?->log(
+                $this->logLevel,
+                'Adding new MailChimp Member [origin_id=' . $entity->getOriginId() . ']'
+            );
 
             $entity = $this->processEntity($entity, true, true, $this->context->getValue('itemData'));
         }
