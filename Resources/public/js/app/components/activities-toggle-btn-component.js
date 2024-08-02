@@ -6,7 +6,7 @@ define(function(require) {
     const __ = require('orotranslation/js/translator');
 
     return function(options) {
-        options._sourceElement.click(function(e) {
+        options._sourceElement.on('click', function(e) {
             const url = $(e.target).data('url');
             e.preventDefault();
 
