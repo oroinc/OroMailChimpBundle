@@ -79,6 +79,7 @@ class StaticSegmentMemberToRemoveIterator extends AbstractSubordinateIterator
      * @param StaticSegment $staticSegment
      * @return \Iterator
      */
+    #[\Override]
     protected function createSubordinateIterator($staticSegment)
     {
         /** @var EntityManager $repository */

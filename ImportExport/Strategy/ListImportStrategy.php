@@ -13,6 +13,7 @@ class ListImportStrategy extends AbstractImportStrategy
      * @param SubscribersList $entity
      * @return SubscribersList|null
      */
+    #[\Override]
     public function process($entity)
     {
         $this->assertEnvironment($entity);

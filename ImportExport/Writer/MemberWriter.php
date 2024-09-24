@@ -33,8 +33,8 @@ class MemberWriter extends AbstractExportWriter
     /**
      * @param Member[] $items
      *
-     * {@inheritdoc}
      */
+    #[\Override]
     public function write(array $items)
     {
         /** @var Member $item */

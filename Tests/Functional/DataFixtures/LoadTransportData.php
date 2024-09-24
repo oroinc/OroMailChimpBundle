@@ -22,9 +22,7 @@ class LoadTransportData extends AbstractMailChimpFixture
         ]
     ];
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function load(ObjectManager $manager): void
     {
         foreach ($this->transportData as $data) {

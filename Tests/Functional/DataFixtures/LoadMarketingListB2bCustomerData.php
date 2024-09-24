@@ -19,9 +19,7 @@ class LoadMarketingListB2bCustomerData extends LoadMarketingListData
         ],
     ];
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function getDependencies(): array
     {
         return [

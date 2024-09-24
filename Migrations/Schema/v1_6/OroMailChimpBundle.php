@@ -11,9 +11,7 @@ class OroMailChimpBundle implements Migration
 {
     use MigrationConstraintTrait;
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function up(Schema $schema, QueryBag $queries)
     {
         $this->setOnDeleteCascadeForMemberSubscribersListConnection($schema);

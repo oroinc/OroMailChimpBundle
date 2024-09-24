@@ -36,23 +36,20 @@ class MailChimpExportCommand extends Command implements
         $this->messageProducer = $messageProducer;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function getDefaultDefinition(): string
     {
         return '*/5 * * * *';
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function isActive(): bool
     {
         return ($this->getStaticSegmentRepository()->countStaticSegments() > 0);
     }
 
     /** @noinspection PhpMissingParentCallCommonInspection */
+    #[\Override]
     protected function configure()
     {
         $this
@@ -90,6 +87,7 @@ HELP
     }
 
     /** @noinspection PhpMissingParentCallCommonInspection */
+    #[\Override]
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $segments = $input->getOption('segments');

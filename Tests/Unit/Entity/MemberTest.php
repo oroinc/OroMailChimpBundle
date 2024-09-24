@@ -11,6 +11,7 @@ class MemberTest extends \PHPUnit\Framework\TestCase
 {
     private Member $target;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->target = new Member();

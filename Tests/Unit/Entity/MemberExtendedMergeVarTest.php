@@ -11,6 +11,7 @@ class MemberExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
 {
     private MemberExtendedMergeVar $entity;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->entity = new MemberExtendedMergeVar();

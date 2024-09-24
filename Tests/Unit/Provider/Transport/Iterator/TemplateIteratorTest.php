@@ -13,6 +13,7 @@ class TemplateIteratorTest extends \PHPUnit\Framework\TestCase
     /** @var TemplateIterator */
     private $iterator;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->client = $this->getMockBuilder(MailChimpClient::class)

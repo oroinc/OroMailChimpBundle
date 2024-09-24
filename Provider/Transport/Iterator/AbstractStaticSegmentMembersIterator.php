@@ -118,9 +118,7 @@ abstract class AbstractStaticSegmentMembersIterator extends AbstractStaticSegmen
         return $contactInformationFields;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getIteratorQueryBuilder(StaticSegment $staticSegment)
     {
         $qb = parent::getIteratorQueryBuilder($staticSegment);

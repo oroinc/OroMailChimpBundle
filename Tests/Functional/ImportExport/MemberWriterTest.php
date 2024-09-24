@@ -22,6 +22,7 @@ class MemberWriterTest extends WebTestCase
     private MemberWriter $writer;
     private int $oldWaitTime;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -42,6 +43,7 @@ class MemberWriterTest extends WebTestCase
         $this->writer->setStepExecution($this->stepExecution);
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $this->writer->setWaitTime($this->oldWaitTime);

@@ -22,9 +22,7 @@ abstract class AbstractExportWriter extends PersistentBatchWriter implements Cle
         $this->transport = $transport;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function write(array $items)
     {
         if (!$this->transport) {
@@ -100,17 +98,13 @@ abstract class AbstractExportWriter extends PersistentBatchWriter implements Cle
         }
     }
 
-    /**
-     * @inheritdoc
-     */
+    #[\Override]
     public function clear()
     {
         return parent::doClear();
     }
 
-    /**
-     * @inheritdoc
-     */
+    #[\Override]
     protected function doClear()
     {
         // Don't do clear in PersistentBatchWriter::writer()

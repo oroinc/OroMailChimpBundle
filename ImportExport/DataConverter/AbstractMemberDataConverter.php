@@ -7,9 +7,7 @@ namespace Oro\Bundle\MailChimpBundle\ImportExport\DataConverter;
  */
 abstract class AbstractMemberDataConverter extends IntegrationAwareDataConverter
 {
-    /**
-     * @inheridoc
-     */
+    #[\Override]
     protected function getHeaderConversionRules(): array
     {
         return [
@@ -33,9 +31,7 @@ abstract class AbstractMemberDataConverter extends IntegrationAwareDataConverter
         ];
     }
 
-    /**
-     * @inheridoc
-     */
+    #[\Override]
     public function convertToImportFormat(array $importedRecord, $skipNullValues = true)
     {
         if ($this->context->hasOption('channel')) {
@@ -55,9 +51,7 @@ abstract class AbstractMemberDataConverter extends IntegrationAwareDataConverter
         return parent::convertToImportFormat($importedRecord, $skipNullValues);
     }
 
-    /**
-     * @inheridoc
-     */
+    #[\Override]
     protected function getBackendHeader()
     {
         throw new \Exception('Normalization is not implemented!');

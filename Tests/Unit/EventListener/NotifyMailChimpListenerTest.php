@@ -20,6 +20,7 @@ class NotifyMailChimpListenerTest extends \PHPUnit\Framework\TestCase
     /** @var NotifyMailChimpListener */
     private $listener;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->repository = $this->createMock(EntityRepository::class);

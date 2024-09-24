@@ -24,9 +24,7 @@ abstract class AbstractMemberActivityIterator extends AbstractSubordinateIterato
         $this->client = $client;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function createSubordinateIterator($campaign)
     {
         return new CallbackFilterIteratorCompatible(

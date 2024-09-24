@@ -32,17 +32,13 @@ abstract class AbstractSubordinateIterator implements \Iterator
         $this->mainIterator = $mainIterator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function current(): mixed
     {
         return $this->current;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function next(): void
     {
         $this->current = $this->read();
@@ -51,25 +47,19 @@ abstract class AbstractSubordinateIterator implements \Iterator
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function key(): mixed
     {
         return $this->offset;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function valid(): bool
     {
         return !is_null($this->current);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function rewind(): void
     {
         $this->offset = -1;

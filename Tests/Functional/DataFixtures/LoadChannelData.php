@@ -52,17 +52,13 @@ class LoadChannelData extends AbstractMailChimpFixture implements DependentFixtu
         ]
     ];
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function getDependencies(): array
     {
         return [LoadTransportData::class, LoadOrganization::class, LoadUser::class];
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function load(ObjectManager $manager): void
     {
         $userManager = $this->container->get('oro_user.manager');

@@ -14,9 +14,7 @@ class LoadB2bChannelData extends AbstractFixture implements ContainerAwareInterf
 {
     use ContainerAwareTrait;
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function load(ObjectManager $manager): void
     {
         $channel = $this->container->get('oro_channel.builder.factory')

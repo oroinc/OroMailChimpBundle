@@ -51,9 +51,7 @@ class QueryWithOptionsIterator implements \Iterator
         $this->batchSize = $batchSize ?: self::DEFAULT_BATCH_SIZE;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function current(): array
     {
         if ($this->currentResult === null) {
@@ -63,9 +61,7 @@ class QueryWithOptionsIterator implements \Iterator
         return array_merge([self::RESULT_ITEMS => $this->currentResult], $this->options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function next(): void
     {
         if (!$this->readOnce) {
@@ -74,25 +70,19 @@ class QueryWithOptionsIterator implements \Iterator
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function key(): int
     {
         return $this->position;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function valid(): bool
     {
         return (bool)count((array)$this->currentResult);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function rewind(): void
     {
         $this->position = 0;

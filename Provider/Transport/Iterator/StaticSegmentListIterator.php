@@ -7,9 +7,7 @@ namespace Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator;
  */
 class StaticSegmentListIterator extends AbstractSubscribersListIterator
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function createSubordinateIterator($subscribersList)
     {
         parent::assertSubscribersList($subscribersList);

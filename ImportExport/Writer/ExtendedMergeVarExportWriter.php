@@ -12,9 +12,7 @@ use Psr\Log\LoggerInterface;
  */
 class ExtendedMergeVarExportWriter extends AbstractExportWriter
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function write(array $items)
     {
         /** @var ExtendedMergeVar $item */

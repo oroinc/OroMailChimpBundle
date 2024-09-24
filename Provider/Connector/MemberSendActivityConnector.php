@@ -12,41 +12,31 @@ class MemberSendActivityConnector extends AbstractMailChimpConnector implements 
     const TYPE = 'member_activity_send';
     const JOB_IMPORT = 'mailchimp_member_activity_import_send';
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getLabel(): string
     {
         return 'oro.mailchimp.connector.member_activity_send.label';
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getImportEntityFQCN()
     {
         return $this->entityName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getImportJobName()
     {
         return self::JOB_IMPORT;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getType()
     {
         return self::TYPE;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getConnectorSource()
     {
         return $this->transport->getCampaignSentToReport($this->getChannel());

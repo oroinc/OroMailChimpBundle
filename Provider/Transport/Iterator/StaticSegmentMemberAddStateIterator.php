@@ -81,6 +81,7 @@ class StaticSegmentMemberAddStateIterator extends AbstractSubordinateIterator
      *
      * @return \Iterator
      */
+    #[\Override]
     protected function createSubordinateIterator($staticSegment)
     {
         /** @var EntityManager $repository */

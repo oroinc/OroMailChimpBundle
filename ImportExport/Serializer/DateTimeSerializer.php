@@ -31,9 +31,7 @@ class DateTimeSerializer implements ContextAwareNormalizerInterface, ContextAwar
         $this->isoNormalizer = new BaseNormalizer(\DateTime::ISO8601, 'Y-m-d', 'H:i:s', 'UTC');
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function denormalize($data, string $type, string $format = null, array $context = [])
     {
         try {
@@ -43,17 +41,13 @@ class DateTimeSerializer implements ContextAwareNormalizerInterface, ContextAwar
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function normalize($object, string $format = null, array $context = [])
     {
         return $this->mailchimpNormalizer->normalize($object, $format, $context);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function supportsDenormalization($data, string $type, string $format = null, array $context = []): bool
     {
         return $this->mailchimpNormalizer->supportsDenormalization($data, $type, $format, $context)
@@ -61,9 +55,7 @@ class DateTimeSerializer implements ContextAwareNormalizerInterface, ContextAwar
             && str_contains($context[self::CHANNEL_TYPE_KEY], ChannelType::TYPE);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function supportsNormalization($data, string $format = null, array $context = []): bool
     {
         return $this->mailchimpNormalizer->supportsNormalization($data, $format, $context)

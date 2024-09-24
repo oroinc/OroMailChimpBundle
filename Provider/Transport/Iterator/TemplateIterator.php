@@ -31,41 +31,31 @@ class TemplateIterator implements \Iterator
         $this->parameters = $parameters;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function current(): mixed
     {
         return $this->iterator->current();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function next(): void
     {
         $this->iterator->next();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function key(): mixed
     {
         return $this->iterator->key();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function valid(): bool
     {
         return $this->iterator->valid();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function rewind(): void
     {
         if (!$this->iterator) {
@@ -74,9 +64,6 @@ class TemplateIterator implements \Iterator
         $this->iterator->rewind();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function initIterator()
     {
         $templatesList = (array)$this->client->getTemplates($this->parameters);

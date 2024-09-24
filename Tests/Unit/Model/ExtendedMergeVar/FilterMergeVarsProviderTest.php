@@ -22,6 +22,7 @@ class FilterMergeVarsProviderTest extends \PHPUnit\Framework\TestCase
     /** @var FilteredMergeVarsProvider */
     private $filterProvider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->provider = $this->createMock(ProviderInterface::class);

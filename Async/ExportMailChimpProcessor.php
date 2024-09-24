@@ -64,9 +64,7 @@ class ExportMailChimpProcessor implements MessageProcessorInterface, TopicSubscr
         $this->reverseSyncProcessor->getLoggerStrategy()->setLogger($logger);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function process(MessageInterface $message, SessionInterface $session)
     {
         $messageBody = $message->getBody();
@@ -159,9 +157,7 @@ class ExportMailChimpProcessor implements MessageProcessorInterface, TopicSubscr
         $em->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public static function getSubscribedTopics()
     {
         return [ExportMailchimpSegmentsTopic::getName()];

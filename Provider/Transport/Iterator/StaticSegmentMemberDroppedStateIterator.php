@@ -93,6 +93,7 @@ class StaticSegmentMemberDroppedStateIterator extends AbstractSubordinateIterato
      *
      * @return \Iterator
      */
+    #[\Override]
     protected function createSubordinateIterator($staticSegment)
     {
         if (!$this->memberEntity) {

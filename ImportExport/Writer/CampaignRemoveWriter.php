@@ -31,9 +31,7 @@ class CampaignRemoveWriter extends RemoveWriter
         $this->campaignType = $campaignType;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function createQueryBuilder(array $item)
     {
         $qb = parent::createQueryBuilder($item);

@@ -49,17 +49,13 @@ class StaticSegmentExportWriter extends AbstractExportWriter implements ContextA
      */
     protected $context;
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function setImportExportContext(ContextInterface $context)
     {
         $this->context = $context;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function setStepExecution(StepExecution $stepExecution)
     {
         parent::setStepExecution($stepExecution);
@@ -85,8 +81,8 @@ class StaticSegmentExportWriter extends AbstractExportWriter implements ContextA
     /**
      * @param StaticSegment[] $items
      *
-     * {@inheritdoc}
      */
+    #[\Override]
     public function write(array $items)
     {
         $this->transport->init($items[0]->getChannel()->getTransport());

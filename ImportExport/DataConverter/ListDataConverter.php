@@ -7,9 +7,7 @@ namespace Oro\Bundle\MailChimpBundle\ImportExport\DataConverter;
  */
 class ListDataConverter extends IntegrationAwareDataConverter
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getHeaderConversionRules()
     {
         return [
@@ -43,9 +41,7 @@ class ListDataConverter extends IntegrationAwareDataConverter
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function convertToImportFormat(array $importedRecord, $skipNullValues = true)
     {
         if (array_key_exists('_links', $importedRecord)) {
@@ -74,9 +70,7 @@ class ListDataConverter extends IntegrationAwareDataConverter
         return parent::convertToImportFormat($importedRecord, $skipNullValues);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getBackendHeader()
     {
         throw new \Exception('Normalization is not implemented!');

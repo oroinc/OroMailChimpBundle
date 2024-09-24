@@ -21,9 +21,7 @@ class MemberExportStrategy extends BaseStrategy implements LoggerAwareInterface
 
     protected int $logLevel = Logger::INFO;
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
@@ -40,6 +38,7 @@ class MemberExportStrategy extends BaseStrategy implements LoggerAwareInterface
      * @param Member|object $entity
      * @return Member|null
      */
+    #[\Override]
     public function process($entity)
     {
         $this->assertEnvironment($entity);

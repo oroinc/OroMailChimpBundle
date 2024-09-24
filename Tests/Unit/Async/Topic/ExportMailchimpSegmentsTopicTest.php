@@ -21,6 +21,7 @@ class ExportMailchimpSegmentsTopicTest extends AbstractTopicTestCase
     private const NOT_FOUND_ID = -1;
     private const DISABLED_ID = -2;
 
+    #[\Override]
     protected function getTopic(): TopicInterface
     {
         $doctrineHelper = $this->createMock(DoctrineHelper::class);
@@ -104,6 +105,7 @@ class ExportMailchimpSegmentsTopicTest extends AbstractTopicTestCase
         return $staticSegment;
     }
 
+    #[\Override]
     public function validBodyDataProvider(): array
     {
         $body = [
@@ -137,6 +139,7 @@ class ExportMailchimpSegmentsTopicTest extends AbstractTopicTestCase
         ];
     }
 
+    #[\Override]
     public function invalidBodyDataProvider(): array
     {
         return [

@@ -14,6 +14,7 @@ class MergeVarProviderTest extends \PHPUnit\Framework\TestCase
 {
     private MergeVarProvider $provider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->provider = new MergeVarProvider();

@@ -24,9 +24,7 @@ class StaticSegmentSyncModeType extends AbstractType
         $this->staticSegmentSyncModesProvider = $staticSegmentSyncModesProvider;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
@@ -40,17 +38,13 @@ class StaticSegmentSyncModeType extends AbstractType
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return self::NAME;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function getParent(): ?string
     {
         return ChoiceType::class;

@@ -9,9 +9,7 @@ use Oro\Bundle\ImportExportBundle\Converter\AbstractTableDataConverter;
  */
 class ExtendedMergeVarDataConverter extends AbstractTableDataConverter
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getHeaderConversionRules()
     {
         return [
@@ -22,9 +20,7 @@ class ExtendedMergeVarDataConverter extends AbstractTableDataConverter
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getBackendHeader()
     {
         throw new \BadMethodCallException('Normalization is not implemented!');

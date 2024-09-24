@@ -14,6 +14,7 @@ class ExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
 {
     private ExtendedMergeVar $entity;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->entity = new ExtendedMergeVar();

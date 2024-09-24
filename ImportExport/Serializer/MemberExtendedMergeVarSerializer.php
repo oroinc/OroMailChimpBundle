@@ -87,9 +87,7 @@ class MemberExtendedMergeVarSerializer extends ConfigurableEntityNormalizer
         $this->memberExtendedMergeVarClassName = $memberExtendedMergeVarClassName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function denormalize($data, string $type, string $format = null, array $context = [])
     {
         /** @var MemberExtendedMergeVar $entity */
@@ -124,9 +122,7 @@ class MemberExtendedMergeVarSerializer extends ConfigurableEntityNormalizer
         return $entity;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function supportsDenormalization($data, string $type, string $format = null, array $context = []): bool
     {
         return $type === $this->memberExtendedMergeVarClassName;

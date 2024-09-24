@@ -10,9 +10,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class OroMailChimpExtension extends Extension
 {
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
@@ -31,9 +29,7 @@ class OroMailChimpExtension extends Extension
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function getAlias(): string
     {
         return Configuration::ROOT_NODE;

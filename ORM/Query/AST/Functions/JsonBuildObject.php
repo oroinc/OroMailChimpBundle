@@ -18,6 +18,7 @@ class JsonBuildObject extends FunctionNode
     /**
      * Parse JsonBuildObject(key, value[, key2, value2...])
      */
+    #[\Override]
     public function parse(Parser $parser)
     {
         $parser->match(Lexer::T_IDENTIFIER);
@@ -39,6 +40,7 @@ class JsonBuildObject extends FunctionNode
         $parser->match(Lexer::T_CLOSE_PARENTHESIS);
     }
 
+    #[\Override]
     public function getSql(SqlWalker $sqlWalker)
     {
         $strings = [];

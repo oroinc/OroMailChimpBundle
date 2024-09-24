@@ -10,9 +10,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class OroMailChimpBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);
@@ -20,9 +18,7 @@ class OroMailChimpBundle extends Bundle
         $container->addCompilerPass(new ExtendedMergeVarsProviderPass());
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getContainerExtension(): ?ExtensionInterface
     {
         if (!$this->extension) {

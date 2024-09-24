@@ -47,6 +47,7 @@ class MmbrExtdMergeVarExportIterator extends AbstractSubordinateIterator impleme
     /**
      * @return bool
      */
+    #[\Override]
     public function writeRequired()
     {
         if (!$this->subordinateIterator) {
@@ -56,9 +57,7 @@ class MmbrExtdMergeVarExportIterator extends AbstractSubordinateIterator impleme
         return !$this->subordinateIterator->valid();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function createSubordinateIterator($staticSegment)
     {
         if (!$staticSegment instanceof StaticSegment) {

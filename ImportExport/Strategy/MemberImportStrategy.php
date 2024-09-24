@@ -30,6 +30,7 @@ class MemberImportStrategy extends AbstractImportStrategy
      * @param Member $entity
      * @return Member|null
      */
+    #[\Override]
     public function process($entity)
     {
         $this->assertEnvironment($entity);
@@ -127,6 +128,7 @@ class MemberImportStrategy extends AbstractImportStrategy
      * @param Member $entity
      * @return Member|null
      */
+    #[\Override]
     protected function afterProcessEntity($entity)
     {
         $this->assignMergeVarValues($entity);
@@ -138,6 +140,7 @@ class MemberImportStrategy extends AbstractImportStrategy
      * @param Member $entity
      * @return bool
      */
+    #[\Override]
     protected function collectEntities($entity)
     {
         return false;

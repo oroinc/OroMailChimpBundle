@@ -23,10 +23,10 @@ class ListsMembersIterator extends AbstractMailChimpIterator
     }
 
     /**
-     * {@inheritdoc}
      *
      * @throws MailChimpClientException
      */
+    #[\Override]
     protected function getResult(): array
     {
         $options = array_merge(

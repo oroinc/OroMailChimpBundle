@@ -21,9 +21,7 @@ class StaticSegmentMemberStateWriter extends AbstractNativeQueryWriter
         $this->helper = $helper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function write(array $items)
     {
         foreach ($items as $item) {

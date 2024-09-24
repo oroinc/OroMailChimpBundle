@@ -16,6 +16,7 @@ class CampaignTest extends \PHPUnit\Framework\TestCase
 {
     private Campaign $target;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->target = new Campaign();

@@ -9,9 +9,7 @@ use Oro\Bundle\MailChimpBundle\Entity\MemberActivity;
  */
 class MemberUnsubscribeActivityDataConverter extends AbstractMemberActivityDataConverter
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function convertToImportFormat(array $importedRecord, $skipNullValues = true)
     {
         $importedRecord['action'] = MemberActivity::ACTIVITY_UNSUB;

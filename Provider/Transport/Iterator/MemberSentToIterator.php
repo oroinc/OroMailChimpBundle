@@ -15,6 +15,7 @@ class MemberSentToIterator extends AbstractMemberActivityIterator
      * @param Campaign $campaign
      * @return \Iterator
      */
+    #[\Override]
     protected function createResultIterator(Campaign $campaign)
     {
         return new CampaignSentToIterator($this->client, $campaign);

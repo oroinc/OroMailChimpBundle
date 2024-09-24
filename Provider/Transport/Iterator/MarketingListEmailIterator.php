@@ -51,8 +51,8 @@ class MarketingListEmailIterator extends AbstractStaticSegmentIterator
     /**
      * @param StaticSegment $staticSegment
      *
-     * {@inheritdoc}
      */
+    #[\Override]
     protected function createSubordinateIterator($staticSegment)
     {
         if (!$staticSegment instanceof StaticSegment) {
@@ -101,6 +101,7 @@ class MarketingListEmailIterator extends AbstractStaticSegmentIterator
     /**
      * Method to change $qb for certain Iterator purposes
      */
+    #[\Override]
     protected function prepareIteratorPart(QueryBuilder $qb)
     {
         if (!$this->removedItemClassName || !$this->unsubscribedItemClassName) {

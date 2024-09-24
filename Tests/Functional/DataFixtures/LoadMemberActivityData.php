@@ -53,9 +53,7 @@ class LoadMemberActivityData extends AbstractMailChimpFixture implements Depende
         ],
     ];
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function load(ObjectManager $manager): void
     {
         /** @var StaticSegment $staticSegment */
@@ -77,9 +75,7 @@ class LoadMemberActivityData extends AbstractMailChimpFixture implements Depende
         $manager->flush();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function getDependencies(): array
     {
         return [LoadMemberData::class, LoadStaticSegmentData::class];

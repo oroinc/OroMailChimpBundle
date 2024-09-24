@@ -19,6 +19,7 @@ class StaticSegmentSyncModeChoicesProviderTest extends \PHPUnit\Framework\TestCa
     /** @var StaticSegmentSyncModeChoicesProvider */
     private $staticSegmentSyncModeChoicesProvider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->translator = $this->createMock(TranslatorInterface::class);

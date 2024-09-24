@@ -16,9 +16,7 @@ class OroMailChimpBundle implements Migration, DatabasePlatformAwareInterface
     use DatabasePlatformAwareTrait;
     use MigrationConstraintTrait;
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function up(Schema $schema, QueryBag $queries)
     {
         $this->changeOriginIdOnMailchimpMember($schema);

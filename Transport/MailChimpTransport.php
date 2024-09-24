@@ -15,49 +15,37 @@ class MailChimpTransport implements TransportInterface, VisibilityTransportInter
 {
     const NAME = 'mailchimp';
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function send(EmailCampaign $campaign, object $entity, array $from, array $to)
     {
         // Implement send CRM-1980
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getName()
     {
         return self::NAME;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getLabel()
     {
         return 'oro.mailchimp.emailcampaign.transport.' . self::NAME;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getSettingsFormType()
     {
         return MailChimpTransportSettingsType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getSettingsEntityFQCN()
     {
         return MailChimpTransportSettings::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function isVisibleInForm()
     {
         return false;

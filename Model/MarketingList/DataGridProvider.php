@@ -10,9 +10,7 @@ use Oro\Bundle\MarketingListBundle\Provider\MarketingListProvider;
  */
 class DataGridProvider extends MarketingListProvider implements DataGridProviderInterface
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getDataGridConfiguration(MarketingList $marketingList)
     {
         if ($marketingList->isManual()) {

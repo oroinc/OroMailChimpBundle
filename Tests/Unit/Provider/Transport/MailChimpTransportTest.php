@@ -31,6 +31,7 @@ class MailChimpTransportTest extends \PHPUnit\Framework\TestCase
     /** @var MailChimpTransport */
     private $transport;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->clientFactory = $this->createMock(MailChimpClientFactory::class);

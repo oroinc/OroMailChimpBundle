@@ -33,6 +33,7 @@ class MemberAbuseIterator extends AbstractMemberActivityIterator
      * @param Campaign $campaign
      * @return \Iterator
      */
+    #[\Override]
     protected function createResultIterator(Campaign $campaign)
     {
         return new CampaignAbuseIterator($this->client, $campaign, $this->since);

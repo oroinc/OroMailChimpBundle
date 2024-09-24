@@ -13,8 +13,8 @@ class MemberExtendedMergeVarStrategy extends ConfigurableAddOrReplaceStrategy
     /**
      * @param MemberExtendedMergeVar $entity
      *
-     * {@inheritdoc}
      */
+    #[\Override]
     protected function afterProcessEntity($entity)
     {
         $itemData = $this->context->getValue('itemData');

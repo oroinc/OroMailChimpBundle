@@ -23,6 +23,7 @@ class ListsMembersSubordinateIterator extends AbstractSubscribersListIterator
      *
      * @return ListsMembersIterator
      */
+    #[\Override]
     protected function createSubordinateIterator($mainIteratorElement): ListsMembersIterator
     {
         parent::assertSubscribersList($mainIteratorElement);

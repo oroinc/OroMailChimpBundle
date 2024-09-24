@@ -17,6 +17,7 @@ class ExportMailChimpTest extends WebTestCase
 {
     private ReverseSyncProcessor $reverseSyncProcessor;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

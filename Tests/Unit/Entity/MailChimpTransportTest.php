@@ -9,6 +9,7 @@ class MailChimpTransportTest extends \PHPUnit\Framework\TestCase
 {
     private MailChimpTransport $entity;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->entity = new MailChimpTransport();

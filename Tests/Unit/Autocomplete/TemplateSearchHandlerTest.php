@@ -48,6 +48,7 @@ class TemplateSearchHandlerTest extends \PHPUnit\Framework\TestCase
     /** @var Expr|\PHPUnit\Framework\MockObject\MockObject */
     private $expr;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->query = $this->createMock(AbstractQuery::class);

@@ -13,49 +13,37 @@ class MemberConnector extends AbstractMailChimpConnector implements TwoWaySyncCo
     const JOB_IMPORT = 'mailchimp_member_import';
     const JOB_EXPORT = 'mailchimp_member_export';
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getLabel(): string
     {
         return 'oro.mailchimp.connector.member.label';
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getImportEntityFQCN()
     {
         return $this->entityName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getImportJobName()
     {
         return self::JOB_IMPORT;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getType()
     {
         return self::TYPE;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getConnectorSource()
     {
         return $this->transport->getMembersToSync($this->getChannel(), $this->getLastSyncDate());
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getExportJobName()
     {
         return self::JOB_EXPORT;

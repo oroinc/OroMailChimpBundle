@@ -216,6 +216,7 @@ class SubscribersList implements OriginAwareInterface
     /**
      * @return string
      */
+    #[\Override]
     public function getOriginId()
     {
         return $this->originId;
@@ -235,6 +236,7 @@ class SubscribersList implements OriginAwareInterface
     /**
      * @return Channel
      */
+    #[\Override]
     public function getChannel()
     {
         return $this->channel;

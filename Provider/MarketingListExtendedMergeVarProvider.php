@@ -30,17 +30,13 @@ class MarketingListExtendedMergeVarProvider implements ProviderInterface
         $this->entityFieldProvider = $entityFieldProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function isApplicable(MarketingList $marketingList)
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function provideExtendedMergeVars(MarketingList $marketingList)
     {
         $definition = QueryDefinitionUtil::decodeDefinition($marketingList->getDefinition());

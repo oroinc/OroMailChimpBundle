@@ -13,6 +13,7 @@ class TemplateImportStrategy extends AbstractImportStrategy
      * @param Template $entity
      * @return Template
      */
+    #[\Override]
     protected function beforeProcessEntity($entity)
     {
         if ($this->logger) {

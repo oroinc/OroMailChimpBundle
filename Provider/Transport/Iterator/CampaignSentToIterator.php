@@ -13,6 +13,7 @@ class CampaignSentToIterator extends AbstractCampaignAwareIterator
      * @return array
      * @throws Exception
      */
+    #[\Override]
     protected function getResult()
     {
         $sentTo = $this->client->getCampaignSentToReport($this->getArguments());

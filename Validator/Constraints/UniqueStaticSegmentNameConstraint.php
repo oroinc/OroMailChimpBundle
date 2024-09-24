@@ -14,17 +14,13 @@ class UniqueStaticSegmentNameConstraint extends Constraint
      */
     public $message = 'oro.mailchimp.unique_static_segment_name.message';
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getTargets(): string|array
     {
         return [self::CLASS_CONSTRAINT];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function validatedBy(): string
     {
         return 'oro_mailchimp.validator.unique_static_segment_name';

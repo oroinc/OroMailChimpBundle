@@ -28,6 +28,7 @@ class MemberExtendedMergeVarExportReader extends AbstractExtendedMergeVarExportR
      * @return MmbrExtdMergeVarExportIterator
      * @throws \InvalidArgumentException if MemberExtendedMergeVar class name is not provided
      */
+    #[\Override]
     protected function getExtendedMergeVarIterator(Channel $channel)
     {
         if (!is_string($this->mmbrExtdMergeVarClassName) && empty($this->mmbrExtdMergeVarClassName)) {

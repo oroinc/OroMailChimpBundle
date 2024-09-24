@@ -17,65 +17,48 @@ class MergeVar implements MergeVarInterface
         $this->data = $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getName()
     {
         return $this->getDataValue(self::PROPERTY_NAME);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getFieldType()
     {
         return $this->getDataValue(self::PROPERTY_FIELD_TYPE);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getTag()
     {
         return $this->getDataValue(self::PROPERTY_TAG);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function isFirstName()
     {
         return $this->getTag() === self::TAG_FIRST_NAME;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function isLastName()
     {
         return $this->getTag() === self::TAG_LAST_NAME;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function isEmail()
     {
         return $this->getTag() === self::TAG_EMAIL;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function isPhone()
     {
         return $this->getFieldType() === self::FIELD_TYPE_PHONE;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getDataValue($key, $default = null)
     {
         return isset($this->data[$key]) ? $this->data[$key] : $default;

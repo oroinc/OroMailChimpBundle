@@ -59,30 +59,25 @@ class StaticSegmentController extends RestController
         return $this->handleView($this->view('', Response::HTTP_OK));
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getManager()
     {
         return $this->container->get('oro_mailchimp.static_segment.manager.api');
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getForm()
     {
         throw new \BadMethodCallException('Form is not available.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getFormHandler()
     {
         throw new \BadMethodCallException('FormHandler is not available.');
     }
 
+    #[\Override]
     public static function getSubscribedServices(): array
     {
         return array_merge(

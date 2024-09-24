@@ -10,9 +10,7 @@ use Oro\Bundle\MailChimpBundle\Entity\Template;
  */
 class TemplateSearchHandler extends IntegrationAwareSearchHandler
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function search($query, $page, $perPage, $searchById = false)
     {
         $this->checkAllDependenciesInjected();
@@ -34,9 +32,7 @@ class TemplateSearchHandler extends IntegrationAwareSearchHandler
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function searchEntities($search, $firstResult, $maxResults)
     {
         list($searchTerm, $channelId) = explode(';', $search);
@@ -61,6 +57,7 @@ class TemplateSearchHandler extends IntegrationAwareSearchHandler
      * @param Template[] $items
      * @return array
      */
+    #[\Override]
     protected function convertItems(array $items)
     {
         $grouped = [];

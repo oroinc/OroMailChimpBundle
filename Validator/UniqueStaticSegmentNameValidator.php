@@ -28,6 +28,7 @@ class UniqueStaticSegmentNameValidator extends ConstraintValidator
      * @param StaticSegment $value
      * @param UniqueStaticSegmentNameConstraint|Constraint $constraint
      */
+    #[\Override]
     public function validate($value, Constraint $constraint)
     {
         if ($value instanceof StaticSegment && !$value->getOriginId()) {

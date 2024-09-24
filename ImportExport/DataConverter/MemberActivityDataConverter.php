@@ -7,9 +7,7 @@ namespace Oro\Bundle\MailChimpBundle\ImportExport\DataConverter;
  */
 class MemberActivityDataConverter extends IntegrationAwareDataConverter
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getHeaderConversionRules()
     {
         return [
@@ -21,8 +19,8 @@ class MemberActivityDataConverter extends IntegrationAwareDataConverter
     /**
      * Please note that if there is no activity data, the activity entity will be ignored and not saved.
      *
-     * {@inheritdoc}
      */
+    #[\Override]
     public function convertToImportFormat(array $importedRecord, $skipNullValues = true)
     {
         $importedRecord['member:email'] = $importedRecord['email_address'];
@@ -42,9 +40,7 @@ class MemberActivityDataConverter extends IntegrationAwareDataConverter
         return parent::convertToImportFormat($importedRecord, $skipNullValues);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getBackendHeader()
     {
         throw new \Exception('Normalization is not implemented!');

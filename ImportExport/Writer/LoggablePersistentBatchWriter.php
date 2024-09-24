@@ -9,9 +9,7 @@ use Oro\Bundle\IntegrationBundle\ImportExport\Writer\PersistentBatchWriter;
  */
 class LoggablePersistentBatchWriter extends PersistentBatchWriter
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function write(array $items)
     {
         parent::write($items);

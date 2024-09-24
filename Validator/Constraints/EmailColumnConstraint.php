@@ -9,17 +9,13 @@ use Symfony\Component\Validator\Constraint;
  */
 class EmailColumnConstraint extends Constraint
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getTargets(): string|array
     {
         return [self::CLASS_CONSTRAINT];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function validatedBy(): string
     {
         return 'oro_mailchimp.validator.email_column';

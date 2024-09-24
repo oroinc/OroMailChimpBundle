@@ -35,17 +35,13 @@ abstract class AbstractImportStrategy extends ConfigurableAddOrReplaceStrategy i
      */
     protected $ownerHelper;
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
@@ -56,9 +52,7 @@ abstract class AbstractImportStrategy extends ConfigurableAddOrReplaceStrategy i
         $this->ownerHelper = $ownerHelper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function beforeProcessEntity($entity)
     {
         if ($entity instanceof OriginAwareInterface) {
@@ -75,6 +69,7 @@ abstract class AbstractImportStrategy extends ConfigurableAddOrReplaceStrategy i
      * @param OriginAwareInterface $entity
      * @return OriginAwareInterface
      */
+    #[\Override]
     protected function afterProcessEntity($entity)
     {
         $this->collectEntities($entity);

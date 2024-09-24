@@ -11,6 +11,7 @@ class ProviderTest extends \PHPUnit\Framework\TestCase
     private MarketingList $marketingList;
     private Provider $provider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->marketingList = new MarketingList();

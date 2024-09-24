@@ -8,9 +8,7 @@ namespace Oro\Bundle\MailChimpBundle\Autocomplete;
  */
 class ListSearchHandler extends IntegrationAwareSearchHandler
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function searchEntities($search, $firstResult, $maxResults)
     {
         list($searchTerm, $channelId) = explode(';', $search);

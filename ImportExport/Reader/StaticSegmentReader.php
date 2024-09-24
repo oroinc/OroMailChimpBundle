@@ -46,9 +46,7 @@ class StaticSegmentReader extends AbstractIteratorBasedReader implements Closabl
         $this->staticSegmentClassName = $staticSegmentClassName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function close()
     {
         // if the iterator is self crated - clear it to avoid usage the iterator with wrong context data
@@ -57,9 +55,7 @@ class StaticSegmentReader extends AbstractIteratorBasedReader implements Closabl
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function initializeFromContext(ContextInterface $context)
     {
         parent::initializeFromContext($context);

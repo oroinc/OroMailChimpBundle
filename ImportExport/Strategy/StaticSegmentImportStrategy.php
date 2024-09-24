@@ -9,9 +9,7 @@ use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
  */
 class StaticSegmentImportStrategy extends AbstractImportStrategy
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function processEntity(
         $entity,
         $isFullData = false,
@@ -23,9 +21,7 @@ class StaticSegmentImportStrategy extends AbstractImportStrategy
         return parent::processEntity($entity, $isFullData, false, $itemData, $searchContext, $entityIsRelation);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function beforeProcessEntity($entity)
     {
         if ($this->logger) {
@@ -40,8 +36,8 @@ class StaticSegmentImportStrategy extends AbstractImportStrategy
      *
      * @param StaticSegment $entity
      *
-     * {@inheritdoc}
      */
+    #[\Override]
     protected function afterProcessEntity($entity)
     {
         if (!$entity) {
@@ -58,8 +54,8 @@ class StaticSegmentImportStrategy extends AbstractImportStrategy
     /**
      * Sync only existing StaticSegments, do not create them from MailChimp
      *
-     * {@inheritdoc}
      */
+    #[\Override]
     protected function validateAndUpdateContext($entity)
     {
         if (!$entity) {

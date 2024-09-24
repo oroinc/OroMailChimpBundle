@@ -10,6 +10,7 @@ class TemplateTest extends \PHPUnit\Framework\TestCase
 {
     private Template $target;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->target = new Template();

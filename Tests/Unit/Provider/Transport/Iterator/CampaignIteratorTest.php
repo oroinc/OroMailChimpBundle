@@ -12,6 +12,7 @@ class CampaignIteratorTest extends \PHPUnit\Framework\TestCase
     /** @var MailChimpClient|\PHPUnit\Framework\MockObject\MockObject */
     private $client;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->client = $this->createMock(MailChimpClient::class);

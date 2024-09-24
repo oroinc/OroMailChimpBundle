@@ -12,17 +12,13 @@ class ChannelType implements ChannelInterface, IconAwareIntegrationInterface
 {
     const TYPE = 'mailchimp';
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getLabel()
     {
         return 'oro.mailchimp.channel_type.label';
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getIcon()
     {
         return 'bundles/oromailchimp/img/freddie.ico';

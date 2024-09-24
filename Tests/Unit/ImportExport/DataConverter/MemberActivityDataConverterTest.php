@@ -10,6 +10,7 @@ class MemberActivityDataConverterTest extends TestCase
 {
     private MemberActivityDataConverter $memberActivityDataConverter;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->memberActivityDataConverter = new MemberActivityDataConverter();

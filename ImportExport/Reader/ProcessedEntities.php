@@ -10,9 +10,7 @@ use Oro\Bundle\ImportExportBundle\Reader\AbstractReader;
  */
 class ProcessedEntities extends AbstractReader
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function read()
     {
         /** @var JobExecution $jobExecution */

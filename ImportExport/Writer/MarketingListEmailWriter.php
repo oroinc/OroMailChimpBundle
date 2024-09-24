@@ -37,9 +37,7 @@ class MarketingListEmailWriter extends InsertFromSelectWriter implements CleanUp
         return $this->registry->getManager();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function cleanUp(array $item)
     {
         /** @var QueryBuilder $qb */

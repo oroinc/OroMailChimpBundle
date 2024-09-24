@@ -38,9 +38,7 @@ class StaticSegmentMemberAddStateWriter extends InsertFromSelectWriter implement
         return $this->registry->getManager();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function cleanUp(array $item)
     {
         /** @var QueryBuilder $qb */

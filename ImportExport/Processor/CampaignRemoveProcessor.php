@@ -24,9 +24,7 @@ class CampaignRemoveProcessor extends RemoveProcessor
         $this->campaignType = $campaignType;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function createQueryBuilder(array $item)
     {
         if (!$this->campaignType) {

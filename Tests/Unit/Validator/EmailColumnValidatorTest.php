@@ -27,6 +27,7 @@ class EmailColumnValidatorTest extends TestCase
     /** @var EmailColumnValidator */
     private $validator;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->fieldInformationValidator = $this->createMock(ConstraintValidator::class);

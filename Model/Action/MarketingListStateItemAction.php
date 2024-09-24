@@ -42,9 +42,7 @@ class MarketingListStateItemAction extends AbstractMarketingListEntitiesAction
         $this->marketingListStateItemClassName = $marketingListStateItemClassName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function executeAction($context)
     {
         $entitiesByClassName = $this->getMarketingListStateItems($context->getEntity());
@@ -59,9 +57,7 @@ class MarketingListStateItemAction extends AbstractMarketingListEntitiesAction
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function initialize(array $options)
     {
         if (!$this->doctrineHelper) {
@@ -101,9 +97,7 @@ class MarketingListStateItemAction extends AbstractMarketingListEntitiesAction
         return new BufferedIdentityQueryResultIterator($qb);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getEntitiesQueryBuilder(MarketingList $marketingList)
     {
         $className = $marketingList->getEntity();

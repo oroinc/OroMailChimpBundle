@@ -10,9 +10,7 @@ use Oro\Bundle\FormBundle\Autocomplete\SearchHandler;
  */
 abstract class IntegrationAwareSearchHandler extends SearchHandler
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function checkAllDependenciesInjected()
     {
         if (!$this->entityRepository || !$this->idFieldName) {
@@ -20,9 +18,7 @@ abstract class IntegrationAwareSearchHandler extends SearchHandler
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function findById($query)
     {
         $parts = explode(';', $query);

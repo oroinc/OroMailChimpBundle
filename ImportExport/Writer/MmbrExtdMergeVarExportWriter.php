@@ -13,9 +13,7 @@ use ZfrMailChimp\Exception\Ls\NotSubscribedException;
  */
 class MmbrExtdMergeVarExportWriter extends AbstractExportWriter
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function write(array $items)
     {
         /** @var ExtendedMergeVar $item */

@@ -16,6 +16,7 @@ class MarketingListExtendedMergeVarProviderTest extends \PHPUnit\Framework\TestC
     /** @var MarketingListExtendedMergeVarProvider */
     private $provider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->entityFieldProvider = $this->createMock(EntityFieldProvider::class);

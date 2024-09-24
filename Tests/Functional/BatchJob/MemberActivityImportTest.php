@@ -18,6 +18,7 @@ class MemberActivityImportTest extends WebTestCase
 {
     private JobExecutor $jobExecutor;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->markTestSkipped('CRM-8206');

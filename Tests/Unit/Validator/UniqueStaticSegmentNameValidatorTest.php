@@ -17,15 +17,14 @@ class UniqueStaticSegmentNameValidatorTest extends ConstraintValidatorTestCase
     /** @var MailChimpTransport|\PHPUnit\Framework\MockObject\MockObject */
     private $transport;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->transport = $this->createMock(MailChimpTransport::class);
         parent::setUp();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     protected function createValidator(): UniqueStaticSegmentNameValidator
     {
         return new UniqueStaticSegmentNameValidator($this->transport);

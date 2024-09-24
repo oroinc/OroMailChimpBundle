@@ -9,9 +9,7 @@ class MemberDataConverter extends AbstractMemberDataConverter
 {
     const IMPORT_DATA = '_is_import_data_';
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function convertToImportFormat(array $importedRecord, $skipNullValues = true)
     {
         $importedRecord = parent::convertToImportFormat($importedRecord, $skipNullValues);

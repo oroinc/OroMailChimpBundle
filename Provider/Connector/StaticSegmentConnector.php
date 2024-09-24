@@ -13,49 +13,37 @@ class StaticSegmentConnector extends AbstractMailChimpConnector implements TwoWa
     const JOB_IMPORT = 'mailchimp_static_segment_import';
     const JOB_EXPORT = 'mailchimp_static_segment_export';
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getLabel(): string
     {
         return 'oro.mailchimp.connector.staticSegment.label';
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getImportEntityFQCN()
     {
         return $this->entityName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getImportJobName()
     {
         return self::JOB_IMPORT;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getType()
     {
         return self::TYPE;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getConnectorSource()
     {
         return $this->transport->getSegmentsToSync($this->getChannel());
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getExportJobName()
     {
         return self::JOB_EXPORT;

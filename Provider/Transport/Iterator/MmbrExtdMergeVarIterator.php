@@ -39,9 +39,7 @@ class MmbrExtdMergeVarIterator extends AbstractStaticSegmentMembersIterator
         $this->doctrineHelper = $doctrineHelper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function rewind(): void
     {
         parent::rewind();
@@ -62,8 +60,8 @@ class MmbrExtdMergeVarIterator extends AbstractStaticSegmentMembersIterator
     /**
      * @param StaticSegment $staticSegment
      *
-     * {@inheritdoc}
      */
+    #[\Override]
     protected function createSubordinateIterator($staticSegment)
     {
         return new CallbackFilterIteratorCompatible(
@@ -101,9 +99,7 @@ class MmbrExtdMergeVarIterator extends AbstractStaticSegmentMembersIterator
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getIteratorQueryBuilder(StaticSegment $staticSegment)
     {
         $marketingList = $staticSegment->getMarketingList();

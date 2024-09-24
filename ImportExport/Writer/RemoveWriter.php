@@ -39,9 +39,7 @@ class RemoveWriter implements ItemWriterInterface
         $this->field = $field;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function write(array $items)
     {
         foreach ($items as $writerItem) {

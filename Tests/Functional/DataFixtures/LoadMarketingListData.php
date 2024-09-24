@@ -31,9 +31,7 @@ class LoadMarketingListData extends AbstractMailChimpFixture implements Dependen
         ],
     ];
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function getDependencies(): array
     {
         return [
@@ -44,9 +42,7 @@ class LoadMarketingListData extends AbstractMailChimpFixture implements Dependen
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function load(ObjectManager $manager): void
     {
         foreach ($this->mlData as $data) {

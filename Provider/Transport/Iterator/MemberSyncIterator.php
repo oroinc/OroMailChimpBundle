@@ -115,8 +115,8 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
     /**
      * Return query builder instead of BufferedQueryResultIterator.
      *
-     * {@inheritdoc}
      */
+    #[\Override]
     protected function createSubordinateIterator($staticSegment)
     {
         $qb = $this->getIteratorQueryBuilder($staticSegment);
@@ -136,8 +136,8 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
     /**
      * Add required fields and filters members that are not in list yet.
      *
-     * {@inheritdoc}
      */
+    #[\Override]
     protected function getIteratorQueryBuilder(StaticSegment $staticSegment)
     {
         $qb = $this->getCommonIteratorQueryBuilder($staticSegment);
@@ -180,7 +180,6 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
     /**
      * Always add first_name and last_name to select, as them will be used for INSERT FROM SELECT later.
      *
-     * {@inheritdoc}
      */
     protected function addNameFields($entityName, QueryBuilder $qb)
     {
@@ -206,9 +205,7 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getContactInformationFields(MarketingList $marketingList)
     {
         $this->contactInformationFields = parent::getContactInformationFields($marketingList);

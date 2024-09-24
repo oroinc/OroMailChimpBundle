@@ -23,9 +23,7 @@ class ItemStep extends BaseItemStep
         $this->stepExecutor = new StepExecutor();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function doExecute(StepExecution $stepExecution)
     {
         $this->initializeStepElements($stepExecution);
@@ -43,6 +41,7 @@ class ItemStep extends BaseItemStep
         $this->flushStepElements();
     }
 
+    #[\Override]
     protected function initializeStepElements(StepExecution $stepExecution): void
     {
         parent::initializeStepElements($stepExecution);

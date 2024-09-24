@@ -36,6 +36,7 @@ class MailChimpClient implements MailChimpClientConfigAwareInterface
         $this->client = new MailChimp($apiKey);
     }
 
+    #[\Override]
     public function setConfig(MailChimpClientConfig $clientConfig)
     {
         $this->config = $clientConfig;

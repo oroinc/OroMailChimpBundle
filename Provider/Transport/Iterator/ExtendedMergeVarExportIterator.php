@@ -42,9 +42,7 @@ class ExtendedMergeVarExportIterator extends AbstractSubordinateIterator impleme
         $this->extendedMergeVarClassName = $extendedMergeVarClassName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function writeRequired()
     {
         if (!$this->subordinateIterator) {
@@ -54,9 +52,7 @@ class ExtendedMergeVarExportIterator extends AbstractSubordinateIterator impleme
         return !$this->subordinateIterator->valid();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function createSubordinateIterator($staticSegment)
     {
         $qb = $this->doctrineHelper

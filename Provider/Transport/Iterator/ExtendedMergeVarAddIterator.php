@@ -30,8 +30,8 @@ class ExtendedMergeVarAddIterator extends AbstractSubordinateIterator
     /**
      * @param StaticSegment $staticSegment
      *
-     * {@inheritdoc}
      */
+    #[\Override]
     protected function createSubordinateIterator($staticSegment)
     {
         if (!$this->provider->isApplicable($staticSegment->getMarketingList())) {

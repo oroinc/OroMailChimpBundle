@@ -22,9 +22,7 @@ class StaticSegmentIterator extends AbstractMailChimpIterator
         $this->subscriberListId = $listId;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getResult()
     {
         $result = $this->client->getListStaticSegments([

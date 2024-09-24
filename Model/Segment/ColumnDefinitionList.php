@@ -23,6 +23,7 @@ class ColumnDefinitionList implements ColumnDefinitionListInterface
     /**
      * @return array
      */
+    #[\Override]
     public function getColumns()
     {
         return $this->columns;

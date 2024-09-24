@@ -19,6 +19,7 @@ class ReportsCampaignEmailActivitySubordinateIterator extends AbstractMemberActi
         parent::__construct($campaignsIterator, $client);
     }
 
+    #[\Override]
     protected function createResultIterator(Campaign $campaign): ReportsCampaignEmailActivityIterator
     {
         $reportsCampaignEmailActivityIterator = new ReportsCampaignEmailActivityIterator($this->client);

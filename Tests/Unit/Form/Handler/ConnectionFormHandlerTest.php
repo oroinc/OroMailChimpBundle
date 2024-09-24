@@ -28,6 +28,7 @@ class ConnectionFormHandlerTest extends TestCase
     /** @var ConnectionFormHandler */
     private $handler;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->form = $this->createMock(FormInterface::class);

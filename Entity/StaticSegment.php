@@ -222,6 +222,7 @@ class StaticSegment implements OriginAwareInterface
     /**
      * @return integer
      */
+    #[\Override]
     public function getOriginId()
     {
         return $this->originId;
@@ -241,6 +242,7 @@ class StaticSegment implements OriginAwareInterface
     /**
      * @return Channel
      */
+    #[\Override]
     public function getChannel()
     {
         return $this->channel;

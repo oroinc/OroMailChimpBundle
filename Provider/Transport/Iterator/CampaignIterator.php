@@ -25,9 +25,7 @@ class CampaignIterator extends AbstractMailChimpIterator
         $this->filters = $filters;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getResult()
     {
         $arguments = [

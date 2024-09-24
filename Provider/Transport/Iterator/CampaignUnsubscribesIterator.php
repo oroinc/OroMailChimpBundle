@@ -13,6 +13,7 @@ class CampaignUnsubscribesIterator extends AbstractCampaignAwareIterator
      * @return array
      * @throws Exception
      */
+    #[\Override]
     protected function getResult()
     {
         $unsubscribes = $this->client->getCampaignUnsubscribesReport($this->getArguments());

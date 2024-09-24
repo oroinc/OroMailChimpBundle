@@ -14,9 +14,7 @@ class ExtendedMergeVarsProviderPass implements CompilerPassInterface
     const COMPOSITE_PROVIDER_ID = 'oro_mailchimp.extended_merge_var.composite_provider';
     const PROVIDER_TAG_NAME     = 'oro_mailchimp.extended_merge_vars.provider';
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function process(ContainerBuilder $container)
     {
         $compositeProvider = $container->getDefinition(self::COMPOSITE_PROVIDER_ID);

@@ -15,41 +15,31 @@ class MemberActivityConnector extends AbstractMailChimpConnector implements Conn
     const JOB_IMPORT = 'mailchimp_member_activity_import';
     const SINCE_MAP_KEY = 'since_map';
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getLabel(): string
     {
         return 'oro.mailchimp.connector.member_activity.label';
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getImportEntityFQCN()
     {
         return $this->entityName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getImportJobName()
     {
         return self::JOB_IMPORT;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getType()
     {
         return self::TYPE;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getConnectorSource()
     {
         /** @var MemberActivityRepository $repository */

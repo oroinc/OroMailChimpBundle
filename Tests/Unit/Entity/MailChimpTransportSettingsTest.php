@@ -11,6 +11,7 @@ class MailChimpTransportSettingsTest extends \PHPUnit\Framework\TestCase
 {
     private MailChimpTransportSettings $target;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->target = new MailChimpTransportSettings();

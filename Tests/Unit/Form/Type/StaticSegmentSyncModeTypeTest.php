@@ -19,6 +19,7 @@ class StaticSegmentSyncModeTypeTest extends FormIntegrationTestCase
     /** @var StaticSegmentSyncModeType */
     private $formType;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->staticSegmentSyncModesProvider = $this->createMock(StaticSegmentSyncModeChoicesProvider::class);
@@ -28,9 +29,7 @@ class StaticSegmentSyncModeTypeTest extends FormIntegrationTestCase
         parent::setUp();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     protected function getExtensions(): array
     {
         return [

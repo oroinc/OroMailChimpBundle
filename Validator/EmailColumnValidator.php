@@ -32,17 +32,13 @@ class EmailColumnValidator extends ConstraintValidator
         $this->registry = $registry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function initialize(ExecutionContextInterface $context)
     {
         $this->fieldInformationValidator->initialize($context);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function validate($value, Constraint $constraint)
     {
         if ($value instanceof MarketingList && !$value->isManual() && $this->isConnectedToMailChimp($value)) {

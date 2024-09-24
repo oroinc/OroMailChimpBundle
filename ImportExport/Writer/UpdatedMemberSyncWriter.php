@@ -34,9 +34,7 @@ class UpdatedMemberSyncWriter implements ItemWriterInterface
         $this->doctrineHelper = $doctrineHelper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function write(array $items)
     {
         foreach ($items as $item) {

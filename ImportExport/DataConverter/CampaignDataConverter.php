@@ -7,9 +7,7 @@ namespace Oro\Bundle\MailChimpBundle\ImportExport\DataConverter;
  */
 class CampaignDataConverter extends IntegrationAwareDataConverter
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getHeaderConversionRules()
     {
         return [
@@ -49,9 +47,7 @@ class CampaignDataConverter extends IntegrationAwareDataConverter
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function convertToImportFormat(array $importedRecord, $skipNullValues = true)
     {
         $channel = $this->context->getOption('channel');
@@ -132,9 +128,7 @@ class CampaignDataConverter extends IntegrationAwareDataConverter
         return $importedRecord;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getBackendHeader()
     {
         throw new \Exception('Normalization is not implemented!');

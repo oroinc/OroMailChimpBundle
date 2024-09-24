@@ -11,7 +11,6 @@ class MailChimpClientStub extends MailChimpClient
     /**
      * Loads data from fixtures by originId
      *
-     * {@inheritdoc}
      */
     public function export($methodName, array $parameters): Response
     {

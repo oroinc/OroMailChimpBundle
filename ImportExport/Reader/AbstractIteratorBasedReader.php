@@ -36,9 +36,7 @@ abstract class AbstractIteratorBasedReader extends IteratorBasedReader
         $this->channelClassName = $channelClassName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function initializeFromContext(ContextInterface $context)
     {
         if (!$this->channelClassName) {

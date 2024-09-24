@@ -47,9 +47,7 @@ class RemoveProcessor implements StepExecutionAwareProcessor, EntityNameAwareInt
         $this->doctrineHelper = $doctrineHelper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function process($item)
     {
         if (is_array($item)) {
@@ -105,17 +103,13 @@ class RemoveProcessor implements StepExecutionAwareProcessor, EntityNameAwareInt
         return $qb;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function setEntityName(string $entityName): void
     {
         $this->entityName = $entityName;

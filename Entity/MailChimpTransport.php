@@ -29,9 +29,7 @@ class MailChimpTransport extends Transport
      */
     protected $settingsBag;
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getSettingsBag()
     {
         if (null === $this->settingsBag) {

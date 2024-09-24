@@ -16,17 +16,13 @@ abstract class IntegrationAwareDataConverter extends AbstractTableDataConverter 
      */
     protected $context;
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function setImportExportContext(ContextInterface $context)
     {
         $this->context = $context;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function convertToImportFormat(array $importedRecord, $skipNullValues = true)
     {
         if (empty($importedRecord['channel_id'])) {

@@ -9,9 +9,7 @@ use Oro\Bundle\MailChimpBundle\Entity\MemberActivity;
  */
 class MemberSendActivityDataConverter extends AbstractMemberActivityDataConverter
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function convertToImportFormat(array $importedRecord, $skipNullValues = true)
     {
         if ($importedRecord['status'] === MemberActivity::ACTIVITY_SENT) {

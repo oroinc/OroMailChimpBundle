@@ -28,6 +28,7 @@ class MemberExportListIterator extends AbstractSubscribersListIterator implement
     /**
      * @return bool
      */
+    #[\Override]
     public function writeRequired()
     {
         if (!$this->subordinateIterator) {
@@ -45,9 +46,7 @@ class MemberExportListIterator extends AbstractSubscribersListIterator implement
         $this->memberClassName = $memberClassName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function createSubordinateIterator($subscribersList)
     {
         parent::assertSubscribersList($subscribersList);

@@ -9,9 +9,7 @@ use Oro\Bundle\ImportExportBundle\Converter\AbstractTableDataConverter;
  */
 class MemberExtendedMergeVarDataConverter extends AbstractTableDataConverter
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getHeaderConversionRules()
     {
         return [
@@ -21,17 +19,13 @@ class MemberExtendedMergeVarDataConverter extends AbstractTableDataConverter
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getBackendHeader()
     {
         throw new \BadMethodCallException('Normalization is not implemented!');
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function convertToImportFormat(array $importedRecord, $skipNullValues = true)
     {
         $itemData = parent::convertToImportFormat($importedRecord, $skipNullValues);

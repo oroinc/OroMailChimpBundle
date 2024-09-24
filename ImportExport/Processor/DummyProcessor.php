@@ -9,9 +9,7 @@ use Oro\Bundle\ImportExportBundle\Processor\ProcessorInterface;
  */
 class DummyProcessor implements ProcessorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function process($item)
     {
         return $item;

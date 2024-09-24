@@ -242,6 +242,7 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
     /**
      * @return integer
      */
+    #[\Override]
     public function getOriginId()
     {
         return $this->originId;
@@ -261,6 +262,7 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
     /**
      * @return Channel
      */
+    #[\Override]
     public function getChannel()
     {
         return $this->channel;
@@ -417,6 +419,7 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
     /**
      * @return string
      */
+    #[\Override]
     public function getFirstName()
     {
         return $this->firstName;
@@ -474,6 +477,7 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
     /**
      * @return string
      */
+    #[\Override]
     public function getLastName()
     {
         return $this->lastName;

@@ -20,6 +20,7 @@ class ReportsCampaignEmailActivityIterator extends AbstractMailChimpIterator
         $this->options = $options;
     }
 
+    #[\Override]
     protected function getResult()
     {
         $options = array_merge(

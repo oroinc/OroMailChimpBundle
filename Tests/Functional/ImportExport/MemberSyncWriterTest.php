@@ -16,6 +16,7 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
  */
 class MemberSyncWriterTest extends WebTestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

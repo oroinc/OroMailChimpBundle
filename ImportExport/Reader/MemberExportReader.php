@@ -39,9 +39,7 @@ class MemberExportReader extends AbstractIteratorBasedReader
         $this->subscribersListClassName = $subscribersListClassName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function initializeFromContext(ContextInterface $context)
     {
         parent::initializeFromContext($context);

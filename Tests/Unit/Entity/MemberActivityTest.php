@@ -12,6 +12,7 @@ class MemberActivityTest extends \PHPUnit\Framework\TestCase
 {
     private MemberActivity $target;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->target = new MemberActivity();

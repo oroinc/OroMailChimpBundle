@@ -13,9 +13,7 @@ class MailChimpTransportSettingsType extends AbstractTransportSettingsType
 {
     const NAME = 'oro_mailchimp_email_transport_settings';
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -41,9 +39,7 @@ class MailChimpTransportSettingsType extends AbstractTransportSettingsType
         parent::buildForm($builder, $options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
@@ -53,17 +49,12 @@ class MailChimpTransportSettingsType extends AbstractTransportSettingsType
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return $this->getBlockPrefix();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return self::NAME;

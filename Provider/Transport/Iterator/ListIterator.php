@@ -9,9 +9,7 @@ use Exception;
  */
 class ListIterator extends AbstractMailChimpIterator
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getResult()
     {
         $listData = $this->client->getLists([

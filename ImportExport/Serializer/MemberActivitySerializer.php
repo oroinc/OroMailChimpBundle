@@ -45,8 +45,8 @@ class MemberActivitySerializer implements ContextAwareDenormalizerInterface
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      *
-     * {@inheritdoc}
      */
+    #[\Override]
     public function denormalize($data, string $type, string $format = null, array $context = [])
     {
         $result = new MemberActivity();
@@ -99,9 +99,7 @@ class MemberActivitySerializer implements ContextAwareDenormalizerInterface
         return $this->dateTimeSerializer->denormalize($dateString, 'DateTime', 'datetime', $context);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function supportsDenormalization($data, string $type, string $format = null, array $context = []): bool
     {
         return is_a($type, MemberActivity::class, true)

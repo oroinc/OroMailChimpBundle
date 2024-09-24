@@ -36,17 +36,13 @@ class FilteredMergeVarsProvider implements ProviderInterface
         $this->contactInformationFieldsProvider = $contactInformationFieldsProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function isApplicable(MarketingList $marketingList)
     {
         return $this->provider->isApplicable($marketingList);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function provideExtendedMergeVars(MarketingList $marketingList)
     {
         $excludedFields = [];

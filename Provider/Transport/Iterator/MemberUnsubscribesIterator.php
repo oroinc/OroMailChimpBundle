@@ -15,6 +15,7 @@ class MemberUnsubscribesIterator extends AbstractMemberActivityIterator
      * @param Campaign $campaign
      * @return \Iterator
      */
+    #[\Override]
     protected function createResultIterator(Campaign $campaign)
     {
         return new CampaignUnsubscribesIterator($this->client, $campaign);

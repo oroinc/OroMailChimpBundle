@@ -82,9 +82,7 @@ class MailChimpTransport implements TransportInterface
         $this->managerRegistry = $managerRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function init(Transport $transportEntity)
     {
         $apiKey = $transportEntity->getSettingsBag()->get('apiKey');
@@ -292,17 +290,13 @@ class MailChimpTransport implements TransportInterface
         return $since->format(self::DATETIME_FORMAT);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getSettingsFormType()
     {
         return IntegrationSettingsType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getSettingsEntityFQCN()
     {
         return \Oro\Bundle\MailChimpBundle\Entity\MailChimpTransport::class;
@@ -440,9 +434,7 @@ class MailChimpTransport implements TransportInterface
 
     // TEMPLATES
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getLabel()
     {
         return 'oro.mailchimp.integration_transport.label';

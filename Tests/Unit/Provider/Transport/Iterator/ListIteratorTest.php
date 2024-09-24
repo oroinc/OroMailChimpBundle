@@ -15,6 +15,7 @@ class ListIteratorTest extends \PHPUnit\Framework\TestCase
     /** @var ListIterator */
     private $iterator;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->client = $this->createMock(MailChimpClient::class);

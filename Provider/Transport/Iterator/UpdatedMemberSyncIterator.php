@@ -14,8 +14,8 @@ class UpdatedMemberSyncIterator extends MemberSyncIterator
      * Runs subordinate iterator rewind.
      * It allows to read data after previously iterated results were processed with writer.
      *
-     * {@inheritdoc}
      */
+    #[\Override]
     public function valid(): bool
     {
         if ($this->offset > 0 && !is_null($this->subordinateIterator)) {
@@ -26,9 +26,7 @@ class UpdatedMemberSyncIterator extends MemberSyncIterator
         return !is_null($this->current);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function next(): void
     {
         $this->current = $this->read();
@@ -40,8 +38,8 @@ class UpdatedMemberSyncIterator extends MemberSyncIterator
     /**
      * Return query builder instead of BufferedQueryResultIterator.
      *
-     * {@inheritdoc}
      */
+    #[\Override]
     protected function createSubordinateIterator($staticSegment)
     {
         return new QueryWithOptionsIterator(
@@ -57,8 +55,8 @@ class UpdatedMemberSyncIterator extends MemberSyncIterator
     /**
      * Adds required fields and filters members that are to be updated into mailchimp.
      *
-     * {@inheritdoc}
      */
+    #[\Override]
     protected function getIteratorQueryBuilder(StaticSegment $staticSegment)
     {
         $qb = $this->getCommonIteratorQueryBuilder($staticSegment);

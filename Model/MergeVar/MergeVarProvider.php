@@ -10,9 +10,7 @@ use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
  */
 class MergeVarProvider implements MergeVarProviderInterface
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getMergeVarFields(SubscribersList $subscribersList)
     {
         $result = $subscribersList->getMergeVarFields();
@@ -48,9 +46,7 @@ class MergeVarProvider implements MergeVarProviderInterface
         return new MergeVar($data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function assignMergeVarValues(Member $member, MergeVarFieldsInterface $fields)
     {
         $values = $member->getMergeVarValues();

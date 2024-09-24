@@ -25,6 +25,7 @@ class MergeVarFields implements MergeVarFieldsInterface
      *
      * @return MergeVarInterface|null
      */
+    #[\Override]
     public function getEmail()
     {
         $fields = $this->filterFields(
@@ -41,6 +42,7 @@ class MergeVarFields implements MergeVarFieldsInterface
      *
      * @return MergeVarInterface|null
      */
+    #[\Override]
     public function getFirstName()
     {
         $fields = $this->filterFields(
@@ -57,6 +59,7 @@ class MergeVarFields implements MergeVarFieldsInterface
      *
      * @return MergeVarInterface|null
      */
+    #[\Override]
     public function getPhone()
     {
         $fields = $this->filterFields(
@@ -73,6 +76,7 @@ class MergeVarFields implements MergeVarFieldsInterface
      *
      * @return MergeVarInterface|null
      */
+    #[\Override]
     public function getLastName()
     {
         $fields = $this->filterFields(

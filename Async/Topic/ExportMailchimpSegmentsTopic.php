@@ -29,21 +29,25 @@ class ExportMailchimpSegmentsTopic extends AbstractTopic implements JobAwareTopi
         $this->doctrineHelper = $doctrineHelper;
     }
 
+    #[\Override]
     public static function getName(): string
     {
         return self::NAME;
     }
 
+    #[\Override]
     public static function getDescription(): string
     {
         return 'Exports Mailchimp segments.';
     }
 
+    #[\Override]
     public function getDefaultPriority(string $queueName): string
     {
         return MessagePriority::VERY_LOW;
     }
 
+    #[\Override]
     public function configureMessageBody(OptionsResolver $resolver): void
     {
         $this->configureMessageBodyIncludeIntegration($resolver);
@@ -109,6 +113,7 @@ class ExportMailchimpSegmentsTopic extends AbstractTopic implements JobAwareTopi
             });
     }
 
+    #[\Override]
     public function createJobName($messageBody): string
     {
         $segmentIds = $messageBody['segmentsIds'] ?? [];

@@ -19,6 +19,7 @@ class DataGridProviderTest extends \PHPUnit\Framework\TestCase
     /** @var DataGridProvider */
     private $dataGridProvider;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->dataGridManager = $this->createMock(ManagerInterface::class);

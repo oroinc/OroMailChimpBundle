@@ -80,6 +80,7 @@ class StaticSegmentMemberRemoveStateIterator extends AbstractSubordinateIterator
      *
      * @return \Iterator
      */
+    #[\Override]
     protected function createSubordinateIterator($staticSegment)
     {
         if (!$this->memberEntity) {

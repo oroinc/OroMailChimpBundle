@@ -14,6 +14,7 @@ class SegmentTest extends \PHPUnit\Framework\TestCase
 {
     private StaticSegment $entity;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->entity = new StaticSegment();

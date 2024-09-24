@@ -227,6 +227,7 @@ class Template implements OriginAwareInterface
     /**
      * @return int
      */
+    #[\Override]
     public function getOriginId()
     {
         return $this->originId;
@@ -257,6 +258,7 @@ class Template implements OriginAwareInterface
     /**
      * @return Channel
      */
+    #[\Override]
     public function getChannel()
     {
         return $this->channel;

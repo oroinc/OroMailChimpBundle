@@ -17,6 +17,7 @@ class UpdateEmailCampaignStatisticsTest extends WebTestCase
     private UpdateEmailCampaignStatistics $action;
     private ManagerRegistry $doctrine;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->initClient();

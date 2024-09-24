@@ -218,6 +218,7 @@ class Campaign implements OriginAwareInterface
     /**
      * @return Channel
      */
+    #[\Override]
     public function getChannel()
     {
         return $this->channel;
@@ -570,6 +571,7 @@ class Campaign implements OriginAwareInterface
     /**
      * @return string
      */
+    #[\Override]
     public function getOriginId()
     {
         return $this->originId;

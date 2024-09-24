@@ -47,9 +47,7 @@ class MemberActivityImportStrategy extends BasicImportStrategy implements Logger
         MemberActivity::ACTIVITY_BOUNCE
     ];
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
@@ -71,6 +69,7 @@ class MemberActivityImportStrategy extends BasicImportStrategy implements Logger
      * @param MemberActivity $entity
      * @return MemberActivity
      */
+    #[\Override]
     public function process($entity)
     {
         $this->assertEnvironment($entity);
@@ -137,6 +136,7 @@ class MemberActivityImportStrategy extends BasicImportStrategy implements Logger
      * @param MemberActivity $entity
      * @return MemberActivity
      */
+    #[\Override]
     protected function afterProcessEntity($entity)
     {
         if (!$entity) {

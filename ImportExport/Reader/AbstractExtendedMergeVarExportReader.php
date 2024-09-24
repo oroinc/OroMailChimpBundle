@@ -26,9 +26,7 @@ abstract class AbstractExtendedMergeVarExportReader extends AbstractIteratorBase
         $this->staticSegmentClassName = $staticSegmentClassName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function initializeFromContext(ContextInterface $context)
     {
         parent::initializeFromContext($context);

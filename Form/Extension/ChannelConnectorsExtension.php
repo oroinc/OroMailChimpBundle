@@ -19,9 +19,7 @@ class ChannelConnectorsExtension extends AbstractTypeExtension
 {
     const CLASS_PATH = '[attr][class]';
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addEventListener(
@@ -83,9 +81,7 @@ class ChannelConnectorsExtension extends AbstractTypeExtension
         $data->setConnectors($connectors);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public static function getExtendedTypes(): iterable
     {
         return [ChannelType::class];

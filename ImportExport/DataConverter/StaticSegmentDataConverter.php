@@ -9,9 +9,7 @@ use Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator\StaticSegmentIterator
  */
 class StaticSegmentDataConverter extends IntegrationAwareDataConverter
 {
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getHeaderConversionRules()
     {
         return [
@@ -28,9 +26,7 @@ class StaticSegmentDataConverter extends IntegrationAwareDataConverter
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function convertToImportFormat(array $importedRecord, $skipNullValues = true)
     {
         if (array_key_exists('_links', $importedRecord)) {
@@ -42,9 +38,7 @@ class StaticSegmentDataConverter extends IntegrationAwareDataConverter
         return parent::convertToImportFormat($importedRecord, $skipNullValues);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     protected function getBackendHeader()
     {
         throw new \Exception('Normalization is not implemented!');

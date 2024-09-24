@@ -16,6 +16,7 @@ class CampaignImportStrategy extends AbstractImportStrategy
      * @param Campaign $entity
      * @return Campaign|null
      */
+    #[\Override]
     public function process($entity)
     {
         $this->assertEnvironment($entity);

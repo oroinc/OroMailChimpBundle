@@ -33,9 +33,7 @@ class MailChimpIntegrationSelectType extends AbstractType
         $this->aclHelper = $aclHelper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver)
     {
         $integrations = $this->getMailChimpIntegrations();
@@ -70,25 +68,18 @@ class MailChimpIntegrationSelectType extends AbstractType
         return $query->getResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getParent(): ?string
     {
         return EntityType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return $this->getBlockPrefix();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return self::NAME;

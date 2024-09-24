@@ -19,7 +19,6 @@ use Symfony\Contracts\Service\ServiceSubscriberInterface;
  */
 class MarketingListStateItemVoter extends AbstractEntityVoter implements ServiceSubscriberInterface
 {
-    /** {@inheritDoc} */
     protected $supportedAttributes = ['DELETE'];
 
     private ContainerInterface $container;
@@ -30,9 +29,7 @@ class MarketingListStateItemVoter extends AbstractEntityVoter implements Service
         $this->container = $container;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public static function getSubscribedServices(): array
     {
         return [
@@ -40,9 +37,7 @@ class MarketingListStateItemVoter extends AbstractEntityVoter implements Service
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     protected function getPermissionForAttribute($class, $identifier, $attribute)
     {
         /** @var MarketingListStateItemInterface $item */

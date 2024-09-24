@@ -14,9 +14,7 @@ class Provider implements CompositeProviderInterface
      */
     protected $providers = [];
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function addProvider(ProviderInterface $provider)
     {
         if (in_array($provider, $this->providers, true)) {
@@ -25,9 +23,7 @@ class Provider implements CompositeProviderInterface
         $this->providers[] = $provider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function isApplicable(MarketingList $marketingList)
     {
         foreach ($this->providers as $provider) {
@@ -39,9 +35,7 @@ class Provider implements CompositeProviderInterface
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function provideExtendedMergeVars(MarketingList $marketingList)
     {
         $vars = [];

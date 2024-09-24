@@ -48,9 +48,7 @@ class MemberSyncWriter extends InsertFromSelectWriter implements CleanUpInterfac
         return $this->registry->getManager();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getFields()
     {
         $contactInformationFields = ['email'];
@@ -64,9 +62,7 @@ class MemberSyncWriter extends InsertFromSelectWriter implements CleanUpInterfac
         return array_merge($contactInformationFields, $this->fields);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function cleanUp(array $item)
     {
         $this->hasFirstName = !empty($item['has_first_name']);

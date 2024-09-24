@@ -11,6 +11,7 @@ class SubscribersListTest extends \PHPUnit\Framework\TestCase
 {
     private SubscribersList $target;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->target = new SubscribersList();

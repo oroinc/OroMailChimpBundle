@@ -32,6 +32,7 @@ class CampaignAbuseIterator extends AbstractCampaignAwareIterator
      * @return array
      * @throws Exception
      */
+    #[\Override]
     protected function getResult()
     {
         $arguments = $this->getArguments();

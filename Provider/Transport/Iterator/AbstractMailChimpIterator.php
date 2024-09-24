@@ -51,25 +51,19 @@ abstract class AbstractMailChimpIterator implements \Iterator
         $this->batchSize = $batchSize > 0 ? $batchSize : self::BATCH_SIZE;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function current(): mixed
     {
         return $this->current;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function valid(): bool
     {
         return $this->total > 0 && $this->offset < $this->total;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function next(): void
     {
         $this->offset += 1;
@@ -85,17 +79,13 @@ abstract class AbstractMailChimpIterator implements \Iterator
         $this->current = isset($this->data[$key]) ? $this->data[$key] : null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function key(): int
     {
         return $this->offset;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function rewind(): void
     {
         $this->current = null;

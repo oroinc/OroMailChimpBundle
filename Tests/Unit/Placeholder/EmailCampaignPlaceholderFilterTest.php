@@ -24,6 +24,7 @@ class EmailCampaignPlaceholderFilterTest extends \PHPUnit\Framework\TestCase
     /** @var EmailCampaignPlaceholderFilter */
     private $placeholderFilter;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->entityRepository = $this->createMock(EntityRepository::class);

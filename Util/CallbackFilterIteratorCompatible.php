@@ -26,6 +26,7 @@ class CallbackFilterIteratorCompatible extends \FilterIterator
         parent::__construct($iterator);
     }
 
+    #[\Override]
     public function accept(): bool
     {
         $iterator = $this->getInnerIterator();
@@ -33,6 +34,7 @@ class CallbackFilterIteratorCompatible extends \FilterIterator
         return call_user_func_array($this->callback, array(&$this->current, $iterator->key(), $iterator));
     }
 
+    #[\Override]
     public function current(): mixed
     {
         if (!$this->getInnerIterator()->valid()) {

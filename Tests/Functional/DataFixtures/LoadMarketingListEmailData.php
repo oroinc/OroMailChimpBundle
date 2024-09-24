@@ -17,9 +17,7 @@ class LoadMarketingListEmailData extends AbstractMailChimpFixture implements Dep
         ],
     ];
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function load(ObjectManager $manager): void
     {
         foreach ($this->segmentData as $data) {
@@ -32,9 +30,7 @@ class LoadMarketingListEmailData extends AbstractMailChimpFixture implements Dep
         $manager->flush();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function getDependencies(): array
     {
         return [LoadStaticSegmentData::class];

@@ -35,9 +35,7 @@ class ExportProcessor extends BaseExportProcessor implements StepExecutionAwareI
         $this->contextRegistry = $contextRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->importExportContext = $this->contextRegistry->getByStepExecution($stepExecution);
@@ -50,9 +48,7 @@ class ExportProcessor extends BaseExportProcessor implements StepExecutionAwareI
         $this->strategy = $strategy;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function process($item)
     {
         if ($this->strategy) {

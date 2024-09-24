@@ -12,9 +12,7 @@ class Configuration implements ConfigurationInterface
     public const STATIC_SEGMENT_SYNC_MODE_ON_UPDATE = 'on_update';
     public const STATIC_SEGMENT_SYNC_MODE_SCHEDULED = 'scheduled';
 
-    /**
-     * {@inheritdoc}
-     */
+    #[\Override]
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder(self::ROOT_NODE);

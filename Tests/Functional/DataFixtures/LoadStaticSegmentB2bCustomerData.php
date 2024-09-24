@@ -19,9 +19,7 @@ class LoadStaticSegmentB2bCustomerData extends LoadStaticSegmentData
         ],
     ];
 
-    /**
-     * {@inheritDoc}
-     */
+    #[\Override]
     public function getDependencies(): array
     {
         return [
