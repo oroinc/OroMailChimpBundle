@@ -83,13 +83,12 @@ class ExportMailchimpSegmentsTopic extends AbstractTopic implements JobAwareTopi
             ->normalize(function (Options $options, $value): User {
                 $entity = null;
 
-                // if user id is null and only one target static segment
-                // lets get user from static segment
+                // If user id is null and only one target static segment, let's get user from static segment.
                 if (!$value && 1 === \count($segmentsIds = $options['segmentsIds'])) {
                     $segmentId = reset($segmentsIds);
                     /** @var StaticSegment $segment */
                     $segment = $this->getRepository(StaticSegment::class)->find($segmentId);
-                    $entity = $segment->getMarketingList()->getOwner();
+                    $entity = $segment->getMarketingList()?->getOwner();
                 }
 
                 if ($value) {
@@ -98,11 +97,11 @@ class ExportMailchimpSegmentsTopic extends AbstractTopic implements JobAwareTopi
                 }
 
                 if (!$entity) {
-                    throw new InvalidOptionsException('The user not found: '.$value);
+                    throw new InvalidOptionsException('The user not found.');
                 }
 
                 if (!$entity->isEnabled()) {
-                    throw new InvalidOptionsException('The user is not enabled: '.$value);
+                    throw new InvalidOptionsException(sprintf('The user is not enabled: %s', $entity->getId()));
                 }
 
                 return $entity;

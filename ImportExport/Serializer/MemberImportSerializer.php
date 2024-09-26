@@ -55,6 +55,11 @@ class MemberImportSerializer implements ContextAwareDenormalizerInterface
         if (array_key_exists('originId', $data)) {
             $result->setOriginId($data['originId']);
         }
+        // Email is a unique field that we use to verify the existence of a member. Unlike the origin_id field,
+        // which is a md5 hash of the address (email is lowercase only).
+        if (array_key_exists('email', $data)) {
+            $result->setEmail($data['email']);
+        }
         if (array_key_exists('status', $data)) {
             $result->setStatus($data['status']);
         }

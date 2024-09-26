@@ -30,7 +30,7 @@ class ListsMembersIterator extends AbstractMailChimpIterator
     protected function getResult(): array
     {
         $options = array_merge(
-            ['id' => $this->listId, 'count' => $this->batchSize, 'offset' => $this->offset / $this->batchSize],
+            ['id' => $this->listId, 'count' => $this->batchSize, 'offset' => $this->offset],
             $this->options
         );
 

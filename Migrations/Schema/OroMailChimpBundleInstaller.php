@@ -17,7 +17,7 @@ class OroMailChimpBundleInstaller implements Installation
      */
     public function getMigrationVersion(): string
     {
-        return 'v1_9';
+        return 'v1_9_1';
     }
 
     /**
