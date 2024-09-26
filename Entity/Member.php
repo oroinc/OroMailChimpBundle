@@ -104,7 +104,7 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
-     *              "identity"=true
+     *              "identity"=false
      *          }
      *      }
      * )
@@ -128,8 +128,14 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
 
     /**
      * @var string
-     *
      * @ORM\Column(name="email", type="string", length=255, nullable=false)
+     * @ConfigField(
+     *       defaultValues={
+     *           "importexport"={
+     *               "identity"=true
+     *           }
+     *       }
+     *  )
      */
     protected $email;
 

@@ -48,7 +48,7 @@ class MailChimpClient implements MailChimpClientConfigAwareInterface
      */
     public function ping()
     {
-        $result = $this->client->get('ping');
+        $result = $this->client->get('ping', [], self::MAILCHIMP_MAX_TIMEOUT);
         if (false === $result) {
             throw new Exception('Api key invalid');
         }
@@ -182,7 +182,7 @@ class MailChimpClient implements MailChimpClientConfigAwareInterface
      */
     public function getLists(array $options)
     {
-        $result = $this->client->get('lists', $options);
+        $result = $this->client->get('lists', $options, self::MAILCHIMP_MAX_TIMEOUT);
 
         $this->guardAgainstStatus($result);
         return $result;
@@ -196,7 +196,7 @@ class MailChimpClient implements MailChimpClientConfigAwareInterface
      */
     public function getListMergeVars(string $listId)
     {
-        $result = $this->client->get($this->getListMergeVarsMethod($listId));
+        $result = $this->client->get($this->getListMergeVarsMethod($listId), [], self::MAILCHIMP_MAX_TIMEOUT);
         $this->guardAgainstStatus($result);
         return $result;
     }
@@ -222,7 +222,7 @@ class MailChimpClient implements MailChimpClientConfigAwareInterface
     {
         $listId = $this->getListId($options);
 
-        $result = $this->client->post("lists/$listId/merge-fields", $options);
+        $result = $this->client->post("lists/$listId/merge-fields", $options, self::MAILCHIMP_MAX_TIMEOUT);
         $this->guardAgainstStatus($result);
         return $result;
     }
@@ -237,7 +237,7 @@ class MailChimpClient implements MailChimpClientConfigAwareInterface
     {
         $listId = $this->getListId($options);
 
-        $result = $this->client->get("lists/$listId/segments", $options);
+        $result = $this->client->get("lists/$listId/segments", $options, self::MAILCHIMP_MAX_TIMEOUT);
         $this->guardAgainstStatus($result);
         return $result;
     }
@@ -252,10 +252,11 @@ class MailChimpClient implements MailChimpClientConfigAwareInterface
     {
         $listId = $this->getListId($options);
 
-        $result = $this->client->post("lists/$listId/segments", [
-            'name' => $options['name'],
-            'static_segment' => [],
-        ]);
+        $result = $this->client->post(
+            "lists/$listId/segments",
+            ['name' => $options['name'], 'static_segment' => []],
+            self::MAILCHIMP_MAX_TIMEOUT
+        );
 
         $this->guardAgainstStatus($result);
         return $result;
@@ -301,7 +302,7 @@ class MailChimpClient implements MailChimpClientConfigAwareInterface
      */
     public function getCampaigns(array $options)
     {
-        $result = $this->client->get('campaigns', $options);
+        $result = $this->client->get('campaigns', $options, self::MAILCHIMP_MAX_TIMEOUT);
 
         $this->guardAgainstStatus($result);
         return $result;
@@ -315,7 +316,7 @@ class MailChimpClient implements MailChimpClientConfigAwareInterface
      */
     public function getCampaignReport(string $campaignId)
     {
-        $result = $this->client->get("reports/$campaignId");
+        $result = $this->client->get("reports/$campaignId", [], self::MAILCHIMP_MAX_TIMEOUT);
 
         $this->guardAgainstStatus($result);
         return $result;
@@ -330,7 +331,7 @@ class MailChimpClient implements MailChimpClientConfigAwareInterface
     {
         $campaignId = $this->getCampaignId($options);
 
-        $result = $this->client->get("reports/$campaignId/unsubscribed", $options);
+        $result = $this->client->get("reports/$campaignId/unsubscribed", $options, self::MAILCHIMP_MAX_TIMEOUT);
         $this->guardAgainstStatus($result);
         return $result;
     }
@@ -344,7 +345,7 @@ class MailChimpClient implements MailChimpClientConfigAwareInterface
     {
         $campaignId = $this->getCampaignId($options);
 
-        $result = $this->client->get("reports/$campaignId/sent-to", $options);
+        $result = $this->client->get("reports/$campaignId/sent-to", $options, self::MAILCHIMP_MAX_TIMEOUT);
         $this->guardAgainstStatus($result);
         return $result;
     }
@@ -358,7 +359,7 @@ class MailChimpClient implements MailChimpClientConfigAwareInterface
     {
         $campaignId = $this->getCampaignId($options);
 
-        $result = $this->client->get("reports/$campaignId/abuse-reports", $options);
+        $result = $this->client->get("reports/$campaignId/abuse-reports", $options, self::MAILCHIMP_MAX_TIMEOUT);
         $this->guardAgainstStatus($result);
         return $result;
     }
@@ -370,7 +371,11 @@ class MailChimpClient implements MailChimpClientConfigAwareInterface
     {
         $campaignId = $this->getCampaignId($options);
 
-        $result = $this->client->get(sprintf('reports/%s/email-activity', $campaignId), $options);
+        $result = $this->client->get(
+            sprintf('reports/%s/email-activity', $campaignId),
+            $options,
+            self::MAILCHIMP_MAX_TIMEOUT
+        );
         $this->guardAgainstStatus($result);
 
         return $result;
@@ -403,7 +408,7 @@ class MailChimpClient implements MailChimpClientConfigAwareInterface
     {
         $listId = $this->getListId($options);
 
-        $result = $this->client->delete("lists/$listId/merge-fields", $options);
+        $result = $this->client->delete("lists/$listId/merge-fields", $options, self::MAILCHIMP_MAX_TIMEOUT);
         $this->guardAgainstStatus($result);
 
         return $result;
@@ -420,7 +425,7 @@ class MailChimpClient implements MailChimpClientConfigAwareInterface
     {
         $listId = $this->getListId($options);
 
-        $result = $this->client->get("lists/$listId/members/", $options);
+        $result = $this->client->get("lists/$listId/members/", $options, self::MAILCHIMP_MAX_TIMEOUT);
         $this->guardAgainstStatus($result);
 
         return $result;
@@ -438,7 +443,7 @@ class MailChimpClient implements MailChimpClientConfigAwareInterface
         $listId = $this->getListId($options);
         $subriberHash = md5(strtolower($options['email']));
 
-        $result = $this->client->patch("lists/$listId/members/$subriberHash", $options);
+        $result = $this->client->patch("lists/$listId/members/$subriberHash", $options, self::MAILCHIMP_MAX_TIMEOUT);
         $this->guardAgainstStatus($result);
         return $result;
     }
@@ -455,7 +460,7 @@ class MailChimpClient implements MailChimpClientConfigAwareInterface
         $listId = $this->getListId($options);
         $segmentId = $this->getStaticSegmentId($options);
 
-        return $this->client->post("lists/$listId/segments/$segmentId", $options);
+        return $this->client->post("lists/$listId/segments/$segmentId", $options, self::MAILCHIMP_MAX_TIMEOUT);
     }
 
     /**
@@ -470,6 +475,6 @@ class MailChimpClient implements MailChimpClientConfigAwareInterface
         $listId = $this->getListId($options);
         $segmentId = $this->getStaticSegmentId($options);
 
-        return $this->client->post("lists/$listId/segments/$segmentId", $options);
+        return $this->client->post("lists/$listId/segments/$segmentId", $options, self::MAILCHIMP_MAX_TIMEOUT);
     }
 }
