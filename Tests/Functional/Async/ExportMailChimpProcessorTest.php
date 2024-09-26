@@ -101,7 +101,7 @@ class ExportMailChimpProcessorTest extends WebTestCase
             $sentMessage
         );
         self::assertTrue(
-            self::getLoggerTestHandler()->hasErrorThatContains('The user not found: ' . PHP_INT_MAX)
+            self::getLoggerTestHandler()->hasErrorThatContains('The user not found.')
         );
     }
 

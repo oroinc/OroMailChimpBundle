@@ -41,7 +41,9 @@ class ExportMailchimpSegmentsTopicTest extends AbstractTopicTestCase
         $staticSegmentRepository
             ->expects(self::any())
             ->method('find')
-            ->willReturnCallback([$this, 'createStaticSegment']);
+            ->willReturnCallback(function (int $segmentId) {
+                return $this->createStaticSegment($segmentId, $segmentId !== 99);
+            });
 
         $map = [
             User::class => $userRepository,
@@ -94,13 +96,14 @@ class ExportMailchimpSegmentsTopicTest extends AbstractTopicTestCase
         return $integration;
     }
 
-    public function createStaticSegment(int $id): StaticSegment
+    public function createStaticSegment(int $id, bool $withMarketingList = true): StaticSegment
     {
+        $staticSegment = new StaticSegment();
         $marketingList = new MarketingList();
         $marketingList->setOwner($this->createUser($id + 5));
-
-        $staticSegment = new StaticSegment();
-        $staticSegment->setMarketingList($marketingList);
+        if ($withMarketingList) {
+            $staticSegment->setMarketingList($marketingList);
+        }
 
         return $staticSegment;
     }
@@ -166,7 +169,7 @@ class ExportMailchimpSegmentsTopicTest extends AbstractTopicTestCase
                     'userId' => self::NOT_FOUND_ID,
                 ],
                 'exceptionClass' => InvalidOptionsException::class,
-                'exceptionMessage' => sprintf('/The user not found: %s/', self::NOT_FOUND_ID),
+                'exceptionMessage' => sprintf('/The user not found./'),
             ],
             'user disabled by userId' => [
                 'body' => [
@@ -224,6 +227,14 @@ class ExportMailchimpSegmentsTopicTest extends AbstractTopicTestCase
                 'exceptionClass' => InvalidOptionsException::class,
                 'exceptionMessage' => '/The option "segmentsIds" with value array is expected to be'
                     . ' of type "int\[\]", but one of the elements is of type "string"./',
+            ],
+            'segment without marketing list' => [
+                'body' => [
+                    'integrationId' => 1,
+                    'segmentsIds' => [99],
+                ],
+                'exceptionClass' => InvalidOptionsException::class,
+                'exceptionMessage' => sprintf('/The user not found./'),
             ],
         ];
     }

@@ -7,6 +7,9 @@ use Oro\Bundle\MailChimpBundle\Entity\MemberExtendedMergeVar;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Component\Testing\ReflectionUtil;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ */
 class MemberExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
 {
     private MemberExtendedMergeVar $entity;
@@ -80,12 +83,32 @@ class MemberExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @dataProvider invalidMergeVarNamesAndValues
+     * @dataProvider emptyMergeVarNamesAndValues
      */
-    public function testAddMergeVarValueWhenNameOrValueIsInvalid(string|array $name, string|array $value)
+    public function testAddMergeVarValueWhenNameIsEmpty(null|string|array $name, null|string|array $value)
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Merge name and value should be not empty strings.');
+        $this->expectExceptionMessage('Merge value name should be not empty string.');
+
+        $this->entity->addMergeVarValue($name, $value);
+    }
+
+    public function emptyMergeVarNamesAndValues(): array
+    {
+        return [
+            ['', 'value'],
+            [[], 'value'],
+            [null, 'value'],
+        ];
+    }
+
+    /**
+     * @dataProvider invalidMergeVarNamesAndValues
+     */
+    public function testAddMergeVarValueWhenValueIsInvalid(null|string|array $name, null|string|array $value)
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Merge value should be not empty string.');
 
         $this->entity->addMergeVarValue($name, $value);
     }
@@ -93,11 +116,9 @@ class MemberExtendedMergeVarTest extends \PHPUnit\Framework\TestCase
     public function invalidMergeVarNamesAndValues(): array
     {
         return [
-            ['', ''],
-            ['', 'value'],
             ['name', ''],
             ['name', []],
-            [[], 'value']
+            ['name', null],
         ];
     }
 

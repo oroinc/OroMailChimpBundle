@@ -85,7 +85,7 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
      * @var integer|null
      */
     #[ORM\Column(name: 'origin_id', type: Types::STRING, length: 32, nullable: true)]
-    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    #[ConfigField(defaultValues: ['importexport' => ['identity' => false]])]
     protected $originId;
 
     #[ORM\ManyToOne(targetEntity: Channel::class)]
@@ -94,6 +94,7 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
     protected ?Channel $channel = null;
 
     #[ORM\Column(name: 'email', type: Types::STRING, length: 255, nullable: false)]
+    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
     protected ?string $email = null;
 
     #[ORM\Column(name: 'phone', type: Types::STRING, length: 255, nullable: true)]

@@ -22,7 +22,14 @@ use Psr\Log\LoggerInterface;
 class StaticSegmentExportWriter extends AbstractExportWriter implements ContextAwareInterface
 {
     const DROPPED_EMAILS_ERROR_CODE = 215;
-    const BATCH_SIZE = 500;
+
+    /**
+     * Pay attention to the fact that the larger the batch, the longer it takes to fulfill the request.
+     * If Mailchimp does not have time to return the result in a fixed time, the data will not be synchronized,
+     * which will cause errors.
+     * See: @Oro\Bundle\MailChimpBundle\Client\MailChimpClient::MAILCHIMP_MAX_TIMEOUT
+     */
+    private int $batchSize = 100;
 
     /**
      * @var string
@@ -76,6 +83,13 @@ class StaticSegmentExportWriter extends AbstractExportWriter implements ContextA
     public function setMemberClassName($memberClassName)
     {
         $this->memberClassName = $memberClassName;
+    }
+
+    public function setBatchSize(int $batchSize): self
+    {
+        $this->batchSize = $batchSize;
+
+        return $this;
     }
 
     /**
@@ -189,7 +203,7 @@ class StaticSegmentExportWriter extends AbstractExportWriter implements ContextA
             $emailsToProcess[$data['staticSegmentMemberId']] = $data['memberEmail'];
             $emailsIterator->next();
 
-            if (count($emailsToProcess) % self::BATCH_SIZE === 0 || (!$emailsIterator->valid() && $emailsToProcess)) {
+            if (count($emailsToProcess) % $this->batchSize === 0 || (!$emailsIterator->valid() && $emailsToProcess)) {
                 $this->handleEmailsBatch(
                     $staticSegment,
                     $method,
@@ -258,7 +272,7 @@ class StaticSegmentExportWriter extends AbstractExportWriter implements ContextA
             ->leftJoin('staticSegmentMember.member', 'mmbr');
 
         $iterator = new BufferedIdentityQueryResultIterator($qb);
-        $iterator->setBufferSize(self::BATCH_SIZE);
+        $iterator->setBufferSize($this->batchSize);
 
         return $iterator;
     }
