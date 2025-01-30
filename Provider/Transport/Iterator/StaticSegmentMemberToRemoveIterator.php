@@ -30,7 +30,7 @@ class StaticSegmentMemberToRemoveIterator extends AbstractSubordinateIterator
      */
     protected $state;
 
-    public function __construct(\Iterator $mainIterator = null)
+    public function __construct(?\Iterator $mainIterator = null)
     {
         if ($mainIterator) {
             $this->setMainIterator($mainIterator);

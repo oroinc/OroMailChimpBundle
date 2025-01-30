@@ -40,7 +40,7 @@ class StaticSegmentMemberDroppedStateIterator extends AbstractSubordinateIterato
      */
     protected $memberExtendedMergeVarEntity;
 
-    public function __construct(\Iterator $mainIterator = null)
+    public function __construct(?\Iterator $mainIterator = null)
     {
         if ($mainIterator) {
             $this->setMainIterator($mainIterator);

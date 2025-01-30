@@ -302,7 +302,7 @@ class MailChimpTransport implements TransportInterface
         return \Oro\Bundle\MailChimpBundle\Entity\MailChimpTransport::class;
     }
 
-    public function getMembersToSync(Channel $channel, DateTime $since = null)
+    public function getMembersToSync(Channel $channel, ?DateTime $since = null)
     {
         /** @var SubscribersListRepository $subscribersListRepository */
         $subscribersListRepository = $this->managerRegistry->getRepository(SubscribersList::class);
@@ -317,13 +317,13 @@ class MailChimpTransport implements TransportInterface
 
     /**
      * @param Channel $channel
-     * @param array[] $sinceMap
+     * @param array[]|null $sinceMap
      * @return ReportsCampaignEmailActivitySubordinateIterator
      * @throws Exception
      */
     public function getMemberActivitiesToSync(
         Channel $channel,
-        array $sinceMap = null
+        ?array $sinceMap = null
     ): ReportsCampaignEmailActivitySubordinateIterator {
         if ($sinceMap) {
             foreach ($sinceMap as $campaign => $since) {
@@ -381,7 +381,7 @@ class MailChimpTransport implements TransportInterface
      * @return Iterator
      * @throws Exception
      */
-    public function getCampaignAbuseReport(Channel $channel, DateTime $since = null)
+    public function getCampaignAbuseReport(Channel $channel, ?DateTime $since = null)
     {
         if ($since) {
             $since = $this->getSinceForApi($since);

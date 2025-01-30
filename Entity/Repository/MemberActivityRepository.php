@@ -17,7 +17,7 @@ class MemberActivityRepository extends EntityRepository
      * @param array|null $actions
      * @return array
      */
-    public function getLastSyncedActivitiesByCampaign(Channel $channel, array $actions = null)
+    public function getLastSyncedActivitiesByCampaign(Channel $channel, ?array $actions = null)
     {
         $qb = $this->getEntityManager()
             ->createQueryBuilder();

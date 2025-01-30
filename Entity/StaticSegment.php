@@ -265,7 +265,7 @@ class StaticSegment implements OriginAwareInterface
      * @param MarketingList|null $marketingList
      * @return StaticSegment
      */
-    public function setMarketingList(MarketingList $marketingList = null)
+    public function setMarketingList(?MarketingList $marketingList = null)
     {
         $this->marketingList = $marketingList;
 
@@ -288,7 +288,7 @@ class StaticSegment implements OriginAwareInterface
      * @param SubscribersList|null $subscribersList
      * @return StaticSegment
      */
-    public function setSubscribersList(SubscribersList $subscribersList = null)
+    public function setSubscribersList(?SubscribersList $subscribersList = null)
     {
         $this->subscribersList = $subscribersList;
 
@@ -355,7 +355,7 @@ class StaticSegment implements OriginAwareInterface
      * @param DateTime|null $updatedAt
      * @return StaticSegment
      */
-    public function setUpdatedAt(DateTime $updatedAt = null)
+    public function setUpdatedAt(?DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
 
@@ -393,7 +393,7 @@ class StaticSegment implements OriginAwareInterface
      *
      * @return StaticSegment
      */
-    public function setLastReset(DateTime $lastReset = null)
+    public function setLastReset(?DateTime $lastReset = null)
     {
         $this->lastReset = $lastReset;
 

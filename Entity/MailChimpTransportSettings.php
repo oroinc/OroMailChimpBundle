@@ -51,7 +51,7 @@ class MailChimpTransportSettings extends TransportSettings
      *
      * @return MailChimpTransportSettings
      */
-    public function setTemplate(Template $emailTemplate = null)
+    public function setTemplate(?Template $emailTemplate = null)
     {
         $this->template = $emailTemplate;
 

@@ -30,7 +30,7 @@ class StaticSegmentMemberRemoveStateIterator extends AbstractSubordinateIterator
      */
     protected $marketingListEmailEntity;
 
-    public function __construct(\Iterator $mainIterator = null)
+    public function __construct(?\Iterator $mainIterator = null)
     {
         if ($mainIterator) {
             $this->setMainIterator($mainIterator);

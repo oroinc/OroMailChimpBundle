@@ -20,10 +20,10 @@ class BadResponseException extends \RuntimeException implements MailChimpTranspo
      * @param string            $url
      * @param string            $parameters
      * @param ResponseInterface $response Response received
-     * @param string|null       $label
+     * @param string|null $label
      * @return BadResponseException
      */
-    public static function factory($url, $parameters, ResponseInterface $response, string $label = null): self
+    public static function factory($url, $parameters, ResponseInterface $response, ?string $label = null): self
     {
         if (!$label) {
             $label = $response->getReasonPhrase();

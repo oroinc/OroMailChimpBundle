@@ -32,7 +32,7 @@ class DateTimeSerializer implements ContextAwareNormalizerInterface, ContextAwar
     }
 
     #[\Override]
-    public function denormalize($data, string $type, string $format = null, array $context = [])
+    public function denormalize($data, string $type, ?string $format = null, array $context = [])
     {
         try {
             return $this->mailchimpNormalizer->denormalize($data, $type, $format, $context);
@@ -42,13 +42,13 @@ class DateTimeSerializer implements ContextAwareNormalizerInterface, ContextAwar
     }
 
     #[\Override]
-    public function normalize($object, string $format = null, array $context = [])
+    public function normalize($object, ?string $format = null, array $context = [])
     {
         return $this->mailchimpNormalizer->normalize($object, $format, $context);
     }
 
     #[\Override]
-    public function supportsDenormalization($data, string $type, string $format = null, array $context = []): bool
+    public function supportsDenormalization($data, string $type, ?string $format = null, array $context = []): bool
     {
         return $this->mailchimpNormalizer->supportsDenormalization($data, $type, $format, $context)
             && !empty($context[self::CHANNEL_TYPE_KEY])
@@ -56,7 +56,7 @@ class DateTimeSerializer implements ContextAwareNormalizerInterface, ContextAwar
     }
 
     #[\Override]
-    public function supportsNormalization($data, string $format = null, array $context = []): bool
+    public function supportsNormalization($data, ?string $format = null, array $context = []): bool
     {
         return $this->mailchimpNormalizer->supportsNormalization($data, $format, $context)
             && !empty($context[self::CHANNEL_TYPE_KEY])

@@ -784,10 +784,10 @@ class SubscribersList implements OriginAwareInterface
     }
 
     /**
-     * @param $mergeVarFields|null MergeVarFieldsInterface
+     * @param MergeVarFieldsInterface|null $mergeVarFields|null MergeVarFieldsInterface
      * @return SubscribersList
      */
-    public function setMergeVarFields(MergeVarFieldsInterface $mergeVarFields = null)
+    public function setMergeVarFields(?MergeVarFieldsInterface $mergeVarFields = null)
     {
         $this->mergeVarFields = $mergeVarFields;
 
@@ -806,7 +806,7 @@ class SubscribersList implements OriginAwareInterface
      * @param array|null $data
      * @return SubscribersList
      */
-    public function setMergeVarConfig(array $data = null)
+    public function setMergeVarConfig(?array $data = null)
     {
         $this->mergeVarFields = null;
         $this->mergeVarConfig = $data;

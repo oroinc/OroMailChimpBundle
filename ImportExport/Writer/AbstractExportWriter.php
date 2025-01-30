@@ -57,7 +57,7 @@ abstract class AbstractExportWriter extends PersistentBatchWriter implements Cle
      * @param callable|null $func
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    protected function handleResponse($response, callable $func = null)
+    protected function handleResponse($response, ?callable $func = null)
     {
         if (!\is_array($response)) {
             return;

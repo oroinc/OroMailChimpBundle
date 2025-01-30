@@ -311,7 +311,7 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
      * @param \DateTime|null $confirmedAt
      * @return Member
      */
-    public function setConfirmedAt(\DateTime $confirmedAt = null)
+    public function setConfirmedAt(?\DateTime $confirmedAt = null)
     {
         $this->confirmedAt = $confirmedAt;
 
@@ -468,7 +468,7 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
      * @param \DateTime|null $lastChangedAt
      * @return Member
      */
-    public function setLastChangedAt(\DateTime $lastChangedAt = null)
+    public function setLastChangedAt(?\DateTime $lastChangedAt = null)
     {
         $this->lastChangedAt = $lastChangedAt;
 
@@ -583,7 +583,7 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
      * @param \DateTime|null $optedInAt
      * @return Member
      */
-    public function setOptedInAt(\DateTime $optedInAt = null)
+    public function setOptedInAt(?\DateTime $optedInAt = null)
     {
         $this->optedInAt = $optedInAt;
 
@@ -678,7 +678,7 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
      * @param array|null $data
      * @return Member
      */
-    public function setMergeVarValues(array $data = null)
+    public function setMergeVarValues(?array $data = null)
     {
         $this->mergeVarValues = $data;
 
@@ -697,7 +697,7 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
      * @param SubscribersList|null $subscribersList
      * @return Member
      */
-    public function setSubscribersList(SubscribersList $subscribersList = null)
+    public function setSubscribersList(?SubscribersList $subscribersList = null)
     {
         $this->subscribersList = $subscribersList;
 
@@ -754,7 +754,7 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
      * @param \DateTime|null $updatedAt
      * @return Member
      */
-    public function setUpdatedAt(\DateTime $updatedAt = null)
+    public function setUpdatedAt(?\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
 

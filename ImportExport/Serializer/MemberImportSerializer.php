@@ -48,7 +48,7 @@ class MemberImportSerializer implements ContextAwareDenormalizerInterface
      *
      */
     #[\Override]
-    public function denormalize($data, string $type, string $format = null, array $context = [])
+    public function denormalize($data, string $type, ?string $format = null, array $context = [])
     {
         $result = new Member();
         // Scalar fields
@@ -141,7 +141,7 @@ class MemberImportSerializer implements ContextAwareDenormalizerInterface
     }
 
     #[\Override]
-    public function supportsDenormalization($data, string $type, string $format = null, array $context = []): bool
+    public function supportsDenormalization($data, string $type, ?string $format = null, array $context = []): bool
     {
         return is_array($data)
             && array_key_exists(MemberDataConverter::IMPORT_DATA, $data)

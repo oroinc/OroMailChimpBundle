@@ -255,7 +255,7 @@ class MemberActivityImportStrategy extends BasicImportStrategy implements Logger
     public function findOneBy(
         $entityName,
         array $criteria,
-        array $partialFields = null,
+        ?array $partialFields = null,
         $hydration = null
     ) {
         $em = $this->strategyHelper->getEntityManager($entityName);

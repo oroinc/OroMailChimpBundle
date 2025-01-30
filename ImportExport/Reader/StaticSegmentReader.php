@@ -97,7 +97,7 @@ class StaticSegmentReader extends AbstractIteratorBasedReader implements Closabl
      *
      * @return \Iterator
      */
-    protected function getStaticSegmentIterator(Channel $channel, array $segments = null)
+    protected function getStaticSegmentIterator(Channel $channel, ?array $segments = null)
     {
         $qb = $this->doctrineHelper
             ->getEntityManager($this->staticSegmentClassName)

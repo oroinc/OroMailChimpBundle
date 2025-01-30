@@ -255,7 +255,7 @@ class Campaign implements OriginAwareInterface
      * @param EmailCampaign|null $emailCampaign
      * @return Campaign
      */
-    public function setEmailCampaign(EmailCampaign $emailCampaign = null)
+    public function setEmailCampaign(?EmailCampaign $emailCampaign = null)
     {
         $this->emailCampaign = $emailCampaign;
 
@@ -671,7 +671,7 @@ class Campaign implements OriginAwareInterface
      * @param StaticSegment|null $segment
      * @return Campaign
      */
-    public function setStaticSegment(StaticSegment $segment = null)
+    public function setStaticSegment(?StaticSegment $segment = null)
     {
         $this->staticSegment = $segment;
         return $this;
@@ -689,7 +689,7 @@ class Campaign implements OriginAwareInterface
      * @param SubscribersList|null $subscribersList
      * @return Campaign
      */
-    public function setSubscribersList(SubscribersList $subscribersList = null)
+    public function setSubscribersList(?SubscribersList $subscribersList = null)
     {
         $this->subscribersList = $subscribersList;
         return $this;

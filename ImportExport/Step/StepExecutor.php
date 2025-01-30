@@ -25,7 +25,7 @@ class StepExecutor extends BaseStepExecutor
      *
      */
     #[\Override]
-    public function execute(StepExecutionWarningHandlerInterface $warningHandler = null): void
+    public function execute(?StepExecutionWarningHandlerInterface $warningHandler = null): void
     {
         $itemsToWrite = [];
         $writeCount = 0;

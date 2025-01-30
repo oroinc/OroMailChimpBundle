@@ -47,7 +47,7 @@ class MemberActivitySerializer implements ContextAwareDenormalizerInterface
      *
      */
     #[\Override]
-    public function denormalize($data, string $type, string $format = null, array $context = [])
+    public function denormalize($data, string $type, ?string $format = null, array $context = [])
     {
         $result = new MemberActivity();
         // Scalar fields
@@ -100,7 +100,7 @@ class MemberActivitySerializer implements ContextAwareDenormalizerInterface
     }
 
     #[\Override]
-    public function supportsDenormalization($data, string $type, string $format = null, array $context = []): bool
+    public function supportsDenormalization($data, string $type, ?string $format = null, array $context = []): bool
     {
         return is_a($type, MemberActivity::class, true)
             && is_array($data)

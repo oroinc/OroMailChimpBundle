@@ -23,7 +23,7 @@ class StaticSegmentRepository extends EntityRepository
      * @param bool $getAll
      * @return \Iterator
      */
-    public function getStaticSegmentsToSync(array $segments = null, Channel $channel = null, $getAll = false)
+    public function getStaticSegmentsToSync(?array $segments = null, ?Channel $channel = null, $getAll = false)
     {
         $qb = $this->getStaticSegmentsQueryBuilder($segments, $channel);
 
@@ -50,7 +50,7 @@ class StaticSegmentRepository extends EntityRepository
      * @return int
      * @throws NonUniqueResultException
      */
-    public function countStaticSegments($segments = [], Channel $channel = null)
+    public function countStaticSegments($segments = [], ?Channel $channel = null)
     {
         $qb = $this->getStaticSegmentsQueryBuilder($segments, $channel);
         $qb->select('COUNT(staticSegment.id)');
@@ -63,7 +63,7 @@ class StaticSegmentRepository extends EntityRepository
      * @param Channel|null $channel
      * @return QueryBuilder
      */
-    public function getStaticSegmentsQueryBuilder(array $segments = null, Channel $channel = null)
+    public function getStaticSegmentsQueryBuilder(?array $segments = null, ?Channel $channel = null)
     {
         $qb = $this->createQueryBuilder('staticSegment');
 
@@ -94,7 +94,7 @@ class StaticSegmentRepository extends EntityRepository
      * @param array|null $segments
      * @return BufferedQueryResultIteratorInterface
      */
-    public function getStaticSegments(Channel $channel = null, array $segments = null)
+    public function getStaticSegments(?Channel $channel = null, ?array $segments = null)
     {
         return new BufferedIdentityQueryResultIterator($this->getStaticSegmentsQueryBuilder($segments, $channel));
     }
