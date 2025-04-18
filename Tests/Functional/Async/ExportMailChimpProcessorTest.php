@@ -41,9 +41,9 @@ class ExportMailChimpProcessorTest extends WebTestCase
         $sentMessage = self::sendMessage(
             ExportMailchimpSegmentsTopic::getName(),
             [
-                'integrationId' => PHP_INT_MAX,
+                'integrationId' => self::BIGINT,
                 'userId' => $this->getUserId(true),
-                'segmentsIds' => [PHP_INT_MAX],
+                'segmentsIds' => [self::BIGINT],
             ]
         );
         self::consumeMessage($sentMessage);
@@ -54,7 +54,7 @@ class ExportMailChimpProcessorTest extends WebTestCase
             $sentMessage
         );
         self::assertTrue(
-            self::getLoggerTestHandler()->hasErrorThatContains('The integration not found: ' . PHP_INT_MAX)
+            self::getLoggerTestHandler()->hasErrorThatContains('The integration not found: ' . self::BIGINT)
         );
     }
 
@@ -67,7 +67,7 @@ class ExportMailChimpProcessorTest extends WebTestCase
             [
                 'integrationId' => $integrationId,
                 'userId' => $this->getUserId(true),
-                'segmentsIds' => [PHP_INT_MAX],
+                'segmentsIds' => [self::BIGINT],
             ]
         );
         self::consumeMessage($sentMessage);
@@ -89,8 +89,8 @@ class ExportMailChimpProcessorTest extends WebTestCase
             ExportMailchimpSegmentsTopic::getName(),
             [
                 'integrationId' => $integrationId,
-                'userId' => PHP_INT_MAX,
-                'segmentsIds' => [PHP_INT_MAX],
+                'userId' => self::BIGINT,
+                'segmentsIds' => [self::BIGINT],
             ]
         );
         self::consumeMessage($sentMessage);
@@ -114,7 +114,7 @@ class ExportMailChimpProcessorTest extends WebTestCase
             [
                 'integrationId' => $integrationId,
                 'userId' => $this->getUserId(false),
-                'segmentsIds' => [PHP_INT_MAX],
+                'segmentsIds' => [self::BIGINT],
             ]
         );
         self::consumeMessage($sentMessage);
@@ -143,7 +143,7 @@ class ExportMailChimpProcessorTest extends WebTestCase
             [
                 'integrationId' => $integration->getId(),
                 'userId' => $user->getId(),
-                'segmentsIds' => [PHP_INT_MAX],
+                'segmentsIds' => [self::BIGINT],
             ]
         );
         self::consumeMessage($sentMessage);
