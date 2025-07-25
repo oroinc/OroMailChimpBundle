@@ -12,6 +12,7 @@ use Oro\Bundle\MailChimpBundle\Async\Topic\ExportMailchimpSegmentsTopic;
 use Oro\Bundle\MailChimpBundle\Entity\Repository\StaticSegmentRepository;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -20,12 +21,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Exports members and static segments to MailChimp.
  */
+#[AsCommand(
+    name: 'oro:cron:mailchimp:export',
+    description: 'Exports members and static segments to MailChimp.'
+)]
 class MailChimpExportCommand extends Command implements
     CronCommandScheduleDefinitionInterface,
     CronCommandActivationInterface
 {
-    protected static $defaultName = 'oro:cron:mailchimp:export';
-
     private ManagerRegistry $doctrine;
     private MessageProducerInterface $messageProducer;
 
@@ -64,7 +67,6 @@ class MailChimpExportCommand extends Command implements
                 InputOption::VALUE_NONE,
                 'Force synchronization of segments regardless of their sync status'
             )
-            ->setDescription('Exports members and static segments to MailChimp.')
             ->setHelp(
                 <<<'HELP'
 The <info>%command.name%</info> command exports members and static segments that require synchronization to MailChimp.

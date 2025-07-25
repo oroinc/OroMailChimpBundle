@@ -3,7 +3,6 @@
 namespace Oro\Bundle\MailChimpBundle\Tests\Functional\Transport;
 
 use Oro\Bundle\IntegrationBundle\Async\Topic\SyncIntegrationTopic;
-use Oro\Bundle\IntegrationBundle\Command\SyncCommand;
 use Oro\Bundle\MailChimpBundle\Tests\Functional\DataFixtures\LoadStaticSegmentData;
 use Oro\Bundle\MessageQueueBundle\Test\Functional\MessageQueueExtension;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
@@ -30,7 +29,7 @@ class SyncTest extends WebTestCase
             'mailchimp:channel_' . $params['--integration']
         )->getId();
 
-        $result = self::runCommand(SyncCommand::getDefaultName(), $params);
+        $result = self::runCommand('oro:cron:integration:sync', $params);
 
         self::assertStringContainsString('Schedule sync for "mailchimp1" integration.', $result);
         self::assertMessageSent(SyncIntegrationTopic::getName(), [

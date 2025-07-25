@@ -1,6 +1,6 @@
 oro_mailchimp_bundle:
     resource:     "@OroMailChimpBundle/Controller"
-    type:         annotation
+    type:         attribute
     prefix:       /
 
 

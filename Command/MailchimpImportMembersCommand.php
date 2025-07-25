@@ -6,6 +6,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Oro\Bundle\IntegrationBundle\Async\Topic\SyncIntegrationTopic;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -15,10 +16,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  * This command is responsible for synchronizing all members from MailChimp.
  * It updates their statuses and ensures that local data is synchronized with MailChimp.
  */
+#[AsCommand(
+    name: 'oro:mailchimp:force-import:members',
+    description: 'Import members from MailChimp.'
+)]
 class MailchimpImportMembersCommand extends Command
 {
-    protected static $defaultName = 'oro:mailchimp:force-import:members';
-
     public function __construct(
         private ManagerRegistry $doctrine,
         private MessageProducerInterface $messageProducer
@@ -30,7 +33,6 @@ class MailchimpImportMembersCommand extends Command
     {
         $this
             ->addOption('channel', 0, InputOption::VALUE_REQUIRED, 'MailChimp channel id')
-            ->setDescription('Import members from MailChimp.')
             ->setHelp(
                 <<<'HELP'
 The <info>%command.name%</info> is not meant to be used regularly and is used to import all Mailchimp members.
