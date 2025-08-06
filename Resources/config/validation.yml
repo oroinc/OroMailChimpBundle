@@ -41,7 +41,8 @@ Oro\Bundle\MailChimpBundle\Entity\StaticSegment:
 Oro\Bundle\MailChimpBundle\Entity\Member:
     properties:
         email:
-            - Email: ~
+            - Email:
+                mode: strict
             - NotBlank: ~
         status:
             - NotBlank: ~
@@ -49,7 +50,8 @@ Oro\Bundle\MailChimpBundle\Entity\Member:
 Oro\Bundle\MailChimpBundle\Entity\MemberActivity:
     properties:
         email:
-            - Email: ~
+            - Email:
+                mode: strict
             - NotBlank: ~
         action:
             - NotBlank: ~
