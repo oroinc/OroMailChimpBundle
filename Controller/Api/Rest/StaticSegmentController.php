@@ -8,7 +8,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
 use Oro\Bundle\SecurityBundle\Attribute\AclAncestor;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -44,11 +44,13 @@ class StaticSegmentController extends RestController
      * @param StaticSegment $staticSegment
      * @return Response
      */
-    #[ParamConverter('staticSegment', options: ['id' => 'id'])]
     #[QueryParam(name: 'id', requirements: '\d+', description: 'Static Segment Id', nullable: false)]
     #[AclAncestor('oro_mailchimp')]
-    public function updateStatusAction(Request $request, StaticSegment $staticSegment)
-    {
+    public function updateStatusAction(
+        Request $request,
+        #[MapEntity(id: 'id')]
+        StaticSegment $staticSegment
+    ) {
         $status = $request->get('status');
         $staticSegment->setSyncStatus($status);
 

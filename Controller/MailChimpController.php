@@ -14,8 +14,8 @@ use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpClientFactory;
 use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 use Oro\Bundle\SecurityBundle\Attribute\AclAncestor;
 use Oro\Bundle\SecurityBundle\Attribute\CsrfProtection;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -64,7 +64,7 @@ class MailChimpController extends AbstractController
         name: 'oro_mailchimp_marketing_list_connect',
         requirements: ['id' => '\d+']
     )]
-    #[Template]
+    #[Template('@OroMailChimp/MailChimp/manageConnection.html.twig')]
     #[AclAncestor('oro_mailchimp')]
     public function manageConnectionAction(MarketingList $marketingList, Request $request)
     {
@@ -90,11 +90,12 @@ class MailChimpController extends AbstractController
      * @param MarketingList $marketingList
      * @return array
      */
-    #[ParamConverter('marketingList', class: MarketingList::class, options: ['id' => 'entity'])]
-    #[Template]
+    #[Template('@OroMailChimp/MailChimp/connectionButtons.html.twig')]
     #[AclAncestor('oro_mailchimp')]
-    public function connectionButtonsAction(MarketingList $marketingList)
-    {
+    public function connectionButtonsAction(
+        #[MapEntity(id: 'entity')]
+        MarketingList $marketingList
+    ) {
         return [
             'marketingList' => $marketingList,
             'staticSegment' => $this->getStaticSegmentByMarketingList($marketingList),
@@ -112,11 +113,12 @@ class MailChimpController extends AbstractController
         name: 'oro_mailchimp_sync_status',
         requirements: ['marketingList' => '\d+']
     )]
-    #[ParamConverter('marketingList', class: MarketingList::class, options: ['id' => 'marketingList'])]
-    #[Template]
+    #[Template('@OroMailChimp/MailChimp/marketingListSyncStatus.html.twig')]
     #[AclAncestor('oro_mailchimp')]
-    public function marketingListSyncStatusAction(MarketingList $marketingList)
-    {
+    public function marketingListSyncStatusAction(
+        #[MapEntity(id: 'marketingList')]
+        MarketingList $marketingList
+    ) {
         return ['static_segment' => $this->findStaticSegmentByMarketingList($marketingList)];
     }
 
@@ -131,11 +133,12 @@ class MailChimpController extends AbstractController
         name: 'oro_mailchimp_email_campaign_status',
         requirements: ['entity' => '\d+']
     )]
-    #[ParamConverter('emailCampaign', class: EmailCampaign::class, options: ['id' => 'entity'])]
-    #[Template]
+    #[Template('@OroMailChimp/MailChimp/emailCampaignStats.html.twig')]
     #[AclAncestor('oro_mailchimp')]
-    public function emailCampaignStatsAction(EmailCampaign $emailCampaign)
-    {
+    public function emailCampaignStatsAction(
+        #[MapEntity(id: 'entity')]
+        EmailCampaign $emailCampaign
+    ) {
         $campaign = $this->getCampaignByEmailCampaign($emailCampaign);
 
         return ['campaignStats' => $campaign];
@@ -147,11 +150,12 @@ class MailChimpController extends AbstractController
      * @param EmailCampaign $emailCampaign
      * @return array
      */
-    #[ParamConverter('emailCampaign', class: EmailCampaign::class, options: ['id' => 'entity'])]
-    #[Template]
+    #[Template('@OroMailChimp/MailChimp/emailCampaignActivityUpdateButtons.html.twig')]
     #[AclAncestor('oro_mailchimp')]
-    public function emailCampaignActivityUpdateButtonsAction(EmailCampaign $emailCampaign)
-    {
+    public function emailCampaignActivityUpdateButtonsAction(
+        #[MapEntity(id: 'entity')]
+        EmailCampaign $emailCampaign
+    ) {
         return [
             'emailCampaign' => $emailCampaign,
             'campaign' => $this->getCampaignByEmailCampaign($emailCampaign)
