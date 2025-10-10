@@ -88,7 +88,7 @@ class MemberExtendedMergeVarSerializer extends ConfigurableEntityNormalizer
     }
 
     #[\Override]
-    public function denormalize($data, string $type, ?string $format = null, array $context = [])
+    public function denormalize($data, string $type, ?string $format = null, array $context = []): mixed
     {
         /** @var MemberExtendedMergeVar $entity */
         $entity = parent::denormalize($data, $type, $format, $context);

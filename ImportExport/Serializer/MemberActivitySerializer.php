@@ -6,13 +6,13 @@ use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Entity\Member;
 use Oro\Bundle\MailChimpBundle\Entity\MemberActivity;
-use Symfony\Component\Serializer\Normalizer\ContextAwareDenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
  * Added during performance improvement. Please, keep it as simple as possible.
  * Used for batch importing of member activities from MailChimp, may process significant amount of records.
  */
-class MemberActivitySerializer implements ContextAwareDenormalizerInterface
+class MemberActivitySerializer implements DenormalizerInterface
 {
     protected ?DateTimeSerializer $dateTimeSerializer = null;
 
@@ -47,7 +47,7 @@ class MemberActivitySerializer implements ContextAwareDenormalizerInterface
      *
      */
     #[\Override]
-    public function denormalize($data, string $type, ?string $format = null, array $context = [])
+    public function denormalize($data, string $type, ?string $format = null, array $context = []): mixed
     {
         $result = new MemberActivity();
         // Scalar fields
@@ -105,5 +105,10 @@ class MemberActivitySerializer implements ContextAwareDenormalizerInterface
         return is_a($type, MemberActivity::class, true)
             && is_array($data)
             && !empty($context['channel']);
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [MemberActivity::class => true];
     }
 }

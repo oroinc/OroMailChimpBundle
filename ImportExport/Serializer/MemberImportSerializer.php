@@ -7,13 +7,13 @@ use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Entity\Member;
 use Oro\Bundle\MailChimpBundle\Entity\SubscribersList;
 use Oro\Bundle\MailChimpBundle\ImportExport\DataConverter\MemberDataConverter;
-use Symfony\Component\Serializer\Normalizer\ContextAwareDenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
  * Added during performance improvement. Please, keep it as simple as possible.
  * Used for batch importing of members from MailChimp, may process significant amount of records.
  */
-class MemberImportSerializer implements ContextAwareDenormalizerInterface
+class MemberImportSerializer implements DenormalizerInterface
 {
     protected ?DateTimeSerializer $dateTimeSerializer = null;
 
@@ -48,7 +48,7 @@ class MemberImportSerializer implements ContextAwareDenormalizerInterface
      *
      */
     #[\Override]
-    public function denormalize($data, string $type, ?string $format = null, array $context = [])
+    public function denormalize($data, string $type, ?string $format = null, array $context = []): mixed
     {
         $result = new Member();
         // Scalar fields
@@ -147,5 +147,10 @@ class MemberImportSerializer implements ContextAwareDenormalizerInterface
             && array_key_exists(MemberDataConverter::IMPORT_DATA, $data)
             && !empty($context['channel'])
             && is_a($type, Member::class, true);
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [Member::class => true];
     }
 }
