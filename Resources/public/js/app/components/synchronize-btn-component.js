@@ -1,21 +1,17 @@
-define(function(require) {
-    'use strict';
+import $ from 'jquery';
+import mediator from 'oroui/js/mediator';
 
-    const $ = require('jquery');
-    const mediator = require('oroui/js/mediator');
+export default function(options) {
+    const $btn = options._sourceElement;
+    const message = $btn.data('message');
+    const url = $btn.data('url');
 
-    return function(options) {
-        const $btn = options._sourceElement;
-        const message = $btn.data('message');
-        const url = $btn.data('url');
-
-        $btn.on('click', function() {
-            $.post(url, {status: options.status}).done(function() {
-                if (message) {
-                    mediator.execute('addMessage', 'success', message);
-                }
-                mediator.execute('refreshPage');
-            });
+    $btn.on('click', function() {
+        $.post(url, {status: options.status}).done(function() {
+            if (message) {
+                mediator.execute('addMessage', 'success', message);
+            }
+            mediator.execute('refreshPage');
         });
-    };
-});
+    });
+};
