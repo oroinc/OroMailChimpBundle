@@ -12,25 +12,25 @@ interface MergeVarInterface
     /**#@+
      * @const string Field type of MergeVar
      */
-    const FIELD_TYPE_EMAIL = 'email';
-    const FIELD_TYPE_PHONE = 'phone';
+    public const FIELD_TYPE_EMAIL = 'email';
+    public const FIELD_TYPE_PHONE = 'phone';
     /**#@-*/
 
     /**#@+
      * @const string Tags of MergeVar
      */
-    const TAG_EMAIL = 'EMAIL';
-    const TAG_FIRST_NAME = 'FNAME';
-    const TAG_LAST_NAME = 'LNAME';
+    public const TAG_EMAIL = 'EMAIL';
+    public const TAG_FIRST_NAME = 'FNAME';
+    public const TAG_LAST_NAME = 'LNAME';
     /**#@-*/
 
     /**#@+
      * @const string Name of properties of MergeVar
      */
-    const PROPERTY_NAME = 'name';
-    const PROPERTY_REQUIRED = 'req';
-    const PROPERTY_FIELD_TYPE = 'field_type';
-    const PROPERTY_TAG = 'tag';
+    public const PROPERTY_NAME = 'name';
+    public const PROPERTY_REQUIRED = 'req';
+    public const PROPERTY_FIELD_TYPE = 'field_type';
+    public const PROPERTY_TAG = 'tag';
     /**#@-*/
 
     /**

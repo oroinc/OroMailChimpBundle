@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class MarketingListConnectionType extends AbstractType
 {
-    const NAME = 'oro_mailchimp_marketing_list_connection';
+    public const NAME = 'oro_mailchimp_marketing_list_connection';
 
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)

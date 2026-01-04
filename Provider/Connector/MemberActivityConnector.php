@@ -11,9 +11,9 @@ use Oro\Bundle\MailChimpBundle\Entity\Repository\MemberActivityRepository;
  */
 class MemberActivityConnector extends AbstractMailChimpConnector implements ConnectorInterface
 {
-    const TYPE = 'member_activity';
-    const JOB_IMPORT = 'mailchimp_member_activity_import';
-    const SINCE_MAP_KEY = 'since_map';
+    public const TYPE = 'member_activity';
+    public const JOB_IMPORT = 'mailchimp_member_activity_import';
+    public const SINCE_MAP_KEY = 'since_map';
 
     #[\Override]
     public function getLabel(): string

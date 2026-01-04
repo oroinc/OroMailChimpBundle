@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class IntegrationSettingsType extends AbstractType
 {
-    const NAME = 'oro_mailchimp_integration_transport_setting_type';
+    public const NAME = 'oro_mailchimp_integration_transport_setting_type';
 
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)

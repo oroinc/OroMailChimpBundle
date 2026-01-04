@@ -14,8 +14,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class MailChimpIntegrationSelectType extends AbstractType
 {
-    const NAME = 'oro_mailchimp_integration_select';
-    const ENTITY = 'Oro\Bundle\IntegrationBundle\Entity\Channel';
+    public const NAME = 'oro_mailchimp_integration_select';
+    public const ENTITY = 'Oro\Bundle\IntegrationBundle\Entity\Channel';
 
     /**
      * @var ManagerRegistry

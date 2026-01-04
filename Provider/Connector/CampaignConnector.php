@@ -10,9 +10,9 @@ use Oro\Bundle\MailChimpBundle\Entity\Campaign;
  */
 class CampaignConnector extends AbstractMailChimpConnector implements ConnectorInterface
 {
-    const TYPE = 'campaign';
-    const JOB_IMPORT = 'mailchimp_campaign_import';
-    const JOB_EXPORT = 'mailchimp_campaign_export';
+    public const TYPE = 'campaign';
+    public const JOB_IMPORT = 'mailchimp_campaign_import';
+    public const JOB_EXPORT = 'mailchimp_campaign_export';
 
     #[\Override]
     public function getLabel(): string

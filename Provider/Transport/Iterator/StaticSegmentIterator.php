@@ -7,7 +7,7 @@ namespace Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator;
  */
 class StaticSegmentIterator extends AbstractMailChimpIterator
 {
-    const SUBSCRIBERS_LIST_ID = 'subscribers_list_id';
+    public const SUBSCRIBERS_LIST_ID = 'subscribers_list_id';
 
     /**
      * @var string

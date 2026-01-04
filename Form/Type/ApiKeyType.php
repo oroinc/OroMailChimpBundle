@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
  */
 class ApiKeyType extends AbstractType
 {
-    const NAME = 'oro_mailchimp_api_key_type';
+    public const NAME = 'oro_mailchimp_api_key_type';
 
     #[\Override]
     public function getParent(): ?string

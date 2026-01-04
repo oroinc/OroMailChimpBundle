@@ -9,8 +9,8 @@ use Oro\Bundle\IntegrationBundle\Provider\ConnectorInterface;
  */
 class MemberUnsubscribeActivityConnector extends AbstractMailChimpConnector implements ConnectorInterface
 {
-    const TYPE = 'member_activity_unsubscribe';
-    const JOB_IMPORT = 'mailchimp_member_activity_import_unsubscribe';
+    public const TYPE = 'member_activity_unsubscribe';
+    public const JOB_IMPORT = 'mailchimp_member_activity_import_unsubscribe';
 
     #[\Override]
     public function getLabel(): string

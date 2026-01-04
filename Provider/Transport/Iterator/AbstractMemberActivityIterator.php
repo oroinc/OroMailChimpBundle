@@ -11,7 +11,7 @@ use Oro\Bundle\MailChimpBundle\Util\CallbackFilterIteratorCompatible;
  */
 abstract class AbstractMemberActivityIterator extends AbstractSubordinateIterator
 {
-    const CAMPAIGN_KEY = 'campaign';
+    public const CAMPAIGN_KEY = 'campaign';
 
     /**
      * @var MailChimpClient

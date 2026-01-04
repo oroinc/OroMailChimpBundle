@@ -15,7 +15,7 @@ use Oro\Bundle\MailChimpBundle\Provider\Transport\MailChimpTransport;
  */
 abstract class AbstractMailChimpConnector extends AbstractConnector
 {
-    const LAST_SYNC_DATE_KEY = 'lastSyncDate';
+    public const LAST_SYNC_DATE_KEY = 'lastSyncDate';
 
     /**
      * @var MailChimpTransport

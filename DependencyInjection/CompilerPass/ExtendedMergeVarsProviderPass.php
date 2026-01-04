@@ -11,8 +11,8 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class ExtendedMergeVarsProviderPass implements CompilerPassInterface
 {
-    const COMPOSITE_PROVIDER_ID = 'oro_mailchimp.extended_merge_var.composite_provider';
-    const PROVIDER_TAG_NAME     = 'oro_mailchimp.extended_merge_vars.provider';
+    public const COMPOSITE_PROVIDER_ID = 'oro_mailchimp.extended_merge_var.composite_provider';
+    public const PROVIDER_TAG_NAME     = 'oro_mailchimp.extended_merge_vars.provider';
 
     #[\Override]
     public function process(ContainerBuilder $container)

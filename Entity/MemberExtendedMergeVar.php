@@ -17,10 +17,10 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 #[Config]
 class MemberExtendedMergeVar
 {
-    const STATE_ADD = 'add';
-    const STATE_REMOVE = 'remove';
-    const STATE_SYNCED = 'synced';
-    const STATE_DROPPED = 'dropped';
+    public const STATE_ADD = 'add';
+    public const STATE_REMOVE = 'remove';
+    public const STATE_SYNCED = 'synced';
+    public const STATE_DROPPED = 'dropped';
 
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\Id]

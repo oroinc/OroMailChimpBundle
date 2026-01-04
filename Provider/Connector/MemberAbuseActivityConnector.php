@@ -9,8 +9,8 @@ use Oro\Bundle\IntegrationBundle\Provider\ConnectorInterface;
  */
 class MemberAbuseActivityConnector extends AbstractMailChimpConnector implements ConnectorInterface
 {
-    const TYPE = 'member_activity_abuse';
-    const JOB_IMPORT = 'mailchimp_member_activity_import_abuse';
+    public const TYPE = 'member_activity_abuse';
+    public const JOB_IMPORT = 'mailchimp_member_activity_import_abuse';
 
     #[\Override]
     public function getLabel(): string

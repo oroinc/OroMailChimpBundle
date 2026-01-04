@@ -9,9 +9,9 @@ use Oro\Bundle\IntegrationBundle\Provider\ConnectorInterface;
  */
 class ListConnector extends AbstractMailChimpConnector implements ConnectorInterface
 {
-    const TYPE = 'list';
-    const JOB_IMPORT = 'mailchimp_list_import';
-    const JOB_EXPORT = 'mailchimp_list_export';
+    public const TYPE = 'list';
+    public const JOB_IMPORT = 'mailchimp_list_import';
+    public const JOB_EXPORT = 'mailchimp_list_export';
 
     #[\Override]
     public function getLabel(): string

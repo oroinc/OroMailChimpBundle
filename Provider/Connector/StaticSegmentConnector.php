@@ -9,9 +9,9 @@ use Oro\Bundle\IntegrationBundle\Provider\TwoWaySyncConnectorInterface;
  */
 class StaticSegmentConnector extends AbstractMailChimpConnector implements TwoWaySyncConnectorInterface
 {
-    const TYPE = 'static_segment';
-    const JOB_IMPORT = 'mailchimp_static_segment_import';
-    const JOB_EXPORT = 'mailchimp_static_segment_export';
+    public const TYPE = 'static_segment';
+    public const JOB_IMPORT = 'mailchimp_static_segment_import';
+    public const JOB_EXPORT = 'mailchimp_static_segment_export';
 
     #[\Override]
     public function getLabel(): string

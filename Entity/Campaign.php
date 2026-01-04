@@ -37,28 +37,28 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 )]
 class Campaign implements OriginAwareInterface
 {
-    const ACTIVITY_ENABLED = 'enabled';
-    const ACTIVITY_DISABLED = 'disabled';
-    const ACTIVITY_EXPIRED = 'expired';
+    public const ACTIVITY_ENABLED = 'enabled';
+    public const ACTIVITY_DISABLED = 'disabled';
+    public const ACTIVITY_EXPIRED = 'expired';
     /**#@+
      * @const string Status of Campaign
      */
-    const STATUS_SAVE = 'save';
-    const STATUS_SENT = 'sent';
-    const STATUS_SENDING = 'sending';
-    const STATUS_PAUSED = 'paused';
-    const STATUS_SCHEDULE = 'schedule';
+    public const STATUS_SAVE = 'save';
+    public const STATUS_SENT = 'sent';
+    public const STATUS_SENDING = 'sending';
+    public const STATUS_PAUSED = 'paused';
+    public const STATUS_SCHEDULE = 'schedule';
     /**#@-*/
 
     /**#@+
      * @const string Type of Campaign
      */
-    const TYPE_REGULAR = 'regular';
-    const TYPE_PLAINTEXT = 'plaintext';
-    const TYPE_ABSPLIT = 'absplit';
-    const TYPE_RSS = 'rss';
-    const TYPE_AUTO = 'automation';
-    const TYPE_VAR = 'variate';
+    public const TYPE_REGULAR = 'regular';
+    public const TYPE_PLAINTEXT = 'plaintext';
+    public const TYPE_ABSPLIT = 'absplit';
+    public const TYPE_RSS = 'rss';
+    public const TYPE_AUTO = 'automation';
+    public const TYPE_VAR = 'variate';
 
     /**#@-*/
     #[ORM\Column(type: Types::INTEGER)]

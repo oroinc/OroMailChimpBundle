@@ -16,7 +16,7 @@ use Oro\Bundle\MarketingListBundle\Entity\MarketingList;
 #[ORM\Index(columns: ['state'], name: 'mc_ml_email_state_idx')]
 class MarketingListEmail
 {
-    const STATE_IN_LIST = 'in_list';
+    public const STATE_IN_LIST = 'in_list';
 
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: MarketingList::class)]

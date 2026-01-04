@@ -10,7 +10,7 @@ use Oro\Bundle\IntegrationBundle\Provider\IconAwareIntegrationInterface;
  */
 class ChannelType implements ChannelInterface, IconAwareIntegrationInterface
 {
-    const TYPE = 'mailchimp';
+    public const TYPE = 'mailchimp';
 
     #[\Override]
     public function getLabel()

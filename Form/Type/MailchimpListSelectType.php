@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class MailchimpListSelectType extends AbstractType
 {
-    const NAME = 'oro_mailchimp_list_select';
+    public const NAME = 'oro_mailchimp_list_select';
 
     #[\Override]
     public function configureOptions(OptionsResolver $resolver)

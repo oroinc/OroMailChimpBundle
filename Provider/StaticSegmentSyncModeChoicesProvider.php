@@ -14,7 +14,7 @@ class StaticSegmentSyncModeChoicesProvider
     /**
      * @internal
      */
-    const CRON_COMMAND_NAME = 'oro:cron:mailchimp:export';
+    public const CRON_COMMAND_NAME = 'oro:cron:mailchimp:export';
 
     /**
      * @var DoctrineHelper

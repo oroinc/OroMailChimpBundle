@@ -17,7 +17,7 @@ use Oro\Bundle\MarketingListBundle\Provider\MarketingListProvider;
  */
 class MmbrExtdMergeVarIterator extends AbstractStaticSegmentMembersIterator
 {
-    const STATIC_SEGMENT_MEMBER_ALIAS = 'ssm';
+    public const STATIC_SEGMENT_MEMBER_ALIAS = 'ssm';
 
     /**
      * @var DoctrineHelper

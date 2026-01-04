@@ -13,7 +13,7 @@ use Oro\Bundle\MailChimpBundle\Form\Type\MailChimpTransportSettingsType;
  */
 class MailChimpTransport implements TransportInterface, VisibilityTransportInterface
 {
-    const NAME = 'mailchimp';
+    public const NAME = 'mailchimp';
 
     #[\Override]
     public function send(EmailCampaign $campaign, object $entity, array $from, array $to)

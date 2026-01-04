@@ -11,9 +11,9 @@ use Oro\Bundle\MailChimpBundle\Entity\StaticSegment;
  */
 class StaticSegmentMemberToRemoveIterator extends AbstractSubordinateIterator
 {
-    const QUERY_BUILDER = 'query_builder';
-    const STATIC_SEGMENT_ID = 'static_segment_id';
-    const STATE = 'state';
+    public const QUERY_BUILDER = 'query_builder';
+    public const STATIC_SEGMENT_ID = 'static_segment_id';
+    public const STATE = 'state';
 
     /**
      * @var ManagerRegistry

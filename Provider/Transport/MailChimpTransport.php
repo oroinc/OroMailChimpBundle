@@ -45,10 +45,10 @@ class MailChimpTransport implements TransportInterface
     /**#@+
      * @const string Constants related to datetime representation in MailChimp
      */
-    const DATETIME_FORMAT = 'Y-m-d H:i:s';
-    const DATE_FORMAT = 'Y-m-d';
-    const TIME_FORMAT = 'H:i:s';
-    const TIMEZONE = 'UTC';
+    public const DATETIME_FORMAT = 'Y-m-d H:i:s';
+    public const DATE_FORMAT = 'Y-m-d';
+    public const TIME_FORMAT = 'H:i:s';
+    public const TIMEZONE = 'UTC';
     /**#@-*/
 
     /**

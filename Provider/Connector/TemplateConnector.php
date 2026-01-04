@@ -7,8 +7,8 @@ namespace Oro\Bundle\MailChimpBundle\Provider\Connector;
  */
 class TemplateConnector extends AbstractMailChimpConnector
 {
-    const TYPE = 'template';
-    const JOB_IMPORT = 'mailchimp_template_import';
+    public const TYPE = 'template';
+    public const JOB_IMPORT = 'mailchimp_template_import';
 
     #[\Override]
     protected function getConnectorSource()

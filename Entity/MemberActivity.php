@@ -33,21 +33,21 @@ class MemberActivity
     /**#@+
      * @const string Activity of Member Activity
      */
-    const ACTIVITY_OPEN = 'open';
-    const ACTIVITY_CLICK = 'click';
-    const ACTIVITY_BOUNCE = 'bounce';
-    const ACTIVITY_UNSUB = 'unsub';
-    const ACTIVITY_ABUSE = 'abuse';
-    const ACTIVITY_SENT = 'sent';
-    const ACTIVITY_ECOMM = 'ecomm';
-    const ACTIVITY_MANDRILL_SEND = 'mandrill_send';
-    const ACTIVITY_MANDRILL_HARD_BOUNCE = 'mandrill_hard_bounce';
-    const ACTIVITY_MANDRILL_SOFT_BOUNCE = 'mandrill_soft_bounce';
-    const ACTIVITY_MANDRILL_OPEN = 'mandrill_open';
-    const ACTIVITY_MANDRILL_CLICK = 'mandrill_click';
-    const ACTIVITY_MANDRILL_SPAM = 'mandrill_spam';
-    const ACTIVITY_MANDRILL_UNSUB = 'mandrill_unsub';
-    const ACTIVITY_MANDRILL_REJECT = 'mandrill_reject';
+    public const ACTIVITY_OPEN = 'open';
+    public const ACTIVITY_CLICK = 'click';
+    public const ACTIVITY_BOUNCE = 'bounce';
+    public const ACTIVITY_UNSUB = 'unsub';
+    public const ACTIVITY_ABUSE = 'abuse';
+    public const ACTIVITY_SENT = 'sent';
+    public const ACTIVITY_ECOMM = 'ecomm';
+    public const ACTIVITY_MANDRILL_SEND = 'mandrill_send';
+    public const ACTIVITY_MANDRILL_HARD_BOUNCE = 'mandrill_hard_bounce';
+    public const ACTIVITY_MANDRILL_SOFT_BOUNCE = 'mandrill_soft_bounce';
+    public const ACTIVITY_MANDRILL_OPEN = 'mandrill_open';
+    public const ACTIVITY_MANDRILL_CLICK = 'mandrill_click';
+    public const ACTIVITY_MANDRILL_SPAM = 'mandrill_spam';
+    public const ACTIVITY_MANDRILL_UNSUB = 'mandrill_unsub';
+    public const ACTIVITY_MANDRILL_REJECT = 'mandrill_reject';
     /**#@-*/
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\Id]

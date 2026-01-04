@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class MailChimpTransportSettingsType extends AbstractTransportSettingsType
 {
-    const NAME = 'oro_mailchimp_email_transport_settings';
+    public const NAME = 'oro_mailchimp_email_transport_settings';
 
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options)

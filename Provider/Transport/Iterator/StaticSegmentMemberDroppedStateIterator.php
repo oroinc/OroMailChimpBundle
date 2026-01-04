@@ -18,12 +18,12 @@ class StaticSegmentMemberDroppedStateIterator extends AbstractSubordinateIterato
     /**
      * @internal
      */
-    const STATIC_SEGMENT_ID = 'static_segment_id';
+    public const STATIC_SEGMENT_ID = 'static_segment_id';
 
     /**
      * @internal
      */
-    const STATE = 'state';
+    public const STATE = 'state';
 
     /**
      * @var ManagerRegistry

@@ -38,13 +38,13 @@ class StaticSegment implements OriginAwareInterface
     /**#@+
      * @const string Status of Static Segment
      */
-    const STATUS_NOT_SYNCED = 'not_synced';
-    const STATUS_IN_PROGRESS = 'in_progress';
-    const STATUS_SYNCED = 'synced';
-    const STATUS_SYNC_FAILED = 'sync_failed';
-    const STATUS_SCHEDULED = 'scheduled';
-    const STATUS_SCHEDULED_BY_CHANGE = 'scheduled_by_change';
-    const STATUS_IMPORTED = 'imported';
+    public const STATUS_NOT_SYNCED = 'not_synced';
+    public const STATUS_IN_PROGRESS = 'in_progress';
+    public const STATUS_SYNCED = 'synced';
+    public const STATUS_SYNC_FAILED = 'sync_failed';
+    public const STATUS_SCHEDULED = 'scheduled';
+    public const STATUS_SCHEDULED_BY_CHANGE = 'scheduled_by_change';
+    public const STATUS_IMPORTED = 'imported';
     /**#@-*/
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\Id]

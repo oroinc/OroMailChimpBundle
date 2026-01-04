@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class StaticSegmentSyncModeType extends AbstractType
 {
-    const NAME = 'oro_mailchimp_static_segment_sync_mode';
+    public const NAME = 'oro_mailchimp_static_segment_sync_mode';
 
     /**
      * @var StaticSegmentSyncModeChoicesProvider

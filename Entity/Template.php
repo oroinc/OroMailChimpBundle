@@ -34,9 +34,9 @@ class Template implements OriginAwareInterface
     /**#@+
      * @const string Type of Template
      */
-    const TYPE_USER = 'user';
-    const TYPE_GALLERY = 'gallery';
-    const TYPE_BASE = 'base';
+    public const TYPE_USER = 'user';
+    public const TYPE_GALLERY = 'gallery';
+    public const TYPE_BASE = 'base';
     /**#@-*/
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\Id]

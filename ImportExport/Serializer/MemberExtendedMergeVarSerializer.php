@@ -22,8 +22,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class MemberExtendedMergeVarSerializer extends ConfigurableEntityNormalizer
 {
-    const YES_LABEL_KEY = 'oro.filter.form.label_type_yes';
-    const NO_LABEL_KEY  = 'oro.filter.form.label_type_no';
+    public const YES_LABEL_KEY = 'oro.filter.form.label_type_yes';
+    public const NO_LABEL_KEY  = 'oro.filter.form.label_type_no';
 
     /**
      * @var DatabaseHelper

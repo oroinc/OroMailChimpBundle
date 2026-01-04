@@ -7,7 +7,7 @@ namespace Oro\Bundle\MailChimpBundle\ImportExport\DataConverter;
  */
 class MemberDataConverter extends AbstractMemberDataConverter
 {
-    const IMPORT_DATA = '_is_import_data_';
+    public const IMPORT_DATA = '_is_import_data_';
 
     #[\Override]
     public function convertToImportFormat(array $importedRecord, $skipNullValues = true)

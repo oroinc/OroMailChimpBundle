@@ -13,9 +13,9 @@ use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProviderInterface;
  */
 abstract class AbstractStaticSegmentIterator extends AbstractSubordinateIterator
 {
-    const MEMBER_ALIAS = 'mmb';
-    const MEMBER_EMAIL_FIELD = 'email';
-    const BUFFER_SIZE = 1000;
+    public const MEMBER_ALIAS = 'mmb';
+    public const MEMBER_EMAIL_FIELD = 'email';
+    public const BUFFER_SIZE = 1000;
 
     /**
      * @var MarketingListProvider

@@ -21,7 +21,7 @@ use Psr\Log\LoggerInterface;
  */
 class StaticSegmentExportWriter extends AbstractExportWriter implements ContextAwareInterface
 {
-    const DROPPED_EMAILS_ERROR_CODE = 215;
+    public const DROPPED_EMAILS_ERROR_CODE = 215;
 
     /**
      * Pay attention to the fact that the larger the batch, the longer it takes to fulfill the request.

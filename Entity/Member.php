@@ -44,37 +44,37 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
     /**
      * @const Member is subscribed.
      */
-    const STATUS_SUBSCRIBED = 'subscribed';
+    public const STATUS_SUBSCRIBED = 'subscribed';
 
     /**
      * @const Member is unsubscribed.
      */
-    const STATUS_UNSUBSCRIBED = 'unsubscribed';
+    public const STATUS_UNSUBSCRIBED = 'unsubscribed';
 
     /**
      * @const Member is cleaned.
      */
-    const STATUS_CLEANED = 'cleaned';
+    public const STATUS_CLEANED = 'cleaned';
 
     /**
      * @const Member should be exported during next sync.
      */
-    const STATUS_EXPORT = 'export';
+    public const STATUS_EXPORT = 'export';
 
     /**
      * @const Sync failed for member. Such member will not be synced anymore.
      */
-    const STATUS_DROPPED = 'dropped';
+    public const STATUS_DROPPED = 'dropped';
 
     /**
      * @const Export failed for member. Such member will not be synced anymore.
      */
-    const STATUS_EXPORT_FAILED = 'export_failed';
+    public const STATUS_EXPORT_FAILED = 'export_failed';
 
     /**
      * @const Member's export data should be recollected and then status must be set to export
      */
-    const STATUS_UPDATE = 'update';
+    public const STATUS_UPDATE = 'update';
 
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\Id]

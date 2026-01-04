@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 #[ORM\Entity]
 class MailChimpTransport extends Transport
 {
-    const DEFAULT_ACTIVITY_UPDATE_INTERVAL = 90;
+    public const DEFAULT_ACTIVITY_UPDATE_INTERVAL = 90;
 
     #[ORM\Column(name: 'orocrm_mailchimp_apikey', type: Types::STRING, length: 255, nullable: false)]
     protected ?string $apiKey = null;

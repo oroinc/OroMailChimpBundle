@@ -9,9 +9,9 @@ use Oro\Bundle\IntegrationBundle\Provider\TwoWaySyncConnectorInterface;
  */
 class MemberConnector extends AbstractMailChimpConnector implements TwoWaySyncConnectorInterface
 {
-    const TYPE = 'member';
-    const JOB_IMPORT = 'mailchimp_member_import';
-    const JOB_EXPORT = 'mailchimp_member_export';
+    public const TYPE = 'member';
+    public const JOB_IMPORT = 'mailchimp_member_import';
+    public const JOB_EXPORT = 'mailchimp_member_export';
 
     #[\Override]
     public function getLabel(): string
