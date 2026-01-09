@@ -200,7 +200,8 @@ class MemberActivityImportStrategy extends BasicImportStrategy implements Logger
             $campaignOriginId = $entity->getCampaign()->getOriginId();
             if ($sinceMap && array_key_exists($campaignOriginId, $sinceMap)) {
                 $activitySince = $sinceMap[$campaignOriginId];
-                if (array_key_exists($entity->getAction(), $activitySince)
+                if (
+                    array_key_exists($entity->getAction(), $activitySince)
                     && $entity->getActivityTime() <= $activitySince[$entity->getAction()]
                 ) {
                     $searchCondition = [

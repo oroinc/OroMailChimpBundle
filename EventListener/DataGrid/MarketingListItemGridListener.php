@@ -70,7 +70,8 @@ class MarketingListItemGridListener
         $mixin = $datagrid->getParameters()->get(MixinListener::GRID_MIXIN);
         $marketingList = $this->getMarketingListFromDatasource($datasource);
 
-        if ($mixin === 'oro-marketing-list-items-mixin' &&
+        if (
+            $mixin === 'oro-marketing-list-items-mixin' &&
             $marketingList instanceof MarketingList &&
             $this->isApplicableOnMarketingList($marketingList)
         ) {

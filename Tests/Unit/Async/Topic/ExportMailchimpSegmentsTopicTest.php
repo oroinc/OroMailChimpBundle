@@ -159,7 +159,7 @@ class ExportMailchimpSegmentsTopicTest extends AbstractTopicTestCase
                     'userId' => '4',
                 ],
                 'exceptionClass' => InvalidOptionsException::class,
-                'exceptionMessage' => '/The option "userId" with value "4" is expected to be of type "null" or "int",'.
+                'exceptionMessage' => '/The option "userId" with value "4" is expected to be of type "null" or "int",' .
                     ' but is of type "string"./',
             ],
             'user not found by userId' => [

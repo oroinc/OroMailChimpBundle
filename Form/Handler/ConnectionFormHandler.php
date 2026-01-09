@@ -56,7 +56,8 @@ class ConnectionFormHandler
 
             if ($this->form->isSubmitted() && $this->form->isValid()) {
                 if ($entity->getId()) {
-                    if ($entity->getSubscribersList()
+                    if (
+                        $entity->getSubscribersList()
                         && $entity->getSubscribersList()->getId() !== $oldSubscribersListId
                     ) {
                         $entity = $this->createSegmentCopy($oldStaticSegment);

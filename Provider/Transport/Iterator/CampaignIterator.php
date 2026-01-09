@@ -41,7 +41,8 @@ class CampaignIterator extends AbstractMailChimpIterator
         $list_ids = isset($arguments['list_ids']) && is_array($arguments['list_ids']) ? $arguments['list_ids'] : [];
 
         $campaigns = array_reduce($result['campaigns'], function ($result, array $campaign) use ($list_ids) {
-            if (array_key_exists('recipients', $campaign) &&
+            if (
+                array_key_exists('recipients', $campaign) &&
                 array_key_exists('list_id', $campaign['recipients']) &&
                 count($list_ids) > 0 &&
                 false === in_array($campaign['recipients']['list_id'], $list_ids, true)

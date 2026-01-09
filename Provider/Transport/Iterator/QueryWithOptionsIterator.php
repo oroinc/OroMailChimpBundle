@@ -40,10 +40,10 @@ class QueryWithOptionsIterator implements \Iterator
 
     public function __construct(
         QueryBuilder $queryBuilder,
-        array        $options = [],
-        bool         $readOnce = true,
-        ?int         $batchSize = null,
-        ?int         $idlingNextSteps = null
+        array $options = [],
+        bool $readOnce = true,
+        ?int $batchSize = null,
+        ?int $idlingNextSteps = null
     ) {
         $this->queryBuilder = $queryBuilder;
         $this->readOnce = $readOnce;

@@ -29,14 +29,14 @@ class BadResponseException extends \RuntimeException implements MailChimpTranspo
             $label = $response->getReasonPhrase();
         }
 
-        $message = $label.PHP_EOL.implode(PHP_EOL, [
-                    '[status code] '.$response->getStatusCode(),
-                    '[API error code] '.$response->getHeaderLine('X-MailChimp-API-Error-Code'),
-                    '[reason phrase] '.$response->getReasonPhrase(),
-                    '[url] '.$url,
-                    '[request parameters]'.$parameters,
-                    '[content type] '.$response->getHeaderLine('Content-Type'),
-                    '[response body] '.(string)$response->getBody(),
+        $message = $label . PHP_EOL . implode(PHP_EOL, [
+                    '[status code] ' . $response->getStatusCode(),
+                    '[API error code] ' . $response->getHeaderLine('X-MailChimp-API-Error-Code'),
+                    '[reason phrase] ' . $response->getReasonPhrase(),
+                    '[url] ' . $url,
+                    '[request parameters]' . $parameters,
+                    '[content type] ' . $response->getHeaderLine('Content-Type'),
+                    '[response body] ' . (string)$response->getBody(),
                 ]);
 
         $result = new static($message);

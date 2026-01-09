@@ -78,7 +78,8 @@ abstract class AbstractExportWriter extends PersistentBatchWriter implements Cle
                     $message = $error['message'];
                 }
 
-                if (str_contains($message, 'fake') ||
+                if (
+                    str_contains($message, 'fake') ||
                     (str_contains($message, 'valid') && !str_contains($message, 'invalid')) ||
                     str_contains($message, 'already exist') ||
                     false !== stripos($message, 'none of the emails provided')

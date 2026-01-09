@@ -916,7 +916,8 @@ class Campaign implements OriginAwareInterface
      */
     public function getActivityUpdateState()
     {
-        if ($this->getEmailCampaign()
+        if (
+            $this->getEmailCampaign()
             && !$this->getEmailCampaign()->getTransportSettings()->getSettingsBag()->get('receiveActivities')
         ) {
             return self::ACTIVITY_DISABLED;
@@ -935,7 +936,8 @@ class Campaign implements OriginAwareInterface
             }
         }
 
-        if ((bool)$updatesExpireDate
+        if (
+            (bool)$updatesExpireDate
             && $updatesExpireDate < new \DateTime('now', new \DateTimeZone('UTC'))
         ) {
             return self::ACTIVITY_EXPIRED;

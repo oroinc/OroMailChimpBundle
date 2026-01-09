@@ -207,7 +207,7 @@ class MailChimpClient implements MailChimpClientConfigAwareInterface
         $method = "lists/$listId/merge-fields";
 
         if ($this->config) {
-            $method .= '?count='.$this->config->getMergeFieldsCount();
+            $method .= '?count=' . $this->config->getMergeFieldsCount();
         }
 
         return $method;

@@ -68,11 +68,11 @@ class ExportMailchimpSegmentsTopic extends AbstractTopic implements JobAwareTopi
                 $entity = $this->getRepository(Integration::class)->find($value);
 
                 if (!$entity) {
-                    throw new InvalidOptionsException('The integration not found: '.$value);
+                    throw new InvalidOptionsException('The integration not found: ' . $value);
                 }
 
                 if (!$entity->isEnabled()) {
-                    throw new InvalidOptionsException('The integration is not enabled: '.$value);
+                    throw new InvalidOptionsException('The integration is not enabled: ' . $value);
                 }
 
                 return $entity;

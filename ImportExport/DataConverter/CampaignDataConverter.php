@@ -90,7 +90,8 @@ class CampaignDataConverter extends IntegrationAwareDataConverter
      */
     public function mergeReport(array $importedRecord)
     {
-        if (false === array_key_exists('report', $importedRecord) ||
+        if (
+            false === array_key_exists('report', $importedRecord) ||
             false === is_array($importedRecord['report'])
         ) {
             return $importedRecord;
