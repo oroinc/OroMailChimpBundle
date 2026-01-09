@@ -40,7 +40,7 @@ class MemberExtendedMergeVar
     /**
      * @var array
      */
-    #[ORM\Column(name: 'merge_var_values', type: 'json_array', nullable: true)]
+    #[ORM\Column(name: 'merge_var_values', type: 'json', nullable: true)]
     protected $mergeVarValues;
 
     #[ORM\Column(name: 'state', type: Types::STRING, length: 255, nullable: false)]

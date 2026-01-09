@@ -47,7 +47,7 @@ class OroMailChimpBundle implements Migration
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('member_id', 'integer', []);
         $table->addColumn('static_segment_id', 'integer', []);
-        $table->addColumn('merge_var_values', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
+        $table->addColumn('merge_var_values', 'json', ['notnull' => false, 'comment' => '(DC2Type:json)']);
         $table->addColumn('state', 'string', ['length' => 255]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['static_segment_id', 'member_id'], 'mc_mmbr_emv_sid_mmbr_unq');

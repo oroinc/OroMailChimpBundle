@@ -196,7 +196,7 @@ class SubscribersList implements OriginAwareInterface
     /**
      * @var array
      */
-    #[ORM\Column(name: 'merge_var_config', type: 'json_array', nullable: true)]
+    #[ORM\Column(name: 'merge_var_config', type: 'json', nullable: true)]
     protected $mergeVarConfig;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]

@@ -33,7 +33,7 @@ class EmailColumnValidator extends ConstraintValidator
     }
 
     #[\Override]
-    public function initialize(ExecutionContextInterface $context)
+    public function initialize(ExecutionContextInterface $context): void
     {
         $this->fieldInformationValidator->initialize($context);
     }

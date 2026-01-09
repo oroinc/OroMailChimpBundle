@@ -199,7 +199,7 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
     /**
      * @var array
      */
-    #[ORM\Column(name: 'merge_var_values', type: 'json_array', nullable: true)]
+    #[ORM\Column(name: 'merge_var_values', type: 'json', nullable: true)]
     protected $mergeVarValues;
 
     #[ORM\ManyToOne(targetEntity: SubscribersList::class)]

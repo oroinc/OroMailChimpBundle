@@ -192,7 +192,7 @@ class OroMailChimpBundle implements Migration
         $table->addColumn('region', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('last_changed_at', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
         $table->addColumn('euid', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('merge_var_values', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
+        $table->addColumn('merge_var_values', 'json', ['notnull' => false, 'comment' => '(DC2Type:json)']);
         $table->addColumn('created_at', 'datetime', ['comment' => '(DC2Type:datetime)']);
         $table->addColumn('updated_at', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
         $table->addIndex(['subscribers_list_id'], 'idx_d057c915eed197e', []);
@@ -282,7 +282,7 @@ class OroMailChimpBundle implements Migration
         $table->addColumn('target_sub_rate', 'float', ['notnull' => false]);
         $table->addColumn('open_rate', 'float', ['notnull' => false]);
         $table->addColumn('click_rate', 'float', ['notnull' => false]);
-        $table->addColumn('merge_var_config', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
+        $table->addColumn('merge_var_config', 'json', ['notnull' => false, 'comment' => '(DC2Type:json)']);
         $table->addColumn('created_at', 'datetime', ['comment' => '(DC2Type:datetime)']);
         $table->addColumn('updated_at', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
         $table->addIndex(['owner_id'], 'idx_4e5e04c37e3c61f9', []);

@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\MailChimpBundle\Provider\Transport\Iterator;
 
-use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr\From;
 use Doctrine\ORM\QueryBuilder;
@@ -216,7 +215,7 @@ class MemberSyncIterator extends AbstractStaticSegmentMembersIterator
     /**
      * Add merge prepared for insertion merge vars column.
      *
-     * @throws DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     protected function addMergeVars(QueryBuilder $qb, StaticSegment $staticSegment)
     {

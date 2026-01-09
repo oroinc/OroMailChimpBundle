@@ -198,7 +198,7 @@ class OroMailChimpBundleInstaller implements Installation
         $table->addColumn('last_changed_at', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
         $table->addColumn('leid', 'bigint', ['notnull' => false]);
         $table->addColumn('euid', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('merge_var_values', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
+        $table->addColumn('merge_var_values', 'json', ['notnull' => false, 'comment' => '(DC2Type:json)']);
         $table->addColumn('created_at', 'datetime', ['comment' => '(DC2Type:datetime)']);
         $table->addColumn('updated_at', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
         $table->setPrimaryKey(['id']);
@@ -283,7 +283,7 @@ class OroMailChimpBundleInstaller implements Installation
         $table->addColumn('target_sub_rate', 'float', ['notnull' => false]);
         $table->addColumn('open_rate', 'float', ['notnull' => false]);
         $table->addColumn('click_rate', 'float', ['notnull' => false]);
-        $table->addColumn('merge_var_config', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
+        $table->addColumn('merge_var_config', 'json', ['notnull' => false, 'comment' => '(DC2Type:json)']);
         $table->addColumn('created_at', 'datetime', ['comment' => '(DC2Type:datetime)']);
         $table->addColumn('updated_at', 'datetime', ['notnull' => false, 'comment' => '(DC2Type:datetime)']);
         $table->setPrimaryKey(['id']);
@@ -316,7 +316,7 @@ class OroMailChimpBundleInstaller implements Installation
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('member_id', 'integer');
         $table->addColumn('static_segment_id', 'integer');
-        $table->addColumn('merge_var_values', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
+        $table->addColumn('merge_var_values', 'json', ['notnull' => false, 'comment' => '(DC2Type:json)']);
         $table->addColumn('state', 'string', ['length' => 255]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['static_segment_id', 'member_id'], 'mc_mmbr_emv_sid_mmbr_unq');
