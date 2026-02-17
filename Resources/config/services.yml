@@ -792,7 +792,7 @@ services:
             - [setClassName, ['Oro\Bundle\MarketingListBundle\Entity\MarketingListUnsubscribedItem']]
         tags:
             - { name: security.voter, priority: 500 }
-            - { name: container.service_subscriber, id: oro_marketing_list.provider.contact_information_fields }
+            - { name: container.service_subscriber, id: oro_marketing_list.provider.contact_information_fields, key: Oro\Bundle\MarketingListBundle\Provider\ContactInformationFieldsProvider }
 
     oro_mailchimp.static_segment_manager.state_manager:
         class: 'Oro\Bundle\MailChimpBundle\Model\StaticSegment\StaticSegmentsMemberStateManager'

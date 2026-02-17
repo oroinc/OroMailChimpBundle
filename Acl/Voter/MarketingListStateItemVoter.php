@@ -21,19 +21,18 @@ class MarketingListStateItemVoter extends AbstractEntityVoter implements Service
 {
     protected $supportedAttributes = ['DELETE'];
 
-    private ContainerInterface $container;
-
-    public function __construct(DoctrineHelper $doctrineHelper, ContainerInterface $container)
-    {
+    public function __construct(
+        DoctrineHelper $doctrineHelper,
+        private readonly ContainerInterface $container
+    ) {
         parent::__construct($doctrineHelper);
-        $this->container = $container;
     }
 
     #[\Override]
     public static function getSubscribedServices(): array
     {
         return [
-            'oro_marketing_list.provider.contact_information_fields' => ContactInformationFieldsProvider::class
+            ContactInformationFieldsProvider::class
         ];
     }
 
@@ -94,6 +93,6 @@ class MarketingListStateItemVoter extends AbstractEntityVoter implements Service
 
     private function getContactInformationFieldsProvider(): ContactInformationFieldsProvider
     {
-        return $this->container->get('oro_marketing_list.provider.contact_information_fields');
+        return $this->container->get(ContactInformationFieldsProvider::class);
     }
 }
