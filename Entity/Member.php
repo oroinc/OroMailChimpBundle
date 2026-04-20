@@ -223,9 +223,6 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
     #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     protected ?\DateTimeInterface $updatedAt = null;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
         $this->segments = new ArrayCollection();

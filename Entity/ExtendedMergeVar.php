@@ -58,9 +58,6 @@ class ExtendedMergeVar
     #[ORM\Column(name: 'state', type: Types::STRING, length: 255, nullable: false)]
     protected ?string $state = null;
 
-    /**
-     * Initialize default values for the entity
-     */
     public function __construct()
     {
         $this->required = false;
@@ -197,17 +194,11 @@ class ExtendedMergeVar
         return self::STATE_REMOVE === $this->state;
     }
 
-    /**
-     * @return void
-     */
     public function markSynced()
     {
         $this->state = self::STATE_SYNCED;
     }
 
-    /**
-     * @return void
-     */
     public function markDropped()
     {
         $this->state = self::STATE_DROPPED;
@@ -215,7 +206,6 @@ class ExtendedMergeVar
 
     /**
      * @param string $name
-     * @return void
      */
     protected function generateTag($name)
     {
