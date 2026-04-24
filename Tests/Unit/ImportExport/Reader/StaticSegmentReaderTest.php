@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\MailChimpBundle\Tests\Unit\ImportExport\Reade;
+namespace Oro\Bundle\MailChimpBundle\Tests\Unit\ImportExport\Reader;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
