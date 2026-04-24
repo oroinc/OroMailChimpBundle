@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\MailChimpBundle\Tests\Functional\Entity;
+namespace Oro\Bundle\MailChimpBundle\Tests\Functional\Entity\EntityListener;
 
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Entity\MarketingListEmail;
