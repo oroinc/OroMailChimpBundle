@@ -32,30 +32,42 @@ class ExtendedMergeVar
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: StaticSegment::class, inversedBy: 'extendedMergeVars')]
     #[ORM\JoinColumn(name: 'static_segment_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    #[ConfigField(defaultValues: [
+        'importexport' => ['identity' => true],
+        'email' => ['available_in_template' => true],
+    ])]
     protected ?StaticSegment $staticSegment = null;
 
     #[ORM\Column(name: 'name', type: Types::STRING, length: 255, nullable: false)]
-    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    #[ConfigField(defaultValues: [
+        'importexport' => ['identity' => true],
+        'email' => ['available_in_template' => true],
+    ])]
     protected ?string $name = null;
 
     #[ORM\Column(name: 'label', type: Types::STRING, length: 255, nullable: false)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $label = null;
 
     #[ORM\Column(name: 'is_required', type: Types::BOOLEAN)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?bool $required = null;
 
     #[ORM\Column(name: 'field_type', type: Types::STRING, length: 255, nullable: false)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $fieldType = null;
 
     #[ORM\Column(name: 'tag', type: Types::STRING, length: 10, nullable: false)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $tag = null;
 
     #[ORM\Column(name: 'state', type: Types::STRING, length: 255, nullable: false)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $state = null;
 
     /**
@@ -91,6 +103,7 @@ class ExtendedMergeVar
     public function setStaticSegment(StaticSegment $staticSegment)
     {
         $this->staticSegment = $staticSegment;
+
         return $this;
     }
 
@@ -115,6 +128,7 @@ class ExtendedMergeVar
             $this->generateTag($name);
         }
         $this->name = $name;
+
         return $this;
     }
 
@@ -133,6 +147,7 @@ class ExtendedMergeVar
     public function setLabel($label)
     {
         $this->label = $label;
+
         return $this;
     }
 

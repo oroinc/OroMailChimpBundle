@@ -14,7 +14,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 #[ORM\Table(name: 'orocrm_mc_static_segment_mmbr')]
 #[ORM\Index(columns: ['static_segment_id', 'state'], name: 'mc_segment_mmbr_sid_st')]
 #[ORM\UniqueConstraint(name: 'mc_segment_sid_mid_unq', columns: ['static_segment_id', 'member_id'])]
-#[Config]
+#[Config(defaultValues: ['email' => ['available_in_template' => true]])]
 class StaticSegmentMember
 {
     /**
@@ -55,19 +55,27 @@ class StaticSegmentMember
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: StaticSegment::class, inversedBy: 'segmentMembers')]
     #[ORM\JoinColumn(name: 'static_segment_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    #[ConfigField(defaultValues: [
+        'importexport' => ['identity' => true],
+        'email' => ['available_in_template' => true],
+    ])]
     protected ?StaticSegment $staticSegment = null;
 
     #[ORM\ManyToOne(targetEntity: Member::class, inversedBy: 'segmentMembers')]
     #[ORM\JoinColumn(name: 'member_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    #[ConfigField(defaultValues: [
+        'importexport' => ['identity' => true],
+        'email' => ['available_in_template' => true],
+    ])]
     protected ?Member $member = null;
 
     #[ORM\Column(name: 'state', type: Types::STRING, length: 255, nullable: false)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $state = self::STATE_ADD;
 
     /**
