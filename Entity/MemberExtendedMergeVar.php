@@ -25,16 +25,23 @@ class MemberExtendedMergeVar
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: StaticSegment::class, inversedBy: 'extendedMergeVars')]
     #[ORM\JoinColumn(name: 'static_segment_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    #[ConfigField(defaultValues: [
+        'importexport' => ['identity' => true],
+        'email' => ['available_in_template' => true],
+    ])]
     protected ?StaticSegment $staticSegment = null;
 
     #[ORM\ManyToOne(targetEntity: Member::class)]
     #[ORM\JoinColumn(name: 'member_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    #[ConfigField(defaultValues: [
+        'importexport' => ['identity' => true],
+        'email' => ['available_in_template' => true],
+    ])]
     protected ?Member $member = null;
 
     /**
@@ -44,6 +51,7 @@ class MemberExtendedMergeVar
     protected $mergeVarValues;
 
     #[ORM\Column(name: 'state', type: Types::STRING, length: 255, nullable: false)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $state = null;
 
     /**
@@ -84,6 +92,7 @@ class MemberExtendedMergeVar
     public function setStaticSegment(StaticSegment $staticSegment)
     {
         $this->staticSegment = $staticSegment;
+
         return $this;
     }
 
@@ -102,6 +111,7 @@ class MemberExtendedMergeVar
     public function setMember(Member $member)
     {
         $this->member = $member;
+
         return $this;
     }
 
@@ -193,6 +203,7 @@ class MemberExtendedMergeVar
     public function setMergeVarValuesContext(array $context)
     {
         $this->mergeVarValuesContext = $context;
+
         return $this;
     }
 

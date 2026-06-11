@@ -30,7 +30,8 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
             'owner_column_name' => 'owner_id'
         ],
         'security' => ['type' => 'ACL', 'group_name' => '', 'category' => 'marketing'],
-        'entity' => ['icon' => 'fa-users']
+        'entity' => ['icon' => 'fa-users'],
+        'email' => ['available_in_template' => true]
     ]
 )]
 class SubscribersList implements OriginAwareInterface
@@ -38,154 +39,190 @@ class SubscribersList implements OriginAwareInterface
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $id = null;
 
     #[ORM\Column(name: 'origin_id', type: Types::STRING, length: 32, nullable: false)]
-    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    #[ConfigField(defaultValues: [
+        'importexport' => ['identity' => true],
+        'email' => ['available_in_template' => true],
+    ])]
     protected ?string $originId = null;
 
     #[ORM\ManyToOne(targetEntity: Channel::class)]
     #[ORM\JoinColumn(name: 'channel_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    #[ConfigField(defaultValues: [
+        'importexport' => ['identity' => true],
+        'email' => ['available_in_template' => true],
+    ])]
     protected ?Channel $channel = null;
 
     #[ORM\ManyToOne(targetEntity: Organization::class)]
     #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?Organization $owner = null;
 
     /**
      * @var int
      */
     #[ORM\Column(name: 'web_id', type: Types::BIGINT, nullable: false)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected $webId;
 
     #[ORM\Column(name: 'name', type: Types::STRING, length: 255, nullable: false)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $name = null;
 
     #[ORM\Column(name: 'email_type_option', type: Types::BOOLEAN)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?bool $emailTypeOption = null;
 
     #[ORM\Column(name: 'use_awesomebar', type: Types::BOOLEAN)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?bool $useAwesomeBar = null;
 
     #[ORM\Column(name: 'default_from_name', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $defaultFromName = null;
 
     #[ORM\Column(name: 'default_from_email', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $defaultFromEmail = null;
 
     #[ORM\Column(name: 'default_subject', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $defaultSubject = null;
 
     #[ORM\Column(name: 'default_language', type: Types::STRING, length: 50, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $defaultLanguage = null;
 
     /**
      * @return float|null
      */
     #[ORM\Column(name: 'list_rating', type: Types::FLOAT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected $listRating;
 
     #[ORM\Column(name: 'subscribe_url_short', type: Types::TEXT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $subscribeUrlShort = null;
 
     #[ORM\Column(name: 'subscribe_url_long', type: Types::TEXT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $subscribeUrlLong = null;
 
     #[ORM\Column(name: 'beamer_address', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $beamerAddress = null;
 
     #[ORM\Column(name: 'visibility', type: Types::TEXT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $visibility = null;
 
     /**
      * @return float|null
      */
     #[ORM\Column(name: 'member_count', type: Types::FLOAT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected $memberCount;
 
     /**
      * @return float|null
      */
     #[ORM\Column(name: 'unsubscribe_count', type: Types::FLOAT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected $unsubscribeCount;
 
     /**
      * @return float|null
      */
     #[ORM\Column(name: 'cleaned_count', type: Types::FLOAT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected $cleanedCount;
 
     /**
      * @return float|null
      */
     #[ORM\Column(name: 'member_count_since_send', type: Types::FLOAT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected $memberCountSinceSend;
 
     /**
      * @return float|null
      */
     #[ORM\Column(name: 'unsubscribe_count_since_send', type: Types::FLOAT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected $unsubscribeCountSinceSend;
 
     /**
      * @return float|null
      */
     #[ORM\Column(name: 'cleaned_count_since_send', type: Types::FLOAT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected $cleanedCountSinceSend;
 
     /**
      * @return float|null
      */
     #[ORM\Column(name: 'campaign_count', type: Types::FLOAT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected $campaignCount;
 
     /**
      * @return float|null
      */
     #[ORM\Column(name: 'grouping_count', type: Types::FLOAT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected $groupingCount;
 
     /**
      * @return float|null
      */
     #[ORM\Column(name: 'group_count', type: Types::FLOAT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected $groupCount;
 
     /**
      * @return float|null
      */
     #[ORM\Column(name: 'merge_var_count', type: Types::FLOAT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected $mergeVarCount;
 
     /**
      * @return float|null
      */
     #[ORM\Column(name: 'avg_sub_rate', type: Types::FLOAT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected $avgSubRate;
 
     /**
      * @return float|null
      */
     #[ORM\Column(name: 'avg_unsub_rate', type: Types::FLOAT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected $avgUsubRate;
 
     /**
      * @return float|null
      */
     #[ORM\Column(name: 'target_sub_rate', type: Types::FLOAT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected $targetSubRate;
 
     /**
      * @return float|null
      */
     #[ORM\Column(name: 'open_rate', type: Types::FLOAT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected $openRate;
 
     /**
      * @return float|null
      */
     #[ORM\Column(name: 'click_rate', type: Types::FLOAT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected $clickRate;
 
     /**
@@ -200,9 +237,11 @@ class SubscribersList implements OriginAwareInterface
     protected $mergeVarConfig;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?\DateTimeInterface $updatedAt = null;
 
     /**
