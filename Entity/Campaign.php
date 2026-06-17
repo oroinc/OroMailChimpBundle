@@ -40,6 +40,9 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *      },
  *      "entity"={
  *          "icon"="fa-envelope"
+ *      },
+ *      "email"={
+ *          "available_in_template"=true
  *      }
  *  }
  * )

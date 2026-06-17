@@ -37,6 +37,9 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *      },
  *      "entity"={
  *          "icon"="fa-file-o"
+ *      },
+ *      "email"={
+ *          "available_in_template"=true
  *      }
  *  }
  * )
