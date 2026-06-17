@@ -19,7 +19,13 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  *          @ORM\Index(name="mc_segment_mmbr_sid_st", columns={"static_segment_id", "state"})
  *      },
  * )
- * @Config()
+ * @Config(
+ *      defaultValues={
+ *          "email"={
+ *              "available_in_template"=true
+ *          }
+ *      }
+ * )
  */
 class StaticSegmentMember
 {

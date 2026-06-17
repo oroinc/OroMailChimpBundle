@@ -48,6 +48,9 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *      "form"={
  *          "grid_name"="orocrm-mailchimp-member-grid",
  *      },
+ *      "email"={
+ *          "available_in_template"=true
+ *      }
  *  }
  * )
  */
