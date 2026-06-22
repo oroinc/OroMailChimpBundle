@@ -29,10 +29,11 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
         'ownership' => [
             'owner_type' => 'ORGANIZATION',
             'owner_field_name' => 'owner',
-            'owner_column_name' => 'owner_id'
+            'owner_column_name' => 'owner_id',
         ],
         'security' => ['type' => 'ACL', 'group_name' => '', 'category' => 'marketing'],
-        'entity' => ['icon' => 'fa-envelope']
+        'entity' => ['icon' => 'fa-envelope'],
+        'email' => ['available_in_template' => true]
     ]
 )]
 class Campaign implements OriginAwareInterface
@@ -64,134 +65,178 @@ class Campaign implements OriginAwareInterface
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $id = null;
 
     #[ORM\Column(name: 'origin_id', type: Types::STRING, length: 32, nullable: false)]
-    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    #[ConfigField(defaultValues: [
+        'importexport' => ['identity' => true],
+        'email' => ['available_in_template' => true],
+    ])]
     protected ?string $originId = null;
 
     #[ORM\ManyToOne(targetEntity: Channel::class)]
     #[ORM\JoinColumn(name: 'channel_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    #[ConfigField(defaultValues: [
+        'importexport' => ['identity' => true],
+        'email' => ['available_in_template' => true],
+    ])]
     protected ?Channel $channel = null;
 
     #[ORM\ManyToOne(targetEntity: Organization::class)]
     #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?Organization $owner = null;
 
     /**
      * @var int
      */
     #[ORM\Column(name: 'web_id', type: Types::BIGINT, nullable: false)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected $webId;
 
     #[ORM\Column(name: 'title', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $title = null;
 
     #[ORM\Column(name: 'subject', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $subject = null;
 
     #[ORM\Column(name: 'from_email', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $fromEmail = null;
 
     #[ORM\Column(name: 'from_name', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $fromName = null;
 
     #[ORM\ManyToOne(targetEntity: Template::class)]
     #[ORM\JoinColumn(name: 'template_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?Template $template = null;
 
     #[ORM\ManyToOne(targetEntity: StaticSegment::class)]
     #[ORM\JoinColumn(name: 'static_segment_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?StaticSegment $staticSegment = null;
 
     #[ORM\ManyToOne(targetEntity: SubscribersList::class)]
     #[ORM\JoinColumn(name: 'subscribers_list_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?SubscribersList $subscribersList = null;
 
     #[ORM\OneToOne(targetEntity: EmailCampaign::class)]
     #[ORM\JoinColumn(name: 'email_campaign_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?EmailCampaign $emailCampaign = null;
 
     #[ORM\Column(name: 'content_type', type: Types::STRING, length: 50, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $contentType = null;
 
     #[ORM\Column(name: 'type', type: Types::STRING, length: 50, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $type = null;
 
     #[ORM\Column(name: 'status', type: Types::STRING, length: 16, nullable: false)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $status = null;
 
     #[ORM\Column(name: 'send_time', type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?\DateTimeInterface $sendTime = null;
 
     #[ORM\Column(name: 'last_open_date', type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?\DateTimeInterface $lastOpenDate = null;
 
     #[ORM\Column(name: 'archive_url', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $archiveUrl = null;
 
     #[ORM\Column(name: 'archive_url_long', type: Types::TEXT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $archiveUrlLong = null;
 
     #[ORM\Column(name: 'emails_sent', type: Types::INTEGER, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $emailsSent = null;
 
     #[ORM\Column(name: 'tests_sent', type: Types::INTEGER, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $testsSent = null;
 
     #[ORM\Column(name: 'tests_remain', type: Types::INTEGER, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $testsRemain = null;
 
     #[ORM\Column(name: 'syntax_errors', type: Types::INTEGER, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $syntaxErrors = null;
 
     #[ORM\Column(name: 'hard_bounces', type: Types::INTEGER, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $hardBounces = null;
 
     #[ORM\Column(name: 'soft_bounces', type: Types::INTEGER, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $softBounces = null;
 
     #[ORM\Column(name: 'unsubscribes', type: Types::INTEGER, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $unsubscribes = null;
 
     #[ORM\Column(name: 'abuse_reports', type: Types::INTEGER, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $abuseReports = null;
 
     #[ORM\Column(name: 'forwards', type: Types::INTEGER, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $forwards = null;
 
     #[ORM\Column(name: 'forwards_opens', type: Types::INTEGER, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $forwardsOpens = null;
 
     #[ORM\Column(name: 'opens', type: Types::INTEGER, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $opens = null;
 
     #[ORM\Column(name: 'unique_opens', type: Types::INTEGER, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $uniqueOpens = null;
 
     #[ORM\Column(name: 'clicks', type: Types::INTEGER, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $clicks = null;
 
     #[ORM\Column(name: 'unique_clicks', type: Types::INTEGER, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $uniqueClicks = null;
 
     #[ORM\Column(name: 'users_who_clicked', type: Types::INTEGER, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $usersWhoClicked = null;
 
     #[ORM\Column(name: 'unique_likes', type: Types::INTEGER, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $uniqueLikes = null;
 
     #[ORM\Column(name: 'recipient_likes', type: Types::INTEGER, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $recipientLikes = null;
 
     #[ORM\Column(name: 'facebook_likes', type: Types::INTEGER, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $facebookLikes = null;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?\DateTimeInterface $updatedAt = null;
 
     /**
@@ -277,6 +322,7 @@ class Campaign implements OriginAwareInterface
     public function setFromEmail($fromEmail)
     {
         $this->fromEmail = $fromEmail;
+
         return $this;
     }
 
@@ -295,6 +341,7 @@ class Campaign implements OriginAwareInterface
     public function setFromName($fromName)
     {
         $this->fromName = $fromName;
+
         return $this;
     }
 
@@ -313,6 +360,7 @@ class Campaign implements OriginAwareInterface
     public function setSubject($subject)
     {
         $this->subject = $subject;
+
         return $this;
     }
 
@@ -331,6 +379,7 @@ class Campaign implements OriginAwareInterface
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -349,6 +398,7 @@ class Campaign implements OriginAwareInterface
     public function setAbuseReports($abuseReports)
     {
         $this->abuseReports = $abuseReports;
+
         return $this;
     }
 
@@ -367,6 +417,7 @@ class Campaign implements OriginAwareInterface
     public function setArchiveUrl($archiveUrl)
     {
         $this->archiveUrl = $archiveUrl;
+
         return $this;
     }
 
@@ -385,6 +436,7 @@ class Campaign implements OriginAwareInterface
     public function setArchiveUrlLong($archiveUrlLong)
     {
         $this->archiveUrlLong = $archiveUrlLong;
+
         return $this;
     }
 
@@ -403,6 +455,7 @@ class Campaign implements OriginAwareInterface
     public function setClicks($clicks)
     {
         $this->clicks = $clicks;
+
         return $this;
     }
 
@@ -421,6 +474,7 @@ class Campaign implements OriginAwareInterface
     public function setContentType($contentType)
     {
         $this->contentType = $contentType;
+
         return $this;
     }
 
@@ -439,6 +493,7 @@ class Campaign implements OriginAwareInterface
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 
@@ -457,6 +512,7 @@ class Campaign implements OriginAwareInterface
     public function setEmailsSent($emailsSent)
     {
         $this->emailsSent = $emailsSent;
+
         return $this;
     }
 
@@ -475,6 +531,7 @@ class Campaign implements OriginAwareInterface
     public function setFacebookLikes($facebookLikes)
     {
         $this->facebookLikes = $facebookLikes;
+
         return $this;
     }
 
@@ -493,6 +550,7 @@ class Campaign implements OriginAwareInterface
     public function setForwards($forwards)
     {
         $this->forwards = $forwards;
+
         return $this;
     }
 
@@ -511,6 +569,7 @@ class Campaign implements OriginAwareInterface
     public function setForwardsOpens($forwardsOpens)
     {
         $this->forwardsOpens = $forwardsOpens;
+
         return $this;
     }
 
@@ -529,6 +588,7 @@ class Campaign implements OriginAwareInterface
     public function setHardBounces($hardBounces)
     {
         $this->hardBounces = $hardBounces;
+
         return $this;
     }
 
@@ -547,6 +607,7 @@ class Campaign implements OriginAwareInterface
     public function setLastOpenDate($lastOpenDate)
     {
         $this->lastOpenDate = $lastOpenDate;
+
         return $this;
     }
 
@@ -565,6 +626,7 @@ class Campaign implements OriginAwareInterface
     public function setOpens($opens)
     {
         $this->opens = $opens;
+
         return $this;
     }
 
@@ -584,6 +646,7 @@ class Campaign implements OriginAwareInterface
     public function setOriginId($originId)
     {
         $this->originId = $originId;
+
         return $this;
     }
 
@@ -602,6 +665,7 @@ class Campaign implements OriginAwareInterface
     public function setRecipientLikes($recipientLikes)
     {
         $this->recipientLikes = $recipientLikes;
+
         return $this;
     }
 
@@ -620,6 +684,7 @@ class Campaign implements OriginAwareInterface
     public function setSendTime($sendTime)
     {
         $this->sendTime = $sendTime;
+
         return $this;
     }
 
@@ -638,6 +703,7 @@ class Campaign implements OriginAwareInterface
     public function setSoftBounces($softBounces)
     {
         $this->softBounces = $softBounces;
+
         return $this;
     }
 
@@ -656,6 +722,7 @@ class Campaign implements OriginAwareInterface
     public function setStatus($status)
     {
         $this->status = $status;
+
         return $this;
     }
 
@@ -674,6 +741,7 @@ class Campaign implements OriginAwareInterface
     public function setStaticSegment(?StaticSegment $segment = null)
     {
         $this->staticSegment = $segment;
+
         return $this;
     }
 
@@ -692,6 +760,7 @@ class Campaign implements OriginAwareInterface
     public function setSubscribersList(?SubscribersList $subscribersList = null)
     {
         $this->subscribersList = $subscribersList;
+
         return $this;
     }
 
@@ -710,6 +779,7 @@ class Campaign implements OriginAwareInterface
     public function setSyntaxErrors($syntaxErrors)
     {
         $this->syntaxErrors = $syntaxErrors;
+
         return $this;
     }
 
@@ -728,6 +798,7 @@ class Campaign implements OriginAwareInterface
     public function setTemplate($template)
     {
         $this->template = $template;
+
         return $this;
     }
 
@@ -746,6 +817,7 @@ class Campaign implements OriginAwareInterface
     public function setTestsRemain($testsRemain)
     {
         $this->testsRemain = $testsRemain;
+
         return $this;
     }
 
@@ -764,6 +836,7 @@ class Campaign implements OriginAwareInterface
     public function setTestsSent($testsSent)
     {
         $this->testsSent = $testsSent;
+
         return $this;
     }
 
@@ -782,6 +855,7 @@ class Campaign implements OriginAwareInterface
     public function setType($type)
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -800,6 +874,7 @@ class Campaign implements OriginAwareInterface
     public function setUniqueClicks($uniqueClicks)
     {
         $this->uniqueClicks = $uniqueClicks;
+
         return $this;
     }
 
@@ -818,6 +893,7 @@ class Campaign implements OriginAwareInterface
     public function setUniqueLikes($uniqueLikes)
     {
         $this->uniqueLikes = $uniqueLikes;
+
         return $this;
     }
 
@@ -836,6 +912,7 @@ class Campaign implements OriginAwareInterface
     public function setUniqueOpens($uniqueOpens)
     {
         $this->uniqueOpens = $uniqueOpens;
+
         return $this;
     }
 
@@ -854,6 +931,7 @@ class Campaign implements OriginAwareInterface
     public function setUnsubscribes($unsubscribes)
     {
         $this->unsubscribes = $unsubscribes;
+
         return $this;
     }
 
@@ -872,6 +950,7 @@ class Campaign implements OriginAwareInterface
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
 
@@ -890,6 +969,7 @@ class Campaign implements OriginAwareInterface
     public function setUsersWhoClicked($usersWhoClicked)
     {
         $this->usersWhoClicked = $usersWhoClicked;
+
         return $this;
     }
 
@@ -908,6 +988,7 @@ class Campaign implements OriginAwareInterface
     public function setWebId($webId)
     {
         $this->webId = $webId;
+
         return $this;
     }
 

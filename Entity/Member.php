@@ -33,10 +33,11 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
         'ownership' => [
             'owner_type' => 'ORGANIZATION',
             'owner_field_name' => 'owner',
-            'owner_column_name' => 'owner_id'
+            'owner_column_name' => 'owner_id',
         ],
         'security' => ['type' => 'ACL', 'group_name' => '', 'category' => 'marketing'],
-        'form' => ['grid_name' => 'orocrm-mailchimp-member-grid']
+        'form' => ['grid_name' => 'orocrm-mailchimp-member-grid'],
+        'email' => ['available_in_template' => true]
     ]
 )]
 class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterface
@@ -79,106 +80,133 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $id = null;
 
     /**
      * @var integer|null
      */
     #[ORM\Column(name: 'origin_id', type: Types::STRING, length: 32, nullable: true)]
-    #[ConfigField(defaultValues: ['importexport' => ['identity' => false]])]
+    #[ConfigField(defaultValues: [
+        'importexport' => ['identity' => false],
+        'email' => ['available_in_template' => true],
+    ])]
     protected $originId;
 
     #[ORM\ManyToOne(targetEntity: Channel::class)]
     #[ORM\JoinColumn(name: 'channel_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    #[ConfigField(defaultValues: [
+        'importexport' => ['identity' => true],
+        'email' => ['available_in_template' => true],
+    ])]
     protected ?Channel $channel = null;
 
     #[ORM\Column(name: 'email', type: Types::STRING, length: 255, nullable: false)]
-    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    #[ConfigField(defaultValues: [
+        'importexport' => ['identity' => true],
+        'email' => ['available_in_template' => true],
+    ])]
     protected ?string $email = null;
 
     #[ORM\Column(name: 'phone', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $phone = null;
 
     /**
      * The subscription status for this email address, either pending, subscribed, unsubscribed, or cleaned
      */
     #[ORM\Column(name: 'status', type: Types::STRING, length: 16, nullable: false)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $status = null;
 
     #[ORM\Column(name: 'first_name', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $firstName = null;
 
     #[ORM\Column(name: 'last_name', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $lastName = null;
 
     /**
      * The rating of the subscriber. This will be 1 - 5
      */
     #[ORM\Column(name: 'member_rating', type: Types::SMALLINT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $memberRating = null;
 
     /**
      * The date+time the opt-in completed.
      */
     #[ORM\Column(name: 'optedin_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?\DateTimeInterface $optedInAt = null;
 
     /**
      * IP Address this address opted in from.
      */
     #[ORM\Column(name: 'optedin_ip', type: Types::STRING, length: 20, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $optedInIpAddress = null;
 
     /**
      * The date+time the confirm completed.
      */
     #[ORM\Column(name: 'confirmed_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?\DateTimeInterface $confirmedAt = null;
 
     /**
      * IP Address this address confirmed from.
      */
     #[ORM\Column(name: 'confirmed_ip', type: Types::STRING, length: 16, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $confirmedIpAddress = null;
 
     #[ORM\Column(name: 'latitude', type: Types::STRING, length: 64, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $latitude = null;
 
     #[ORM\Column(name: 'longitude', type: Types::STRING, length: 64, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $longitude = null;
 
     #[ORM\Column(name: 'gmt_offset', type: Types::STRING, length: 16, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $gmtOffset = null;
 
     /**
      * GMT offset during daylight savings (if DST not observered, will be same as gmtoff)
      */
     #[ORM\Column(name: 'dst_offset', type: Types::STRING, length: 16, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $dstOffset = null;
 
     /**
      * The timezone we've place them in
      */
     #[ORM\Column(name: 'timezone', type: Types::STRING, length: 40, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $timezone = null;
 
     /**
      * 2 digit ISO-3166 country code
      */
     #[ORM\Column(name: 'cc', type: Types::STRING, length: 2, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $cc = null;
 
     /**
      * Generally state, province, or similar
      */
     #[ORM\Column(name: 'region', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $region = null;
 
     /**
      * The last time this record was changed. If the record is old enough, this may be blank.
      */
     #[ORM\Column(name: 'last_changed_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?\DateTimeInterface $lastChangedAt = null;
 
     /**
@@ -186,6 +214,7 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
      * Webhooks, Campaigns, etc.
      */
     #[ORM\Column(name: 'euid', type: Types::STRING, length: 255, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $euid = null;
 
     /**
@@ -194,6 +223,7 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
      * @var int|null
      */
     #[ORM\Column(name: 'leid', type: Types::BIGINT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected $leid;
 
     /**
@@ -204,23 +234,30 @@ class Member implements OriginAwareInterface, FirstNameInterface, LastNameInterf
 
     #[ORM\ManyToOne(targetEntity: SubscribersList::class)]
     #[ORM\JoinColumn(name: 'subscribers_list_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    #[ConfigField(defaultValues: ['importexport' => ['identity' => true]])]
+    #[ConfigField(defaultValues: [
+        'importexport' => ['identity' => true],
+        'email' => ['available_in_template' => true],
+    ])]
     protected ?SubscribersList $subscribersList = null;
 
     #[ORM\ManyToOne(targetEntity: Organization::class)]
     #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?Organization $owner = null;
 
     /**
      * @var Collection<int, StaticSegmentMember>
      */
     #[ORM\OneToMany(mappedBy: 'member', targetEntity: StaticSegmentMember::class)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?Collection $segmentMembers = null;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?\DateTimeInterface $updatedAt = null;
 
     public function __construct()

@@ -5,6 +5,7 @@ namespace Oro\Bundle\MailChimpBundle\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Attribute\ConfigField;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\MailChimpBundle\Entity\Repository\MemberActivityRepository;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -52,37 +53,47 @@ class MemberActivity
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Channel::class)]
     #[ORM\JoinColumn(name: 'channel_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?Channel $channel = null;
 
     #[ORM\ManyToOne(targetEntity: Campaign::class)]
     #[ORM\JoinColumn(name: 'campaign_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?Campaign $campaign = null;
 
     #[ORM\ManyToOne(targetEntity: Member::class)]
     #[ORM\JoinColumn(name: 'member_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?Member $member = null;
 
     #[ORM\ManyToOne(targetEntity: Organization::class)]
     #[ORM\JoinColumn(name: 'owner_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?Organization $owner = null;
 
     #[ORM\Column(name: 'email', type: Types::STRING, length: 255, nullable: false)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $email = null;
 
     #[ORM\Column(name: 'action', type: Types::STRING, length: 25, nullable: false)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $action = null;
 
     #[ORM\Column(name: 'ip_address', type: Types::STRING, length: 45, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $ip = null;
 
     #[ORM\Column(name: 'activity_time', type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?\DateTimeInterface $activityTime = null;
 
     #[ORM\Column(name: 'url', type: Types::TEXT, nullable: true)]
+    #[ConfigField(defaultValues: ['email' => ['available_in_template' => true]])]
     protected ?string $url = null;
 
     /**
